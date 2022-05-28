@@ -1,21 +1,29 @@
 import { useEffect, useState } from 'react';
 import style from '../List/list.module.css';
+import Row from '../Row';
 
 function List() {
   const [superAdmins, setSuperAdmin] = useState([]);
-  console.log(`admins: `, superAdmins);
+  console.log(`Superadmins: `, superAdmins);
   useEffect(() => {
-    fetch(`http://localhost:8080/super-admins`)
+    fetch(process.env.REACT_APP_LOCALHOST_URL)
       .then((response) => response.json())
       .then((response) => {
         setSuperAdmin(response.data);
       });
   }, []);
+  const deleteSuperAdmin = async (id) => {
+    await fetch(`${process.env.REACT_APP_LOCALHOST_URL}/${id}`, {
+      method: 'DELETE'
+    });
+    setSuperAdmin(superAdmins.filter((superadmin) => superadmin._id !== id));
+  };
   return (
     <div className={style.container}>
       <table>
         <thead>
           <tr>
+            <th>Id</th>
             <th>FirstName</th>
             <th>LastName</th>
             <th>createdAt</th>
@@ -26,19 +34,21 @@ function List() {
           </tr>
         </thead>
         <tbody>
-          {superAdmins.map((superAdmin) => {
-            return (
-              <ul key={superAdmin._id}>
-                <li>{superAdmin.firstName}</li>
-                <li>{superAdmin.lastName}</li>
-                <li>{superAdmin.createdAt}</li>
-                <li>{superAdmin.updatedAt}</li>
-                <li>{superAdmin.active ? 'Active' : 'Inactive'}</li>
-                <li>{superAdmin.email}</li>
-                <li>{superAdmin.password}</li>
-              </ul>
-            );
-          })}
+          {/* {superAdmins.lengh > 0 ? 'hay cosas' : 'nada'} */}
+          {superAdmins.map((superAdmin) => (
+            <Row
+              key={superAdmin._id}
+              id={superAdmin._id}
+              firstName={superAdmin.firstName}
+              lastName={superAdmin.lastName}
+              createdAt={superAdmin.createdAt}
+              updatedAt={superAdmin.updatedAt}
+              active={superAdmin.active}
+              email={superAdmin.email}
+              password={superAdmin.password}
+              onDelete={deleteSuperAdmin}
+            />
+          ))}
         </tbody>
       </table>
     </div>
