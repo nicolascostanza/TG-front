@@ -12,9 +12,7 @@ function Row({ id, firstName, lastName, createdAt, updatedAt, active, email, pas
       <td>{active ? 'Active' : 'Inactive'}</td>
       <td>{email}</td>
       <td>{password}</td>
-      {/* <td onDelete={onDelete(id)}> */}
       <FaTimes onClick={() => onDelete(id)} style={{ color: 'red', cursor: 'pointer' }} />
-      {/* </td> */}
     </tr>
   );
 }

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import style from '../List/list.module.css';
 import Row from '../Row';
+import Btn from '../Btn';
 
 function List() {
   const [superAdmins, setSuperAdmin] = useState([]);
-  console.log(`Superadmins: `, superAdmins);
   useEffect(() => {
     fetch(process.env.REACT_APP_LOCALHOST_URL)
       .then((response) => response.json())
@@ -13,13 +13,19 @@ function List() {
       });
   }, []);
   const deleteSuperAdmin = async (id) => {
-    await fetch(`${process.env.REACT_APP_LOCALHOST_URL}/${id}`, {
-      method: 'DELETE'
-    });
-    setSuperAdmin(superAdmins.filter((superadmin) => superadmin._id !== id));
+    const resp = confirm('Sure you want to remove it?');
+    if (resp) {
+      await fetch(`${process.env.REACT_APP_LOCALHOST_URL}/${id}`, {
+        method: 'DELETE'
+      });
+      setSuperAdmin(superAdmins.filter((superadmin) => superadmin._id !== id));
+    }
   };
   return (
     <div className={style.container}>
+      <a href="http://localhost:3000/super-admins-add-edit">
+        <Btn color="green" text="Add/Edit" />
+      </a>
       <table>
         <thead>
           <tr>
