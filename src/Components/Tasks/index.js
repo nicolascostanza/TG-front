@@ -1,22 +1,13 @@
-import { useEffect, useState } from 'react';
 import styles from './tasks.module.css';
+import List from './List';
 
 function Tasks() {
-  // eslint-disable-next-line no-unused-vars
-  const [task, setTasks] = useState([]);
-  useEffect(async () => {
-    try {
-      const response = await fetch('http://localhost:8080/tasks');
-      const data = await response.json();
-      console.log(data);
-      setTasks(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
+  const url = 'http://localhost:8080/tasks';
+  console.log(url);
   return (
     <section className={styles.container}>
       <h2>Tasks</h2>
+      <List />
     </section>
   );
 }
