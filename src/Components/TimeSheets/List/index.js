@@ -1,49 +1,53 @@
 import { useEffect, useState } from 'react';
-import style from '../List/list.module.css';
+import styles from '../List/list.module.css';
 
-function List() {
-  const [TimeSheets, setTimeSheet] = useState([]);
-  console.log('timesheets: ', TimeSheets);
+function TimeSheets() {
+  const [timesheets, saveTimeSheets] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8080/time-sheets')
+    fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
       .then((response) => response.json())
       .then((response) => {
-        setTimeSheet(response.data);
+        saveTimeSheets(response.data);
+        console.log(response.data);
       });
   }, []);
+
   return (
-    <div className={style.container}>
+    <section className={styles.container}>
       <table>
         <thead>
           <tr>
-            <th>EmployeeId</th>
+            <th>Id</th>
+            {/* <th>EmployeeId</th> */}
             <th>Description</th>
             <th>Project</th>
             <th>Date</th>
-            <th>Task</th>
+            {/* <th>Task</th> */}
             <th>Hours</th>
             <th>Approved</th>
             <th>Role</th>
           </tr>
         </thead>
-        <tbody>
-          {TimeSheets.map((timeSheet) => {
+        <div>
+          {timesheets.map((timesheet) => {
             return (
-              <ul key={timeSheet._id}>
-                <li>{timeSheet.EmployeeId}</li>
-                <li>{timeSheet.Description}</li>
-                <li>{timeSheet.Project}</li>
-                <li>{timeSheet.Date}</li>
-                <li>{timeSheet.Task}</li>
-                <li>{timeSheet.Hours}</li>
-                <li>{timeSheet.Approved ? true : false}</li>
-                <li>{timeSheet.Role}</li>
-              </ul>
+              <a key={timesheet._id}>
+                {timesheet._id}
+                {/* {timesheet.employeeId} */}
+                {timesheet.description}
+                {timesheet.project}
+                {timesheet.date}
+                {/* {timesheet.task} */}
+                {timesheet.hours}
+                {timesheet.approved}
+                {timesheet.role}
+              </a>
             );
           })}
-        </tbody>
+        </div>
       </table>
-    </div>
+    </section>
   );
 }
-export default List;
+
+export default TimeSheets;
