@@ -1,9 +1,11 @@
+import React from 'react';
+import List from './List';
 import styles from './projects.module.css';
 
 function Projects() {
   return (
     <section className={styles.container}>
-      <h2>Projects</h2>
+      <List />
     </section>
   );
 }
