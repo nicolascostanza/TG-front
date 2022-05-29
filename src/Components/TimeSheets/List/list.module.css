@@ -4,16 +4,7 @@
     background-color: white;
 }
 
-.container div{
+.th {
     display: flex;
-    flex-direction: column;
-    justify-items: center;
-    background-color: white;
-}
-
-.container th{
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    background-color: white;
+    justify-content: center;
 }

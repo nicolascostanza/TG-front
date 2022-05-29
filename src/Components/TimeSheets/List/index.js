@@ -1,53 +1,52 @@
 import { useEffect, useState } from 'react';
 import styles from '../List/list.module.css';
+import Btn from '../List/Button';
+import Row from '../List/Row';
 
-function TimeSheets() {
-  const [timesheets, saveTimeSheets] = useState([]);
+function TimeSheet() {
+  const [timeSheets, setTimeSheet] = useState([]);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
+    fetch(`http://localhost:8080/time-sheets`)
       .then((response) => response.json())
       .then((response) => {
-        saveTimeSheets(response.data);
-        console.log(response.data);
+        setTimeSheet(response.data);
       });
   }, []);
-
+  const deleteTimeSheet = async (id) => {
+    const resp = confirm('Are you sure you want to delete it?');
+    if (resp) {
+      await fetch(`http://localhost:8080/time-sheets/${id}`, {
+        method: 'DELETE'
+      });
+      setTimeSheet(timeSheets.filter((timeSheet) => timeSheet._id !== id));
+    }
+  };
   return (
-    <section className={styles.container}>
+    <div className={styles.container}>
+      <a href="http://localhost:8080/time-sheets-add/edit">
+        <Btn color="green" text="Add/Edit" />
+      </a>
       <table>
         <thead>
           <tr>
             <th>Id</th>
-            {/* <th>EmployeeId</th> */}
+            <th>EmployeeId</th>
             <th>Description</th>
             <th>Project</th>
             <th>Date</th>
-            {/* <th>Task</th> */}
+            <th>Task</th>
             <th>Hours</th>
             <th>Approved</th>
             <th>Role</th>
           </tr>
         </thead>
-        <div>
-          {timesheets.map((timesheet) => {
-            return (
-              <a key={timesheet._id}>
-                {timesheet._id}
-                {/* {timesheet.employeeId} */}
-                {timesheet.description}
-                {timesheet.project}
-                {timesheet.date}
-                {/* {timesheet.task} */}
-                {timesheet.hours}
-                {timesheet.approved}
-                {timesheet.role}
-              </a>
-            );
-          })}
-        </div>
+        <tbody>
+          {timeSheets.map((timeSheet) => (
+            <Row key={timeSheet._id} timeSheet={timeSheet} deleteTimeSheet={deleteTimeSheet} />
+          ))}
+        </tbody>
       </table>
-    </section>
+    </div>
   );
 }
-
-export default TimeSheets;
+export default TimeSheet;
