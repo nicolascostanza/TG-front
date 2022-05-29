@@ -1,6 +1,6 @@
 import styles from './tasks.module.css';
 import List from './List';
-import AddTask from './Add Task';
+import AddTask from './AddTask';
 
 function Tasks() {
   return (

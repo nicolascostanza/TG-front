@@ -1,7 +1,7 @@
-/*import React, { useState } from 'react';
+/* import React, { useState } from 'react';
 import styles from './addForm.module.css';
 
-const AddTask = ({ addTask }) => {
+const AddTask = () => {
   const [userInput, setUserInput] = useState({
     parentProject: '',
     taskName: '',
@@ -23,7 +23,6 @@ const AddTask = ({ addTask }) => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
-    addTask(userInput);
     setUserInput({
       parentProject: '',
       taskName: '',
@@ -32,8 +31,31 @@ const AddTask = ({ addTask }) => {
       startDate: '',
       status: ''
     });
-  };
+    const inputs = {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify({
+        parentProject: userInput.parentProject,
+        taskName: userInput.taskName,
+        taskDescription: userInput.taskDescription,
+        assignedEmployee: userInput.assignedEmployee,
+        startDate: userInput.startDate,
+        status: userInput.status
+      })
+    };
+    const URL = 'http://localhost:8080/tasks';
 
+    fetch(URL, inputs).then((response) => {
+      if (response.status !== 200 && response.status !== 201) {
+        return response.json().then(({ message }) => {
+          throw new Error(message);
+        });
+      }
+      return response.json();
+    });
+  };
   return (
     <div className={styles.container}>
       <div>
@@ -88,8 +110,8 @@ const AddTask = ({ addTask }) => {
 };
 
 export default AddTask;
- */
 
+*/
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './addForm.module.css';
@@ -102,7 +124,7 @@ const AddTask = () => {
       .then((response) => {
         setTasks(response.data);
       });
-  });
+  }, []);
   const [parentProject, setParentProject] = useState('');
   const [taskName, setTaskName] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
@@ -125,6 +147,9 @@ const AddTask = () => {
   };
   return (
     <form className={styles.container} onSubmit={onSubmit}>
+      <div>
+        <h2>Add New Task</h2>
+      </div>
       <div>
         <label>Parent Project</label>
         <input
@@ -153,10 +178,10 @@ const AddTask = () => {
         />
       </div>
       <div>
-        <label>assignedEmployee</label>
+        <label>Assigned Employee</label>
         <input
           type="text"
-          placeholder="assignedEmployee"
+          placeholder="Assigned Employee"
           value={assignedEmployee}
           onChange={(e) => setAssignedEmployee(e.target.value)}
         />
