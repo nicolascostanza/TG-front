@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from '../List/list.module.css';
+import Row from '../Row';
+import Btn from '../Btn';
 
 function List() {
   const [tasks, setTask] = useState([]);
@@ -11,9 +13,20 @@ function List() {
         console.log(response.data);
       });
   }, []);
-
+  const deleteTask = async (id) => {
+    const resp = confirm('Are you sure you want to delete this task?');
+    if (resp) {
+      await fetch(`http://localhost:8080/tasks/${id}`, {
+        method: 'DELETE'
+      });
+      setTask(tasks.filter((task) => task._id !== id));
+    }
+  };
   return (
     <section className={styles.container}>
+      <a href="http://localhost:3000/tasks-add-edit">
+        <Btn color="green" text="Add/Edit" />
+      </a>
       <table>
         <thead>
           <tr>
@@ -27,20 +40,11 @@ function List() {
             <th>Status</th>
           </tr>
         </thead>
-        <div>
-          {tasks.map((task) => {
-            return (
-              <a key={task._id}>
-                {task._id}
-                {task.taskCreatorId}
-                {task.taskName}
-                {task.taskDescription}
-                {task.createdAt}
-                {task.status}
-              </a>
-            );
-          })}
-        </div>
+        <tbody>
+          {tasks.map((task) => (
+            <Row key={task._id} task={task} deleteTask={deleteTask} />
+          ))}
+        </tbody>
       </table>
     </section>
   );
