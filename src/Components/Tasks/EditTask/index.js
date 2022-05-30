@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import styles from './addTask.module.css';
+import styles from './editTask.module.css';
 
-const AddTask = () => {
+const EditTask = () => {
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
     fetch('http://localhost:8080/tasks')
@@ -19,9 +19,9 @@ const AddTask = () => {
   const [startDate, setStartDate] = useState('');
   const [status, setStatus] = useState('');
 
-  const addTask = async (task) => {
-    const res = await fetch('http://localhost:8080/tasks', {
-      method: 'POST',
+  const editTask = async (task) => {
+    const res = await fetch('http://localhost:8080/tasks/6294cdde1f43d2a7d2276d8b', {
+      method: 'PUT',
       headers: {
         'Content-type': 'application/json'
       },
@@ -34,7 +34,7 @@ const AddTask = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    addTask({
+    editTask({
       parentProject,
       taskName,
       taskDescription,
@@ -54,19 +54,19 @@ const AddTask = () => {
   return (
     <form className={styles.container} onSubmit={onSubmit}>
       <div>
-        <h2>Add New Task</h2>
+        <h2>Edit Task</h2>
       </div>
       <div>
-        <label>Parent Project:</label>
+        <label>Parent Project</label>
         <input
           type="text"
-          placeholder="Parent Project ID"
+          placeholder="Parent Project"
           value={parentProject}
           onChange={(e) => setParentProject(e.target.value)}
         />
       </div>
       <div>
-        <label>Task Name:</label>
+        <label>Task Name</label>
         <input
           type="text"
           placeholder="Task Name"
@@ -75,7 +75,7 @@ const AddTask = () => {
         />
       </div>
       <div>
-        <label>Task Description:</label>
+        <label>Task Description</label>
         <input
           type="text"
           placeholder="Task description"
@@ -84,16 +84,16 @@ const AddTask = () => {
         />
       </div>
       <div>
-        <label>Assigned Employee:</label>
+        <label>Assigned Employee</label>
         <input
           type="text"
-          placeholder="Assigned Employee ID"
+          placeholder="Assigned Employee"
           value={assignedEmployee}
           onChange={(e) => setAssignedEmployee(e.target.value)}
         />
       </div>
       <div>
-        <label>Start Date:</label>
+        <label>Start Date</label>
         <input
           type="text"
           placeholder="Start Date"
@@ -102,7 +102,7 @@ const AddTask = () => {
         />
       </div>
       <div>
-        <label>Status:</label>
+        <label>Status</label>
         <input
           type="text"
           placeholder="Status"
@@ -110,9 +110,9 @@ const AddTask = () => {
           onChange={(e) => setStatus(e.target.value)}
         />
       </div>
-      <input className={styles.button} type="submit" value="Add Task" />
+      <input className="button" type="submit" value="Add Task" />
     </form>
   );
 };
 
-export default AddTask;
+export default EditTask;

@@ -8,6 +8,8 @@ import Employees from '../Employees/index';
 import Projects from '../Projects';
 import TimeSheets from '../TimeSheets';
 import Tasks from '../Tasks/index';
+import AddTask from '../Tasks/AddTask/index';
+import EditTask from '../Tasks/EditTask';
 
 function Layout() {
   let currentScreen = <Home />;
@@ -29,6 +31,12 @@ function Layout() {
       break;
     case '/tasks':
       currentScreen = <Tasks />;
+      break;
+    case '/tasks-add':
+      currentScreen = <AddTask />;
+      break;
+    case '/tasks-edit':
+      currentScreen = <EditTask />;
       break;
     default:
       break;

@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+    padding-left: 25px;
+    padding-bottom: 25px;
+    border: 1px solid black;
+    border-radius: 15px;
+    margin: 0 auto;
+}
+.container input:not(.button) {
+    margin-top: 5px;
+    margin-left: 10px;
+    width: 200px;
+}
+.button {
+    width: 100px;
+    height: 30px;
+    margin-top: 20px;
+    margin-right: 40px;
+    border-radius: 10px;
+    background-color: rgb(255, 50, 100);
+    color: white;
+    align-self: flex-end;
+}
