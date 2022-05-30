@@ -30,6 +30,12 @@ const AddTask = () => {
     const data = await res.json();
 
     setTasks([...tasks, data]);
+
+    if (res.status === 201) {
+      alert('Task added successfully');
+    } else if (res.status === 400 || res.status === 500) {
+      alert('Wrong data input');
+    }
   };
 
   const onSubmit = (e) => {
@@ -48,7 +54,6 @@ const AddTask = () => {
     setAssignedEmployee([]);
     setStartDate('');
     setStatus('');
-    console.log(tasks);
   };
 
   return (
