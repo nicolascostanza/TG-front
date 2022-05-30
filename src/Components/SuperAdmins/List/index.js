@@ -21,10 +21,11 @@ function List() {
       setSuperAdmin(superAdmins.filter((superadmin) => superadmin._id !== id));
     }
   };
+  const addForm = () => console.log('agrego');
   return (
     <div className={style.container}>
-      <a href="http://localhost:3000/super-admins-add-edit">
-        <Btn color="green" text="Add/Edit" />
+      <a onClick={addForm} href="http://localhost:3000/super-admins-add">
+        <Btn color="green" text="Add" />
       </a>
       <table>
         <thead>
@@ -37,6 +38,8 @@ function List() {
             <th>Active</th>
             <th>Email</th>
             <th>Password</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>

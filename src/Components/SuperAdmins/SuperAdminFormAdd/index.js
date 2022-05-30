@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../super-admins.module.css';
 
-function AddEdit() {
+function SuperAdminFormAdd() {
   const [superAdmins, setSuperAdmin] = useState([]);
   useEffect(() => {
     fetch(process.env.REACT_APP_LOCALHOST_URL)
@@ -13,11 +13,22 @@ function AddEdit() {
   }, []);
   const [firstName, setFirstName] = useState('');
   const [lastName, setlastName] = useState('');
-  const [active, setActive] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const addSuperAdmin = (superAdmin) => {
-    setSuperAdmin([...superAdmins, superAdmin]);
+  const [active, setActive] = useState(false);
+  const addSuperAdmin = async (superAdmin) => {
+    const res = await ('http://localhost:8080/super-admins',
+    {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(superAdmin)
+    });
+    console.log(res);
+    console.log(superAdmin);
+    const data = await res.json();
+    setSuperAdmin([...superAdmins, data]);
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -25,12 +36,12 @@ function AddEdit() {
       alert('complete todos los campos');
       return;
     }
-    addSuperAdmin(firstName, lastName, active, email, password);
+    addSuperAdmin({ firstName, lastName, email, password, active });
     setFirstName('');
     setlastName('');
-    setActive(false);
     setEmail('');
     setPassword('');
+    setActive(false);
   };
   return (
     <form className={styles.container} onSubmit={onSubmit}>
@@ -53,15 +64,6 @@ function AddEdit() {
         />
       </div>
       <div>
-        <label>Active</label>
-        <input
-          type="checkbox"
-          checked={active}
-          value={active}
-          onChange={(e) => setActive(e.currentTarget.checked)}
-        />
-      </div>
-      <div>
         <label>Email</label>
         <input
           type="email"
@@ -79,9 +81,18 @@ function AddEdit() {
           onChange={(e) => setPassword(e.target.value)}
         />
       </div>
+      <div>
+        <label>Active</label>
+        <input
+          type="checkbox"
+          checked={active}
+          value={active}
+          onChange={(e) => setActive(e.currentTarget.checked)}
+        />
+      </div>
       <input type="submit" value="SaveSuperAdmin" />
     </form>
   );
 }
 
-export default AddEdit;
+export default SuperAdminFormAdd;
