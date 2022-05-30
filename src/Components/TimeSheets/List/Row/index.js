@@ -17,13 +17,13 @@ function Row(props) {
   return (
     <tr id={id}>
       <td>{id}</td>
-      <td>{employeeId.firstName}</td>
+      <td>{employeeId}</td>
       <td>{description}</td>
       <td>{project}</td>
       <td>{date}</td>
       <td>{task.taskName}</td>
       <td>{hours}</td>
-      <td>{approved ? 'true' : 'false'}</td>
+      <td>{approved}</td>
       <td>{role}</td>
       <FaTimes onClick={() => deleteTimeSheet(id)} style={{ color: 'red', cursor: 'pointer' }} />
     </tr>
