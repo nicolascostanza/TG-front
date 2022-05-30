@@ -14,6 +14,18 @@ const List = () => {
       });
   }, []);
   // const response = response.data;
+
+  // Delete employee
+  const deleteEmployee = async (id) => {
+    // console.log('id que le llega a la funcion', id);
+    const res = await fetch(`http://localhost:8080/employees/${id}`, {
+      method: 'DELETE'
+    });
+    res.status === 200
+      ? setEmployees(employees.filter((employee) => employee._id !== id))
+      : alert('Error deleting this employee');
+  };
+
   return (
     <section className={styles.container}>
       <table>
@@ -28,6 +40,9 @@ const List = () => {
             <th>Gender</th>
             <th>Address</th>
             <th>Active</th>
+            <th>Created at</th>
+            <th>Updated at</th>
+            {/* <th>Delete</th> */}
           </tr>
         </thead>
         <tbody>
@@ -43,6 +58,10 @@ const List = () => {
               gender={employee.gender}
               address={employee.adress}
               active={employee.active}
+              createdAt={employee.createdAt}
+              updatedAt={employee.updatedAt}
+              onDelete={deleteEmployee}
+              employee={employee}
             />
           ))}
         </tbody>

@@ -1,8 +1,23 @@
 import React from 'react';
+import RowBtn from '../RowBtn/RowBtn';
 
-const Row = ({ id, email, password, fullName, dob, phone, gender, address, active }) => {
+const Row = ({
+  id,
+  email,
+  password,
+  fullName,
+  dob,
+  phone,
+  gender,
+  address,
+  active,
+  createdAt,
+  updatedAt,
+  onDelete,
+  employee
+}) => {
   return (
-    <tr id={id}>
+    <tr key={id}>
       <td>{id}</td>
       <td>{email}</td>
       <td>{password}</td>
@@ -12,7 +27,14 @@ const Row = ({ id, email, password, fullName, dob, phone, gender, address, activ
       <td>{gender}</td>
       <td>{address}</td>
       <td>{active ? 'Active' : 'Unactive'}</td>
-      {/* {console.log(response)} */}
+      <td>{createdAt}</td>
+      <td>{updatedAt}</td>
+      <td>
+        <RowBtn className="fa-solid fa-pen-to-square" />
+      </td>
+      <td>
+        <RowBtn className="fa-solid fa-xmark" id={id} onDelete={onDelete} employee={employee} />
+      </td>
     </tr>
   );
 };
