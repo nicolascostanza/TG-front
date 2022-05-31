@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from '../List/list.module.css';
-import Btn from '../List/Button';
-import Row from '../List/Row';
+import Btn from './Button';
+import Row from './Row';
 
 function TimeSheet() {
   const [timeSheets, setTimeSheet] = useState([]);
@@ -23,8 +23,8 @@ function TimeSheet() {
   };
   return (
     <div className={styles.container}>
-      <a href="http://localhost:8080/time-sheets-add/edit">
-        <Btn color="green" text="Add/Edit" />
+      <a href="http://localhost:8080/time-sheets-add">
+        <Btn color="green" text="Add" />
       </a>
       <table>
         <thead>

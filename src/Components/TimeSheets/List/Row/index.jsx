@@ -21,7 +21,7 @@ function Row(props) {
       <td>{date}</td>
       <td>{task.taskName}</td>
       <td>{hours}</td>
-      <td>{approved ? true : false}</td>
+      <td>{approved ? 'Approved' : 'No approved'}</td>
       <td>{role}</td>
       <td>
         <i
@@ -32,9 +32,8 @@ function Row(props) {
         ></i>
       </td>
       <td>
-        <a href={`http://localhost:8080/time-sheets-add/edit/${id}`}>
-          {' '}
-          <button>Edit</button>{' '}
+        <a href={`http://localhost:8080/time-sheets-edit/${id}`}>
+          <button>Edit</button>
         </a>
       </td>
     </tr>
