@@ -48,19 +48,8 @@ function Row({
               switchScreen();
             }
           }}
-          style={{ color: 'black', cursor: 'pointer' }}
+          style={{ color: '#192de6', cursor: 'pointer' }}
         ></i>
-        {/* <Btn
-          onClick={() => {
-            setMethod('PUT');
-            setID(id);
-            {
-              switchScreen();
-            }
-          }}
-          text="Edit"
-          color="aqua"
-        /> */}
       </td>
       <td onClick={() => onDelete(id)} style={{ color: 'red', cursor: 'pointer' }}>
         <i className="fa-solid fa-xmark"></i>
