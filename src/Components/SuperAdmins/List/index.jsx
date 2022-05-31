@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from '../List/list.module.css';
 import Row from '../Row';
-// import Btn from '../Btn';
 
 function List({ switchScreen, setMethod, setID }) {
   const [superAdmins, setSuperAdmin] = useState([]);
