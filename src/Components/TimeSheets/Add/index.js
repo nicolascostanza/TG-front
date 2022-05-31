@@ -3,26 +3,24 @@ import { useState, useEffect } from 'react';
 
 function AddTimeSheets() {
   const [timeSheets, saveTimeSheets] = useState([]);
-  useEffect(async () => {
-    try {
-      const response = await fetch('http://localhost:8080/time-sheets/add');
-      const data = await response.json();
-      console.log(data);
-      saveTimeSheets(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+  useEffect(() => {
+    fetch('http://localhost:8080/time-sheets/')
+      .then((response) => response.json())
+      .then((response) => {
+        saveTimeSheets(response.data);
+        // console.log(timeSheets);
+      });
   }, []);
   const [employeeId, setEmployeeId] = useState('');
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
-  const [task, setTask] = useState('');
+  const [task, setTask] = useState([]);
   const [approved, setApproved] = useState(false);
   const [role, setRole] = useState('');
   const addTimeSheets = async (timeSheet) => {
-    const res = await fetch('http://localhost:8080/time-sheets/add', {
+    const res = await fetch('http://localhost:8080/time-sheets/', {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -30,7 +28,7 @@ function AddTimeSheets() {
       body: JSON.stringify(timeSheet)
     });
     const data = await res.json;
-
+    console.log(data);
     saveTimeSheets([...timeSheets, data]);
 
     if (res.status === 201) {
@@ -47,7 +45,7 @@ function AddTimeSheets() {
       project,
       date,
       hours,
-      task,
+      task: [task],
       approved,
       role
     });
@@ -56,7 +54,7 @@ function AddTimeSheets() {
     setProject('');
     setDate('');
     setHours('');
-    setTask('');
+    setTask([]);
     setApproved(false);
     setRole('');
   };
@@ -115,7 +113,7 @@ function AddTimeSheets() {
         <input
           type="text"
           placeholder="Task"
-          value={task}
+          value={task._id}
           onChange={(e) => setTask(e.target.value)}
         />
       </div>
@@ -123,7 +121,7 @@ function AddTimeSheets() {
         <label> Approved </label>
         <input
           type="checkbox"
-          checked={approved}
+          // checked={approved}
           value={approved}
           onChange={(e) => setApproved(e.target.value)}
         />
@@ -137,6 +135,7 @@ function AddTimeSheets() {
           onChange={(e) => setRole(e.target.value)}
         />
       </div>
+      <input type="submit" value="Add Timesheet" />
     </form>
   );
 }
