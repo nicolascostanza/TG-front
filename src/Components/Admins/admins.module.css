@@ -4,3 +4,21 @@
   justify-content: center;
   align-items: center;
 }
+
+/* .tableBox{
+  display: flex;
+  justify-content: center;
+  background-color: red;
+}
+.tableContainer{
+  width: 100%;
+}
+.thead{
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.rows{
+  background-color: green;
+} */
