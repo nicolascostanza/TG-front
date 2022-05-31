@@ -60,6 +60,7 @@ function List() {
           })}
         </tbody>
       </table>
+      <a href="/projects/create">Create new project</a>
     </div>
   );
 }

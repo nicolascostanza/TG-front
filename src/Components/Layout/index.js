@@ -22,7 +22,10 @@ function Layout() {
       currentScreen = <Employees />;
       break;
     case '/projects':
-      currentScreen = <Projects />;
+      currentScreen = <Projects create={false} />;
+      break;
+    case '/projects/create':
+      currentScreen = <Projects create={true} />;
       break;
     case '/time-sheets':
       currentScreen = <TimeSheets />;
