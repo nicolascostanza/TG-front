@@ -3,13 +3,17 @@ import { useState, useEffect } from 'react';
 import styles from '../AddTask/addTask.module.css';
 
 const EditTask = () => {
-  const [tasks, setTasks] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8080/tasks/62961f61bf21e677edfd155b')
+    fetch('http://localhost:8080/tasks/62965439e74d6b80516dadd0')
       .then((response) => response.json())
       .then((response) => {
-        setTasks(response.data);
-        console.log(tasks);
+        console.log(response.data);
+        setParentProject(response.data.parentProject);
+        setTaskName(response.data.taskName);
+        setTaskDescription(response.data.taskDescription);
+        setAssignedEmployee(response.data.assignedEmployee);
+        setStartDate(response.data.startDate);
+        setStatus(response.data.status);
       });
   }, []);
   const [parentProject, setParentProject] = useState('');
@@ -20,7 +24,7 @@ const EditTask = () => {
   const [status, setStatus] = useState('');
 
   const editTask = async (task) => {
-    const res = await fetch('http://localhost:8080/tasks/62961f61bf21e677edfd155b', {
+    const res = await fetch('http://localhost:8080/tasks/62965439e74d6b80516dadd0', {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
@@ -41,10 +45,10 @@ const EditTask = () => {
     e.preventDefault();
 
     editTask({
-      parentProject,
+      parentProject: parentProject._id,
       taskName,
       taskDescription,
-      assignedEmployee: [assignedEmployee],
+      assignedEmployee: [assignedEmployee._id],
       startDate,
       status
     });
@@ -65,16 +69,15 @@ const EditTask = () => {
         <label>Parent Project:</label>
         <input
           type="text"
-          placeholder={tasks.parentProject ? tasks.parentProject._id : 'No parent project'}
-          //value={tasks.parentProject ? tasks.parentProject._id : 'No parent project'}
-          onChange={(e) => setParentProject({ text: e.target.value })}
+          value={parentProject._id}
+          onChange={(e) => setParentProject(e.target.value)}
         />
       </div>
       <div>
         <label>Task Name:</label>
         <input
           type="text"
-          placeholder={tasks.taskName}
+          placeholder={taskName}
           value={taskName}
           onChange={(e) => setTaskName(e.target.value)}
         />
@@ -83,7 +86,7 @@ const EditTask = () => {
         <label>Task Description:</label>
         <input
           type="text"
-          placeholder={tasks.taskDescription}
+          placeholder={taskDescription}
           value={taskDescription}
           onChange={(e) => setTaskDescription(e.target.value)}
         />
@@ -92,10 +95,12 @@ const EditTask = () => {
         <label>Assigned Employee:</label>
         <input
           type="text"
-          placeholder={
-            tasks.assignedEmployee ? tasks.assignedEmployee[0]._id : 'No assigned employee'
+          //placeholder=
+          value={
+            assignedEmployee && assignedEmployee[0]
+              ? assignedEmployee[0]._id
+              : 'No assigned employee'
           }
-          value={assignedEmployee}
           onChange={(e) => setAssignedEmployee(e.target.value)}
         />
       </div>
@@ -103,7 +108,7 @@ const EditTask = () => {
         <label>Start Date:</label>
         <input
           type="text"
-          placeholder={tasks.startDate}
+          placeholder={startDate}
           value={startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
@@ -112,7 +117,7 @@ const EditTask = () => {
         <label>Status:</label>
         <input
           type="text"
-          placeholder={tasks.status}
+          placeholder={status}
           value={status}
           onChange={(e) => setStatus(e.target.value)}
         />
