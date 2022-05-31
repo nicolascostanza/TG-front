@@ -8,6 +8,14 @@ function SuperAdmins() {
   let [screen, setScreen] = useState(false);
   let [method, setMethod] = useState('');
   let [id, setID] = useState('');
+  // let [info, setInfo] = useState([]);
+  // useEffect(() => {
+  //   fetch(process.env.REACT_APP_LOCALHOST_URL)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       setInfo(response.data);
+  //     });
+  // }, []);
   const switchScreen = () => {
     setScreen(screen ? (screen = false) : (screen = true));
   };
