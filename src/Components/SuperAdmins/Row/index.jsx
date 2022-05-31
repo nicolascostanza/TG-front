@@ -1,5 +1,5 @@
 import React from 'react';
-import Btn from '../Btn';
+import style from './row.module.css';
 
 function Row({
   id,
@@ -29,7 +29,7 @@ function Row({
   const minUpdate = updatedAt.substring(14, 16);
   const Updated = `${yearUpdate}/${monthUpdate}/${dayUpdate} at ${hsUpdate}:${minUpdate}`;
   return (
-    <tr id={id}>
+    <tr className={style.row} id={id}>
       <td>{id}</td>
       <td>{firstName}</td>
       <td>{lastName}</td>
@@ -39,7 +39,18 @@ function Row({
       <td>{email}</td>
       <td>{password}</td>
       <td>
-        <Btn
+        <i
+          className="fa-solid fa-pen-to-square"
+          onClick={() => {
+            setMethod('PUT');
+            setID(id);
+            {
+              switchScreen();
+            }
+          }}
+          style={{ color: 'black', cursor: 'pointer' }}
+        ></i>
+        {/* <Btn
           onClick={() => {
             setMethod('PUT');
             setID(id);
@@ -49,11 +60,10 @@ function Row({
           }}
           text="Edit"
           color="aqua"
-        />
+        /> */}
       </td>
       <td onClick={() => onDelete(id)} style={{ color: 'red', cursor: 'pointer' }}>
-        X
-        {/* <FaTimes onClick={() => onDelete(id)} style={{ color: 'red', cursor: 'pointer' }} /> */}
+        <i className="fa-solid fa-xmark"></i>
       </td>
     </tr>
   );

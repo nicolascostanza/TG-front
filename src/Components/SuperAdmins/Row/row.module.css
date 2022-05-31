@@ -1,0 +1,11 @@
+.row:nth-child(odd) {
+    background-color: #c9c5c5;
+}
+td{
+    text-align: center;
+}
+.row{
+    height: 50px;
+    font-weight: 500;
+    font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+}

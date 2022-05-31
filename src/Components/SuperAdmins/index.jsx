@@ -16,24 +16,29 @@ function SuperAdmins() {
       <section className={styles.container}>
         <h2>SuperAdmin Form</h2>
         <Form method={method} switchScreen={switchScreen} id={id} />
-        <Btn color="aqua" text="View List" onClick={switchScreen} />
+        <Btn text="View List" onClick={switchScreen} />
       </section>
     );
   } else {
     return (
       <section className={styles.container}>
-        <h2>SuperAdmin List</h2>
+        <div className={styles.headerList}>
+          <div className={styles.addButton}>
+            <i
+              className="fa-solid fa-user-plus"
+              color="green"
+              text="Add SuperAdmin"
+              onClick={() => {
+                setMethod('POST');
+                {
+                  switchScreen();
+                }
+              }}
+            ></i>
+          </div>
+          <h2 className={styles.tittle}>SuperAdmins</h2>
+        </div>
         <List switchScreen={switchScreen} setMethod={setMethod} setID={setID} />
-        <Btn
-          color="green"
-          text="Add SuperAdmin"
-          onClick={() => {
-            setMethod('POST');
-            {
-              switchScreen();
-            }
-          }}
-        />
       </section>
     );
   }

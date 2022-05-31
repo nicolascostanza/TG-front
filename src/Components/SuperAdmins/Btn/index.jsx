@@ -1,16 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import styles from './button.module.css';
 
 function Btn({ onClick, text, color }) {
   return (
-    <button a onClick={onClick} style={{ backgroundColor: color, cursor: 'pointer' }}>
+    <button
+      className={styles.container}
+      a
+      onClick={onClick}
+      style={{ backgroundColor: color, cursor: 'pointer' }}
+    >
       {text}
     </button>
   );
 }
 Btn.defaultProps = {
   text: '',
-  color: 'black'
+  color: '#EA3354'
 };
 
 Btn.propTypes = {

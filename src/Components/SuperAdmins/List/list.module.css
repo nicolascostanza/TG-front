@@ -1,3 +1,10 @@
 .container{
-    background-color: grey;
+    background-color: #F0F4F9;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+thead tr th {
+    text-align: center;
+    color: #EA3354;
 }

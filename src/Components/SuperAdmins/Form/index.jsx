@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import styles from '../super-admins.module.css';
+import styles from './form.module.css';
 
 function Form(props) {
   let initValues = {
@@ -27,7 +27,7 @@ function Form(props) {
   const [email, setEmail] = useState(initValues.email);
   const [password, setPassword] = useState(initValues.password);
   const [active, setActive] = useState(initValues.active);
-  // funciones
+  // funcion que resetea campos
   const resetFields = () => {
     setFirstName('');
     setlastName('');
@@ -35,38 +35,39 @@ function Form(props) {
     setPassword('');
     setActive(false);
   };
-
   const addSuperAdmin = async (superAdmin) => {
-    const res = await fetch(`http://localhost:8080/super-admins`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(superAdmin)
-    });
-    const data = await res.json();
-    console.log(data.message);
-    if (res.status === 201) {
-      setSuperAdmin([...superAdmins, data]);
-      console.log(data);
-      alert(data.message);
-    } else {
-      alert(data.message);
+    if (confirm('Are you sure you want to create a Superadmin ?')) {
+      const res = await fetch(`http://localhost:8080/super-admins`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(superAdmin)
+      });
+      const data = await res.json();
+      if (res.status === 201) {
+        setSuperAdmin([...superAdmins, data]);
+        alert(data.message);
+      } else {
+        alert(data.message);
+      }
     }
   };
   const editSuperAdmin = async (superAdmin) => {
-    const res = await fetch(`http://localhost:8080/super-admins/${props.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(superAdmin)
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      alert(data.message);
-    } else {
-      alert(data.message);
+    if (confirm('Are you sure you want to edit it?')) {
+      const res = await fetch(`http://localhost:8080/super-admins/${props.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(superAdmin)
+      });
+      const data = await res.json();
+      if (res.status === 200) {
+        alert(data.message);
+      } else {
+        alert(data.message);
+      }
     }
   };
   const onSubmit = (e) => {
@@ -76,13 +77,11 @@ function Form(props) {
       resetFields();
     } else if (props.method === 'PUT') {
       editSuperAdmin({ firstName, lastName, email, password, active });
+      resetFields();
     } else {
       alert('Something unexpected happened');
     }
   };
-  // if (props.method === 'POST') {
-  //   resetFields();
-  // }
 
   return (
     <form className={styles.container} onSubmit={onSubmit}>
@@ -108,7 +107,7 @@ function Form(props) {
         <label>Email</label>
         <input
           type="email"
-          placeholder={props.method === 'PUT' ? email : 'email'}
+          placeholder="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
@@ -117,7 +116,7 @@ function Form(props) {
         <label>Password</label>
         <input
           type="password"
-          placeholder={props.method === 'PUT' ? password : 'password'}
+          placeholder="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
@@ -125,13 +124,14 @@ function Form(props) {
       <div>
         <label>Active</label>
         <input
+          className={styles.check}
           type="checkbox"
           checked={active}
           value={active}
           onChange={(e) => setActive(e.currentTarget.checked)}
         />
       </div>
-      <input type="submit" value={props.method === 'PUT' ? 'EDIT' : 'ADD'} />
+      <input className={styles.btn} type="submit" value={props.method === 'PUT' ? 'EDIT' : 'ADD'} />
     </form>
   );
 }

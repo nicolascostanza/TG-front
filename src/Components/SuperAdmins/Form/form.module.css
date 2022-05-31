@@ -1,0 +1,41 @@
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    /* background-color: red; */
+}
+.container div{
+    margin: 5px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.container div label {
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+.container div input{
+    border-radius: 4px !important;
+    box-shadow: 3px 3px #EA3354;
+    width: 300px;
+}
+.container div input:last-child{
+    border-radius: 1px;
+}
+.check{
+    border-radius: 1px;
+    box-shadow: none !important;
+    margin-bottom: 10px;
+}
+.btn{
+    background-color: red;
+    width: 300px;
+    height: 30px;
+    border: none;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
