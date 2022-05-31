@@ -24,7 +24,7 @@ function List() {
   };
   return (
     <section className={styles.container}>
-      <a href="http://localhost:3000/tasks-add-edit">
+      <a href="http://localhost:3000/tasks-add">
         <Btn color="green" text="Add/Edit" />
       </a>
       <table className={styles.row}>
