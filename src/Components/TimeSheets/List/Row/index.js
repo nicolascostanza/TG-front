@@ -1,5 +1,4 @@
 import React from 'react';
-import { FaTimes } from 'react-icons/fa';
 
 function Row(props) {
   const {
@@ -13,19 +12,31 @@ function Row(props) {
     approved,
     role
   } = props.timeSheet;
-  const { deleteTimeSheet } = props;
   return (
-    <tr id={id}>
+    <tr id={id} className={StyleSheet.row}>
       <td>{id}</td>
-      <td>{employeeId}</td>
+      <td>{employeeId ? employeeId._id : 'No id'}</td>
       <td>{description}</td>
       <td>{project}</td>
       <td>{date}</td>
       <td>{task.taskName}</td>
       <td>{hours}</td>
-      <td>{approved}</td>
+      <td>{approved ? true : false}</td>
       <td>{role}</td>
-      <FaTimes onClick={() => deleteTimeSheet(id)} style={{ color: 'red', cursor: 'pointer' }} />
+      <td>
+        <i
+          className="fa-solid fa-xmark"
+          onClick={() => {
+            props.deleteTimeSheet(id);
+          }}
+        ></i>
+      </td>
+      <td>
+        <a href={`http://localhost:8080/time-sheets-add/edit/${id}`}>
+          {' '}
+          <button>Edit</button>{' '}
+        </a>
+      </td>
     </tr>
   );
 }
