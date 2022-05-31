@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
-import styles from './employees.module.css';
+import EditEmployee from './EditEmployee/editEmployee';
 import AddEmployee from './EmployeeForm/addEmployee';
+import styles from './employees.module.css';
 
 function Employees() {
   const [employees, saveEmployees] = useState([]);
@@ -20,6 +21,9 @@ function Employees() {
       <h2>Employees</h2>
       <AddEmployee employees={employees} saveEmployees={saveEmployees} />
       <div>
+        <a href="http://localhost:3000/employees/editEmployee">
+          <button onClick={EditEmployee}>Edit employee</button>
+        </a>
         {employees.map((employee) => {
           // eslint-disable-next-line prettier/prettier
           return (
@@ -34,23 +38,3 @@ function Employees() {
 }
 
 export default Employees;
-/* const addEmployee = () => {
-    _id: Math.floor(Math.random() * 1000),
-    firstName,
-    surname,
-    email,
-    gender,
-    adress,
-    dob,
-    password,
-    phone,
-    active
-  };
-  saveEmployees([...employees, addEmployee]);
-  return (
-    <section className={styles.container}>
-      <a href="/employees/AddEmployee">
-        <button type="button">Create new employee</button>
-      </a>
-    </section>
-  ); */

@@ -110,7 +110,12 @@ const AddEmployee = () => {
         </div>
         <div>
           <label>Active</label>
-          <input type="text" name="active" value={employeeInput.active} onChange={onChange}></input>
+          <input
+            type="boolean"
+            name="active"
+            value={employeeInput.active}
+            onChange={onChange}
+          ></input>
         </div>
         <div>
           <input type="submit" value="Submit" onSubmit={onSubmit}></input>

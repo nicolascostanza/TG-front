@@ -1,14 +1,15 @@
-import Header from '../Header/index';
-import Footer from '../Footer/index';
 import Admins from '../Admins/index';
-import SuperAdmins from '../SuperAdmins/index';
-import Home from '../Home/index';
-import styles from './layout.module.css';
-import Employees from '../Employees/index';
+import EditEmployee from '../Employees/EditEmployee/editEmployee';
 import AddEmployee from '../Employees/EmployeeForm/addEmployee';
+import Employees from '../Employees/index';
+import Footer from '../Footer/index';
+import Header from '../Header/index';
+import Home from '../Home/index';
 import Projects from '../Projects';
-import TimeSheets from '../TimeSheets';
+import SuperAdmins from '../SuperAdmins/index';
 import Tasks from '../Tasks/index';
+import TimeSheets from '../TimeSheets';
+import styles from './layout.module.css';
 
 function Layout() {
   let currentScreen = <Home />;
@@ -24,6 +25,9 @@ function Layout() {
       break;
     case '/employees/addEmployee':
       currentScreen = <AddEmployee />;
+      break;
+    case '/employees/editEmployee':
+      currentScreen = <EditEmployee />;
       break;
     case '/projects':
       currentScreen = <Projects />;
