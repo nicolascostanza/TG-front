@@ -2,13 +2,13 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 
 function AddTimeSheets() {
-  const [timeSheets, saveTimesheets] = useState([]);
+  const [timeSheets, saveTimeSheets] = useState([]);
   useEffect(async () => {
     try {
       const response = await fetch('http://localhost:8080/time-sheets/add');
       const data = await response.json();
       console.log(data);
-      saveTimesheets(response.data);
+      saveTimeSheets(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -31,7 +31,7 @@ function AddTimeSheets() {
     });
     const data = await res.json;
 
-    saveTimesheets([...timeSheets, data]);
+    saveTimeSheets([...timeSheets, data]);
 
     if (res.status === 201) {
       alert('Time-sheet added successfully');
