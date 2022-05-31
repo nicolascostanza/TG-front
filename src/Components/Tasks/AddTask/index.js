@@ -62,59 +62,61 @@ const AddTask = () => {
       <div>
         <h2>Add New Task</h2>
       </div>
-      <div>
-        <label>Parent Project:</label>
-        <input
-          type="text"
-          placeholder="Parent Project ID"
-          value={parentProject}
-          onChange={(e) => setParentProject(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Task Name:</label>
-        <input
-          type="text"
-          placeholder="Task Name"
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Task Description:</label>
-        <input
-          type="text"
-          placeholder="Task description"
-          value={taskDescription}
-          onChange={(e) => setTaskDescription(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Assigned Employee:</label>
-        <input
-          type="text"
-          placeholder="Assigned Employee ID"
-          value={assignedEmployee}
-          onChange={(e) => setAssignedEmployee(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Start Date:</label>
-        <input
-          type="text"
-          placeholder="Start Date"
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Status:</label>
-        <input
-          type="text"
-          placeholder="Status"
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
+      <div className={styles.form}>
+        <div>
+          <label>Parent Project:</label>
+          <input
+            type="text"
+            placeholder="Parent Project ID"
+            value={parentProject}
+            onChange={(e) => setParentProject(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Task Name:</label>
+          <input
+            type="text"
+            placeholder="Task Name"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Task Description:</label>
+          <input
+            type="text"
+            placeholder="Task description"
+            value={taskDescription}
+            onChange={(e) => setTaskDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Assigned Employee:</label>
+          <input
+            type="text"
+            placeholder="Assigned Employee ID"
+            value={assignedEmployee}
+            onChange={(e) => setAssignedEmployee(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Start Date:</label>
+          <input
+            type="text"
+            placeholder="YYYY-MM-DD"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Status:</label>
+          <input
+            type="text"
+            placeholder="Status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          />
+        </div>
       </div>
       <input className={styles.button} type="submit" value="Add Task" />
     </form>

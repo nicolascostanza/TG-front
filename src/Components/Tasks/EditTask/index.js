@@ -16,7 +16,7 @@ const EditTask = () => {
         setStatus(response.data.status);
       });
   }, []);
-  const [parentProject, setParentProject] = useState('');
+  const [parentProject, setParentProject] = useState({});
   const [taskName, setTaskName] = useState('');
   const [taskDescription, setTaskDescription] = useState('');
   const [assignedEmployee, setAssignedEmployee] = useState([]);
@@ -48,12 +48,12 @@ const EditTask = () => {
       parentProject: parentProject._id,
       taskName,
       taskDescription,
-      assignedEmployee: [assignedEmployee._id],
+      assignedEmployee: [assignedEmployee[0]._id],
       startDate,
       status
     });
 
-    setParentProject('');
+    setParentProject({});
     setTaskName('');
     setTaskDescription('');
     setAssignedEmployee([]);
@@ -65,64 +65,63 @@ const EditTask = () => {
       <div>
         <h2>Edit Task</h2>
       </div>
-      <div>
-        <label>Parent Project:</label>
-        <input
-          type="text"
-          value={parentProject._id}
-          onChange={(e) => setParentProject(e.target.value)}
-        />
+      <div className={styles.form}>
+        <div>
+          <label>Parent Project:</label>
+          <input
+            type="text"
+            placeholder="Parent Project ID"
+            value={parentProject._id}
+            onChange={(e) => setParentProject(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Task Name:</label>
+          <input
+            type="text"
+            placeholder="Task Name"
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Task Description:</label>
+          <input
+            type="text"
+            placeholder="Task description"
+            value={taskDescription}
+            onChange={(e) => setTaskDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Assigned Employee:</label>
+          <input
+            type="text"
+            placeholder="Assigned Employee ID"
+            value={assignedEmployee && assignedEmployee[0] ? assignedEmployee[0]._id : ''}
+            onChange={(e) => setAssignedEmployee(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Start Date:</label>
+          <input
+            type="text"
+            placeholder="YYYY-MM-DD"
+            value={startDate}
+            onChange={(e) => setStartDate(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Status:</label>
+          <input
+            type="text"
+            placeholder="Status"
+            value={status}
+            onChange={(e) => setStatus(e.target.value)}
+          />
+        </div>
       </div>
-      <div>
-        <label>Task Name:</label>
-        <input
-          type="text"
-          placeholder={taskName}
-          value={taskName}
-          onChange={(e) => setTaskName(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Task Description:</label>
-        <input
-          type="text"
-          placeholder={taskDescription}
-          value={taskDescription}
-          onChange={(e) => setTaskDescription(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Assigned Employee:</label>
-        <input
-          type="text"
-          //placeholder=
-          value={
-            assignedEmployee && assignedEmployee[0]
-              ? assignedEmployee[0]._id
-              : 'No assigned employee'
-          }
-          onChange={(e) => setAssignedEmployee(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Start Date:</label>
-        <input
-          type="text"
-          placeholder={startDate}
-          value={startDate}
-          onChange={(e) => setStartDate(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Status:</label>
-        <input
-          type="text"
-          placeholder={status}
-          value={status}
-          onChange={(e) => setStatus(e.target.value)}
-        />
-      </div>
-      <input className={styles.button} type="submit" value="Add Task" />
+      <input className={styles.button} type="submit" value="Update Task" />
     </form>
   );
 };
