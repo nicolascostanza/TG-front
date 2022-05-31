@@ -30,13 +30,14 @@ const AddEmployee = () => {
       phone: '',
       active: ''
     });
-    const postEmployee = {
+
+    const createEmployee = {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        first_name: employeeInput.firstName,
+        firstName: employeeInput.firstName,
         surname: employeeInput.surname,
         email: employeeInput.email,
         gender: employeeInput.gender,
@@ -49,15 +50,15 @@ const AddEmployee = () => {
     };
     const url = `${process.env.REACT_APP_API_URL}/employees`;
 
-    fetch(url, postEmployee)
+    fetch(url, createEmployee)
       .then((response) => response.json())
-      .then((data) => console.log('data:', data));
+      .then((data) => alert(data.msg));
   };
 
   return (
     <div className={styles.container}>
       <div>
-        <h2>Add new Employee</h2>
+        <h2>Create New Employee</h2>
       </div>
       <form onSubmit={onSubmit}>
         <div>
@@ -73,14 +74,14 @@ const AddEmployee = () => {
           <label>Surname</label>
           <input
             type="text"
-            name="lastName"
+            name="surname"
             value={employeeInput.surname}
             onChange={onChange}
           ></input>
         </div>
         <div>
           <label>Email</label>
-          <input type="number" name="email" value={employeeInput.email} onChange={onChange}></input>
+          <input type="text" name="email" value={employeeInput.email} onChange={onChange}></input>
         </div>
         <div>
           <label>Gender</label>
@@ -92,7 +93,7 @@ const AddEmployee = () => {
         </div>
         <div>
           <label>Dob</label>
-          <input type="text" name="dob" value={employeeInput.dob} onChange={onChange}></input>
+          <input type="date" name="dob" value={employeeInput.dob} onChange={onChange}></input>
         </div>
         <div>
           <label>Password</label>
@@ -112,7 +113,7 @@ const AddEmployee = () => {
           <input type="text" name="active" value={employeeInput.active} onChange={onChange}></input>
         </div>
         <div>
-          <input type="submit" value="Submit"></input>
+          <input type="submit" value="Submit" onSubmit={onSubmit}></input>
         </div>
       </form>
     </div>
