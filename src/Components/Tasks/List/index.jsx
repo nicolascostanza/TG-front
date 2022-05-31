@@ -30,8 +30,8 @@ function List() {
       <table className={styles.row}>
         <thead>
           <tr>
-            <th>Parent project</th>
             <th>Id</th>
+            <th>Parent project</th>
             <th>Task manager</th>
             <th>Task name</th>
             <th>Description</th>
