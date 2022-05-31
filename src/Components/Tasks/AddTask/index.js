@@ -32,6 +32,7 @@ const AddTask = () => {
     setTasks([...tasks, data]);
 
     if (res.status === 201) {
+      console.log(data);
       alert('Task added successfully');
     } else if (res.status === 400 || res.status === 500) {
       alert('Wrong data input');

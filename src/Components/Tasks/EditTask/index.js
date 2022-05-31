@@ -5,10 +5,11 @@ import styles from '../AddTask/addTask.module.css';
 const EditTask = () => {
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8080/tasks/6295552aa634b0618b28ac7f')
+    fetch('http://localhost:8080/tasks/62961f61bf21e677edfd155b')
       .then((response) => response.json())
       .then((response) => {
         setTasks(response.data);
+        console.log(tasks);
       });
   }, []);
   const [parentProject, setParentProject] = useState('');
@@ -19,7 +20,7 @@ const EditTask = () => {
   const [status, setStatus] = useState('');
 
   const editTask = async (task) => {
-    const res = await fetch('http://localhost:8080/tasks/6295552aa634b0618b28ac7f', {
+    const res = await fetch('http://localhost:8080/tasks/62961f61bf21e677edfd155b', {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
@@ -27,11 +28,9 @@ const EditTask = () => {
       body: JSON.stringify(task)
     });
     const data = await res.json();
-
-    const tasks = data;
-
+    console.log('Data:', data);
     if (res.status === 200) {
-      console.log(tasks);
+      console.log('Data:', data);
       alert('Task updated successfully');
     } else if (res.status === 400) {
       alert('Something went wrong');
@@ -40,6 +39,7 @@ const EditTask = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+
     editTask({
       parentProject,
       taskName,
@@ -48,6 +48,7 @@ const EditTask = () => {
       startDate,
       status
     });
+
     setParentProject('');
     setTaskName('');
     setTaskDescription('');
@@ -55,7 +56,6 @@ const EditTask = () => {
     setStartDate('');
     setStatus('');
   };
-  console.log(tasks);
   return (
     <form className={styles.container} onSubmit={onSubmit}>
       <div>
@@ -65,19 +65,17 @@ const EditTask = () => {
         <label>Parent Project:</label>
         <input
           type="text"
-          placeholder="Parent Project"
-          value={parentProject}
-          //value={tasks.parentProject}
-          onChange={(e) => setParentProject(e.target.value)}
+          placeholder={tasks.parentProject ? tasks.parentProject._id : 'No parent project'}
+          //value={tasks.parentProject ? tasks.parentProject._id : 'No parent project'}
+          onChange={(e) => setParentProject({ text: e.target.value })}
         />
       </div>
       <div>
         <label>Task Name:</label>
         <input
           type="text"
-          placeholder="Task Name"
+          placeholder={tasks.taskName}
           value={taskName}
-          //value={tasks.taskName}
           onChange={(e) => setTaskName(e.target.value)}
         />
       </div>
@@ -85,9 +83,8 @@ const EditTask = () => {
         <label>Task Description:</label>
         <input
           type="text"
-          placeholder="Task description"
+          placeholder={tasks.taskDescription}
           value={taskDescription}
-          //value={tasks.taskDescription}
           onChange={(e) => setTaskDescription(e.target.value)}
         />
       </div>
@@ -95,9 +92,10 @@ const EditTask = () => {
         <label>Assigned Employee:</label>
         <input
           type="text"
-          placeholder="Assigned Employee"
+          placeholder={
+            tasks.assignedEmployee ? tasks.assignedEmployee[0]._id : 'No assigned employee'
+          }
           value={assignedEmployee}
-          //value={tasks.assignedEmployee[0]._id}
           onChange={(e) => setAssignedEmployee(e.target.value)}
         />
       </div>
@@ -105,9 +103,8 @@ const EditTask = () => {
         <label>Start Date:</label>
         <input
           type="text"
-          placeholder="Start Date"
+          placeholder={tasks.startDate}
           value={startDate}
-          //value={tasks.startDate}
           onChange={(e) => setStartDate(e.target.value)}
         />
       </div>
@@ -115,9 +112,8 @@ const EditTask = () => {
         <label>Status:</label>
         <input
           type="text"
-          placeholder="Status"
+          placeholder={tasks.status}
           value={status}
-          //value={tasks.status}
           onChange={(e) => setStatus(e.target.value)}
         />
       </div>
@@ -127,6 +123,3 @@ const EditTask = () => {
 };
 
 export default EditTask;
-
-//const params = new URLSearchParams(window.location.search);
-//const taskId = params.get('id');
