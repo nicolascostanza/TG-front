@@ -2,30 +2,6 @@ import React, { useState } from 'react';
 
 const Form = (props) => {
   let [adminInput, setInput] = useState({});
-
-  //   const completar async = () => {
-
-  //   }
-
-  //   if (props.name) {
-  //     setInput({
-  //       firstName: props.name,
-  //       lastName: props.lastName,
-  //       email: props.email,
-  //       //   password: props.password,
-  //       active: true
-  //     });
-  //     console.log(adminInput);
-  //   } else {
-  //     setInput({
-  //       firstName: '',
-  //       lastName: '',
-  //       email: '',
-  //       password: '',
-  //       active: true
-  //     });
-  //   }
-
   const onChange = (e) => {
     setInput({ ...adminInput, [e.target.name]: e.target.value });
     console.log(

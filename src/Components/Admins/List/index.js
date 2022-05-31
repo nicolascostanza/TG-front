@@ -23,11 +23,13 @@ function List() {
   };
   return (
     <div className={style.container}>
-      <a href="http://localhost:3000/admins-add">
-        Add/edit
-        {/* <Btn color="green" text="Add/Edit" /> */}
-      </a>
-      <table>
+      <div className={style.btn}>
+        <a href="http://localhost:3000/admins-add">
+          Add/edit
+          {/* <Btn color="green" text="Add/Edit" /> */}
+        </a>
+      </div>
+      <table className={style.tableBox}>
         <thead>
           <tr>
             <th>Id</th>
@@ -38,18 +40,8 @@ function List() {
           </tr>
         </thead>
         <tbody>
-          {/* {superAdmins.lengh > 0 ? 'hay cosas' : 'nada'} */}
           {admins.map((admin) => (
-            <ListItem
-              key={admin._id}
-              admin={admin}
-              //   id={admin._id}
-              //   firstName={admin.name}
-              //   lastName={admin.lastName}
-              //   active={admin.active}
-              //   email={admin.email}
-              onDelete={deleteAdmin}
-            />
+            <ListItem key={admin._id} admin={admin} onDelete={deleteAdmin} />
           ))}
         </tbody>
       </table>
