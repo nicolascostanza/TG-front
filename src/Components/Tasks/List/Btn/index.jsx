@@ -1,5 +1,5 @@
 import React from 'react';
-import PropTypes from 'react';
+import PropTypes from 'prop-types';
 
 function Btn({ onClick, text, color }) {
   return (

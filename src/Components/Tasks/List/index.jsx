@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import styles from '../List/list.module.css';
-import Row from '../Row';
-import Btn from '../Btn';
+import Row from './Row';
+import Btn from './Btn';
 
 function List() {
   const [tasks, setTask] = useState([]);
@@ -27,7 +27,7 @@ function List() {
       <a href="http://localhost:3000/tasks-add-edit">
         <Btn color="green" text="Add/Edit" />
       </a>
-      <table>
+      <table className={styles.row}>
         <thead>
           <tr>
             <th>Parent project</th>
