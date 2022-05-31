@@ -2,9 +2,12 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../AddTask/addTask.module.css';
 
+const params = new URLSearchParams(window.location.search);
+const taskID = params.get('id');
+
 const EditTask = () => {
   useEffect(() => {
-    fetch('http://localhost:8080/tasks/62965439e74d6b80516dadd0')
+    fetch(`http://localhost:8080/tasks/${taskID}`)
       .then((response) => response.json())
       .then((response) => {
         console.log(response.data);
@@ -24,7 +27,7 @@ const EditTask = () => {
   const [status, setStatus] = useState('');
 
   const editTask = async (task) => {
-    const res = await fetch('http://localhost:8080/tasks/62965439e74d6b80516dadd0', {
+    const res = await fetch(`http://localhost:8080/tasks/${taskID}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
