@@ -1,7 +1,21 @@
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
+import Btn from '../Btn';
 
-function Row({ id, firstName, lastName, createdAt, updatedAt, active, email, password, onDelete }) {
+function Row({
+  id,
+  firstName,
+  lastName,
+  createdAt,
+  updatedAt,
+  active,
+  email,
+  password,
+  onDelete,
+  switchScreen,
+  setMethod,
+  setID
+}) {
   createdAt = new Date();
   updatedAt = new Date();
   const created = createdAt.toLocaleString();
@@ -17,9 +31,17 @@ function Row({ id, firstName, lastName, createdAt, updatedAt, active, email, pas
       <td>{email}</td>
       <td>{password}</td>
       <td>
-        <a href="http://localhost:3000/super-admins-edit">
-          <FaTimes style={{ color: 'green', cursor: 'pointer' }} />
-        </a>
+        <Btn
+          onClick={() => {
+            setMethod('PUT');
+            setID(id);
+            {
+              switchScreen();
+            }
+          }}
+          text="Edit"
+          color="blue"
+        />
       </td>
       <td>
         <FaTimes onClick={() => onDelete(id)} style={{ color: 'red', cursor: 'pointer' }} />

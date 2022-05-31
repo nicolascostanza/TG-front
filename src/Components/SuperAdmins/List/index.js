@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import style from '../List/list.module.css';
 import Row from '../Row';
-import Btn from '../Btn';
+// import Btn from '../Btn';
 
-function List() {
+function List({ switchScreen, setMethod, setID }) {
   const [superAdmins, setSuperAdmin] = useState([]);
   useEffect(() => {
     fetch(process.env.REACT_APP_LOCALHOST_URL)
@@ -21,12 +21,8 @@ function List() {
       setSuperAdmin(superAdmins.filter((superadmin) => superadmin._id !== id));
     }
   };
-  const addForm = () => console.log('agrego');
   return (
     <div className={style.container}>
-      <a onClick={addForm} href="http://localhost:3000/super-admins-add">
-        <Btn color="green" text="Add" />
-      </a>
       <table>
         <thead>
           <tr>
@@ -55,6 +51,9 @@ function List() {
               active={superAdmin.active}
               email={superAdmin.email}
               password={superAdmin.password}
+              switchScreen={switchScreen}
+              setMethod={setMethod}
+              setID={setID}
               onDelete={deleteSuperAdmin}
             />
           ))}

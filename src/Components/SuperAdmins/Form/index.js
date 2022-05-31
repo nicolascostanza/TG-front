@@ -2,7 +2,9 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../super-admins.module.css';
 
-function SuperAdminFormAdd() {
+function Form(props) {
+  console.log(props.method);
+  console.log(props.id);
   const [superAdmins, setSuperAdmin] = useState([]);
   useEffect(() => {
     fetch(process.env.REACT_APP_LOCALHOST_URL)
@@ -16,17 +18,17 @@ function SuperAdminFormAdd() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [active, setActive] = useState(false);
+  if (props.method === 'POST') {
+    console.log('Hola Mundo');
+  }
   const addSuperAdmin = async (superAdmin) => {
-    const res = await ('http://localhost:8080/super-admins',
-    {
+    const res = await fetch(`http://localhost:8080/super-admins`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify(superAdmin)
     });
-    console.log(res);
-    console.log(superAdmin);
     const data = await res.json();
     setSuperAdmin([...superAdmins, data]);
   };
@@ -95,4 +97,4 @@ function SuperAdminFormAdd() {
   );
 }
 
-export default SuperAdminFormAdd;
+export default Form;

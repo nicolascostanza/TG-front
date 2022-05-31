@@ -2,7 +2,7 @@ import Header from '../Header/index';
 import Footer from '../Footer/index';
 import Admins from '../Admins/index';
 import SuperAdmins from '../SuperAdmins/index';
-import SuperAdminFormAdd from '../SuperAdmins/SuperAdminFormAdd';
+import SuperAdminFormAdd from '../SuperAdmins/Form';
 import SuperAdminFormEdit from '../SuperAdmins/SuperAdminFormEdit';
 import Home from '../Home/index';
 import styles from './layout.module.css';
