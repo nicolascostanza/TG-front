@@ -18,12 +18,18 @@ const List = () => {
   // Delete employee
   const deleteEmployee = async (id) => {
     // console.log('id que le llega a la funcion', id);
-    const res = await fetch(`http://localhost:8080/employees/${id}`, {
-      method: 'DELETE'
-    });
-    res.status === 200
-      ? setEmployees(employees.filter((employee) => employee._id !== id))
-      : alert('Error deleting this employee');
+    if (window.confirm('Do you want to delete this employee?')) {
+      const res = await fetch(`http://localhost:8080/employees/${id}`, {
+        method: 'DELETE'
+      });
+      res.status === 200
+        ? setEmployees(employees.filter((employee) => employee._id !== id))
+        : alert('Error deleting this employee');
+    }
+  };
+
+  const EditEmployee = async (id) => {
+    console.log('employee must be edited: ', id);
   };
 
   return (
@@ -62,6 +68,7 @@ const List = () => {
               updatedAt={employee.updatedAt}
               onDelete={deleteEmployee}
               employee={employee}
+              onEdit={EditEmployee}
             />
           ))}
         </tbody>

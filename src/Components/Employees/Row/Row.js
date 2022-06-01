@@ -1,5 +1,5 @@
 import React from 'react';
-import RowBtn from '../RowBtn/RowBtn';
+// import RowBtn from '../RowBtn/RowBtn';
 
 const Row = ({
   id,
@@ -14,7 +14,8 @@ const Row = ({
   createdAt,
   updatedAt,
   onDelete,
-  employee
+  employee,
+  onEdit
 }) => {
   return (
     <tr key={id}>
@@ -30,10 +31,22 @@ const Row = ({
       <td>{createdAt}</td>
       <td>{updatedAt}</td>
       <td>
-        <RowBtn className="fa-solid fa-pen-to-square" />
+        {/* <RowBtn className="fa-solid fa-pen-to-square" id={id} onEdit={onEdit} employee={employee} /> */}
+        <i
+          className="fa-solid fa-pen-to-square"
+          onClick={() => {
+            onEdit(employee._id);
+          }}
+        ></i>
       </td>
       <td>
-        <RowBtn className="fa-solid fa-xmark" id={id} onDelete={onDelete} employee={employee} />
+        {/* <RowBtn className="fa-solid fa-xmark" id={id} onDelete={onDelete} employee={employee} /> */}
+        <i
+          className="fa-solid fa-xmark"
+          onClick={() => {
+            onDelete(employee._id);
+          }}
+        ></i>
       </td>
     </tr>
   );
