@@ -1,5 +1,4 @@
 import React from 'react';
-import styles from '../Row/row.module.css';
 
 function Row(props) {
   const {
@@ -14,7 +13,7 @@ function Row(props) {
   } = props.task;
   console.log('props', props.task);
   return (
-    <tr id={id} className={styles.row}>
+    <tr id={id}>
       <td>{id}</td>
       <td>{parentProject ? parentProject.name : 'No parent project'}</td>
       <td>{taskCreatorId}</td>
@@ -32,8 +31,7 @@ function Row(props) {
       </td>
       <td>
         <a href={`http://localhost:3000/tasks-edit/${id}`}>
-          {/*<a href={'http://localhost:3000/tasks-edit/62965439e74d6b80516dadd0'}>*/}
-          <button>Edit</button>
+          <i className="fa-solid fa-pen-to-square"></i>
         </a>
       </td>
     </tr>
