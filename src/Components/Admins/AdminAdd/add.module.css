@@ -9,3 +9,23 @@
     background-color: rgba(167, 167, 167, 0.474);
     padding: 2%;
 }
+.title{
+    color: rgba(15, 15, 15, 0.757);
+}
+.label{
+    margin-right: 10px;
+    color: black;
+}
+.input{
+    background-color:  rgba(167, 167, 167, 0.474);
+    border: solid 0.5px;
+}
+.btnSubmit{
+    text-align: center;
+    background-color: rgb(175, 175, 175);
+    border-radius: 3px;
+    width: 20%;
+    padding: 1%;
+    margin: 2%;
+    border: none;
+}

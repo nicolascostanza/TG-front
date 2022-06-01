@@ -1,7 +1,12 @@
 import React, { useState } from 'react';
+import style from '../AdminEdit/adminEdit.module.css';
+import Modal from '../Modal/modal';
 
 const Form = (props) => {
   let [adminInput, setInput] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [data, setData] = useState('');
+
   const onChange = (e) => {
     setInput({ ...adminInput, [e.target.name]: e.target.value });
     console.log(
@@ -14,7 +19,10 @@ const Form = (props) => {
       })
     );
   };
-
+  const closeModal = () => {
+    setShowModal(false);
+    window.location.href = 'http://localhost:3000/admins';
+  };
   const onSubmit = (e) => {
     console.log(adminInput);
     e.preventDefault();
@@ -35,7 +43,7 @@ const Form = (props) => {
 
     fetch(url, postaAdmin)
       .then((response) => response.json())
-      .then((data) => console.log('data:', data));
+      .then((data) => setData(data));
 
     setInput({
       firstName: '',
@@ -44,18 +52,21 @@ const Form = (props) => {
       password: '',
       active: ''
     });
+    setShowModal(true);
   };
   console.log(props);
 
   return (
-    <div>
-      <div>
-        <h2>Add new admin</h2>
+    <div className={style.container}>
+      <Modal show={showModal} close={closeModal} message={data.message} />
+      <div className={style.title}>
+        <h2>Edit Admin</h2>
       </div>
-      <form onSubmit={onSubmit}>
+      <form className={style.formContainer} onSubmit={onSubmit}>
         <div>
-          <label>First name</label>
+          <label className={style.label}>First name</label>
           <input
+            className={style.input}
             type="text"
             name="firstName"
             placeholder={props.admin.firstName}
@@ -64,8 +75,9 @@ const Form = (props) => {
           ></input>
         </div>
         <div>
-          <label>Last Name</label>
+          <label className={style.label}>Last Name</label>
           <input
+            className={style.input}
             type="text"
             name="lastName"
             placeholder={props.admin.lastName}
@@ -74,8 +86,9 @@ const Form = (props) => {
           ></input>
         </div>
         <div>
-          <label>Email</label>
+          <label className={style.label}>Email</label>
           <input
+            className={style.input}
             type="email"
             name="email"
             placeholder={props.admin.email}
@@ -84,8 +97,9 @@ const Form = (props) => {
           ></input>
         </div>
         <div>
-          <label>Password</label>
+          <label className={style.label}>Password</label>
           <input
+            className={style.input}
             type="password"
             name="password"
             placeholder={props.admin.password}
@@ -94,17 +108,18 @@ const Form = (props) => {
           ></input>
         </div>
         <div>
-          <label>Active</label>
+          <label className={style.label}>Active</label>
           <input
+            className={style.input}
             type="text"
             name="active"
-            placeholder={props.admin.active}
+            placeholder={props.admin.active ? 'true' : 'false'}
             value={adminInput.active}
             onChange={onChange}
           ></input>
         </div>
         <div>
-          <input type="submit" value="Submit"></input>
+          <input className={style.btnSubmit} type="submit" value="Submit"></input>
         </div>
       </form>
     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import style from '../ListItem/listItem.module.css';
 
 function ListItem(props) {
   const { _id, firstName, lastName, active, email } = props.admin;
@@ -6,14 +7,20 @@ function ListItem(props) {
   let url = `http://localhost:3000/admins-edit?id=${_id}`;
   return (
     <tr id={_id}>
-      <td>{_id}</td>
-      <td>{firstName}</td>
-      <td>{lastName}</td>
-      <td>{active ? 'true' : 'false'}</td>
-      <td>{email}</td>
-      <td onClick={() => onDelete(_id)}>x</td>
+      <td className={style.field}>{_id}</td>
+      <td className={style.field}>{firstName}</td>
+      <td className={style.field}>{lastName}</td>
+      <td className={style.field}>{active ? 'true' : 'false'}</td>
+      <td className={style.field}>{email}</td>
+      <td className={style.btnDelete} onClick={() => onDelete(_id)}>
+        x
+      </td>
       <td>
-        <a href={url}>edit</a>
+        <div className={style.btnEdit}>
+          <a className={style.btnEditText} href={url}>
+            edit
+          </a>
+        </div>
       </td>
     </tr>
   );

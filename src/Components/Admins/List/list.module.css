@@ -3,15 +3,27 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
   }
 .tableBox{
-    background-color: rgba(111, 110, 110, 0.453);
+    background-color: rgba(153, 153, 153, 0.319);
+    border-radius: 5px;
+    border: solid 3px rgba(18, 18, 18, 0.522);
+    padding: 1%;
+}
+
+.head{
+    border-bottom: solid 3px rgba(18, 18, 18, 0.522);
 }
 .btn{
-   background-color: rgb(136, 136, 136);
-   color: rgb(230, 230, 230);
-   border-radius: 2px;
-   border: 1px rgb(223, 222, 222);
-   padding: 2px;
-   margin: 50px;
+    text-align: center;
+    background-color: rgb(175, 175, 175);
+    border-radius: 3px;
+    width: 20%;
+    padding: 1%;
+    margin: 2%;
+}
+.btnText{
+    color:rgba(18, 18, 18, 0.522);
+    text-decoration: none;
 }

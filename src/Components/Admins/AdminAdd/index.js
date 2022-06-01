@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
-import styles from './add.module.css';
+import style from '../AdminAdd/add.module.css';
+import Modal from '../Modal/modal';
 
 const AddAdmin = () => {
   const [adminInput, setInput] = useState({});
+  const [showModal, setShowModal] = useState(false);
+  const [data, setData] = useState('');
   const onChange = (e) => {
     setInput({ ...adminInput, [e.target.name]: e.target.value });
     console.log(
@@ -14,6 +17,10 @@ const AddAdmin = () => {
         active: adminInput.active
       })
     );
+  };
+  const closeModal = () => {
+    setShowModal(false);
+    window.location.href = 'http://localhost:3000/admins';
   };
 
   const onSubmit = (e) => {
@@ -33,11 +40,9 @@ const AddAdmin = () => {
       })
     };
     const url = `http://localhost:4000/admins`;
-
     fetch(url, postaAdmin)
       .then((response) => response.json())
-      .then((data) => console.log('data:', data));
-
+      .then((data) => setData(data));
     setInput({
       firstName: '',
       lastName: '',
@@ -45,46 +50,72 @@ const AddAdmin = () => {
       password: '',
       active: ''
     });
+    setShowModal(true);
   };
-
   return (
-    <div className={styles.container}>
-      <div>
+    <div className={style.container}>
+      <Modal show={showModal} close={closeModal} message={data.message} />
+      <div className={style.title}>
         <h2>Add new admin</h2>
       </div>
-      <form onSubmit={onSubmit} className={styles.formContainer}>
+      <form onSubmit={onSubmit} className={style.formContainer}>
         <div>
-          <label>First name</label>
-          <input type="text" name="firstName" value={adminInput.fir} onChange={onChange}></input>
+          <label className={style.label}>First name</label>
+          <input
+            className={style.input}
+            type="text"
+            name="firstName"
+            value={adminInput.fir}
+            onChange={onChange}
+            required
+          ></input>
         </div>
         <div>
-          <label>Last Name</label>
+          <label className={style.label}>Last Name</label>
           <input
+            className={style.input}
             type="text"
             name="lastName"
             value={adminInput.lastName}
             onChange={onChange}
+            required
           ></input>
         </div>
         <div>
-          <label>Email</label>
-          <input type="email" name="email" value={adminInput.email} onChange={onChange}></input>
+          <label className={style.label}>Email</label>
+          <input
+            className={style.input}
+            type="email"
+            name="email"
+            value={adminInput.email}
+            onChange={onChange}
+            required
+          ></input>
         </div>
         <div>
-          <label>Password</label>
+          <label className={style.label}>Password</label>
           <input
+            className={style.input}
             type="password"
             name="password"
             value={adminInput.password}
             onChange={onChange}
+            required
           ></input>
         </div>
         <div>
-          <label>Active</label>
-          <input type="text" name="active" value={adminInput.active} onChange={onChange}></input>
+          <label className={style.label}>Active</label>
+          <input
+            className={style.input}
+            type="text"
+            name="active"
+            value={adminInput.active}
+            onChange={onChange}
+            required
+          ></input>
         </div>
         <div>
-          <input type="submit" value="Submit"></input>
+          <input className={style.btnSubmit} type="submit" value="Submit"></input>
         </div>
       </form>
     </div>

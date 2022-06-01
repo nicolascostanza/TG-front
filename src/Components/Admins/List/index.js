@@ -5,6 +5,7 @@ import ListItem from '../ListItem';
 
 function List() {
   const [admins, setAdmins] = useState([]);
+
   useEffect(() => {
     fetch(`http://localhost:4000/admins`)
       .then((response) => response.json())
@@ -24,19 +25,18 @@ function List() {
   return (
     <div className={style.container}>
       <div className={style.btn}>
-        <a href="http://localhost:3000/admins-add">
-          Add/edit
-          {/* <Btn color="green" text="Add/Edit" /> */}
+        <a className={style.btnText} href="http://localhost:3000/admins-add">
+          Add New Admin
         </a>
       </div>
       <table className={style.tableBox}>
         <thead>
           <tr>
-            <th>Id</th>
-            <th>FirstName</th>
-            <th>LastName</th>
-            <th>Active</th>
-            <th>Email</th>
+            <th className={style.head}>Id</th>
+            <th className={style.head}>FirstName</th>
+            <th className={style.head}>LastName</th>
+            <th className={style.head}>Active</th>
+            <th className={style.head}>Email</th>
           </tr>
         </thead>
         <tbody>
