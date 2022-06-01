@@ -27,7 +27,7 @@ function Form(props) {
   const [email, setEmail] = useState(initValues.email);
   const [password, setPassword] = useState(initValues.password);
   const [active, setActive] = useState(initValues.active);
-  // funcion que resetea campos
+  // funciones
   const resetFields = () => {
     setFirstName('');
     setlastName('');

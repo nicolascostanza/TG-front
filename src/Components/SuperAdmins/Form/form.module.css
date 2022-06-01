@@ -5,7 +5,6 @@
     justify-content: center;
     align-items: center;
     width: 50%;
-    /* background-color: red; */
 }
 .container div{
     margin: 5px 0;
@@ -16,10 +15,13 @@
 .container div label {
     margin-top: 3px;
     margin-bottom: 3px;
+    color: #EA3354 !important;
 }
 .container div input{
     border-radius: 4px !important;
-    box-shadow: 3px 3px #EA3354;
+    border: solid #EA3354 1px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+    cursor: pointer;
     width: 300px;
     height: 20px;
 }
