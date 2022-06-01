@@ -28,9 +28,13 @@ const List = () => {
     }
   };
 
-  const EditEmployee = async (id) => {
-    console.log('employee must be edited: ', id);
+  const editForm = (id) => {
+    window.location = `/employees/editEmployee/${id}`;
   };
+
+  // const EditEmployee = async (id) => {
+  //   console.log('employee must be edited: ', id);
+  // };
 
   return (
     <section className={styles.container}>
@@ -68,7 +72,7 @@ const List = () => {
               updatedAt={employee.updatedAt}
               onDelete={deleteEmployee}
               employee={employee}
-              onEdit={EditEmployee}
+              onEdit={editForm}
             />
           ))}
         </tbody>

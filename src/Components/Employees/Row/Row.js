@@ -14,8 +14,8 @@ const Row = ({
   createdAt,
   updatedAt,
   onDelete,
-  employee,
-  onEdit
+  employee
+  // onEdit
 }) => {
   return (
     <tr key={id}>
@@ -32,12 +32,9 @@ const Row = ({
       <td>{updatedAt}</td>
       <td>
         {/* <RowBtn className="fa-solid fa-pen-to-square" id={id} onEdit={onEdit} employee={employee} /> */}
-        <i
-          className="fa-solid fa-pen-to-square"
-          onClick={() => {
-            onEdit(employee._id);
-          }}
-        ></i>
+        <a href={`/employees/editEmployee?id=${id}`}>
+          <i className="fa-solid fa-pen-to-square"></i>
+        </a>
       </td>
       <td>
         {/* <RowBtn className="fa-solid fa-xmark" id={id} onDelete={onDelete} employee={employee} /> */}
