@@ -1,11 +1,29 @@
 import { useState, useEffect } from 'react';
 import ListItem from './ListItem';
+import EditProject from '../EditProject';
 
 function List() {
   const [projects, setProjects] = useState([]);
+  const [edit, setEdit] = useState(false);
+  const [editingProject, setEditingProject] = useState({
+    name: '',
+    description: '',
+    clientName: '',
+    startDate: '',
+    endDate: '',
+    projectManager: '',
+    team: [],
+    tasks: []
+  });
 
   const editProject = (id) => {
-    console.log(`editamos ${id}`);
+    const currentEditing = projects.find((project) => project._id === id);
+    setEdit(true);
+    setEditingProject(currentEditing);
+  };
+
+  const closeModal = () => {
+    setEdit(false);
   };
 
   const deleteProject = (id) => {
@@ -32,6 +50,7 @@ function List() {
 
   return (
     <div>
+      {edit ? <EditProject initial={editingProject} close={closeModal} /> : ''}
       <table>
         <thead>
           <tr>

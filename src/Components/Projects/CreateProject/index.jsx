@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import addProjectStyles from './addProject.module.css';
+import addProjectStyles from './createProject.module.css';
 
-const AddProject = () => {
+const CreateProject = () => {
   const initialValues = {
     name: '',
     description: '',
@@ -30,7 +30,6 @@ const AddProject = () => {
       headers: {
         'Content-Type': 'application/json'
       },
-      // mode: 'no-cors',
       body: JSON.stringify({
         name: project.name,
         description: project.description,
@@ -44,8 +43,9 @@ const AddProject = () => {
     })
       .then((response) => response.json())
       .then((json) => {
+        console.log(json);
         if (!json.error) {
-          console.log('hello mfs');
+          alert(json.message);
           resetValues();
         }
       })
@@ -116,4 +116,4 @@ const AddProject = () => {
   );
 };
 
-export default AddProject;
+export default CreateProject;
