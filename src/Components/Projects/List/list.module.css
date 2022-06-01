@@ -1,0 +1,41 @@
+.table {
+	margin: 20px;
+	border-collapse: collapse;
+	border-radius: 10px;
+}
+
+.tableHead {
+	
+	background-color: #ea3354;
+}
+
+.tableHead > tr > th {
+	padding: 10px;
+}
+
+.tableBody > :nth-child(even) {
+	background-color: #e0e4e9;
+}
+
+.tableBody > :nth-child(odd) {
+	background-color: #f0f4f9;
+}
+
+.tableBody > :hover {
+	background-color: #e5e9ef;
+}
+
+.createButton {
+	text-decoration: none;
+	text-align: center;
+	width: 200px;
+	padding: 20px;
+	margin: 20px;
+	border-radius: 5px;
+	color: white;
+	background-color: #27a700;
+}
+
+.createButton:hover {
+	background-color: #259c01;
+}

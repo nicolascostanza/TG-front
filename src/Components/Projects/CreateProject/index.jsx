@@ -43,7 +43,6 @@ const CreateProject = () => {
     })
       .then((response) => response.json())
       .then((json) => {
-        console.log(json);
         if (!json.error) {
           alert(json.message);
           resetValues();

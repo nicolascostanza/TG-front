@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import ListItem from './ListItem';
 import EditProject from '../EditProject';
+import listStyles from './list.module.css';
 
 function List() {
   const [projects, setProjects] = useState([]);
@@ -26,13 +27,23 @@ function List() {
     setEdit(false);
   };
 
+  const updateProjects = (editedProject) => {
+    const updatedProjects = projects.map((project) => {
+      if (project._id === editedProject._id) {
+        return editedProject;
+      }
+      return project;
+    });
+    setProjects(updatedProjects);
+  };
+
   const deleteProject = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
       fetch(`http://localhost:8080/projects/${id}`, { method: 'delete' })
         .then((response) => response.json())
         .then((json) => {
-          console.log(json);
+          alert(json.message);
           setProjects(projects.filter((project) => project._id !== id));
         })
         .catch((error) => console.log(error));
@@ -50,9 +61,13 @@ function List() {
 
   return (
     <div>
-      {edit ? <EditProject initial={editingProject} close={closeModal} /> : ''}
-      <table>
-        <thead>
+      {edit ? (
+        <EditProject initial={editingProject} updateProjects={updateProjects} close={closeModal} />
+      ) : (
+        ''
+      )}
+      <table className={listStyles.table}>
+        <thead className={listStyles.tableHead}>
           <tr>
             <th>Name</th>
             <th>Description</th>
@@ -62,11 +77,11 @@ function List() {
             <th>PM</th>
             <th>Team</th>
             <th>Tasks</th>
-            <th>EDIT</th>
-            <th>DELETE</th>
+            <th></th>
+            <th></th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={listStyles.tableBody}>
           {projects.map((project) => {
             return (
               <ListItem
@@ -79,7 +94,9 @@ function List() {
           })}
         </tbody>
       </table>
-      <a href="/projects/create">Create new project</a>
+      <a className={listStyles.createButton} href="/projects/create">
+        Create new project
+      </a>
     </div>
   );
 }

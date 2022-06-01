@@ -1,0 +1,8 @@
+.row {
+	height: 80px;
+}
+
+.row > td {
+	padding: 10px;
+}
+
