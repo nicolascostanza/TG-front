@@ -1,10 +1,21 @@
-.container{
+.container {
+    flex: 1;
     display: flex;
-    justify-items: center;
-    background-color: white;
-}
-
-.th tr {
-    display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
+    padding: 3%;
+    width: auto;
+  }
+.Btn{
+    margin-bottom: 10px;
+}
+.row {
+    background-color: rgb(243, 240, 240);
+    border-color: rgb(98, 98, 98);
+    border-style: groove;
+    border-width: 3px;
+    border-radius: 10px;
+    padding: 10px;
+
 }
