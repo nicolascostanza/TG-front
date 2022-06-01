@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styles from './editEmployee.module.css';
 
+const params = window.location.search;
+const employeeId = params.substring(4);
+
 const EditEmployee = () => {
-  // const [employee, setEditEmployee] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8080/employees/62952b91082ec02879a7f188')
+    fetch(`http://localhost:8080/employees/${employeeId}`)
       .then((response) => response.json())
       .then((response) => {
-        // setEditEmployee(response.data);
         setFirstName(response.data.firstName);
-        setSurname(response.data.firstName);
+        setSurname(response.data.surname);
         setEmail(response.data.email);
         setGender(response.data.gender);
         setAdress(response.data.adress);
@@ -17,7 +18,7 @@ const EditEmployee = () => {
         setPassword(response.data.password);
         setPhone(response.data.phone);
         setActive(response.data.active);
-        console.log(response.data);
+        console.log(employeeId);
       });
   }, []);
 
@@ -32,7 +33,7 @@ const EditEmployee = () => {
   const [active, setActive] = useState(false);
 
   const editEmployee = async (employee) => {
-    const res = await fetch('http://localhost:8080/employees/62952b91082ec02879a7f188', {
+    const res = await fetch(`http://localhost:8080/employees/${employeeId}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
@@ -40,10 +41,11 @@ const EditEmployee = () => {
       body: JSON.stringify(employee)
     });
     const data = await res.json();
-    console.log('Data: esteeee' + data);
     if (res.status === 200 || res.status === 201 || res.status === 204) {
       console.log('Data:', data);
-      alert('Employee updated');
+      return({}
+        alert(data.msg);
+      );
     } else if (res.status === 400) {
       alert(data.msg);
       console.log('Data:', data);
@@ -52,7 +54,6 @@ const EditEmployee = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log('firstname', firstName);
 
     editEmployee({
       firstName,

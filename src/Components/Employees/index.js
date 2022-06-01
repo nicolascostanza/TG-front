@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import EditEmployee from './EditEmployee/editEmployee';
-import AddEmployee from './EmployeeForm/addEmployee';
 import styles from './employees.module.css';
 
 function Employees() {
@@ -19,7 +18,7 @@ function Employees() {
   return (
     <section className={styles.container}>
       <h2>Employees</h2>
-      <AddEmployee employees={employees} saveEmployees={saveEmployees} />
+      {/*  <AddEmployee employees={employees} saveEmployees={saveEmployees} /> */}
       <div>
         <a href="http://localhost:3000/employees/editEmployee">
           <button onClick={EditEmployee}>Edit employee</button>
