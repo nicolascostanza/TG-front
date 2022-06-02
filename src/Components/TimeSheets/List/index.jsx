@@ -26,7 +26,7 @@ function TimeSheet() {
   };
   return (
     <div className={styles.container}>
-      <a href="http://localhost:8080/time-sheets-add" className={styles.Btn}>
+      <a href="http://localhost:8080/time-sheets/" className={styles.Btn}>
         <Btn color="green" text="Add" />
       </a>
       <table className={styles.row}>

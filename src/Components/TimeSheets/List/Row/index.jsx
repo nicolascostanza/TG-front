@@ -1,5 +1,8 @@
 import React from 'react';
 
+const params = new URLSearchParams(window.location.search);
+const timeSheetId = params.get('id');
+
 function Row(props) {
   const {
     _id: id,
@@ -32,7 +35,7 @@ function Row(props) {
         ></i>
       </td>
       <td>
-        <a href={`http://localhost:8080/time-sheets-edit/${id}`}>
+        <a href={`http://localhost:8080/time-sheets/${timeSheetId}`}>
           <button>Edit</button>
         </a>
       </td>
