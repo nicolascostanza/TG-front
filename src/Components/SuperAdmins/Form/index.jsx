@@ -12,7 +12,7 @@ function Form(props) {
   };
   const [superAdmins, setSuperAdmin] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:8080/super-admins/${props.id}`)
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${props.id}`)
       .then((response) => response.json())
       .then((response) => {
         setFirstName(response.data.firstName);
@@ -37,7 +37,7 @@ function Form(props) {
   };
   const addSuperAdmin = async (superAdmin) => {
     if (confirm('Are you sure you want to create a Superadmin ?')) {
-      const res = await fetch(`http://localhost:8080/super-admins`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -55,7 +55,7 @@ function Form(props) {
   };
   const editSuperAdmin = async (superAdmin) => {
     if (confirm('Are you sure you want to edit it?')) {
-      const res = await fetch(`http://localhost:8080/super-admins/${props.id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${props.id}`, {
         method: 'PUT',
         headers: {
           'Content-type': 'application/json'

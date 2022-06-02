@@ -5,7 +5,7 @@ import Row from '../Row';
 function List({ switchScreen, setMethod, setID }) {
   const [superAdmins, setSuperAdmin] = useState([]);
   useEffect(() => {
-    fetch(process.env.REACT_APP_LOCALHOST_URL)
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
       .then((response) => response.json())
       .then((response) => {
         setSuperAdmin(response.data);
@@ -14,7 +14,7 @@ function List({ switchScreen, setMethod, setID }) {
   const deleteSuperAdmin = async (id) => {
     const resp = confirm('Sure you want to remove it?');
     if (resp) {
-      await fetch(`${process.env.REACT_APP_LOCALHOST_URL}/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
         method: 'DELETE'
       });
       setSuperAdmin(superAdmins.filter((superadmin) => superadmin._id !== id));
