@@ -1,5 +1,4 @@
 import React from 'react';
-// import RowBtn from '../RowBtn/RowBtn';
 
 const Row = ({
   id,
@@ -15,7 +14,6 @@ const Row = ({
   updatedAt,
   onDelete,
   employee
-  // onEdit
 }) => {
   return (
     <tr key={id}>
@@ -31,13 +29,11 @@ const Row = ({
       <td>{createdAt}</td>
       <td>{updatedAt}</td>
       <td>
-        {/* <RowBtn className="fa-solid fa-pen-to-square" id={id} onEdit={onEdit} employee={employee} /> */}
         <a href={`/employees/editEmployee?id=${id}`}>
           <i className="fa-solid fa-pen-to-square"></i>
         </a>
       </td>
       <td>
-        {/* <RowBtn className="fa-solid fa-xmark" id={id} onDelete={onDelete} employee={employee} /> */}
         <i
           className="fa-solid fa-xmark"
           onClick={() => {

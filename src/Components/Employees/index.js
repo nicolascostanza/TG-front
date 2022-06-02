@@ -1,4 +1,3 @@
-// import { useEffect, useState } from 'react';
 import styles from './employees.module.css';
 import List from './List/List';
 import AddBtn from './AddBtn/AddBtn';

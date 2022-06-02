@@ -13,11 +13,9 @@ const List = () => {
         setEmployees(response.data);
       });
   }, []);
-  // const response = response.data;
 
   // Delete employee
   const deleteEmployee = async (id) => {
-    // console.log('id que le llega a la funcion', id);
     if (window.confirm('Do you want to delete this employee?')) {
       const res = await fetch(`http://localhost:8080/employees/${id}`, {
         method: 'DELETE'
@@ -31,10 +29,6 @@ const List = () => {
   const editForm = (id) => {
     window.location = `/employees/editEmployee/${id}`;
   };
-
-  // const EditEmployee = async (id) => {
-  //   console.log('employee must be edited: ', id);
-  // };
 
   return (
     <section className={styles.container}>
@@ -52,7 +46,6 @@ const List = () => {
             <th>Active</th>
             <th>Created at</th>
             <th>Updated at</th>
-            {/* <th>Delete</th> */}
           </tr>
         </thead>
         <tbody>
