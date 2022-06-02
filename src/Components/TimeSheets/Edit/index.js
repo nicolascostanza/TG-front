@@ -7,7 +7,7 @@ const timeSheetId = params.get('id');
 
 function EditTimeSheets() {
   useEffect(() => {
-    fetch(`http://localhost:8080/time-sheets/${timeSheetId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${timeSheetId}`)
       .then((response) => response.json())
       .then((response) => {
         console.log(response.data);
@@ -31,7 +31,7 @@ function EditTimeSheets() {
   const [role, setRole] = useState('');
 
   const editTimeSheets = async (timeSheets) => {
-    const res = await fetch(`http://localhost:8080/time-sheets/${timeSheetId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${timeSheetId}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'

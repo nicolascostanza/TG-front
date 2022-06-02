@@ -5,7 +5,7 @@ import styles from './Form.module.css';
 function AddTimeSheets() {
   const [timeSheets, saveTimeSheets] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8080/time-sheets/')
+    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
       .then((response) => response.json())
       .then((response) => {
         saveTimeSheets(response.data);
@@ -21,7 +21,7 @@ function AddTimeSheets() {
   const [approved, setApproved] = useState(false);
   const [role, setRole] = useState('');
   const addTimeSheets = async (timeSheet) => {
-    const res = await fetch('http://localhost:8080/time-sheets/', {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
