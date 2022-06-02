@@ -18,13 +18,11 @@ function Employees() {
   return (
     <section className={styles.container}>
       <h2>Employees</h2>
-      {/*  <AddEmployee employees={employees} saveEmployees={saveEmployees} /> */}
       <div>
         <a href="http://localhost:3000/employees/editEmployee">
           <button onClick={EditEmployee}>Edit employee</button>
         </a>
         {employees.map((employee) => {
-          // eslint-disable-next-line prettier/prettier
           return (
             <div key={employee._id}>
               {employee.first_name} {employee.last_name}

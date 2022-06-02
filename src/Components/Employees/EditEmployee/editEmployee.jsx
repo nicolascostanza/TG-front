@@ -18,10 +18,8 @@ const EditEmployee = () => {
         setPassword(response.data.password);
         setPhone(response.data.phone);
         setActive(response.data.active);
-        console.log(employeeId);
       });
   }, []);
-
   const [firstName, setFirstName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -41,14 +39,10 @@ const EditEmployee = () => {
       body: JSON.stringify(employee)
     });
     const data = await res.json();
-    if (res.status === 200 || res.status === 201 || res.status === 204) {
-      console.log('Data:', data);
-      return({}
-        alert(data.msg);
-      );
+    if (res.status === 200 || res.status === 202 || res.status === 204) {
+      return alert(data.message);
     } else if (res.status === 400) {
-      alert(data.msg);
-      console.log('Data:', data);
+      return alert(data.msg);
     }
   };
 
@@ -77,7 +71,6 @@ const EditEmployee = () => {
     setActive(false);
   };
   return (
-    // <div className={styles.container}>
     <form className={styles.container} onSubmit={onSubmit}>
       <div>
         <h2>Edit Employee</h2>
@@ -86,7 +79,6 @@ const EditEmployee = () => {
         <label>First name</label>
         <input
           type="text"
-          // name="firstName"
           value={firstName}
           placeholder={firstName}
           onChange={(e) => setFirstName(e.target.value)}
@@ -94,45 +86,24 @@ const EditEmployee = () => {
       </div>
       <div>
         <label>Surname</label>
-        <input
-          type="text"
-          // name="surname"
-          value={surname}
-          onChange={(e) => setSurname(e.target.value)}
-        ></input>
+        <input type="text" value={surname} onChange={(e) => setSurname(e.target.value)}></input>
       </div>
       <div>
         <label>Email</label>
-        <input
-          type="text"
-          // name="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        ></input>
+        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
       </div>
       <div>
         <label>Gender</label>
-        <input
-          type="text"
-          // name="gender"
-          value={gender}
-          onChange={(e) => setGender(e.target.value)}
-        ></input>
+        <input type="text" value={gender} onChange={(e) => setGender(e.target.value)}></input>
       </div>
       <div>
         <label>Adress</label>
-        <input
-          type="text"
-          // name="adress"
-          value={adress}
-          onChange={(e) => setAdress(e.target.value)}
-        ></input>
+        <input type="text" value={adress} onChange={(e) => setAdress(e.target.value)}></input>
       </div>
       <div>
         <label>Dob</label>
         <input
           type="text"
-          // name="dob"
           placeholder="yyy-mm-dd"
           value={dob}
           onChange={(e) => setDob(e.target.value)}
@@ -142,25 +113,18 @@ const EditEmployee = () => {
         <label>Password</label>
         <input
           type="password"
-          // name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         ></input>
       </div>
       <div>
         <label>Phone</label>
-        <input
-          type="number"
-          // name="phone"
-          value={phone}
-          onChange={(e) => setPhone(e.target.value)}
-        ></input>
+        <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}></input>
       </div>
       <div>
         <label>Active</label>
         <input
           type="boolean"
-          // name="active"
           value={active ? 'active' : 'innactive'}
           onChange={(e) => setActive({ Boolean: e.target.value })}
         ></input>
@@ -169,7 +133,6 @@ const EditEmployee = () => {
         <input type="submit" value="Submit" onSubmit={onSubmit}></input>
       </div>
     </form>
-    // </div>
   );
 };
 
