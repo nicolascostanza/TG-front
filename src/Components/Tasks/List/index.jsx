@@ -11,7 +11,8 @@ function List() {
       .then((response) => {
         setTask(response.data);
         console.log(response.data);
-      });
+      })
+      .catch((err) => console.err(err));
   }, []);
   const deleteTask = async (id) => {
     const resp = confirm('Are you sure you want to delete this task?');

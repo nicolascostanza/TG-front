@@ -11,7 +11,6 @@ function Row(props) {
     startDate,
     status
   } = props.task;
-  console.log('props', props.task);
   return (
     <tr id={id}>
       <td>{id}</td>
