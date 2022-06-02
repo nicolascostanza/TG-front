@@ -7,7 +7,7 @@ function List() {
   const [admins, setAdmins] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/admins`)
+    fetch(`${process.env.REACT_APP_API_URL}/admins`)
       .then((response) => response.json())
       .then((response) => {
         setAdmins(response.data);
@@ -16,7 +16,7 @@ function List() {
   const deleteAdmin = async (id) => {
     const war = confirm('Sure you want to remove it?');
     if (war) {
-      await fetch(`http://localhost:4000/admins/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
         method: 'DELETE'
       });
       setAdmins(admins.filter((admin) => admin._id !== id));
@@ -25,7 +25,7 @@ function List() {
   return (
     <div className={style.container}>
       <div className={style.btn}>
-        <a className={style.btnText} href="http://localhost:3000/admins-add">
+        <a className={style.btnText} href="/admins-add">
           Add New Admin
         </a>
       </div>

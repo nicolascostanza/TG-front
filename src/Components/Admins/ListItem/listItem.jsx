@@ -4,7 +4,7 @@ import style from '../ListItem/listItem.module.css';
 function ListItem(props) {
   const { _id, firstName, lastName, active, email } = props.admin;
   const { onDelete } = props;
-  let url = `http://localhost:3000/admins-edit?id=${_id}`;
+  let url = `/admins-edit?id=${_id}`;
   return (
     <tr id={_id}>
       <td className={style.field}>{_id}</td>

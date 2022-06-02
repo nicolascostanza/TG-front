@@ -20,7 +20,7 @@ const AddAdmin = () => {
   };
   const closeModal = () => {
     setShowModal(false);
-    window.location.href = 'http://localhost:3000/admins';
+    window.location.href = '/admins';
   };
 
   const onSubmit = (e) => {
@@ -39,7 +39,7 @@ const AddAdmin = () => {
         active: adminInput.active
       })
     };
-    const url = `http://localhost:4000/admins`;
+    const url = `${process.env.REACT_APP_API_URL}/admins`;
     fetch(url, postaAdmin)
       .then((response) => response.json())
       .then((data) => setData(data));

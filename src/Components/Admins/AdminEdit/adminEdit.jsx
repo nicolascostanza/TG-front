@@ -6,7 +6,7 @@ const adminId = params.get('id');
 const EditAdmin = () => {
   const [admin, setAdmin] = useState({});
   useEffect(() => {
-    fetch(`http://localhost:4000/admins/${adminId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/admins/${adminId}`)
       .then((response) => response.json())
       .then((response) => {
         setAdmin(response.data);
