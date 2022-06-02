@@ -8,8 +8,8 @@ import Employees from '../Employees/index';
 import Projects from '../Projects';
 import TimeSheets from '../TimeSheets';
 import Tasks from '../Tasks/index';
-import AdminAdd from '../Admins/AdminAdd';
-import AdminEdit from '../Admins/AdminEdit';
+import AdminAdd from '../Admins/AdminAdd/adminAdd';
+import AdminEdit from '../Admins/AdminEdit/adminEdit';
 
 function Layout() {
   let currentScreen = <Home />;

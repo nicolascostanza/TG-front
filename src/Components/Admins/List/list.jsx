@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import style from '../List/list.module.css';
-import ListItem from '../ListItem';
+import ListItem from '../ListItem/listItem';
 // import Btn from '../Btn';
 
 function List() {
