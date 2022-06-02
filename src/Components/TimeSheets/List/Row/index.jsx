@@ -35,7 +35,7 @@ function Row(props) {
         ></i>
       </td>
       <td>
-        <a href={`http://localhost:8080/time-sheets/${timeSheetId}`}>
+        <a href={`${process.env.REACT_APP_API_URL}/time-sheets/${timeSheetId}`}>
           <button>Edit</button>
         </a>
       </td>

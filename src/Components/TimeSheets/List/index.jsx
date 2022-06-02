@@ -6,7 +6,7 @@ import Row from './Row';
 function TimeSheet() {
   const [timeSheets, setTimeSheets] = useState([]);
   useEffect(() => {
-    fetch(`http://localhost:8080/time-sheets`)
+    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
       .then((response) => response.json())
       .then((response) => {
         setTimeSheets(response.data);
@@ -16,7 +16,7 @@ function TimeSheet() {
   const deleteTimeSheet = async (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
-      await fetch(`http://localhost:8080/time-sheets/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${id}`, {
         method: 'DELETE'
       }).then(() => {
         alert('Succesfully deleted');
@@ -26,7 +26,7 @@ function TimeSheet() {
   };
   return (
     <div className={styles.container}>
-      <a href="http://localhost:8080/time-sheets/" className={styles.Btn}>
+      <a href={`${process.env.REACT_APP_API_URL}/time-sheets/`} className={styles.Btn}>
         <Btn color="green" text="Add" />
       </a>
       <table className={styles.row}>
