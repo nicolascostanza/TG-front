@@ -24,7 +24,7 @@ function Row(props) {
           ? assignedEmployee.map((employee) => employee.firstName)
           : 'no tiene id'}
       </td>
-      <td>{startDate}</td>
+      <td>{new Date(startDate).toLocaleDateString()}</td>
       <td>{status}</td>
       <td>
         <i className="fa-solid fa-xmark" onClick={() => props.deleteTask(id)}></i>
