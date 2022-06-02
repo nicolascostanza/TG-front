@@ -5,9 +5,11 @@ import styles from '../AddTask/addTask.module.css';
 const params = new URLSearchParams(window.location.search);
 const taskID = params.get('id');
 
+const URL = `${process.env.REACT_APP_API_URL}/tasks`;
+
 const EditTask = () => {
   useEffect(() => {
-    fetch(`http://localhost:8080/tasks/${taskID}`)
+    fetch(`${URL}${taskID}`)
       .then((response) => response.json())
       .then((response) => {
         console.log(response.data);
@@ -27,7 +29,7 @@ const EditTask = () => {
   const [status, setStatus] = useState('');
 
   const editTask = async (task) => {
-    const res = await fetch(`http://localhost:8080/tasks/${taskID}`, {
+    const res = await fetch(`${URL}${taskID}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'

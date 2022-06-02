@@ -2,13 +2,16 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './addTask.module.css';
 
+const URL = `${process.env.REACT_APP_API_URL}/tasks`;
+
 const AddTask = () => {
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8080/tasks')
+    fetch(URL)
       .then((response) => response.json())
       .then((response) => {
         setTasks(response.data);
+        console.log(response.data);
       });
   }, []);
 
@@ -20,7 +23,7 @@ const AddTask = () => {
   const [status, setStatus] = useState('');
 
   const addTask = async (task) => {
-    const res = await fetch('http://localhost:8080/tasks', {
+    const res = await fetch(URL, {
       method: 'POST',
       headers: {
         'Content-type': 'application/json'
@@ -32,10 +35,9 @@ const AddTask = () => {
     setTasks([...tasks, data]);
 
     if (res.status === 201) {
-      console.log(data);
       alert('Task added successfully');
     } else if (res.status === 400 || res.status === 500) {
-      alert('Wrong data input');
+      alert('Something went wrong');
     }
   };
 
