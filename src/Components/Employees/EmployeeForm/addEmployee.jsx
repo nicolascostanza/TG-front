@@ -117,7 +117,7 @@ const AddEmployee = () => {
             onChange={onChange}
           ></input>
         </div>
-        <div>
+        <div className={styles.submit}>
           <input type="submit" value="Submit" onSubmit={onSubmit}></input>
         </div>
       </form>

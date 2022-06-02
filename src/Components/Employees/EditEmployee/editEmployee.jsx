@@ -75,62 +75,64 @@ const EditEmployee = () => {
       <div>
         <h2>Edit Employee</h2>
       </div>
-      <div>
-        <label>First name</label>
-        <input
-          type="text"
-          value={firstName}
-          placeholder={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        ></input>
-      </div>
-      <div>
-        <label>Surname</label>
-        <input type="text" value={surname} onChange={(e) => setSurname(e.target.value)}></input>
-      </div>
-      <div>
-        <label>Email</label>
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-      </div>
-      <div>
-        <label>Gender</label>
-        <input type="text" value={gender} onChange={(e) => setGender(e.target.value)}></input>
-      </div>
-      <div>
-        <label>Adress</label>
-        <input type="text" value={adress} onChange={(e) => setAdress(e.target.value)}></input>
-      </div>
-      <div>
-        <label>Dob</label>
-        <input
-          type="text"
-          placeholder="yyy-mm-dd"
-          value={dob}
-          onChange={(e) => setDob(e.target.value)}
-        ></input>
-      </div>
-      <div>
-        <label>Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        ></input>
-      </div>
-      <div>
-        <label>Phone</label>
-        <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}></input>
-      </div>
-      <div>
-        <label>Active</label>
-        <input
-          type="boolean"
-          value={active ? 'active' : 'innactive'}
-          onChange={(e) => setActive({ Boolean: e.target.value })}
-        ></input>
-      </div>
-      <div>
-        <input type="submit" value="Submit" onSubmit={onSubmit}></input>
+      <div className={styles.form}>
+        <div>
+          <label>First name</label>
+          <input
+            type="text"
+            value={firstName}
+            placeholder={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <label>Surname</label>
+          <input type="text" value={surname} onChange={(e) => setSurname(e.target.value)}></input>
+        </div>
+        <div>
+          <label>Email</label>
+          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+        </div>
+        <div>
+          <label>Gender</label>
+          <input type="text" value={gender} onChange={(e) => setGender(e.target.value)}></input>
+        </div>
+        <div>
+          <label>Adress</label>
+          <input type="text" value={adress} onChange={(e) => setAdress(e.target.value)}></input>
+        </div>
+        <div>
+          <label>Dob</label>
+          <input
+            type="text"
+            placeholder="yyy-mm-dd"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <label>Password</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          ></input>
+        </div>
+        <div>
+          <label>Phone</label>
+          <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}></input>
+        </div>
+        <div>
+          <label>Active</label>
+          <input
+            type="boolean"
+            value={active ? 'active' : 'innactive'}
+            onChange={(e) => setActive({ Boolean: e.target.value })}
+          ></input>
+        </div>
+        <div className={styles.submit}>
+          <input type="submit" value="Submit" onSubmit={onSubmit}></input>
+        </div>
       </div>
     </form>
   );
