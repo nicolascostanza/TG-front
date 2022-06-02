@@ -38,7 +38,6 @@ function List({ switchScreen, setMethod, setID }) {
           </tr>
         </thead>
         <tbody>
-          {/* {superAdmins.lengh > 0 ? 'hay cosas' : 'nada'} */}
           {superAdmins.map((superAdmin) => (
             <Row
               key={superAdmin._id}
