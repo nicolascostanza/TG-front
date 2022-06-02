@@ -9,10 +9,9 @@ const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
 const EditTask = () => {
   useEffect(() => {
-    fetch(`${URL}${taskID}`)
+    fetch(`${URL}/${taskID}`)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.data);
         setParentProject(response.data.parentProject);
         setTaskName(response.data.taskName);
         setTaskDescription(response.data.taskDescription);
@@ -29,17 +28,15 @@ const EditTask = () => {
   const [status, setStatus] = useState('');
 
   const editTask = async (task) => {
-    const res = await fetch(`${URL}${taskID}`, {
+    const res = await fetch(`${URL}/${taskID}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify(task)
     });
-    const data = await res.json();
-    console.log('Data:', data);
+    await res.json();
     if (res.status === 200) {
-      console.log('Data:', data);
       alert('Task updated successfully');
     } else if (res.status === 400) {
       alert('Something went wrong');
