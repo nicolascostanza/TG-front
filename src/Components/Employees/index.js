@@ -19,7 +19,7 @@ function Employees() {
     <section className={styles.container}>
       <h2>Employees</h2>
       <div>
-        <a href="http://localhost:3000/employees/editEmployee">
+        <a href="http://localhost:3000/employee-edit">
           <button onClick={EditEmployee}>Edit employee</button>
         </a>
         {employees.map((employee) => {

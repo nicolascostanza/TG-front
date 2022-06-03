@@ -23,10 +23,10 @@ function Layout() {
     case '/employees':
       currentScreen = <Employees />;
       break;
-    case '/employees/addEmployee':
+    case '/employee-add':
       currentScreen = <AddEmployee />;
       break;
-    case '/employees/editEmployee':
+    case '/employee-edit':
       currentScreen = <EditEmployee />;
       break;
     case '/projects':
