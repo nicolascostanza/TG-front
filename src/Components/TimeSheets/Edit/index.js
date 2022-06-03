@@ -21,7 +21,7 @@ function EditTimeSheets() {
         setRole(response.data.role);
       });
   }, []);
-  const [employeeId, setEmployeeId] = useState('');
+  const [employeeId, setEmployeeId] = useState({});
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
   const [date, setDate] = useState('');
@@ -50,17 +50,17 @@ function EditTimeSheets() {
     e.preventDefault();
 
     editTimeSheets({
-      employeeId,
+      employeeId: employeeId._id,
       description,
       project,
       date,
       hours,
-      task: [task],
+      task: [task[0]._id],
       approved,
       role
     });
 
-    setEmployeeId('');
+    setEmployeeId({});
     setDescription('');
     setProject('');
     setDate('');
@@ -79,8 +79,8 @@ function EditTimeSheets() {
           <label> Employee ID </label>
           <input
             type="text"
-            placeholder="Employee ID"
-            value={employeeId}
+            placeholder="employeeId"
+            value={employeeId._id}
             onChange={(e) => setEmployeeId(e.target.value)}
           />
         </div>
@@ -125,7 +125,7 @@ function EditTimeSheets() {
           <input
             type="text"
             placeholder="Task"
-            value={task._id}
+            value={task && task[0] ? task[0]._id : ''}
             onChange={(e) => setTask(e.target.value)}
           />
         </div>
