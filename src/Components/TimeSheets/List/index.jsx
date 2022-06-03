@@ -26,7 +26,7 @@ function TimeSheet() {
   };
   return (
     <div className={styles.container}>
-      <a href={`${process.env.REACT_APP_API_URL}/time-sheets/`} className={styles.Btn}>
+      <a href={'/time-sheets-add'} className={styles.Btn}>
         <Btn color="green" text="Add" />
       </a>
       <table className={styles.row}>

@@ -1,8 +1,5 @@
 import React from 'react';
 
-const params = new URLSearchParams(window.location.search);
-const timeSheetId = params.get('id');
-
 function Row(props) {
   const {
     _id: id,
@@ -35,7 +32,7 @@ function Row(props) {
         ></i>
       </td>
       <td>
-        <a href={`${process.env.REACT_APP_API_URL}/time-sheets/${timeSheetId}`}>
+        <a href={`time-sheets-edit?id=${id}`}>
           <button>Edit</button>
         </a>
       </td>
