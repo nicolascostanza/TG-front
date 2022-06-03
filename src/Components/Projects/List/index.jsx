@@ -40,7 +40,7 @@ function List() {
   const deleteProject = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
-      fetch(`http://localhost:8080/projects/${id}`, { method: 'delete' })
+      fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, { method: 'delete' })
         .then((response) => response.json())
         .then((json) => {
           alert(json.message);
@@ -51,7 +51,7 @@ function List() {
   };
 
   useEffect(() => {
-    fetch('http://localhost:8080/projects')
+    fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
       .then((json) => {
         setProjects(json.data);

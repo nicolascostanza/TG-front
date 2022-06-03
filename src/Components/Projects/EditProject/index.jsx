@@ -21,7 +21,7 @@ const EditProject = (props) => {
     startDate: new Date(startDate).toISOString().split('T')[0] || '',
     endDate: new Date(endDate).toISOString().split('T')[0] || '',
     projectManager: projectManager || '',
-    team: team || [],
+    team: team.map((member) => member._id).join(';') || '',
     tasks: tasks.map((task) => task._id).join(';') || ''
   };
 
@@ -37,7 +37,7 @@ const EditProject = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:8080/projects/edit/${id}`, {
+    fetch(`${process.env.REACT_APP_API_URL}/projects/edit/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ const EditProject = (props) => {
         startDate: project.startDate,
         endDate: project.endDate,
         projectManager: project.projectManager,
-        team: project.team,
+        team: project.team.length > 0 ? project.team.split(';') : [],
         tasks: project.tasks.length > 0 ? project.tasks.split(';') : []
       })
     })
@@ -72,62 +72,71 @@ const EditProject = (props) => {
 
   return (
     <div className={editProjectStyles.modal}>
-      <form className={editProjectStyles.form}>
-        <label>
-          Name:
-          <input value={project.name} onChange={handleInputChanges} name="name" type="text" />
-        </label>
-        <label>
-          Description:
-          <input
-            value={project.description}
-            onChange={handleInputChanges}
-            name="description"
-            type="text"
-          />
-        </label>
-        <label>
-          Client Name:
-          <input
-            value={project.clientName}
-            onChange={handleInputChanges}
-            name="clientName"
-            type="text"
-          />
-        </label>
-        <label>
-          Start Date:
-          <input
-            value={project.startDate}
-            onChange={handleInputChanges}
-            name="startDate"
-            type="date"
-          />
-        </label>
-        <label>
-          End Date:
-          <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
-        </label>
-        <label>
-          Project Manager:
-          <input
-            value={project.projectManager}
-            onChange={handleInputChanges}
-            name="projectManager"
-            type="text"
-          />
-        </label>
-        <label>
-          Team:
-          <input value={project.team} onChange={handleInputChanges} name="team" type="text" />
-        </label>
-        <label>
-          Tasks:
-          <input value={project.tasks} onChange={handleInputChanges} name="tasks" type="text" />
-        </label>
-        <button onClick={cancelUpdate}>CANCEL</button>
-        <button onClick={handleSubmit}>UPDATE</button>
-      </form>
+      <div className={editProjectStyles.formContainer}>
+        <form className={editProjectStyles.form}>
+          <label>
+            Name:
+            <input value={project.name} onChange={handleInputChanges} name="name" type="text" />
+          </label>
+          <label>
+            Description:
+            <input
+              value={project.description}
+              onChange={handleInputChanges}
+              name="description"
+              type="text"
+            />
+          </label>
+          <label>
+            Client Name:
+            <input
+              value={project.clientName}
+              onChange={handleInputChanges}
+              name="clientName"
+              type="text"
+            />
+          </label>
+          <label>
+            Start Date:
+            <input
+              value={project.startDate}
+              onChange={handleInputChanges}
+              name="startDate"
+              type="date"
+            />
+          </label>
+          <label>
+            End Date:
+            <input
+              value={project.endDate}
+              onChange={handleInputChanges}
+              name="endDate"
+              type="date"
+            />
+          </label>
+          <label>
+            Project Manager:
+            <input
+              value={project.projectManager}
+              onChange={handleInputChanges}
+              name="projectManager"
+              type="text"
+            />
+          </label>
+          <label>
+            Team:
+            <input value={project.team} onChange={handleInputChanges} name="team" type="text" />
+          </label>
+          <label>
+            Tasks:
+            <input value={project.tasks} onChange={handleInputChanges} name="tasks" type="text" />
+          </label>
+          <div className={editProjectStyles.buttonContainer}>
+            <button onClick={cancelUpdate}>CANCEL</button>
+            <button onClick={handleSubmit}>UPDATE</button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

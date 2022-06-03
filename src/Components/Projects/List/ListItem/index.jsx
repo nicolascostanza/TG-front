@@ -1,4 +1,6 @@
 import React from 'react';
+import TeamDropdown from './ListItemDropdown/TeamDropdown';
+import TasksDropdown from './ListItemDropdown/TasksDropdown';
 import listItemStyles from './listItem.module.css';
 
 function ListItem(props) {
@@ -13,8 +15,12 @@ function ListItem(props) {
       <td>{new Date(startDate).toLocaleDateString()}</td>
       <td>{new Date(endDate).toLocaleDateString()}</td>
       <td>{projectManager}</td>
-      <td>{team.length > 0 ? team[0].firstName : '-'}</td>
-      <td>{tasks.length > 0 ? tasks[0].taskName : '-'}</td>
+      <td>
+        <TeamDropdown employees={team} />
+      </td>
+      <td>
+        <TasksDropdown tasks={tasks} />
+      </td>
       <td>
         <i onClick={() => editProject(props.project._id)} className="fa-solid fa-pen"></i>
       </td>

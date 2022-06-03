@@ -1,11 +1,25 @@
 .table {
 	margin: 20px;
 	border-collapse: collapse;
-	border-radius: 10px;
+}
+
+.table th:first-child {
+	border-radius: 10px 0 0 0;
+}
+
+.table th:last-child {
+	border-radius: 0 10px 0 0;
+}
+
+.tableBody > tr:last-child > :first-child {
+	border-radius: 0 0 0 10px;
+}
+
+.tableBody > tr:last-child > :last-child {
+	border-radius: 0 0 10px 0;
 }
 
 .tableHead {
-	
 	background-color: #ea3354;
 }
 
@@ -15,10 +29,12 @@
 
 .tableBody > :nth-child(even) {
 	background-color: #e0e4e9;
+	transition: .2s;
 }
 
 .tableBody > :nth-child(odd) {
 	background-color: #f0f4f9;
+	transition: .2s;
 }
 
 .tableBody > :hover {
@@ -34,8 +50,10 @@
 	border-radius: 5px;
 	color: white;
 	background-color: #27a700;
+	transition: .2s;
 }
 
 .createButton:hover {
+	color: #fafafa;
 	background-color: #259c01;
 }

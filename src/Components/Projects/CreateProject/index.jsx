@@ -25,7 +25,7 @@ const CreateProject = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('http://localhost:8080/projects/create', {
+    fetch(`${process.env.REACT_APP_API_URL}/projects/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -56,62 +56,66 @@ const CreateProject = () => {
   };
 
   return (
-    <form className={addProjectStyles.form}>
-      <label>
-        Name:
-        <input value={project.name} onChange={handleInputChanges} name="name" type="text" />
-      </label>
-      <label>
-        Description:
-        <input
-          value={project.description}
-          onChange={handleInputChanges}
-          name="description"
-          type="text"
-        />
-      </label>
-      <label>
-        Client Name:
-        <input
-          value={project.clientName}
-          onChange={handleInputChanges}
-          name="clientName"
-          type="text"
-        />
-      </label>
-      <label>
-        Start Date:
-        <input
-          value={project.startDate}
-          onChange={handleInputChanges}
-          name="startDate"
-          type="date"
-        />
-      </label>
-      <label>
-        End Date:
-        <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
-      </label>
-      <label>
-        Project Manager:
-        <input
-          value={project.projectManager}
-          onChange={handleInputChanges}
-          name="projectManager"
-          type="text"
-        />
-      </label>
-      <label>
-        Team:
-        <input value={project.team} onChange={handleInputChanges} name="team" type="text" />
-      </label>
-      <label>
-        Tasks:
-        <input value={project.tasks} onChange={handleInputChanges} name="tasks" type="text" />
-      </label>
-      <button onClick={resetValues}>RESET</button>
-      <button onClick={handleSubmit}>CREATE</button>
-    </form>
+    <div className={addProjectStyles.formContainer}>
+      <form className={addProjectStyles.form}>
+        <label>
+          Name:
+          <input value={project.name} onChange={handleInputChanges} name="name" type="text" />
+        </label>
+        <label>
+          Description:
+          <input
+            value={project.description}
+            onChange={handleInputChanges}
+            name="description"
+            type="text"
+          />
+        </label>
+        <label>
+          Client Name:
+          <input
+            value={project.clientName}
+            onChange={handleInputChanges}
+            name="clientName"
+            type="text"
+          />
+        </label>
+        <label>
+          Start Date:
+          <input
+            value={project.startDate}
+            onChange={handleInputChanges}
+            name="startDate"
+            type="date"
+          />
+        </label>
+        <label>
+          End Date:
+          <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
+        </label>
+        <label>
+          Project Manager:
+          <input
+            value={project.projectManager}
+            onChange={handleInputChanges}
+            name="projectManager"
+            type="text"
+          />
+        </label>
+        <label>
+          Team:
+          <input value={project.team} onChange={handleInputChanges} name="team" type="text" />
+        </label>
+        <label>
+          Tasks:
+          <input value={project.tasks} onChange={handleInputChanges} name="tasks" type="text" />
+        </label>
+        <div className={addProjectStyles.buttonContainer}>
+          <button onClick={resetValues}>RESET</button>
+          <button onClick={handleSubmit}>CREATE</button>
+        </div>
+      </form>
+    </div>
   );
 };
 
