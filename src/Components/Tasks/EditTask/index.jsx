@@ -62,6 +62,7 @@ const EditTask = () => {
     setStartDate('');
     setStatus('');
   };
+
   return (
     <form className={styles.container} onSubmit={onSubmit}>
       <div>
@@ -113,14 +114,13 @@ const EditTask = () => {
             onChange={(e) => setStartDate(e.target.value)}
           />
         </div>
-        <div>
+        <div className={styles.dropdown}>
           <label>Status:</label>
-          <input
-            type="text"
-            placeholder="Status"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          />
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            <option value="Ready to deliver">Ready to deliver</option>
+            <option value="Paused">Paused</option>
+            <option value="Cancelled">Cancelled</option>
+          </select>
         </div>
       </div>
       <input className={styles.button} type="submit" value="Update Task" />
