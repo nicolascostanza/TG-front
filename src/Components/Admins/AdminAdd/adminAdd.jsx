@@ -3,28 +3,27 @@ import style from '../AdminAdd/add.module.css';
 import Modal from '../Modal/modal';
 
 const AddAdmin = () => {
-  const [adminInput, setInput] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState('');
-  const onChange = (e) => {
-    setInput({ ...adminInput, [e.target.name]: e.target.value });
-    console.log(
-      JSON.stringify({
-        first_name: adminInput.firstName,
-        lastName: adminInput.Lastame,
-        email: adminInput.email,
-        password: adminInput.password,
-        active: adminInput.active
-      })
-    );
-  };
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [active, setActive] = useState();
+
   const closeModal = () => {
     setShowModal(false);
-    window.location.href = '/admins';
+  };
+
+  const resetFiles = () => {
+    setFirstName({ firstName: '' });
+    setFirstName({ lastName: '' });
+    setFirstName({ email: '' });
+    setFirstName({ password: '' });
+    setFirstName({ active: false });
   };
 
   const onSubmit = (e) => {
-    console.log(adminInput);
     e.preventDefault();
     const postaAdmin = {
       method: 'POST',
@@ -32,24 +31,18 @@ const AddAdmin = () => {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        firstName: adminInput.firstName,
-        lastName: adminInput.lastName,
-        email: adminInput.email,
-        password: adminInput.password,
-        active: adminInput.active
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        active: active
       })
     };
     const url = `${process.env.REACT_APP_API_URL}/admins`;
     fetch(url, postaAdmin)
       .then((response) => response.json())
       .then((data) => setData(data));
-    setInput({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      active: ''
-    });
+    resetFiles();
     setShowModal(true);
   };
   return (
@@ -65,8 +58,8 @@ const AddAdmin = () => {
             className={style.input}
             type="text"
             name="firstName"
-            value={adminInput.fir}
-            onChange={onChange}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
             required
           ></input>
         </div>
@@ -76,8 +69,8 @@ const AddAdmin = () => {
             className={style.input}
             type="text"
             name="lastName"
-            value={adminInput.lastName}
-            onChange={onChange}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
             required
           ></input>
         </div>
@@ -87,8 +80,8 @@ const AddAdmin = () => {
             className={style.input}
             type="email"
             name="email"
-            value={adminInput.email}
-            onChange={onChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           ></input>
         </div>
@@ -98,8 +91,8 @@ const AddAdmin = () => {
             className={style.input}
             type="password"
             name="password"
-            value={adminInput.password}
-            onChange={onChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             required
           ></input>
         </div>
@@ -107,10 +100,10 @@ const AddAdmin = () => {
           <label className={style.label}>Active</label>
           <input
             className={style.input}
-            type="text"
-            name="active"
-            value={adminInput.active}
-            onChange={onChange}
+            type="checkbox"
+            checked={active}
+            value={active}
+            onChange={(e) => setActive(e.currentTarget.checked)}
             required
           ></input>
         </div>

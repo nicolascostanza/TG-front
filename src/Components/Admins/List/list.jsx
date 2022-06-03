@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import style from '../List/list.module.css';
 import ListItem from '../ListItem/listItem';
-// import Btn from '../Btn';
+import Modal from '../Modal/modal';
 
 function List() {
   const [admins, setAdmins] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [data, setData] = useState('');
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/admins`)
@@ -18,17 +20,22 @@ function List() {
     if (war) {
       await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
         method: 'DELETE'
-      });
+      })
+        .then((response) => response.json())
+        .then((data) => setData(data));
+      setShowModal(true);
       setAdmins(admins.filter((admin) => admin._id !== id));
     }
   };
+  const closeModal = () => {
+    setShowModal(false);
+  };
   return (
     <div className={style.container}>
-      <div className={style.btn}>
-        <a className={style.btnText} href="/admins-add">
-          Add New Admin
-        </a>
-      </div>
+      <Modal show={showModal} close={closeModal} message={data.message} />
+      <a className={style.btn} href="/admins-add">
+        <div className={style.btn}>Add New Admin</div>
+      </a>
       <table className={style.tableBox}>
         <thead>
           <tr>

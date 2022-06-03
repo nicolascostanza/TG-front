@@ -18,6 +18,7 @@
    text-align: center;
 }
 .btn{
+    cursor: pointer;
     border: none;
     background-color: grey;
     padding: 1%;

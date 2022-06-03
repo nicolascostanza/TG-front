@@ -12,15 +12,15 @@ function ListItem(props) {
       <td className={style.field}>{lastName}</td>
       <td className={style.field}>{active ? 'true' : 'false'}</td>
       <td className={style.field}>{email}</td>
-      <td className={style.btnDelete} onClick={() => onDelete(_id)}>
-        x
+      <td onClick={() => onDelete(_id)}>
+        <a className={style.btnDelete} href="#">
+          X
+        </a>
       </td>
       <td>
-        <div className={style.btnEdit}>
-          <a className={style.btnEditText} href={url}>
-            edit
-          </a>
-        </div>
+        <a className={style.btnEditText} href={url}>
+          <div className={style.btnEdit}>edit</div>
+        </a>
       </td>
     </tr>
   );

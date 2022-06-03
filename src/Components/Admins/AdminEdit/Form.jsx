@@ -3,58 +3,49 @@ import style from '../AdminEdit/adminEdit.module.css';
 import Modal from '../Modal/modal';
 
 const Form = (props) => {
-  let [adminInput, setInput] = useState({});
-  const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [active, setActive] = useState(false);
 
-  const onChange = (e) => {
-    setInput({ ...adminInput, [e.target.name]: e.target.value });
-    console.log(
-      JSON.stringify({
-        first_name: adminInput.firstName,
-        lastName: adminInput.Lastame,
-        email: adminInput.email,
-        password: adminInput.password,
-        active: adminInput.active
-      })
-    );
-  };
   const closeModal = () => {
     setShowModal(false);
-    window.location.href = 'http://localhost:3000/admins';
   };
+  const resetFiles = () => {
+    setFirstName({ firstName: '' });
+    setLastName({ lastName: '' });
+    setEmail({ email: '' });
+    setPassword({ password: '' });
+    setActive({ active: false });
+  };
+
   const onSubmit = (e) => {
-    console.log(adminInput);
     e.preventDefault();
-    const postaAdmin = {
+    const postAdmin = {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        firstName: adminInput.firstName,
-        lastName: adminInput.lastName,
-        email: adminInput.email,
-        password: adminInput.password,
-        active: adminInput.active
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        password: password,
+        active: active
       })
     };
-    const url = `http://localhost:4000/admins/${props.admin._id}`;
+    const url = `${process.env.REACT_APP_API_URL}/admins/${props.admin._id}`;
 
-    fetch(url, postaAdmin)
+    fetch(url, postAdmin)
       .then((response) => response.json())
       .then((data) => setData(data));
 
-    setInput({
-      firstName: '',
-      lastName: '',
-      email: '',
-      password: '',
-      active: ''
-    });
+    resetFiles();
     setShowModal(true);
   };
-  console.log(props);
 
   return (
     <div className={style.container}>
@@ -70,8 +61,8 @@ const Form = (props) => {
             type="text"
             name="firstName"
             placeholder={props.admin.firstName}
-            value={adminInput.firstName}
-            onChange={onChange}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           ></input>
         </div>
         <div>
@@ -81,8 +72,8 @@ const Form = (props) => {
             type="text"
             name="lastName"
             placeholder={props.admin.lastName}
-            value={adminInput.lastName}
-            onChange={onChange}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           ></input>
         </div>
         <div>
@@ -92,8 +83,8 @@ const Form = (props) => {
             type="email"
             name="email"
             placeholder={props.admin.email}
-            value={adminInput.email}
-            onChange={onChange}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           ></input>
         </div>
         <div>
@@ -103,19 +94,18 @@ const Form = (props) => {
             type="password"
             name="password"
             placeholder={props.admin.password}
-            value={adminInput.password}
-            onChange={onChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           ></input>
         </div>
         <div>
           <label className={style.label}>Active</label>
           <input
             className={style.input}
-            type="text"
-            name="active"
-            placeholder={props.admin.active ? 'true' : 'false'}
-            value={adminInput.active}
-            onChange={onChange}
+            type="checkbox"
+            checked={active}
+            value={active}
+            onChange={(e) => setActive(e.currentTarget.checked)}
           ></input>
         </div>
         <div>
