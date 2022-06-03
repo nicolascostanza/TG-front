@@ -21,10 +21,10 @@ function ListItem(props) {
       <td>
         <TasksDropdown tasks={tasks} />
       </td>
-      <td>
+      <td className={listItemStyles.edit}>
         <i onClick={() => editProject(props.project._id)} className="fa-solid fa-pen"></i>
       </td>
-      <td>
+      <td className={listItemStyles.delete}>
         <i onClick={() => deleteProject(props.project._id)} className="fa-solid fa-trash-can"></i>
       </td>
     </tr>

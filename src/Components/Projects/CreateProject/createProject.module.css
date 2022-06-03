@@ -2,6 +2,17 @@
 	box-sizing: border-box;
 }
 
+a {
+	color: black;
+	text-decoration: none;
+}
+
+.navContainer {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
 .formContainer {
 	margin: 50px auto;
 	padding: 20px;
@@ -33,6 +44,7 @@
 }
 
 .form button {
+	color: white;
 	padding: 8px;
 	width: 50%;
 	margin-top: 8px;

@@ -83,6 +83,7 @@ const CreateProject = () => {
   const appendToSelectedEmployees = (id) => {
     const previousState = selectedEmployees;
     setSelectedEmployees([...previousState, id]);
+    setProject({ ...project, team: '' });
   };
 
   const deleteFromSelectedEmployees = (id) => {
@@ -92,6 +93,7 @@ const CreateProject = () => {
   const appendToSelectedTasks = (id) => {
     const previousState = selectedTasks;
     setSelectedTasks([...previousState, id]);
+    setProject({ ...project, tasks: '' });
   };
 
   const deleteFromSelectedTasks = (id) => {
@@ -100,6 +102,10 @@ const CreateProject = () => {
 
   return (
     <div className={addProjectStyles.formContainer}>
+      <div className={addProjectStyles.navContainer}>
+        <a href="/projects" className="fa-solid fa-arrow-left"></a>
+        <h3>Create a new project</h3>
+      </div>
       <form className={addProjectStyles.form}>
         <label>
           Name:

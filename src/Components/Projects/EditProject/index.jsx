@@ -96,6 +96,7 @@ const EditProject = (props) => {
   const appendToSelectedEmployees = (id) => {
     const previousState = selectedEmployees;
     setSelectedEmployees([...previousState, id]);
+    setProject({ ...project, team: '' });
   };
 
   const deleteFromSelectedEmployees = (id) => {
@@ -105,6 +106,7 @@ const EditProject = (props) => {
   const appendToSelectedTasks = (id) => {
     const previousState = selectedTasks;
     setSelectedTasks([...previousState, id]);
+    setProject({ ...project, tasks: '' });
   };
 
   const deleteFromSelectedTasks = (id) => {
