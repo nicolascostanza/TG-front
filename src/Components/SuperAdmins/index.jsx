@@ -16,7 +16,7 @@ function SuperAdmins() {
       <section className={styles.container}>
         <h2>SuperAdmin Form</h2>
         <Form method={method} switchScreen={switchScreen} id={id} />
-        <Btn text="View List" onClick={switchScreen} />
+        <Btn text="GO BACK" onClick={switchScreen} />
       </section>
     );
   } else {

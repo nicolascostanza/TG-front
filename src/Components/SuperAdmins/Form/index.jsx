@@ -12,6 +12,7 @@ function Form(props) {
   };
   const [superAdmins, setSuperAdmin] = useState([]);
   useEffect(() => {
+    cleanValuesPost();
     fetch(`${process.env.REACT_APP_API_URL}/super-admins/${props.id}`)
       .then((response) => response.json())
       .then((response) => {
@@ -35,6 +36,12 @@ function Form(props) {
     setPassword('');
     setActive(false);
   };
+  const cleanValuesPost = () => {
+    if (props.method === 'POST') {
+      resetFields();
+    }
+  };
+  console.log(active);
   const addSuperAdmin = async (superAdmin) => {
     if (confirm('Are you sure you want to create a Superadmin ?')) {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
@@ -65,6 +72,7 @@ function Form(props) {
       const data = await res.json();
       if (res.status === 200) {
         alert(data.message);
+        resetFields();
       } else {
         alert(data.message);
       }
@@ -77,12 +85,10 @@ function Form(props) {
       resetFields();
     } else if (props.method === 'PUT') {
       editSuperAdmin({ firstName, lastName, email, password, active });
-      resetFields();
     } else {
       alert('Something unexpected happened');
     }
   };
-
   return (
     <form className={styles.container} onSubmit={onSubmit}>
       <div>
