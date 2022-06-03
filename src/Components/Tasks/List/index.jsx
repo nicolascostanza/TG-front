@@ -6,7 +6,7 @@ import Btn from './Btn';
 function List() {
   const [tasks, setTask] = useState([]);
   useEffect(() => {
-    fetch('http://localhost:8080/tasks')
+    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
       .then((response) => response.json())
       .then((response) => {
         setTask(response.data);
@@ -17,7 +17,7 @@ function List() {
   const deleteTask = async (id) => {
     const resp = confirm('Are you sure you want to delete this task?');
     if (resp) {
-      await fetch(`http://localhost:8080/tasks/${id}`, {
+      await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}`, {
         method: 'DELETE'
       });
       setTask(tasks.filter((task) => task._id !== id));
@@ -25,7 +25,7 @@ function List() {
   };
   return (
     <section className={styles.container}>
-      <a href="http://localhost:3000/tasks-add" className={styles.Btn}>
+      <a href="/tasks-add" className={styles.Btn}>
         <Btn color="green" text="Add" />
       </a>
       <table className={styles.row}>
