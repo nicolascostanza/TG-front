@@ -7,7 +7,7 @@ const List = () => {
   const [employees, setEmployees] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/employees')
+    fetch(`${process.env.REACT_APP_API_URL}/employees`)
       .then((response) => response.json())
       .then((response) => {
         setEmployees(response.data);
@@ -17,7 +17,7 @@ const List = () => {
   // Delete employee
   const deleteEmployee = async (id) => {
     if (window.confirm('Do you want to delete this employee?')) {
-      const res = await fetch(`http://localhost:8080/employees/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
         method: 'DELETE'
       });
       res.status === 200
