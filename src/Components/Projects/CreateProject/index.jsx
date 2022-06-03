@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import addProjectStyles from './createProject.module.css';
 
 const CreateProject = () => {
@@ -14,6 +14,28 @@ const CreateProject = () => {
   };
 
   const [project, setProject] = useState(initialValues);
+  const [allEmployees, setAllEmployees] = useState({});
+  const [allTasks, setAllTasks] = useState({});
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const [selectedTasks, setSelectedTasks] = useState([]);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/employees`)
+      .then((response) => response.json())
+      .then((json) => {
+        setAllEmployees(json.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+      .then((response) => response.json())
+      .then((json) => {
+        setAllTasks(json.data);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const handleInputChanges = (e) => {
     const { name, value } = e.target;
@@ -37,22 +59,43 @@ const CreateProject = () => {
         startDate: project.startDate,
         endDate: project.endDate,
         projectManager: project.projectManager,
-        team: project.team,
-        tasks: project.tasks
+        team: selectedEmployees,
+        tasks: selectedTasks
       })
     })
       .then((response) => response.json())
       .then((json) => {
         if (!json.error) {
           alert(json.message);
-          resetValues();
+          resetValues(e);
         }
       })
       .catch((error) => console.log(error));
   };
 
-  const resetValues = () => {
+  const resetValues = (e) => {
+    e.preventDefault();
     setProject(initialValues);
+    setSelectedEmployees([]);
+    setSelectedTasks([]);
+  };
+
+  const appendToSelectedEmployees = (id) => {
+    const previousState = selectedEmployees;
+    setSelectedEmployees([...previousState, id]);
+  };
+
+  const deleteFromSelectedEmployees = (id) => {
+    setSelectedEmployees(selectedEmployees.filter((emp) => emp !== id));
+  };
+
+  const appendToSelectedTasks = (id) => {
+    const previousState = selectedTasks;
+    setSelectedTasks([...previousState, id]);
+  };
+
+  const deleteFromSelectedTasks = (id) => {
+    setSelectedTasks(selectedTasks.filter((task) => task !== id));
   };
 
   return (
@@ -105,10 +148,88 @@ const CreateProject = () => {
         <label>
           Team:
           <input value={project.team} onChange={handleInputChanges} name="team" type="text" />
+          <div className={addProjectStyles.optionContainer}>
+            {project.team.length > 0
+              ? allEmployees
+                  .filter(
+                    (employee) =>
+                      employee.email.match(new RegExp(project.team, 'i')) ||
+                      employee.firstName.match(new RegExp(project.team, 'i'))
+                  )
+                  .map((member) => {
+                    return (
+                      <p
+                        key={member._id}
+                        onClick={() =>
+                          selectedEmployees.find((emp) => emp === member._id)
+                            ? deleteFromSelectedEmployees(member._id)
+                            : appendToSelectedEmployees(member._id)
+                        }
+                        className={
+                          selectedEmployees.find((emp) => emp === member._id)
+                            ? addProjectStyles.selectedItem
+                            : addProjectStyles.notSelectedItem
+                        }
+                      >
+                        {member.firstName}: {member.email}
+                      </p>
+                    );
+                  })
+              : selectedEmployees.map((member) => {
+                  return (
+                    <p
+                      key={member}
+                      className={addProjectStyles.selectedItem}
+                      onClick={() => deleteFromSelectedEmployees(member)}
+                    >
+                      {allEmployees.find((emp) => emp._id === member).firstName} (
+                      {allEmployees.find((emp) => emp._id === member).email})
+                    </p>
+                  );
+                })}
+          </div>
         </label>
         <label>
           Tasks:
           <input value={project.tasks} onChange={handleInputChanges} name="tasks" type="text" />
+          {project.tasks.length > 0
+            ? allTasks
+                .filter(
+                  (task) =>
+                    task.taskName.match(new RegExp(project.tasks, 'i')) ||
+                    task.taskDescription.match(new RegExp(project.tasks, 'i'))
+                )
+                .map((task) => {
+                  return (
+                    <p
+                      key={task._id}
+                      onClick={() =>
+                        selectedTasks.find((item) => item === task._id)
+                          ? deleteFromSelectedTasks(task._id)
+                          : appendToSelectedTasks(task._id)
+                      }
+                      className={
+                        selectedTasks.find((item) => item === task._id)
+                          ? addProjectStyles.selectedItem
+                          : addProjectStyles.notSelectedItem
+                      }
+                    >
+                      {task.taskName}: {task.taskDescription}
+                    </p>
+                  );
+                })
+            : selectedTasks.map((task) => {
+                return (
+                  <p
+                    key={task}
+                    className={addProjectStyles.selectedItem}
+                    onClick={() => deleteFromSelectedTasks(task)}
+                  >
+                    {allTasks.find((item) => item._id === task).taskName}:{' '}
+                    {allTasks.find((item) => item._id === task).taskDescription}
+                  </p>
+                );
+              })}
         </label>
         <div className={addProjectStyles.buttonContainer}>
           <button onClick={resetValues}>RESET</button>
