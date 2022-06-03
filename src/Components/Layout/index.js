@@ -8,37 +8,24 @@ import Employees from '../Employees/index';
 import Projects from '../Projects';
 import TimeSheets from '../TimeSheets';
 import Tasks from '../Tasks/index';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function Layout() {
-  let currentScreen = <Home />;
-  switch (window.location.pathname) {
-    case '/admins':
-      currentScreen = <Admins />;
-      break;
-    case '/super-admins':
-      currentScreen = <SuperAdmins />;
-      break;
-    case '/employees':
-      currentScreen = <Employees />;
-      break;
-    case '/projects':
-      currentScreen = <Projects />;
-      break;
-    case '/time-sheets':
-      currentScreen = <TimeSheets />;
-      break;
-    case '/tasks':
-      currentScreen = <Tasks />;
-      break;
-    default:
-      break;
-  }
-
   return (
     <div className={styles.container}>
-      <Header />
-      {currentScreen}
-      <Footer />
+      <Router>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/admins" component={Admins} />
+          <Route path="/super-admins" component={SuperAdmins} />
+          <Route path="/employees" component={Employees} />
+          <Route path="/projects" component={Projects} />
+          <Route path="/time-sheets" component={TimeSheets} />
+          <Route path="/tasks" component={Tasks} />
+        </Switch>
+        <Footer />
+      </Router>
     </div>
   );
 }
