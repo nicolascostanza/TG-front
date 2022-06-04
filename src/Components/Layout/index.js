@@ -7,6 +7,8 @@ import styles from './layout.module.css';
 import Employees from '../Employees/index';
 import Projects from '../Projects';
 import TimeSheets from '../TimeSheets';
+import AddTimeSheets from '../TimeSheets/Add';
+import EditTimeSheets from '../TimeSheets/Edit';
 import Tasks from '../Tasks/index';
 import AdminAdd from '../Admins/AdminAdd/adminAdd';
 import AdminEdit from '../Admins/AdminEdit/adminEdit';
@@ -24,10 +26,19 @@ function Layout() {
       currentScreen = <Employees />;
       break;
     case '/projects':
-      currentScreen = <Projects />;
+      currentScreen = <Projects form={false} />;
+      break;
+    case '/projects/create':
+      currentScreen = <Projects form={true} />;
       break;
     case '/time-sheets':
       currentScreen = <TimeSheets />;
+      break;
+    case '/time-sheets-add':
+      currentScreen = <AddTimeSheets />;
+      break;
+    case '/time-sheets-edit':
+      currentScreen = <EditTimeSheets />;
       break;
     case '/tasks':
       currentScreen = <Tasks />;
