@@ -109,7 +109,13 @@ const CreateProject = () => {
       <form className={addProjectStyles.form}>
         <label>
           Name:
-          <input value={project.name} onChange={handleInputChanges} name="name" type="text" />
+          <input
+            value={project.name}
+            onChange={handleInputChanges}
+            name="name"
+            type="text"
+            placeholder="Project name"
+          />
         </label>
         <label>
           Description:
@@ -118,6 +124,7 @@ const CreateProject = () => {
             onChange={handleInputChanges}
             name="description"
             type="text"
+            placeholder="Project description"
           />
         </label>
         <label>
@@ -127,6 +134,7 @@ const CreateProject = () => {
             onChange={handleInputChanges}
             name="clientName"
             type="text"
+            placeholder="Client name"
           />
         </label>
         <label>
@@ -149,11 +157,18 @@ const CreateProject = () => {
             onChange={handleInputChanges}
             name="projectManager"
             type="text"
+            placeholder="Project manager"
           />
         </label>
         <label>
           Team:
-          <input value={project.team} onChange={handleInputChanges} name="team" type="text" />
+          <input
+            value={project.team}
+            onChange={handleInputChanges}
+            name="team"
+            type="text"
+            placeholder="Search an employee"
+          />
           <div className={addProjectStyles.optionContainer}>
             {project.team.length > 0
               ? allEmployees
@@ -197,7 +212,13 @@ const CreateProject = () => {
         </label>
         <label>
           Tasks:
-          <input value={project.tasks} onChange={handleInputChanges} name="tasks" type="text" />
+          <input
+            value={project.tasks}
+            onChange={handleInputChanges}
+            name="tasks"
+            type="text"
+            placeholder="Search a task"
+          />
           {project.tasks.length > 0
             ? allTasks
                 .filter(
