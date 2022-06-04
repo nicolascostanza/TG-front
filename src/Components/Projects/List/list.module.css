@@ -1,0 +1,59 @@
+.table {
+	margin: 20px;
+	border-collapse: collapse;
+}
+
+.table th:first-child {
+	border-radius: 10px 0 0 0;
+}
+
+.table th:last-child {
+	border-radius: 0 10px 0 0;
+}
+
+.tableBody > tr:last-child > :first-child {
+	border-radius: 0 0 0 10px;
+}
+
+.tableBody > tr:last-child > :last-child {
+	border-radius: 0 0 10px 0;
+}
+
+.tableHead {
+	background-color: #ea3354;
+}
+
+.tableHead > tr > th {
+	padding: 10px;
+}
+
+.tableBody > :nth-child(even) {
+	background-color: #e0e4e9;
+	transition: .2s;
+}
+
+.tableBody > :nth-child(odd) {
+	background-color: #f0f4f9;
+	transition: .2s;
+}
+
+.tableBody > :hover {
+	background-color: #e5e9ef;
+}
+
+.createButton {
+	text-decoration: none;
+	text-align: center;
+	width: 200px;
+	padding: 20px;
+	margin: 20px;
+	border-radius: 5px;
+	color: white;
+	background-color: #27a700;
+	transition: .2s;
+}
+
+.createButton:hover {
+	color: #fafafa;
+	background-color: #259c01;
+}
