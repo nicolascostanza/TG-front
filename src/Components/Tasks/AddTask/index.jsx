@@ -120,9 +120,6 @@ const AddTask = () => {
         </div>
       </div>
       <input className={styles.button} type="submit" value="Add Task" />
-      <a href={URL} className={styles.back}>
-        Back
-      </a>
     </form>
   );
 };

@@ -124,9 +124,6 @@ const EditTask = () => {
         </div>
       </div>
       <input className={styles.button} type="submit" value="Update Task" />
-      <a href={URL} className={styles.back}>
-        Back
-      </a>
     </form>
   );
 };
