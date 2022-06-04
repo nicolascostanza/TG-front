@@ -27,9 +27,6 @@ function Header() {
         </div>
       </div>
       <nav className={styles.navbar}>
-        <div className={styles.appName}>
-          Track<span>GENIX</span>
-        </div>
         <ul className={styles.rutes}>
           <li>
             <a href="/admins">admins</a>
@@ -50,6 +47,9 @@ function Header() {
             <a href="/tasks">tasks</a>
           </li>
         </ul>
+        <div className={styles.appName}>
+          Track<span>GENIX</span>
+        </div>
       </nav>
     </header>
   );
