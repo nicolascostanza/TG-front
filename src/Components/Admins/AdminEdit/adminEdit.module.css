@@ -26,7 +26,28 @@
     background-color: rgb(116, 167, 102);
     border-radius: 3px;
     width: 20%;
+    height: 30px;
     padding: 1%;
     margin: 2%;
     border: none;
+}
+.boxSubmit{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.btnCancel{
+    cursor: pointer;
+    width: 40px;
+    height: 20px;
+    align-content: center;
+    margin-right: 20px;
+    background-color: rgb(169, 40, 40); ;
+    border: none;
+    border-radius: 3px;
+    text-decoration: none;
+    color: black;
+    font-size: 12px;
+    padding: 4px 8px;
+
 }

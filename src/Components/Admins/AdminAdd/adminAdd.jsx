@@ -16,11 +16,11 @@ const AddAdmin = () => {
   };
 
   const resetFiles = () => {
-    setFirstName({ firstName: '' });
-    setFirstName({ lastName: '' });
-    setFirstName({ email: '' });
-    setFirstName({ password: '' });
-    setFirstName({ active: false });
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setActive(false);
   };
 
   const onSubmit = (e) => {
@@ -49,6 +49,9 @@ const AddAdmin = () => {
     <div className={style.container}>
       <Modal show={showModal} close={closeModal} message={data.message} />
       <div className={style.title}>
+        <a className={style.btnBack} href="/admins">
+          back
+        </a>
         <h2>Add new admin</h2>
       </div>
       <form onSubmit={onSubmit} className={style.formContainer}>

@@ -10,7 +10,21 @@
     padding: 2%;
 }
 .title{
+    display: flex;
+    align-items: baseline;
     color: rgba(15, 15, 15, 0.757);
+}
+.btnBack{
+    cursor: pointer;
+    height: 25px;
+    width: 40px;
+    margin-right: 20px;
+    background-color: rgb(116, 167, 102); ;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+    padding: 4px 10px;
 }
 .label{
     margin-right: 10px;

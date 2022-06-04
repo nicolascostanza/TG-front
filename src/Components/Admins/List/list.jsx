@@ -16,7 +16,7 @@ function List() {
       });
   }, []);
   const deleteAdmin = async (id) => {
-    const war = confirm('Sure you want to remove it?');
+    const war = confirm(`Are you sure you want to delete the admin with the Id: ${id}`);
     if (war) {
       await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
         method: 'DELETE'
