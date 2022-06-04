@@ -6,7 +6,7 @@ const employeeId = params.substring(4);
 
 const EditEmployee = () => {
   useEffect(() => {
-    fetch(`http://localhost:8080/employees/${employeeId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/employees/${employeeId}`)
       .then((response) => response.json())
       .then((response) => {
         setFirstName(response.data.firstName);
@@ -31,7 +31,7 @@ const EditEmployee = () => {
   const [active, setActive] = useState(false);
 
   const editEmployee = async (employee) => {
-    const res = await fetch(`http://localhost:8080/employees/${employeeId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${employeeId}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
@@ -42,7 +42,7 @@ const EditEmployee = () => {
     if (res.status === 200 || res.status === 202 || res.status === 204) {
       return alert(data.message);
     } else if (res.status === 400) {
-      return alert(data.msg);
+      return alert(data.message);
     }
   };
 
@@ -71,70 +71,79 @@ const EditEmployee = () => {
     setActive(false);
   };
   return (
-    <form className={styles.container} onSubmit={onSubmit}>
-      <div>
-        <h2>Edit Employee</h2>
+    <div>
+      <form className={styles.container} onSubmit={onSubmit}>
+        <div>
+          <h2>Edit Employee</h2>
+        </div>
+        <div className={styles.form}>
+          <div>
+            <label>First name</label>
+            <input
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            ></input>
+          </div>
+          <div>
+            <label>Surname</label>
+            <input type="text" value={surname} onChange={(e) => setSurname(e.target.value)}></input>
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+          </div>
+          <div>
+            <label>Gender</label>
+            <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label>Address</label>
+            <input type="text" value={adress} onChange={(e) => setAdress(e.target.value)}></input>
+          </div>
+          <div>
+            <label>Dob</label>
+            <input
+              type="text"
+              placeholder="yyy-mm-dd"
+              value={dob}
+              onChange={(e) => setDob(e.target.value)}
+            ></input>
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            ></input>
+          </div>
+          <div>
+            <label>Phone</label>
+            <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}></input>
+          </div>
+          <div>
+            <label>Active</label>
+            <select type="text" value={active} onChange={(e) => setActive(e.target.value)}>
+              <option value="True">True</option>
+              <option value="False">False</option>
+            </select>
+          </div>
+          <div className={styles.submit}>
+            <input type="submit" value="Submit" onSubmit={onSubmit}></input>
+          </div>
+        </div>
+      </form>
+      <div className={styles.submit}>
+        <a href={`${process.env.REACT_APP_API_URL}/employees`}>
+          <button>Back to list</button>
+        </a>
       </div>
-      <div className={styles.form}>
-        <div>
-          <label>First name</label>
-          <input
-            type="text"
-            value={firstName}
-            placeholder={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          <label>Surname</label>
-          <input type="text" value={surname} onChange={(e) => setSurname(e.target.value)}></input>
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
-        </div>
-        <div>
-          <label>Gender</label>
-          <input type="text" value={gender} onChange={(e) => setGender(e.target.value)}></input>
-        </div>
-        <div>
-          <label>Adress</label>
-          <input type="text" value={adress} onChange={(e) => setAdress(e.target.value)}></input>
-        </div>
-        <div>
-          <label>Dob</label>
-          <input
-            type="text"
-            placeholder="yyy-mm-dd"
-            value={dob}
-            onChange={(e) => setDob(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></input>
-        </div>
-        <div>
-          <label>Phone</label>
-          <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}></input>
-        </div>
-        <div>
-          <label>Active</label>
-          <input
-            type="boolean"
-            value={active ? 'active' : 'innactive'}
-            onChange={(e) => setActive({ Boolean: e.target.value })}
-          ></input>
-        </div>
-        <div className={styles.submit}>
-          <input type="submit" value="Submit" onSubmit={onSubmit}></input>
-        </div>
-      </div>
-    </form>
+    </div>
   );
 };
 

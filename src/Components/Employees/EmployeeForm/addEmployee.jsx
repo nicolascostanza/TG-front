@@ -2,34 +2,18 @@ import React, { useState } from 'react';
 import styles from './addEmployee.module.css';
 
 const AddEmployee = () => {
-  const [employeeInput, setEmployeeInput] = useState({
-    firstName: '',
-    surname: '',
-    email: '',
-    gender: '',
-    adress: '',
-    dob: '',
-    password: '',
-    phone: '',
-    active: ''
-  });
-  const onChange = (e) => {
-    setEmployeeInput({ ...employeeInput, [e.target.name]: e.target.value });
-  };
+  const [firstName, setFirstName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [adress, setAdress] = useState('');
+  const [dob, setDob] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [active, setActive] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setEmployeeInput({
-      firstName: '',
-      surname: '',
-      email: '',
-      gender: '',
-      adress: '',
-      dob: '',
-      password: '',
-      phone: '',
-      active: ''
-    });
 
     const createEmployee = {
       method: 'POST',
@@ -37,22 +21,22 @@ const AddEmployee = () => {
         'Content-type': 'application/json'
       },
       body: JSON.stringify({
-        firstName: employeeInput.firstName,
-        surname: employeeInput.surname,
-        email: employeeInput.email,
-        gender: employeeInput.gender,
-        adress: employeeInput.adress,
-        dob: employeeInput.dob,
-        password: employeeInput.password,
-        phone: employeeInput.phone,
-        active: employeeInput.active
+        firstName,
+        surname,
+        email,
+        gender,
+        adress,
+        dob,
+        password,
+        phone,
+        active
       })
     };
     const url = `${process.env.REACT_APP_API_URL}/employees`;
 
     fetch(url, createEmployee)
       .then((response) => response.json())
-      .then((data) => alert(data.msg));
+      .then((data) => alert(data.message));
   };
 
   return (
@@ -66,8 +50,8 @@ const AddEmployee = () => {
           <input
             type="text"
             name="firstName"
-            value={employeeInput.firstName}
-            onChange={onChange}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           ></input>
         </div>
         <div>
@@ -75,52 +59,76 @@ const AddEmployee = () => {
           <input
             type="text"
             name="surname"
-            value={employeeInput.surname}
-            onChange={onChange}
+            value={surname}
+            onChange={(e) => setSurname(e.target.value)}
           ></input>
         </div>
         <div>
           <label>Email</label>
-          <input type="text" name="email" value={employeeInput.email} onChange={onChange}></input>
+          <input
+            type="text"
+            name="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          ></input>
         </div>
         <div>
           <label>Gender</label>
-          <input type="text" name="gender" value={employeeInput.gender} onChange={onChange}></input>
+          <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
         </div>
         <div>
-          <label>Adress</label>
-          <input type="text" name="adress" value={employeeInput.adress} onChange={onChange}></input>
+          <label>Address</label>
+          <input
+            type="text"
+            name="adress"
+            value={adress}
+            onChange={(e) => setAdress(e.target.value)}
+          ></input>
         </div>
         <div>
           <label>Dob</label>
-          <input type="date" name="dob" value={employeeInput.dob} onChange={onChange}></input>
+          <input
+            type="date"
+            name="dob"
+            value={dob}
+            onChange={(e) => setDob(e.target.value)}
+          ></input>
         </div>
         <div>
           <label>Password</label>
           <input
             type="password"
             name="password"
-            value={employeeInput.password}
-            onChange={onChange}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           ></input>
         </div>
         <div>
           <label>Phone</label>
-          <input type="number" name="phone" value={employeeInput.phone} onChange={onChange}></input>
+          <input
+            type="number"
+            name="phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          ></input>
         </div>
         <div>
           <label>Active</label>
-          <input
-            type="boolean"
-            name="active"
-            value={employeeInput.active}
-            onChange={onChange}
-          ></input>
+          <input name="active" value={active} onChange={(e) => setActive(e.target.value)}></input>
         </div>
         <div className={styles.submit}>
           <input type="submit" value="Submit" onSubmit={onSubmit}></input>
         </div>
       </form>
+      <div className={styles.submit}>
+        <a href={`${process.env.REACT_APP_API_URL}/employees`}>
+          <button>Back to list</button>
+        </a>
+      </div>
     </div>
   );
 };
