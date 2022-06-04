@@ -10,6 +10,8 @@ import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
 import EditTimeSheets from '../TimeSheets/Edit';
 import Tasks from '../Tasks/index';
+import AdminAdd from '../Admins/AdminAdd/adminAdd';
+import AdminEdit from '../Admins/AdminEdit/adminEdit';
 
 function Layout() {
   let currentScreen = <Home />;
@@ -40,6 +42,12 @@ function Layout() {
       break;
     case '/tasks':
       currentScreen = <Tasks />;
+      break;
+    case '/admins-add':
+      currentScreen = <AdminAdd />;
+      break;
+    case '/admins-edit':
+      currentScreen = <AdminEdit />;
       break;
     default:
       break;
