@@ -1,17 +1,17 @@
-import Header from '../Header/index';
-import Footer from '../Footer/index';
+import AdminAdd from '../Admins/AdminAdd/adminAdd';
+import AdminEdit from '../Admins/AdminEdit/adminEdit';
 import Admins from '../Admins/index';
-import SuperAdmins from '../SuperAdmins/index';
-import Home from '../Home/index';
-import styles from './layout.module.css';
 import Employees from '../Employees/index';
+import Footer from '../Footer/index';
+import Header from '../Header/index';
+import Home from '../Home/index';
 import Projects from '../Projects';
+import SuperAdmins from '../SuperAdmins/index';
+import Tasks from '../Tasks/index';
 import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
 import EditTimeSheets from '../TimeSheets/Edit';
-import Tasks from '../Tasks/index';
-import AdminAdd from '../Admins/AdminAdd/adminAdd';
-import AdminEdit from '../Admins/AdminEdit/adminEdit';
+import styles from './layout.module.css';
 
 function Layout() {
   let currentScreen = <Home />;

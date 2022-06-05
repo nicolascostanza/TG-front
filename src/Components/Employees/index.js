@@ -1,6 +1,6 @@
+import AddBtn from './AddBtn/AddBtn';
 import styles from './employees.module.css';
 import List from './List/List';
-import AddBtn from './AddBtn/AddBtn';
 
 function Employees() {
   return (
