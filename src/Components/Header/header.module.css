@@ -1,10 +1,10 @@
 .container {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  padding: 0 5%;
+  width: 100vw;
   height: 50px;
-  background-color: #EA3354;
+  background-color: #d4d4d4;
 }
 
 .brand {
@@ -18,40 +18,103 @@
 
 .navbar {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  padding: 0 5%;
-  min-height: 100px;
-  background-color: #F0F4F9;
+  height: 75px;
+  background-color: #EDEDED;
 }
 
 .appName {
   font-size: 2rem;
   font-weight: bold;
+  margin: 20px auto 0;
+  padding-left: 2vw;
+  width: 50%;
+  border-bottom: 2px solid black;
+  box-sizing: border-box;
 }
 
 .rutes {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
+  justify-content: center;
   list-style-type: none;
+  margin-right: 50px;
 }
 
 .rutes > li > a {
-  margin-left: 15px;
+  margin-left: 10px;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 400;
   text-decoration: none;
   text-transform: capitalize;
   color: black;
+  display: none;
 }
 
 @media screen and (min-width: 750px) {
   .container {
-    padding: 0 20%;
+    display: flex;
+    justify-content: space-around;
   }
 
   .navbar {
-    padding: 0 20%;
+    min-height: 35px;
+  }
+
+  .rutes li a {
+    display: none;
+}
+
+  .appName {
+    width: 40%;
+    font-size: 2.5rem;
+    padding-left: 48px;
+    border-bottom: 2px solid black;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  .rutes li a {
+    display: inline;
+    font-weight: 600;
+  }
+  .navbar {
+    flex-direction: row;
+    justify-content: space-around;
+    height: 10vh;
+  }
+  .appName {
+    margin-top: 0;
+    font-size: 3rem;
+    width: 30%;
+    padding-left: 2%;
+    margin: 0 25px 20px;
+  }
+}
+
+@media screen and (min-width: 1770px) {
+  .rutes li a {
+    display: inline;
+    font-weight: 600;
+    margin: 0 20px;
+  }
+  .navbar {
+    flex-direction: row;
+    justify-content: space-around;
+    height: 12vh;
+  }
+  .appName {
+    margin-top: 0;
+    font-size: 3.5rem;
+    width: 20%;
+    padding-left: 2%;
+    margin: 0 25px 20px;
+  }
+
+  .container {
+    justify-content: flex-end;
+    margin-right: 200px;
   }
 }
