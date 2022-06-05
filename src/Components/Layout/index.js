@@ -1,6 +1,6 @@
+import AdminAdd from '../Admins/AdminAdd/adminAdd';
+import AdminEdit from '../Admins/AdminEdit/adminEdit';
 import Admins from '../Admins/index';
-import EditEmployee from '../Employees/EditEmployee/editEmployee';
-import AddEmployee from '../Employees/EmployeeForm/addEmployee';
 import Employees from '../Employees/index';
 import Footer from '../Footer/index';
 import Header from '../Header/index';
@@ -9,6 +9,8 @@ import Projects from '../Projects';
 import SuperAdmins from '../SuperAdmins/index';
 import Tasks from '../Tasks/index';
 import TimeSheets from '../TimeSheets';
+import AddTimeSheets from '../TimeSheets/Add';
+import EditTimeSheets from '../TimeSheets/Edit';
 import styles from './layout.module.css';
 
 function Layout() {
@@ -23,20 +25,29 @@ function Layout() {
     case '/employees':
       currentScreen = <Employees />;
       break;
-    case '/employee-add':
-      currentScreen = <AddEmployee />;
-      break;
-    case '/employee-edit':
-      currentScreen = <EditEmployee />;
-      break;
     case '/projects':
-      currentScreen = <Projects />;
+      currentScreen = <Projects form={false} />;
+      break;
+    case '/projects/create':
+      currentScreen = <Projects form={true} />;
       break;
     case '/time-sheets':
       currentScreen = <TimeSheets />;
       break;
+    case '/time-sheets-add':
+      currentScreen = <AddTimeSheets />;
+      break;
+    case '/time-sheets-edit':
+      currentScreen = <EditTimeSheets />;
+      break;
     case '/tasks':
       currentScreen = <Tasks />;
+      break;
+    case '/admins-add':
+      currentScreen = <AdminAdd />;
+      break;
+    case '/admins-edit':
+      currentScreen = <AdminEdit />;
       break;
     default:
       break;
