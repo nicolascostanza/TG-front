@@ -8,15 +8,12 @@ import Home from '../Home/index';
 import Projects from '../Projects';
 import SuperAdmins from '../SuperAdmins/index';
 import Tasks from '../Tasks/index';
-<<<<<<< HEAD
 import AddTask from '../Tasks/AddTask/index';
 import EditTask from '../Tasks/EditTask';
-=======
 import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
 import EditTimeSheets from '../TimeSheets/Edit';
 import styles from './layout.module.css';
->>>>>>> origin/master
 
 function Layout() {
   let currentScreen = <Home />;
@@ -48,19 +45,17 @@ function Layout() {
     case '/tasks':
       currentScreen = <Tasks />;
       break;
-<<<<<<< HEAD
     case '/tasks-add':
       currentScreen = <AddTask />;
       break;
     case '/tasks-edit':
       currentScreen = <EditTask />;
-=======
+      break;
     case '/admins-add':
       currentScreen = <AdminAdd />;
       break;
     case '/admins-edit':
       currentScreen = <AdminEdit />;
->>>>>>> origin/master
       break;
     default:
       break;
