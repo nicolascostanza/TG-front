@@ -2,6 +2,8 @@ import AdminAdd from '../Admins/AdminAdd/adminAdd';
 import AdminEdit from '../Admins/AdminEdit/adminEdit';
 import Admins from '../Admins/index';
 import Employees from '../Employees/index';
+import EditEmployee from '../Employees/EditEmployee/editEmployee';
+import AddEmployee from '../Employees/EmployeeForm/addEmployee';
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -28,6 +30,8 @@ function Layout() {
           <Route exact path="/admins-edit" component={AdminEdit} />
           <Route exact path="/super-admins" component={SuperAdmins} />
           <Route exact path="/employees" component={Employees} />
+          <Route exact path="/employees/employee-add" component={AddEmployee} />
+          <Route exact path="/employees/employee-edit" component={EditEmployee} />
           <Route exact path="/projects">
             <Projects form={false} />
           </Route>

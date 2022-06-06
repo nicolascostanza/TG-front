@@ -125,7 +125,7 @@ const AddEmployee = () => {
         </div>
       </form>
       <div className={styles.submit}>
-        <a href={`${process.env.REACT_APP_API_URL}/employees`}>
+        <a href="/employees">
           <button>Back to list</button>
         </a>
       </div>
