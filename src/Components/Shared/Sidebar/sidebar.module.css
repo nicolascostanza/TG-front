@@ -63,3 +63,26 @@
     cursor:pointer;
     color:rgb(198, 46, 46);
 }
+
+.sideButton {
+    position:fixed;
+    margin-left: -10px;
+    left:0;
+    width: 70px; 
+    height: 10vh;
+    border: none; 
+    background: rgba(55, 56, 103, 1);
+    border-radius: 0 100px 100px 0;
+    transform:scale(0.7);
+}
+
+.sideButton i{
+  color:white;
+  size: 150%;
+  transform:scale(1.7);
+}
+
+.sideButton:hover {
+  cursor:pointer;
+  background-color: rgba(175, 175, 194, 1);
+}

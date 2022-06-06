@@ -1,9 +1,18 @@
 import React from 'react';
 import styles from '../Sidebar/sidebar.module.css';
+import { useState } from 'react';
 
-const Sidebar = ({ children, isOpen, handleClose }) => {
+const Sidebar = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const handleClose = () => {
+    setIsOpen(false);
+  };
   if (!isOpen) {
-    return null;
+    return (
+      <button className={styles.sideButton} onClick={() => setIsOpen(true)}>
+        <i className="fa-solid fa-play"></i>
+      </button>
+    );
   }
   return (
     <div className={styles.Sidebar}>
