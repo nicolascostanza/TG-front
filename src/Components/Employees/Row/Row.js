@@ -29,7 +29,7 @@ const Row = ({
       <td>{createdAt}</td>
       <td>{updatedAt}</td>
       <td>
-        <a href={`/employees/editEmployee?id=${id}`}>
+        <a href={`/employees/employee-edit?id=${id}`}>
           <i className="fa-solid fa-pen-to-square"></i>
         </a>
       </td>

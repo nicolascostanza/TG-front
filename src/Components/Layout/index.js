@@ -1,6 +1,8 @@
 import AdminAdd from '../Admins/AdminAdd/adminAdd';
 import AdminEdit from '../Admins/AdminEdit/adminEdit';
 import Admins from '../Admins/index';
+import EditEmployee from '../Employees/EditEmployee/editEmployee';
+import AddEmployee from '../Employees/EmployeeForm/addEmployee';
 import Employees from '../Employees/index';
 import Footer from '../Footer/index';
 import Header from '../Header/index';
@@ -24,6 +26,12 @@ function Layout() {
       break;
     case '/employees':
       currentScreen = <Employees />;
+      break;
+    case '/employees/employee-add':
+      currentScreen = <AddEmployee />;
+      break;
+    case '/employees/employee-edit':
+      currentScreen = <EditEmployee />;
       break;
     case '/projects':
       currentScreen = <Projects form={false} />;
