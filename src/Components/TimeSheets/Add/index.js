@@ -130,7 +130,6 @@ function AddTimeSheets() {
           />
         </div>
       </div>
-      {/* <input className={styles.button} type="submit" value="Add Timesheet" /> */}
     </Form>
   );
 }

@@ -1,4 +1,4 @@
-/* Labels, inputs, buttons */
+/* Labels, inputs, buttons, cancel button */
 import React from 'react';
 import styles from './form.module.css';
 
@@ -6,7 +6,7 @@ const Form = ({ children, handleSubmit, buttonText }) => {
   return (
     <form className={styles.form}>
       <div>
-        {children}
+        <div className={styles.inputs}> {children} </div>
         <button className={styles.button} onClick={() => handleSubmit()}>
           {buttonText}
         </button>
