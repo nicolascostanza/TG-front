@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import addProjectStyles from './createProject.module.css';
+import { withRouter } from 'react-router-dom';
 
-const CreateProject = () => {
+const CreateProject = (props) => {
   const initialValues = {
     name: '',
     description: '',
@@ -103,7 +104,7 @@ const CreateProject = () => {
   return (
     <div className={addProjectStyles.formContainer}>
       <div className={addProjectStyles.navContainer}>
-        <a href="/projects" className="fa-solid fa-arrow-left"></a>
+        <button onClick={() => props.history.goBack()}>Back to list</button>
         <h3>Create a new project</h3>
       </div>
       <form className={addProjectStyles.form}>
@@ -246,4 +247,4 @@ const CreateProject = () => {
   );
 };
 
-export default CreateProject;
+export default withRouter(CreateProject);

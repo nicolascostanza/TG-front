@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import style from '../AdminAdd/add.module.css';
 import Modal from '../Modal/modal';
 
-const AddAdmin = () => {
+const AddAdmin = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [data, setData] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -49,9 +49,12 @@ const AddAdmin = () => {
     <div className={style.container}>
       <Modal show={showModal} close={closeModal} message={data.message} />
       <div className={style.title}>
-        <a className={style.btnBack} href="/admins">
+        {/* <a className={style.btnBack} href="/admins">
           back
-        </a>
+        </a> */}
+        <button className={style.btnBack} onClick={() => props.history.goBack()}>
+          Back
+        </button>
         <h2>Add new admin</h2>
       </div>
       <form onSubmit={onSubmit} className={style.formContainer}>
