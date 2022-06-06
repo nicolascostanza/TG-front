@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './addTask.module.css';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
 
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
@@ -59,6 +60,11 @@ const AddTask = (props) => {
     setStatus('');
   };
 
+  const valueChange = (e) => {
+    console.log('e', e.target.value);
+    return setStatus(e.target.value);
+  };
+
   return (
     <form className={styles.container} onSubmit={onSubmit}>
       <div>
@@ -111,13 +117,20 @@ const AddTask = (props) => {
           />
         </div>
         <div className={styles.dropdown}>
+          <Dropdown title="Status" value={status} onChange={valueChange}>
+            <option value="Ready to deliver">Ready to deliver</option>
+            <option value="Paused">Paused</option>
+            <option value="Cancelled">Cancelled</option>
+          </Dropdown>
+        </div>
+        {/* <div className={styles.dropdown}>
           <label>Status:</label>
           <select value={status} onChange={(e) => setStatus(e.target.value)}>
             <option value="Ready to deliver">Ready to deliver</option>
             <option value="Paused">Paused</option>
             <option value="Cancelled">Cancelled</option>
           </select>
-        </div>
+        </div> */}
       </div>
       <input className={styles.button} type="submit" value="Add Task" />
       <button className={styles.button} onClick={() => props.history.goBack()}>
