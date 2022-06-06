@@ -8,6 +8,8 @@ import Home from '../Home/index';
 import Projects from '../Projects';
 import SuperAdmins from '../SuperAdmins/index';
 import Tasks from '../Tasks/index';
+import AddTask from '../Tasks/AddTask/index';
+import EditTask from '../Tasks/EditTask';
 import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
 import EditTimeSheets from '../TimeSheets/Edit';
@@ -42,6 +44,12 @@ function Layout() {
       break;
     case '/tasks':
       currentScreen = <Tasks />;
+      break;
+    case '/tasks-add':
+      currentScreen = <AddTask />;
+      break;
+    case '/tasks-edit':
+      currentScreen = <EditTask />;
       break;
     case '/admins-add':
       currentScreen = <AdminAdd />;

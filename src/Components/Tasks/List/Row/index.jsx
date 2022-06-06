@@ -29,7 +29,7 @@ function Row(props) {
         <i className="fa-solid fa-xmark" onClick={() => props.deleteTask(id)}></i>
       </td>
       <td>
-        <a href={`/tasks-edit/${id}`}>
+        <a href={`/tasks-edit?id=${id}`}>
           <i className="fa-solid fa-pen-to-square"></i>
         </a>
       </td>
