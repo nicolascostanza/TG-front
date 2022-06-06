@@ -4,7 +4,7 @@ import styles from './addTask.module.css';
 
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
-const AddTask = () => {
+const AddTask = (props) => {
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
     fetch(URL)
@@ -120,6 +120,9 @@ const AddTask = () => {
         </div>
       </div>
       <input className={styles.button} type="submit" value="Add Task" />
+      <button className={styles.button} onClick={() => props.history.goBack()}>
+        Back to list
+      </button>
     </form>
   );
 };
