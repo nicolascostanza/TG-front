@@ -1,81 +1,51 @@
-.table {
-	margin: 20px;
-    width: 50%;
-    background-color: red;
-	border-collapse: collapse;
+.container{
+    margin: 5px 5px;
+    font-weight: 10px;
+    font-size: 13px;
+    width: 90%;
 }
-
-.table th:first-child {
+table{
+    margin-top: 10px;
+    border-collapse: collapse;
+    border: none;
+    width: 100%;
+}
+td{
+    border: none;
+    border-bottom: solid black 1px;
+}
+thead{
+    background-color: #ea3354;
+    height: 50px;
+    border-radius: 10px;
+    max-width: 1200px;
+}
+tr{
+    height: 50px;
+}
+table th:first-child {
 	border-radius: 10px 0 0 0;
 }
-
-.table th:last-child {
+table th:last-child {
 	border-radius: 0 10px 0 0;
 }
-
-.tableBody > tr:last-child > :first-child {
-	border-radius: 0 0 0 10px;
-}
-
-.tableBody > tr:last-child > :last-child {
-	border-radius: 0 0 10px 0;
-}
-
-.tableHead {
-	background-color: #ea3354;
-}
-
-.tableHead > tr > th {
-	padding: 10px;
-}
-
-.tableBody > :nth-child(even) {
+tbody > :nth-child(even) {
 	background-color: #e0e4e9;
 	transition: .2s;
 }
-
-.tableBody > :nth-child(odd) {
+tbody > :nth-child(odd) {
 	background-color: #f0f4f9;
 	transition: .2s;
 }
-
-.tableBody > :hover {
-	background-color: #e5e9ef;
+tbody > :hover {
+	background-color:#7e8795;
+    color: white;
+    cursor: pointer;
 }
-
-.createButton {
-	text-decoration: none;
-	text-align: center;
-	width: 200px;
-	padding: 20px;
-	margin: 20px;
-	border-radius: 5px;
-	color: white;
-	background-color: #27a700;
-	transition: .2s;
+.buttons{
+    display: flex;
+    justify-content: flex-end;
 }
-
-.createButton:hover {
-	color: #fafafa;
-	background-color: #259c01;
-}
-
-.row {
-	height: 80px;
-}
-
-.row > td {
-	padding: 10px;
-}
-
-.edit, .delete {
-	transition: .05s;
-}
-
-.edit:hover {
-	color: blue;
-}
-
-.delete:hover {
-	color: red;
+.buttons > div {
+    margin: 5px;
 }
