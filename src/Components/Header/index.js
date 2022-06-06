@@ -29,6 +29,9 @@ function Header() {
       <nav className={styles.navbar}>
         <ul className={styles.rutes}>
           <li>
+            <a href="/">home</a>
+          </li>
+          <li>
             <a href="/admins">admins</a>
           </li>
           <li>

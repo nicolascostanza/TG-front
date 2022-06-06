@@ -9,6 +9,9 @@ function Footer() {
         </div>
         <ul className={styles.rutes}>
           <li>
+            <a href="/">home</a>
+          </li>
+          <li>
             <a href="/admins">admins</a>
           </li>
           <li>
