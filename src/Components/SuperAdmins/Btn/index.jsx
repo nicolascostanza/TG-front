@@ -18,7 +18,6 @@ Btn.defaultProps = {
   text: '',
   color: '#EA3354'
 };
-
 Btn.propTypes = {
   onClick: PropTypes.func,
   text: PropTypes.string,
