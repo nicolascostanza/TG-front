@@ -29,3 +29,6 @@ transform: translateY(3px);
 .Button:active {
 color: #AACE9B;
 }
+.Button:disabled{
+  cursor: auto;
+}
