@@ -26,12 +26,12 @@
 }
 
 .appName {
+  text-align: center;
   font-size: 2rem;
   font-weight: bold;
-  margin: 20px auto 0;
-  padding-left: 2vw;
-  width: 50%;
-  border-bottom: 2px solid black;
+  width: 200px;
+  margin-top: 20px;
+  box-shadow: 0 2px 0 0 #373867;
   box-sizing: border-box;
 }
 
@@ -56,7 +56,6 @@
 @media screen and (min-width: 750px) {
   .container {
     display: flex;
-    justify-content: space-around;
   }
 
   .navbar {
@@ -68,17 +67,17 @@
 }
 
   .appName {
-    width: 40%;
+    width: 250px;
     font-size: 2.5rem;
-    padding-left: 48px;
-    border-bottom: 2px solid black;
+    box-shadow: 0 2px 0 0 #373867;
   }
 }
 
-@media screen and (min-width: 1000px) {
+@media screen and (min-width: 1200px) {
   .rutes li a {
     display: inline;
     font-weight: 600;
+    margin-right: 5px;
   }
   .navbar {
     flex-direction: row;
@@ -86,11 +85,10 @@
     height: 10vh;
   }
   .appName {
-    margin-top: 0;
-    font-size: 3rem;
-    width: 30%;
-    padding-left: 2%;
-    margin: 0 25px 20px;
+    width: 300px;
+    font-size: 3em;
+    box-shadow: 0 3px 0 0 #373867;
+    margin-bottom: 35px;
   }
 }
 
@@ -109,12 +107,6 @@
     margin-top: 0;
     font-size: 3.5rem;
     width: 20%;
-    padding-left: 2%;
-    margin: 0 25px 20px;
-  }
-
-  .container {
-    justify-content: flex-end;
-    margin-right: 200px;
+    box-shadow: 0 3px 0 0 #373867;
   }
 }
