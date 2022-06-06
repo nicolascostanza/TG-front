@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import ListItem from './ListItem';
 import EditProject from '../EditProject';
 import listStyles from './list.module.css';
+import Modal from '../../Shared/Modal';
 
 function List() {
   const [projects, setProjects] = useState([]);
@@ -62,7 +63,13 @@ function List() {
   return (
     <div>
       {edit ? (
-        <EditProject initial={editingProject} updateProjects={updateProjects} close={closeModal} />
+        <Modal showModal={edit} handleClose={closeModal} modalTitle="Update project">
+          <EditProject
+            initial={editingProject}
+            updateProjects={updateProjects}
+            close={closeModal}
+          />
+        </Modal>
       ) : (
         ''
       )}
