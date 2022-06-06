@@ -14,58 +14,35 @@ import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
 import EditTimeSheets from '../TimeSheets/Edit';
 import styles from './layout.module.css';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function Layout() {
-  let currentScreen = <Home />;
-  switch (window.location.pathname) {
-    case '/admins':
-      currentScreen = <Admins />;
-      break;
-    case '/super-admins':
-      currentScreen = <SuperAdmins />;
-      break;
-    case '/employees':
-      currentScreen = <Employees />;
-      break;
-    case '/projects':
-      currentScreen = <Projects form={false} />;
-      break;
-    case '/projects/create':
-      currentScreen = <Projects form={true} />;
-      break;
-    case '/time-sheets':
-      currentScreen = <TimeSheets />;
-      break;
-    case '/time-sheets-add':
-      currentScreen = <AddTimeSheets />;
-      break;
-    case '/time-sheets-edit':
-      currentScreen = <EditTimeSheets />;
-      break;
-    case '/tasks':
-      currentScreen = <Tasks />;
-      break;
-    case '/tasks-add':
-      currentScreen = <AddTask />;
-      break;
-    case '/tasks-edit':
-      currentScreen = <EditTask />;
-      break;
-    case '/admins-add':
-      currentScreen = <AdminAdd />;
-      break;
-    case '/admins-edit':
-      currentScreen = <AdminEdit />;
-      break;
-    default:
-      break;
-  }
-
   return (
     <div className={styles.container}>
-      <Header />
-      {currentScreen}
-      <Footer />
+      <Router>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/admins" component={Admins} />
+          <Route exact path="/admins-add" component={AdminAdd} />
+          <Route exact path="/admins-edit" component={AdminEdit} />
+          <Route exact path="/super-admins" component={SuperAdmins} />
+          <Route exact path="/employees" component={Employees} />
+          <Route exact path="/projects">
+            <Projects form={false} />
+          </Route>
+          <Route exact path="/projects/create">
+            <Projects form={true} />
+          </Route>
+          <Route exact path="/time-sheets" component={TimeSheets} />
+          <Route exact path="/time-sheets-add" component={AddTimeSheets} />
+          <Route exact path="/time-sheets-edit" component={EditTimeSheets} />
+          <Route exact path="/tasks" component={Tasks} />
+          <Route exact path="/tasks-add" component={AddTask} />
+          <Route exact path="/tasks-edit" component={EditTask} />
+        </Switch>
+        <Footer />
+      </Router>
     </div>
   );
 }
