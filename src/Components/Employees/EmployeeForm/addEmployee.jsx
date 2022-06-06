@@ -81,7 +81,7 @@ const AddEmployee = () => {
           </select>
         </div>
         <div>
-          <label>Address</label>
+          <label>Adress</label>
           <input
             type="text"
             name="adress"
