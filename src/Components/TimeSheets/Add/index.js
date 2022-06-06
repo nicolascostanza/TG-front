@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './Form.module.css';
+import Form from '../../Shared/Form';
 
 function AddTimeSheets() {
   const [timeSheets, saveTimeSheets] = useState([]);
@@ -59,10 +60,7 @@ function AddTimeSheets() {
     setRole('');
   };
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
-      <div className={styles.tittle}>
-        <h2> New Time Sheet</h2>
-      </div>
+    <Form handleSubmit={onSubmit} buttonText="Add Time Sheet">
       <div className={styles.container}>
         <div>
           <label> Employee ID </label>
@@ -132,8 +130,8 @@ function AddTimeSheets() {
           />
         </div>
       </div>
-      <input className={styles.button} type="submit" value="Add Timesheet" />
-    </form>
+      {/* <input className={styles.button} type="submit" value="Add Timesheet" /> */}
+    </Form>
   );
 }
 
