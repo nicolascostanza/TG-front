@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Button from '../../Shared/Button/Button';
 import styles from './editEmployee.module.css';
 
 const params = window.location.search;
@@ -73,7 +72,6 @@ const EditEmployee = () => {
   };
   return (
     <div>
-      <Button>Holi</Button>
       <form className={styles.container} onSubmit={onSubmit}>
         <div>
           <h2>Edit Employee</h2>
