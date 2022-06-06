@@ -1,26 +1,81 @@
-.container{
-    background-color: aquamarine;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-.tablita{
-    /* display: flex; */
-    /* flex-direction: column; */
-    /* align-items: center; */
-    border-collapse: collapse;
-    /* align-content: space-around; */
-    /* justify-content: center; */
+.table {
+	margin: 20px;
+    width: 50%;
     background-color: red;
-    width: 90%;
+	border-collapse: collapse;
 }
-.container > button{
-    width: 80px;
+
+.table th:first-child {
+	border-radius: 10px 0 0 0;
 }
-tbody > tr {
-    background-color: blue;
-    width: 20px !important;
+
+.table th:last-child {
+	border-radius: 0 10px 0 0;
 }
-.container td{
-    width: 10px;
+
+.tableBody > tr:last-child > :first-child {
+	border-radius: 0 0 0 10px;
+}
+
+.tableBody > tr:last-child > :last-child {
+	border-radius: 0 0 10px 0;
+}
+
+.tableHead {
+	background-color: #ea3354;
+}
+
+.tableHead > tr > th {
+	padding: 10px;
+}
+
+.tableBody > :nth-child(even) {
+	background-color: #e0e4e9;
+	transition: .2s;
+}
+
+.tableBody > :nth-child(odd) {
+	background-color: #f0f4f9;
+	transition: .2s;
+}
+
+.tableBody > :hover {
+	background-color: #e5e9ef;
+}
+
+.createButton {
+	text-decoration: none;
+	text-align: center;
+	width: 200px;
+	padding: 20px;
+	margin: 20px;
+	border-radius: 5px;
+	color: white;
+	background-color: #27a700;
+	transition: .2s;
+}
+
+.createButton:hover {
+	color: #fafafa;
+	background-color: #259c01;
+}
+
+.row {
+	height: 80px;
+}
+
+.row > td {
+	padding: 10px;
+}
+
+.edit, .delete {
+	transition: .05s;
+}
+
+.edit:hover {
+	color: blue;
+}
+
+.delete:hover {
+	color: red;
 }

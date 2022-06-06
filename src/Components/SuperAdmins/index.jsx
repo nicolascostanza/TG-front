@@ -6,6 +6,16 @@ import Btn from './Btn';
 import Table from '../Shared/Table';
 
 function SuperAdmins() {
+  const headers = [
+    '_id',
+    'firstName',
+    'lastName',
+    'createdAt',
+    'updatedAt',
+    'email',
+    'password',
+    'active'
+  ];
   let [screen, setScreen] = useState(false);
   // let [method, setMethod] = useState('');
   // let [id, setID] = useState('');
@@ -32,22 +42,7 @@ function SuperAdmins() {
       </section>
     );
   } else {
-    return (
-      <Table
-        tittle={'titulo'}
-        data={list}
-        headers={[
-          '_id',
-          'firstName',
-          'lastName',
-          'createdAt',
-          'updatedAt',
-          'email',
-          'password',
-          'active'
-        ]}
-      />
-    );
+    return <Table tittle={'titulo'} data={list} headers={headers} />;
   }
 }
 

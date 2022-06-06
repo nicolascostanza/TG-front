@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './table.module.css';
-function Table({ tittle, headers, data }) {
+function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
   return (
     <div className={styles.container}>
-      <h2>{tittle}</h2>
-      <button>Add</button>
-      <table className={styles.tablita}>
+      <h2>{title}</h2>
+      <button onClick={onAdd}>Add</button>
+      <table className={styles.table}>
         <thead>
           <tr>
             {headers.map((header, index) => {
@@ -18,15 +18,15 @@ function Table({ tittle, headers, data }) {
         <tbody>
           {data.map((row) => {
             return (
-              <tr key={row.id}>
+              <tr className={styles.row} key={row.id}>
                 {headers.map((header, index) => {
                   return <td key={index}>{row[header]}</td>;
                 })}
                 <td>
-                  <button>Edit</button>
+                  <button onClick={onEdit}>Edit</button>
                 </td>
                 <td>
-                  <button>Delete</button>
+                  <button onClick={onDelete}>Delete</button>
                 </td>
               </tr>
             );
