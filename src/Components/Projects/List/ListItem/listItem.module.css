@@ -1,0 +1,19 @@
+.row {
+	height: 80px;
+}
+
+.row > td {
+	padding: 10px;
+}
+
+.edit, .delete {
+	transition: .05s;
+}
+
+.edit:hover {
+	color: blue;
+}
+
+.delete:hover {
+	color: red;
+}
