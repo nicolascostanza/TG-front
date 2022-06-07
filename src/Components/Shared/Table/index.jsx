@@ -17,19 +17,7 @@ function Table({ title, headers, data, onDelete, setId }) {
       setIndexPage(indexPage - 1);
     }
   };
-  // data.map((elemento) => {
-  //   const respuesta = Object.values(elemento);
-  //   respuesta.map((prueba) => {
-  //     if (Array.isArray(prueba)) {
-  //       prueba.slice(0);
-  //       prueba.map((e) => {
-  //         const obj = Object.values(e);
-  //         e = obj[0];
-  //         console.log(e);
-  //       });
-  //     }
-  //   });
-  // });
+  console.log(data);
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
@@ -55,7 +43,7 @@ function Table({ title, headers, data, onDelete, setId }) {
                     if (header === 'tasks') {
                       return (
                         <td>
-                          <Dropdown value={'tasks'}>
+                          <Dropdown placeholder={'Tasks'}>
                             {row[header].map((e) => {
                               console.log(e.taskName);
                               return <option key={Math.random()}>{e.taskName}</option>;
@@ -68,7 +56,7 @@ function Table({ title, headers, data, onDelete, setId }) {
                     if (header === 'team') {
                       return (
                         <td>
-                          <Dropdown value={'teams'}>
+                          <Dropdown placeholder={'Team'}>
                             {row[header].map((element) => {
                               return <option key={Math.random()}>{element.firstName}</option>;
                             })}
@@ -77,6 +65,26 @@ function Table({ title, headers, data, onDelete, setId }) {
                         </td>
                       );
                     }
+                    // objetos
+                    if (header === 'assignedEmployee') {
+                      console.log(row[header]);
+                      return (
+                        <td>
+                          <Dropdown placeholder={'Employees'}>
+                            {row[header].map((element) => {
+                              return <option key={Math.random()}>{element.surname}</option>;
+                            })}
+                            ;
+                          </Dropdown>
+                        </td>
+                      );
+                    }
+                  } else if (typeof row[header] === 'object') {
+                    return (
+                      <td key={Math.random()}>
+                        {row[header] !== null ? row[header].name : 'none'}
+                      </td>
+                    );
                   } else {
                     return <td key={index}>{row[header]}</td>;
                   }
