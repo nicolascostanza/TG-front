@@ -5,16 +5,55 @@ import Modal from '../Shared/Modal';
 import Button from '../Shared/Button/Button';
 
 function SuperAdmins() {
+  // superadmins
+  // const headers = [
+  //   '_id',
+  //   'firstName',
+  //   'lastName',
+  //   'email',
+  //   'password',
+  //   'active',
+  //   'createdAt',
+  //   'updatedAt'
+  // ];
+  // timesheets cambiar el approved en el fetch
+  // const headers = [
+  //   '_id',
+  //   'employeeId',
+  //   'description',
+  //   'project',
+  //   'date',
+  //   'hours',
+  //   'task',
+  //   'approved',
+  //   'role'
+  // ];
+  // projects
   const headers = [
     '_id',
-    'firstName',
-    'lastName',
-    'email',
-    'password',
-    'active',
+    'name',
+    'description',
+    'clientName',
+    'startDate',
+    'endDate',
+    'team',
+    'tasks',
     'createdAt',
     'updatedAt'
   ];
+  // tasks
+  // const headers = [
+  //   '_id',
+  //   'parentProject',
+  //   'taskCreatorId',
+  //   'taskName',
+  //   'taskDescription',
+  //   'assignedEmployee',
+  //   'startDate',
+  //   'status',
+  //   'createdAt',
+  //   'updatedAt'
+  // ];
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [data, setData] = useState('');
@@ -24,11 +63,11 @@ function SuperAdmins() {
     requestList();
   }, []);
   const requestList = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
+    fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
       .then((response) => {
         response.data.map((superadmin) => {
-          superadmin.active = superadmin.active ? 'true' : 'false';
+          superadmin.approved = superadmin.approved ? 'true' : 'false';
         });
         setList(response.data);
       });

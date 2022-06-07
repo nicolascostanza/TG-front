@@ -4,7 +4,7 @@ import styles from './table.module.css';
 import Button from '../Button/Button.jsx';
 import Dropdown from '../Dropdown/Dropdown';
 
-function Table({ title, headers, data, onDelete, setId }) {
+function Table({ title, headers, data, onEdit, onAdd, onDelete, setId }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   const nextPage = () => {
@@ -21,7 +21,7 @@ function Table({ title, headers, data, onDelete, setId }) {
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      <Button width={'100px'} height={'40px'} fontSize={'15px'}>
+      <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={onAdd}>
         ADD
       </Button>
       <table className={styles.table}>
@@ -45,7 +45,6 @@ function Table({ title, headers, data, onDelete, setId }) {
                         <td>
                           <Dropdown width={'150px'} placeholder={'Tasks'}>
                             {row[header].map((e) => {
-                              console.log(e.taskName);
                               return <option key={Math.random()}>{e.taskName}</option>;
                             })}
                             ;
@@ -95,6 +94,7 @@ function Table({ title, headers, data, onDelete, setId }) {
                     header === 'createdAt' ||
                     header === 'updatedAt' ||
                     header === 'startDate' ||
+                    header === 'endDate' ||
                     header === 'date'
                   ) {
                     return <td>{new Date(row[header]).toLocaleDateString()}</td>;
@@ -103,7 +103,17 @@ function Table({ title, headers, data, onDelete, setId }) {
                   }
                 })}
                 <td>
-                  <Button width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button
+                    width={'50px'}
+                    height={'25px'}
+                    fontSize={'15px'}
+                    onClick={() => {
+                      setId(row._id);
+                      {
+                        onEdit();
+                      }
+                    }}
+                  >
                     Edit
                   </Button>
                 </td>
