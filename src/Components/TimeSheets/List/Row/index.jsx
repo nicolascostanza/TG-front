@@ -32,9 +32,7 @@ function Row(props) {
         ></i>
       </td>
       <td>
-        <a href={`time-sheets-edit?id=${id}`}>
-          <button>Edit</button>
-        </a>
+        <a href={`time-sheets-edit?id=${id}`}>Edit</a>
       </td>
     </tr>
   );

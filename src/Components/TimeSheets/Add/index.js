@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './Form.module.css';
 import Form from '../../Shared/Form';
 
-function AddTimeSheets() {
+function AddTimeSheets(props) {
   const [timeSheets, saveTimeSheets] = useState([]);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
@@ -60,7 +60,12 @@ function AddTimeSheets() {
     setRole('');
   };
   return (
-    <Form handleSubmit={onSubmit} buttonText="Add Time Sheet">
+    <Form
+      handleSubmit={onSubmit}
+      showModal={props.showModal}
+      handleClose={props.handleClose}
+      title="Add Time Sheet"
+    >
       <div className={styles.container}>
         <div>
           <label> Employee ID </label>
@@ -92,8 +97,8 @@ function AddTimeSheets() {
         <div>
           <label> Date </label>
           <input
-            type="text"
-            placeholder="Date"
+            type="date"
+            placeholder="YYYY-MM-DD"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
@@ -118,7 +123,11 @@ function AddTimeSheets() {
         </div>
         <div>
           <label> Approved </label>
-          <input type="checkbox" value={approved} onChange={(e) => setApproved(e.target.value)} />
+          <input
+            type="checkbox"
+            checked={approved}
+            onChange={(e) => setApproved(e.target.checked)}
+          />
         </div>
         <div>
           <label> Role </label>
