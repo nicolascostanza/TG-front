@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react';
-import React from 'react';
-import styles from './list.module.css';
+import React, { useEffect, useState } from 'react';
 import Row from '../Row/Row';
+import styles from './list.module.css';
 
 const List = () => {
   const [employees, setEmployees] = useState([]);
@@ -27,7 +26,7 @@ const List = () => {
   };
 
   const editForm = (id) => {
-    window.location = `/employees/editEmployee/${id}`;
+    window.location = `/employees/employee-edit/${id}`;
   };
 
   return (

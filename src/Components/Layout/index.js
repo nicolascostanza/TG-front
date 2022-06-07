@@ -1,22 +1,22 @@
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AdminAdd from '../Admins/AdminAdd/adminAdd';
 import AdminEdit from '../Admins/AdminEdit/adminEdit';
 import Admins from '../Admins/index';
-import Employees from '../Employees/index';
 import EditEmployee from '../Employees/EditEmployee/editEmployee';
 import AddEmployee from '../Employees/EmployeeForm/addEmployee';
+import Employees from '../Employees/index';
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
 import Projects from '../Projects';
 import SuperAdmins from '../SuperAdmins/index';
-import Tasks from '../Tasks/index';
 import AddTask from '../Tasks/AddTask/index';
 import EditTask from '../Tasks/EditTask';
+import Tasks from '../Tasks/index';
 import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
 import EditTimeSheets from '../TimeSheets/Edit';
 import styles from './layout.module.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
 function Layout() {
   return (
