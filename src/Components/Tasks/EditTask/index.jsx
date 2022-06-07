@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../AddTask/addTask.module.css';
+import Form from '../../Shared/Form';
 
 const params = new URLSearchParams(window.location.search);
 const taskID = params.get('id');
@@ -8,6 +9,10 @@ const taskID = params.get('id');
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
 const EditTask = () => {
+  const [showModal] = useState(true);
+  const handleClose = () => {
+    window.location.href = '/tasks';
+  };
   useEffect(() => {
     fetch(`${URL}/${taskID}`)
       .then((response) => response.json())
@@ -64,7 +69,7 @@ const EditTask = () => {
   };
 
   return (
-    <form className={styles.container} onSubmit={onSubmit}>
+    <Form showModal={showModal} handleClose={handleClose} handleSubmit={onSubmit}>
       <div>
         <h2>Edit Task</h2>
       </div>
@@ -124,7 +129,7 @@ const EditTask = () => {
         </div>
       </div>
       <input className={styles.button} type="submit" value="Update Task" />
-    </form>
+    </Form>
   );
 };
 
