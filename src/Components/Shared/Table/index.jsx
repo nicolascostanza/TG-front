@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/Button.jsx';
-function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
+function Table({ title, headers, data, onEdit, onDelete, onAdd, setId }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   const nextPage = () => {
@@ -44,7 +44,18 @@ function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
                   </Button>
                 </td>
                 <td>
-                  <Button onClick={onDelete} width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button
+                    onClick={() => {
+                      setId(row._id);
+                      {
+                        onDelete();
+                      }
+                      console.log('ejecuta', row._id);
+                    }}
+                    width={'50px'}
+                    height={'25px'}
+                    fontSize={'15px'}
+                  >
                     Delete
                   </Button>
                 </td>
