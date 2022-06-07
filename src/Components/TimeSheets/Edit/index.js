@@ -1,11 +1,16 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
+import Form from '../../Shared/Form';
 
 const params = new URLSearchParams(window.location.search);
 const timeSheetId = params.get('id');
 
 function EditTimeSheets() {
+  const [showModal] = useState(true);
+  const handleClose = () => {
+    window.location.href = '/time-sheets';
+  };
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${timeSheetId}`)
       .then((response) => response.json())
@@ -42,6 +47,7 @@ function EditTimeSheets() {
     console.log('DATA', data);
     if (res.status === 200) {
       alert('Time-sheet updated successfully');
+      window.location.href = '/time-sheets';
     } else if (res.status === 400) {
       alert('There was an error updating time-sheet');
     }
@@ -70,7 +76,7 @@ function EditTimeSheets() {
     setRole('');
   };
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
+    <Form showModal={showModal} handleClose={handleClose} handleSubmit={onSubmit}>
       <div className={styles.tittle}>
         <h2> Edit Time-Sheet </h2>
       </div>
@@ -148,8 +154,7 @@ function EditTimeSheets() {
           />
         </div>
       </div>
-      <input className={styles.button} type="submit" value="Edit Time-Sheet" />
-    </form>
+    </Form>
   );
 }
 

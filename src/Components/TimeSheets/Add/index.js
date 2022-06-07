@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './Form.module.css';
+import Form from '../../Shared/Form';
 
 function AddTimeSheets(props) {
   const [timeSheets, saveTimeSheets] = useState([]);
@@ -59,10 +60,12 @@ function AddTimeSheets(props) {
     setRole('');
   };
   return (
-    <form className={styles.form} onSubmit={onSubmit}>
-      <div className={styles.tittle}>
-        <h2> New Time Sheet</h2>
-      </div>
+    <Form
+      handleSubmit={onSubmit}
+      showModal={props.showModal}
+      handleClose={props.handleClose}
+      title="Add Time Sheet"
+    >
       <div className={styles.container}>
         <div>
           <label> Employee ID </label>
@@ -94,8 +97,8 @@ function AddTimeSheets(props) {
         <div>
           <label> Date </label>
           <input
-            type="text"
-            placeholder="Date"
+            type="date"
+            placeholder="YYYY-MM-DD"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
@@ -120,7 +123,11 @@ function AddTimeSheets(props) {
         </div>
         <div>
           <label> Approved </label>
-          <input type="checkbox" value={approved} onChange={(e) => setApproved(e.target.value)} />
+          <input
+            type="checkbox"
+            checked={approved}
+            onChange={(e) => setApproved(e.target.checked)}
+          />
         </div>
         <div>
           <label> Role </label>
@@ -132,11 +139,7 @@ function AddTimeSheets(props) {
           />
         </div>
       </div>
-      <input className={styles.button} type="submit" value="Add Timesheet" />
-      <button className={styles.button} onClick={() => props.history.goBack()}>
-        Back to list
-      </button>
-    </form>
+    </Form>
   );
 }
 

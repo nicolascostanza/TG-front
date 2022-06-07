@@ -2,9 +2,14 @@ import { useEffect, useState } from 'react';
 import styles from '../List/list.module.css';
 import Btn from './Button';
 import Row from './Row';
+import AddTimeSheets from '../Add';
 
 function TimeSheet() {
   const [timeSheets, setTimeSheets] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const handleClose = () => {
+    setShowModal(false);
+  };
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
       .then((response) => response.json())
@@ -26,9 +31,10 @@ function TimeSheet() {
   };
   return (
     <div className={styles.container}>
-      <a href={'/time-sheets-add'} className={styles.Btn}>
-        <Btn color="green" text="Add" />
+      <a className={styles.Btn}>
+        <Btn onClick={() => setShowModal(true)} color="green" text="Add" />
       </a>
+      <AddTimeSheets showModal={showModal} handleClose={handleClose}></AddTimeSheets>
       <table className={styles.row}>
         <thead>
           <tr>
