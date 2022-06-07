@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/Button.jsx';
+import Dropdown from '../Dropdown/Dropdown';
 
 function Table({ title, headers, data, onDelete, setId }) {
   const [indexPage, setIndexPage] = useState(1);
@@ -50,8 +51,35 @@ function Table({ title, headers, data, onDelete, setId }) {
             return (
               <tr className={styles.row} key={row._id}>
                 {headers.map((header, index) => {
-                  console.log(row[header]);
-                  return <td key={index}>{row[header]}</td>;
+                  if (Array.isArray(row[header])) {
+                    if (header === 'tasks') {
+                      return (
+                        <td>
+                          <Dropdown value={'tasks'}>
+                            {row[header].map((e) => {
+                              console.log(e.taskName);
+                              return <option key={Math.random()}>{e.taskName}</option>;
+                            })}
+                            ;
+                          </Dropdown>
+                        </td>
+                      );
+                    }
+                    if (header === 'team') {
+                      return (
+                        <td>
+                          <Dropdown value={'teams'}>
+                            {row[header].map((element) => {
+                              return <option key={Math.random()}>{element.firstName}</option>;
+                            })}
+                            ;
+                          </Dropdown>
+                        </td>
+                      );
+                    }
+                  } else {
+                    return <td key={index}>{row[header]}</td>;
+                  }
                 })}
                 <td>
                   <Button width={'50px'} height={'25px'} fontSize={'15px'}>

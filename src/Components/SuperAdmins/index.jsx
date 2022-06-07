@@ -53,11 +53,14 @@ function SuperAdmins() {
   // }
   const headers = [
     '_id',
-    'firstName',
-    'lastName',
-    'email',
-    'password',
-    'active',
+    'name',
+    'description',
+    'clientName',
+    'startDate',
+    'endDate',
+    'projectManager',
+    'team',
+    'tasks',
     'createdAt',
     'updatedAt'
   ];
@@ -70,7 +73,7 @@ function SuperAdmins() {
     requestList();
   }, []);
   const requestList = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
+    fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
       .then((response) => {
         response.data.map((superadmin) => {
