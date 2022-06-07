@@ -4,7 +4,7 @@ import styles from './table.module.css';
 import Button from '../Button/Button.jsx';
 import Dropdown from '../Dropdown/Dropdown';
 
-function Table({ title, headers, data, onEdit, onAdd, onDelete, setId }) {
+function Table({ title, headers, data, onEdit, onAdd, onDelete, setId, setMethod }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   const nextPage = () => {
@@ -17,11 +17,20 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete, setId }) {
       setIndexPage(indexPage - 1);
     }
   };
-  console.log(data);
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={onAdd}>
+      <Button
+        width={'100px'}
+        height={'40px'}
+        fontSize={'15px'}
+        onClick={() => {
+          setMethod('POST');
+          {
+            onAdd();
+          }
+        }}
+      >
         ADD
       </Button>
       <table className={styles.table}>
@@ -109,6 +118,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete, setId }) {
                     fontSize={'15px'}
                     onClick={() => {
                       setId(row._id);
+                      setMethod('PUT');
                       {
                         onEdit();
                       }
