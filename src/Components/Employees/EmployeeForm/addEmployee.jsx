@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styles from './addEmployee.module.css';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
 
-const AddEmployee = (props) => {
+const AddEmployee = () => {
   const [firstName, setFirstName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -39,6 +40,11 @@ const AddEmployee = (props) => {
       .then((data) => alert(data.message));
   };
 
+  const valueChange = (e) => {
+    console.log('e', e.target.value);
+    return setGender(e.target.value);
+  };
+
   return (
     <div className={styles.container}>
       <div>
@@ -72,16 +78,23 @@ const AddEmployee = (props) => {
             onChange={(e) => setEmail(e.target.value)}
           ></input>
         </div>
-        <div>
+        {/* <div>
           <label>Gender</label>
           <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
           </select>
+        </div> */}
+        <div>
+          <Dropdown title="Gender" value={gender} onChange={valueChange}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </Dropdown>
         </div>
         <div>
-          <label>Address</label>
+          <label>Adress</label>
           <input
             type="text"
             name="adress"
@@ -125,9 +138,7 @@ const AddEmployee = (props) => {
         </div>
       </form>
       <div className={styles.submit}>
-        {/* <a href="/employees"> */}
-        <button onClick={() => props.history.goBack()}>Back to list</button>
-        {/* </a> */}
+        <button>Cancel</button>
       </div>
     </div>
   );
