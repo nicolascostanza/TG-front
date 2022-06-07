@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/Button.jsx';
 
-function Table({ title, headers, data }) {
+function Table({ title, headers, data, onDelete, setId }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   const nextPage = () => {
@@ -50,6 +50,7 @@ function Table({ title, headers, data }) {
             return (
               <tr className={styles.row} key={row._id}>
                 {headers.map((header, index) => {
+                  console.log(row[header]);
                   return <td key={index}>{row[header]}</td>;
                 })}
                 <td>
@@ -58,7 +59,18 @@ function Table({ title, headers, data }) {
                   </Button>
                 </td>
                 <td>
-                  <Button width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button
+                    onClick={() => {
+                      setId(row._id);
+                      {
+                        onDelete();
+                      }
+                      console.log('ejecuta', row._id);
+                    }}
+                    width={'50px'}
+                    height={'25px'}
+                    fontSize={'15px'}
+                  >
                     Delete
                   </Button>
                 </td>
