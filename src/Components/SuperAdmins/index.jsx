@@ -55,8 +55,7 @@ function SuperAdmins() {
   //   'createdAt',
   //   'updatedAt'
   // ];
-  const [method, setMethod] = useState('');
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -67,6 +66,7 @@ function SuperAdmins() {
   const [data, setData] = useState('');
   const [list, setList] = useState([]);
   const [id, setId] = useState('');
+  const [method, setMethod] = useState('');
   useEffect(() => {
     requestList();
   }, []);
@@ -79,6 +79,13 @@ function SuperAdmins() {
         });
         setList(response.data);
       });
+  };
+  const resetFields = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setActive(false);
   };
   const deleteAdmin = async () => {
     setShowModalAlert(false);
@@ -108,8 +115,69 @@ function SuperAdmins() {
   const handleCloseAdd = () => {
     setShowModalAdd(false);
   };
-  console.log(name, lastName, email, password, active);
-  console.log('metodo: ', method);
+  // prueba
+  // edit modals
+  const onEdit = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`)
+      .then((response) => response.json())
+      .then((response) => {
+        setFirstName(response.data.firstName);
+        setLastName(response.data.lastName);
+        setEmail(response.data.email);
+        setPassword(response.data.password);
+        setActive(response.data.active);
+        console.log(firstName);
+      });
+    setShowModalAdd(true);
+  };
+  // las funciones de la semana pasada
+  const addSuperAdmin = async (superAdmin) => {
+    if (confirm('Are you sure you want to create a Superadmin ?')) {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(superAdmin)
+      });
+      const data = await res.json();
+      if (res.status === 201) {
+        setList([...list, data]);
+        alert(data.message);
+      } else {
+        alert(data.message);
+      }
+    }
+  };
+  const editSuperAdmin = async (superAdmin) => {
+    if (confirm('Are you sure you want to edit it?')) {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(superAdmin)
+      });
+      const data = await res.json();
+      if (res.status === 200) {
+        alert(data.message);
+        resetFields();
+      } else {
+        alert(data.message);
+      }
+    }
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (method === 'POST') {
+      addSuperAdmin({ firstName, lastName, email, password, active });
+      resetFields();
+    } else if (method === 'PUT') {
+      editSuperAdmin({ firstName, lastName, email, password, active });
+    } else {
+      alert('Something unexpected happened');
+    }
+  };
   return (
     <section className={styles.container}>
       <Modal
@@ -127,24 +195,27 @@ function SuperAdmins() {
       <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
         {data.message}
       </Modal>
-
-      {/* aca arranca el add  */}
-      <Form showModal={showModalAdd} handleClose={handleCloseAdd} title={`Add Superadmin`}>
+      <Form
+        handleSubmit={onSubmit}
+        showModal={showModalAdd}
+        handleClose={handleCloseAdd}
+        title={method === 'POST' ? 'Create superadmin' : 'Edit Superadmin'}
+      >
         <div>
           <label>Name</label>
-          <input type="text" onChange={(e) => setName(e.target.value)} />
+          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
         </div>
         <div>
           <label>LastName</label>
-          <input type="text" onChange={(e) => setLastName(e.target.value)} />
+          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
         </div>
         <div>
           <label>Email</label>
-          <input type="text" onChange={(e) => setEmail(e.target.value)} />
+          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
           <label>Password</label>
-          <input type="text" onChange={(e) => setPassword(e.target.value)} />
+          <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <div>
           <div>
@@ -169,6 +240,7 @@ function SuperAdmins() {
         data={list}
         headers={headers}
         onAdd={onAdd}
+        onEdit={onEdit}
         onDelete={openModalDelete}
         setId={setId}
         setMethod={setMethod}
