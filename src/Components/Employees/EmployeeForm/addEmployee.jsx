@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from './addEmployee.module.css';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
 
 const AddEmployee = () => {
   const [firstName, setFirstName] = useState('');
@@ -39,6 +40,11 @@ const AddEmployee = () => {
       .then((data) => alert(data.message));
   };
 
+  const valueChange = (e) => {
+    console.log('e', e.target.value);
+    return setGender(e.target.value);
+  };
+
   return (
     <div className={styles.container}>
       <div>
@@ -72,13 +78,20 @@ const AddEmployee = () => {
             onChange={(e) => setEmail(e.target.value)}
           ></input>
         </div>
-        <div>
+        {/* <div>
           <label>Gender</label>
           <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
           </select>
+        </div> */}
+        <div>
+          <Dropdown title="Gender" value={gender} onChange={valueChange}>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </Dropdown>
         </div>
         <div>
           <label>Adress</label>
