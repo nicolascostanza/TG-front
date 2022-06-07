@@ -2,10 +2,15 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './addTask.module.css';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Form from '../../Shared/Form';
 
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
 const AddTask = (props) => {
+  const [showModal] = useState(true);
+  const handleClose = () => {
+    window.location.href = '/tasks';
+  };
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
     fetch(URL)
@@ -66,7 +71,7 @@ const AddTask = (props) => {
   };
 
   return (
-    <form className={styles.container} onSubmit={onSubmit}>
+    <Form showModal={showModal} handleClose={handleClose} handleSubmit={onSubmit}>
       <div>
         <h2>Add New Task</h2>
       </div>
@@ -123,20 +128,11 @@ const AddTask = (props) => {
             <option value="Cancelled">Cancelled</option>
           </Dropdown>
         </div>
-        {/* <div className={styles.dropdown}>
-          <label>Status:</label>
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="Ready to deliver">Ready to deliver</option>
-            <option value="Paused">Paused</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-        </div> */}
       </div>
-      <input className={styles.button} type="submit" value="Add Task" />
       <button className={styles.button} onClick={() => props.history.goBack()}>
         Back to list
       </button>
-    </form>
+    </Form>
   );
 };
 

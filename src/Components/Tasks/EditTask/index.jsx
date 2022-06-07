@@ -128,7 +128,6 @@ const EditTask = () => {
           </select>
         </div>
       </div>
-      <input className={styles.button} type="submit" value="Update Task" />
     </Form>
   );
 };
