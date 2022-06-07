@@ -48,7 +48,6 @@ function SuperAdmins() {
       .then((response) => {
         response.data.map((superadmin) => {
           superadmin.active = superadmin.active ? 'true' : 'false';
-          // superadmin.createdAt = superadmin.createdAt.toLocaleString();
         });
         setList(response.data);
         console.log(list);
