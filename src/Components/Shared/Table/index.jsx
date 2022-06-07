@@ -2,7 +2,8 @@ import React from 'react';
 import { useState } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/Button.jsx';
-function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
+
+function Table({ title, headers, data }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   const nextPage = () => {
@@ -15,10 +16,23 @@ function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
       setIndexPage(indexPage - 1);
     }
   };
+  // data.map((elemento) => {
+  //   const respuesta = Object.values(elemento);
+  //   respuesta.map((prueba) => {
+  //     if (Array.isArray(prueba)) {
+  //       prueba.slice(0);
+  //       prueba.map((e) => {
+  //         const obj = Object.values(e);
+  //         e = obj[0];
+  //         console.log(e);
+  //       });
+  //     }
+  //   });
+  // });
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={onAdd}>
+      <Button width={'100px'} height={'40px'} fontSize={'15px'}>
         ADD
       </Button>
       <table className={styles.table}>
@@ -34,17 +48,17 @@ function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
         <tbody>
           {show.map((row) => {
             return (
-              <tr className={styles.row} key={row.id}>
+              <tr className={styles.row} key={row._id}>
                 {headers.map((header, index) => {
                   return <td key={index}>{row[header]}</td>;
                 })}
                 <td>
-                  <Button onClick={onEdit} width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button width={'50px'} height={'25px'} fontSize={'15px'}>
                     Edit
                   </Button>
                 </td>
                 <td>
-                  <Button onClick={onDelete} width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button width={'50px'} height={'25px'} fontSize={'15px'}>
                     Delete
                   </Button>
                 </td>

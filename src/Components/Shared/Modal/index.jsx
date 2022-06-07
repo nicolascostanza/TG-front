@@ -1,11 +1,11 @@
 import React from 'react';
 import styles from './modal.module.css';
 
-const Modal = ({ children, showModal, handleClose, modalTitle }) => {
+const Modal = ({ children, showModal, handleClose, modalTitle, id }) => {
   if (!showModal) {
     return null;
   }
-
+  console.log(id);
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modalContainer}>
