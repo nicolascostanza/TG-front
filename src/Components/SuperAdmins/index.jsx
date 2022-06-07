@@ -6,7 +6,6 @@ import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
 
 function SuperAdmins() {
-  // superadmins
   const headers = [
     '_id',
     'firstName',
@@ -17,44 +16,6 @@ function SuperAdmins() {
     'createdAt',
     'updatedAt'
   ];
-  // timesheets cambiar el approved en el fetch
-  // const headers = [
-  //   '_id',
-  //   'employeeId',
-  //   'description',
-  //   'project',
-  //   'date',
-  //   'hours',
-  //   'task',
-  //   'approved',
-  //   'role'
-  // ];
-  // projects
-  // const headers = [
-  //   '_id',
-  //   'name',
-  //   'description',
-  //   'clientName',
-  //   'startDate',
-  //   'endDate',
-  //   'team',
-  //   'tasks',
-  //   'createdAt',
-  //   'updatedAt'
-  // ];
-  // tasks
-  // const headers = [
-  //   '_id',
-  //   'parentProject',
-  //   'taskCreatorId',
-  //   'taskName',
-  //   'taskDescription',
-  //   'assignedEmployee',
-  //   'startDate',
-  //   'status',
-  //   'createdAt',
-  //   'updatedAt'
-  // ];
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -65,11 +26,12 @@ function SuperAdmins() {
   const [showModalAdd, setShowModalAdd] = useState(false);
   const [data, setData] = useState('');
   const [list, setList] = useState([]);
-  const [id, setId] = useState('');
   const [method, setMethod] = useState('');
+  const [ids, setId] = useState('');
+  const [deleteId, setDeleteId] = useState('');
   useEffect(() => {
     requestList();
-  }, []);
+  }, [method]);
   const requestList = () => {
     fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
       .then((response) => response.json())
@@ -87,37 +49,42 @@ function SuperAdmins() {
     setPassword('');
     setActive(false);
   };
+  const onDelete = (id) => {
+    setShowModalAlert(true);
+    setDeleteId(id);
+  };
   const deleteAdmin = async () => {
     setShowModalAlert(false);
-    await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${deleteId}`, {
       method: 'DELETE'
     })
       .then((response) => response.json())
       .then((data) => {
         setData(data);
-        setList(list.filter((superadmin) => superadmin._id !== id));
+        setList(list.filter((superadmin) => superadmin._id !== deleteId));
         setShowModalMessage(true);
       });
   };
   const onAdd = () => {
+    resetFields();
     setShowModalAdd(true);
   };
   const handleCloseAlert = () => {
-    setShowModalAlert(!false);
+    setShowModalAlert(false);
   };
   const handleCloseMessage = () => {
     setShowModalMessage(false);
   };
-  const openModalDelete = () => {
-    setShowModalAlert(true);
-  };
+  // const openModalDelete = () => {
+  //   setShowModalAlert(true);
+  // };
   // add modals
   const handleCloseAdd = () => {
     setShowModalAdd(false);
   };
   // prueba
-  // edit modals
-  const onEdit = () => {
+  const onEdit = async (id) => {
+    setShowModalAdd(true);
     fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`)
       .then((response) => response.json())
       .then((response) => {
@@ -126,12 +93,31 @@ function SuperAdmins() {
         setEmail(response.data.email);
         setPassword(response.data.password);
         setActive(response.data.active);
-        console.log(firstName);
       });
-    setShowModalAdd(true);
+    setId(id);
+  };
+  const Editing = async (superAdmin) => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${ids}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(superAdmin)
+    });
+    const data = await res.json();
+    if (res.status === 200) {
+      handleCloseAdd(false);
+      resetFields();
+      setMethod('');
+      showModalMessage(true);
+    } else {
+      alert(data.message);
+    }
   };
   // las funciones de la semana pasada
   const addSuperAdmin = async (superAdmin) => {
+    console.log('esto es el metodo: ', method);
+    resetFields();
     if (confirm('Are you sure you want to create a Superadmin ?')) {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
         method: 'POST',
@@ -144,24 +130,7 @@ function SuperAdmins() {
       if (res.status === 201) {
         setList([...list, data]);
         alert(data.message);
-      } else {
-        alert(data.message);
-      }
-    }
-  };
-  const editSuperAdmin = async (superAdmin) => {
-    if (confirm('Are you sure you want to edit it?')) {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(superAdmin)
-      });
-      const data = await res.json();
-      if (res.status === 200) {
-        alert(data.message);
-        resetFields();
+        setMethod('');
       } else {
         alert(data.message);
       }
@@ -173,7 +142,7 @@ function SuperAdmins() {
       addSuperAdmin({ firstName, lastName, email, password, active });
       resetFields();
     } else if (method === 'PUT') {
-      editSuperAdmin({ firstName, lastName, email, password, active });
+      Editing({ firstName, lastName, email, password, active });
     } else {
       alert('Something unexpected happened');
     }
@@ -241,8 +210,7 @@ function SuperAdmins() {
         headers={headers}
         onAdd={onAdd}
         onEdit={onEdit}
-        onDelete={openModalDelete}
-        setId={setId}
+        onDelete={onDelete}
         setMethod={setMethod}
       />
     </section>
