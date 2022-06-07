@@ -40,10 +40,10 @@ function Table({ title, headers, data, onDelete, setId }) {
               <tr className={styles.row} key={row._id}>
                 {headers.map((header, index) => {
                   if (Array.isArray(row[header])) {
-                    if (header === 'tasks') {
+                    if (header === 'tasks' || header === 'task') {
                       return (
                         <td>
-                          <Dropdown placeholder={'Tasks'}>
+                          <Dropdown width={'150px'} placeholder={'Tasks'}>
                             {row[header].map((e) => {
                               console.log(e.taskName);
                               return <option key={Math.random()}>{e.taskName}</option>;
@@ -56,7 +56,7 @@ function Table({ title, headers, data, onDelete, setId }) {
                     if (header === 'team') {
                       return (
                         <td>
-                          <Dropdown placeholder={'Team'}>
+                          <Dropdown width={'150px'} placeholder={'Team'}>
                             {row[header].map((element) => {
                               return <option key={Math.random()}>{element.firstName}</option>;
                             })}
@@ -65,12 +65,10 @@ function Table({ title, headers, data, onDelete, setId }) {
                         </td>
                       );
                     }
-                    // objetos
                     if (header === 'assignedEmployee') {
-                      console.log(row[header]);
                       return (
                         <td>
-                          <Dropdown placeholder={'Employees'}>
+                          <Dropdown width={'150px'} placeholder={'Employees'}>
                             {row[header].map((element) => {
                               return <option key={Math.random()}>{element.surname}</option>;
                             })}
@@ -79,10 +77,19 @@ function Table({ title, headers, data, onDelete, setId }) {
                         </td>
                       );
                     }
-                  } else if (typeof row[header] === 'object') {
+                  } else if (typeof row[header] === 'object' && header === 'parentProject') {
                     return (
                       <td key={Math.random()}>
                         {row[header] !== null ? row[header].name : 'none'}
+                      </td>
+                    );
+                  } else if (typeof row[header] === 'object' && header === 'employeeId') {
+                    console.log('employees: ', row[header]);
+                    return (
+                      <td key={Math.random()}>
+                        {row[header].employeeId !== null
+                          ? `${row[header].firstName} ${row[header].surname}`
+                          : 'none'}
                       </td>
                     );
                   } else {

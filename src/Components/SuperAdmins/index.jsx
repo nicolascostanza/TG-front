@@ -53,15 +53,14 @@ function SuperAdmins() {
   // }
   const headers = [
     '_id',
-    'parentProject',
-    'taskCreatorId',
-    'taskName',
-    'taskDescription',
-    'assignedEmployee',
-    'startDate',
-    'status',
-    'createdAt',
-    'updatedAt'
+    'employeeId',
+    'description',
+    'project',
+    'date',
+    'hours',
+    'task',
+    'approved',
+    'role'
   ];
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
@@ -72,11 +71,11 @@ function SuperAdmins() {
     requestList();
   }, []);
   const requestList = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+    fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
       .then((response) => response.json())
       .then((response) => {
         response.data.map((superadmin) => {
-          superadmin.active = superadmin.active ? 'true' : 'false';
+          superadmin.approved = superadmin.approved ? 'true' : 'false';
           // superadmin.createdAt = superadmin.createdAt.toLocaleString();
         });
         setList(response.data);
