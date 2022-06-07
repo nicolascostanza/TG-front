@@ -84,7 +84,6 @@ function Table({ title, headers, data, onDelete, setId }) {
                       </td>
                     );
                   } else if (typeof row[header] === 'object' && header === 'employeeId') {
-                    console.log('employees: ', row[header]);
                     return (
                       <td key={Math.random()}>
                         {row[header].employeeId !== null
@@ -92,6 +91,13 @@ function Table({ title, headers, data, onDelete, setId }) {
                           : 'none'}
                       </td>
                     );
+                  } else if (
+                    header === 'createdAt' ||
+                    header === 'updatedAt' ||
+                    header === 'startDate' ||
+                    header === 'date'
+                  ) {
+                    return <td>{new Date(row[header]).toLocaleDateString()}</td>;
                   } else {
                     return <td key={index}>{row[header]}</td>;
                   }
@@ -108,7 +114,6 @@ function Table({ title, headers, data, onDelete, setId }) {
                       {
                         onDelete();
                       }
-                      console.log('ejecuta', row._id);
                     }}
                     width={'50px'}
                     height={'25px'}

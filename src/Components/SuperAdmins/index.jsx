@@ -5,62 +5,15 @@ import Modal from '../Shared/Modal';
 import Button from '../Shared/Button/Button';
 
 function SuperAdmins() {
-  // const headers = [
-  //   '_id',
-  //   'name',
-  //   'description',
-  //   'clientName',
-  //   'startDate',
-  //   'endDate',
-  //   'projectManager',
-  //   'team',
-  //   'tasks',
-  //   'createdAt',
-  //   'updatedAt'
-  // ];
-  //   const [id, setId] = useState('');
-  //   const [showModal, setShowModal] = useState(false);
-  //   const [list, setList] = useState([]);
-  //   useEffect(() => {
-  //     requestList();
-  //   }, []);
-  //   const requestList = () => {
-  //     fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
-  //       .then((response) => response.json())
-  //       .then((response) => {
-  //         response.data.map((superadmin) => {
-  //           superadmin.active = superadmin.active ? 'true' : 'false';
-  //         });
-  //         setList(response.data);
-  //       });
-  //   };
-  //   console.log('id a eliminar: ', id);
-  //   return (
-  //     <section className={styles.container}>
-  //       <Modal id={id} showModal={showModal}>
-  //         hola esto es un modal
-  //       </Modal>
-  //       <h1>SuperAdmins</h1>
-  //       <Table
-  //         setId={setId}
-  //         showModal={setShowModal}
-  //         title={'projects'}
-  //         data={list}
-  //         headers={headers}
-  //       />
-  //     </section>
-  //   );
-  // }
   const headers = [
     '_id',
-    'employeeId',
-    'description',
-    'project',
-    'date',
-    'hours',
-    'task',
-    'approved',
-    'role'
+    'firstName',
+    'lastName',
+    'email',
+    'password',
+    'active',
+    'createdAt',
+    'updatedAt'
   ];
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
@@ -71,12 +24,11 @@ function SuperAdmins() {
     requestList();
   }, []);
   const requestList = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
+    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
       .then((response) => response.json())
       .then((response) => {
         response.data.map((superadmin) => {
-          superadmin.approved = superadmin.approved ? 'true' : 'false';
-          // superadmin.createdAt = superadmin.createdAt.toLocaleString();
+          superadmin.active = superadmin.active ? 'true' : 'false';
         });
         setList(response.data);
       });
