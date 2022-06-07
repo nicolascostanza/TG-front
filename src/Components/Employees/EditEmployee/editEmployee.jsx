@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
 import styles from './editEmployee.module.css';
 
 const params = window.location.search;
 const employeeId = params.substring(4);
 
 const EditEmployee = () => {
-  const history = useHistory();
-  const goBack = () => {
-    history.goBack();
-  };
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${employeeId}`)
       .then((response) => response.json())
@@ -144,7 +139,7 @@ const EditEmployee = () => {
         </div>
       </form>
       <div className={styles.submit}>
-        <button onClick={() => goBack()}>Back to list</button>
+        <button>Cancel</button>
       </div>
     </div>
   );

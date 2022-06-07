@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import editProjectStyles from './editProject.module.css';
+// import Modal from '../../Shared/Modal';
 
 const EditProject = (props) => {
   const {
@@ -114,149 +115,161 @@ const EditProject = (props) => {
   };
 
   return (
-    <div className={editProjectStyles.modal}>
-      <div className={editProjectStyles.formContainer}>
-        <form className={editProjectStyles.form}>
-          <label>
-            Name:
-            <input value={project.name} onChange={handleInputChanges} name="name" type="text" />
-          </label>
-          <label>
-            Description:
-            <input
-              value={project.description}
-              onChange={handleInputChanges}
-              name="description"
-              type="text"
-            />
-          </label>
-          <label>
-            Client Name:
-            <input
-              value={project.clientName}
-              onChange={handleInputChanges}
-              name="clientName"
-              type="text"
-            />
-          </label>
-          <label>
-            Start Date:
-            <input
-              value={project.startDate}
-              onChange={handleInputChanges}
-              name="startDate"
-              type="date"
-            />
-          </label>
-          <label>
-            End Date:
-            <input
-              value={project.endDate}
-              onChange={handleInputChanges}
-              name="endDate"
-              type="date"
-            />
-          </label>
-          <label>
-            Project Manager:
-            <input
-              value={project.projectManager}
-              onChange={handleInputChanges}
-              name="projectManager"
-              type="text"
-            />
-          </label>
-          <label>
-            Team:
-            <input value={project.team} onChange={handleInputChanges} name="team" type="text" />
-            {project.team.length > 0
-              ? allEmployees
-                  .filter(
-                    (employee) =>
-                      employee.email.match(new RegExp(project.team, 'i')) ||
-                      employee.firstName.match(new RegExp(project.team, 'i'))
-                  )
-                  .map((member) => {
-                    return (
-                      <p
-                        key={member._id}
-                        onClick={() =>
-                          selectedEmployees.find((emp) => emp === member._id)
-                            ? deleteFromSelectedEmployees(member._id)
-                            : appendToSelectedEmployees(member._id)
-                        }
-                        className={
-                          selectedEmployees.find((emp) => emp === member._id)
-                            ? editProjectStyles.selectedItem
-                            : editProjectStyles.notSelectedItem
-                        }
-                      >
-                        {member.firstName}: {member.email}
-                      </p>
-                    );
-                  })
-              : selectedEmployees.map((member) => {
-                  return (
-                    <p
-                      key={member}
-                      className={editProjectStyles.selectedItem}
-                      onClick={() => deleteFromSelectedEmployees(member)}
-                    >
-                      {allEmployees.find((emp) => emp._id === member).firstName} (
-                      {allEmployees.find((emp) => emp._id === member).email})
-                    </p>
-                  );
-                })}
-          </label>
-          <label>
-            Tasks:
-            <input value={project.tasks} onChange={handleInputChanges} name="tasks" type="text" />
-            {project.tasks.length > 0
-              ? allTasks
-                  .filter(
-                    (task) =>
-                      task.taskName.match(new RegExp(project.tasks, 'i')) ||
-                      task.taskDescription.match(new RegExp(project.tasks, 'i'))
-                  )
-                  .map((task) => {
-                    return (
-                      <p
-                        key={task._id}
-                        onClick={() =>
-                          selectedTasks.find((item) => item === task._id)
-                            ? deleteFromSelectedTasks(task._id)
-                            : appendToSelectedTasks(task._id)
-                        }
-                        className={
-                          selectedTasks.find((item) => item === task._id)
-                            ? editProjectStyles.selectedItem
-                            : editProjectStyles.notSelectedItem
-                        }
-                      >
-                        {task.taskName}: {task.taskDescription}
-                      </p>
-                    );
-                  })
-              : selectedTasks.map((task) => {
-                  return (
-                    <p
-                      key={task}
-                      className={editProjectStyles.selectedItem}
-                      onClick={() => deleteFromSelectedTasks(task)}
-                    >
-                      {allTasks.find((item) => item._id === task).taskName}:{' '}
-                      {allTasks.find((item) => item._id === task).taskDescription}
-                    </p>
-                  );
-                })}
-          </label>
-          <div className={editProjectStyles.buttonContainer}>
-            <button onClick={cancelUpdate}>CANCEL</button>
-            <button onClick={handleSubmit}>UPDATE</button>
-          </div>
-        </form>
+    <form className={editProjectStyles.form}>
+      <label>
+        Name:
+        <input
+          value={project.name}
+          onChange={handleInputChanges}
+          name="name"
+          type="text"
+          placeholder="Project name"
+        />
+      </label>
+      <label>
+        Description:
+        <input
+          value={project.description}
+          onChange={handleInputChanges}
+          name="description"
+          type="text"
+          placeholder="Project description"
+        />
+      </label>
+      <label>
+        Client Name:
+        <input
+          value={project.clientName}
+          onChange={handleInputChanges}
+          name="clientName"
+          type="text"
+          placeholder="Client name"
+        />
+      </label>
+      <label>
+        Start Date:
+        <input
+          value={project.startDate}
+          onChange={handleInputChanges}
+          name="startDate"
+          type="date"
+        />
+      </label>
+      <label>
+        End Date:
+        <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
+      </label>
+      <label>
+        Project Manager:
+        <input
+          value={project.projectManager}
+          onChange={handleInputChanges}
+          name="projectManager"
+          type="text"
+          placeholder="Project manager"
+        />
+      </label>
+      <label>
+        Team:
+        <input
+          value={project.team}
+          onChange={handleInputChanges}
+          name="team"
+          type="text"
+          placeholder="Search an employee"
+        />
+        {project.team.length > 0
+          ? allEmployees
+              .filter(
+                (employee) =>
+                  employee.email.match(new RegExp(project.team, 'i')) ||
+                  employee.firstName.match(new RegExp(project.team, 'i'))
+              )
+              .map((member) => {
+                return (
+                  <p
+                    key={member._id}
+                    onClick={() =>
+                      selectedEmployees.find((emp) => emp === member._id)
+                        ? deleteFromSelectedEmployees(member._id)
+                        : appendToSelectedEmployees(member._id)
+                    }
+                    className={
+                      selectedEmployees.find((emp) => emp === member._id)
+                        ? editProjectStyles.selectedItem
+                        : editProjectStyles.notSelectedItem
+                    }
+                  >
+                    {member.firstName}: {member.email}
+                  </p>
+                );
+              })
+          : selectedEmployees.map((member) => {
+              return (
+                <p
+                  key={member}
+                  className={editProjectStyles.selectedItem}
+                  onClick={() => deleteFromSelectedEmployees(member)}
+                >
+                  {allEmployees.find((emp) => emp._id === member).firstName} (
+                  {allEmployees.find((emp) => emp._id === member).email})
+                </p>
+              );
+            })}
+      </label>
+      <label>
+        Tasks:
+        <input
+          value={project.tasks}
+          onChange={handleInputChanges}
+          name="tasks"
+          type="text"
+          placeholder="Search a task"
+        />
+        {project.tasks.length > 0
+          ? allTasks
+              .filter(
+                (task) =>
+                  task.taskName.match(new RegExp(project.tasks, 'i')) ||
+                  task.taskDescription.match(new RegExp(project.tasks, 'i'))
+              )
+              .map((task) => {
+                return (
+                  <p
+                    key={task._id}
+                    onClick={() =>
+                      selectedTasks.find((item) => item === task._id)
+                        ? deleteFromSelectedTasks(task._id)
+                        : appendToSelectedTasks(task._id)
+                    }
+                    className={
+                      selectedTasks.find((item) => item === task._id)
+                        ? editProjectStyles.selectedItem
+                        : editProjectStyles.notSelectedItem
+                    }
+                  >
+                    {task.taskName}: {task.taskDescription}
+                  </p>
+                );
+              })
+          : selectedTasks.map((task) => {
+              return (
+                <p
+                  key={task}
+                  className={editProjectStyles.selectedItem}
+                  onClick={() => deleteFromSelectedTasks(task)}
+                >
+                  {allTasks.find((item) => item._id === task).taskName}:{' '}
+                  {allTasks.find((item) => item._id === task).taskDescription}
+                </p>
+              );
+            })}
+      </label>
+      <div className={editProjectStyles.buttonContainer}>
+        <button onClick={cancelUpdate}>CANCEL</button>
+        <button onClick={handleSubmit}>UPDATE</button>
       </div>
-    </div>
+    </form>
   );
 };
 

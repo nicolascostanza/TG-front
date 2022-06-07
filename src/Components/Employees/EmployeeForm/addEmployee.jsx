@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './addEmployee.module.css';
 
-const AddEmployee = (props) => {
+const AddEmployee = () => {
   const [firstName, setFirstName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -125,7 +125,7 @@ const AddEmployee = (props) => {
         </div>
       </form>
       <div className={styles.submit}>
-        <button onClick={() => props.history.goBack()}>Back to list</button>
+        <button>Cancel</button>
       </div>
     </div>
   );

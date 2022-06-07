@@ -24,7 +24,12 @@
 }
 
 .tableHead > tr > th {
+	color: black;
 	padding: 10px;
+}
+
+.tableHead > tr {
+	border: none;
 }
 
 .tableBody > :nth-child(even) {

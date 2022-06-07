@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './Form.module.css';
 
-function AddTimeSheets() {
+function AddTimeSheets(props) {
   const [timeSheets, saveTimeSheets] = useState([]);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
@@ -133,6 +133,9 @@ function AddTimeSheets() {
         </div>
       </div>
       <input className={styles.button} type="submit" value="Add Timesheet" />
+      <button className={styles.button} onClick={() => props.history.goBack()}>
+        Back to list
+      </button>
     </form>
   );
 }
