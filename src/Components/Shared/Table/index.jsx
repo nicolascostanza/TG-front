@@ -2,7 +2,9 @@ import React from 'react';
 import { useState } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/Button.jsx';
-function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
+import Dropdown from '../Dropdown/Dropdown';
+
+function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   const nextPage = () => {
@@ -18,7 +20,7 @@ function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={onAdd}>
+      <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
         ADD
       </Button>
       <table className={styles.table}>
@@ -34,17 +36,88 @@ function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
         <tbody>
           {show.map((row) => {
             return (
-              <tr className={styles.row} key={row.id}>
+              <tr className={styles.row} key={row._id}>
                 {headers.map((header, index) => {
-                  return <td key={index}>{row[header]}</td>;
+                  if (Array.isArray(row[header])) {
+                    if (header === 'tasks' || header === 'task') {
+                      return (
+                        <td>
+                          <Dropdown width={'150px'} placeholder={'Tasks'}>
+                            {row[header].map((e) => {
+                              return <option key={Math.random()}>{e.taskName}</option>;
+                            })}
+                            ;
+                          </Dropdown>
+                        </td>
+                      );
+                    }
+                    if (header === 'team') {
+                      return (
+                        <td>
+                          <Dropdown width={'150px'} placeholder={'Team'}>
+                            {row[header].map((element) => {
+                              return <option key={Math.random()}>{element.firstName}</option>;
+                            })}
+                            ;
+                          </Dropdown>
+                        </td>
+                      );
+                    }
+                    if (header === 'assignedEmployee') {
+                      return (
+                        <td>
+                          <Dropdown width={'150px'} placeholder={'Employees'}>
+                            {row[header].map((element) => {
+                              return <option key={Math.random()}>{element.surname}</option>;
+                            })}
+                            ;
+                          </Dropdown>
+                        </td>
+                      );
+                    }
+                  } else if (typeof row[header] === 'object' && header === 'parentProject') {
+                    return (
+                      <td key={Math.random()}>
+                        {row[header] !== null ? row[header].name : 'none'}
+                      </td>
+                    );
+                  } else if (typeof row[header] === 'object' && header === 'employeeId') {
+                    return (
+                      <td key={Math.random()}>
+                        {row[header].employeeId !== null
+                          ? `${row[header].firstName} ${row[header].surname}`
+                          : 'none'}
+                      </td>
+                    );
+                  } else if (
+                    header === 'createdAt' ||
+                    header === 'updatedAt' ||
+                    header === 'startDate' ||
+                    header === 'endDate' ||
+                    header === 'date'
+                  ) {
+                    return <td>{new Date(row[header]).toLocaleDateString()}</td>;
+                  } else {
+                    return <td key={index}>{row[header]}</td>;
+                  }
                 })}
                 <td>
-                  <Button onClick={onEdit} width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button
+                    width={'50px'}
+                    height={'25px'}
+                    fontSize={'15px'}
+                    onClick={() => onEdit(row._id)}
+                  >
                     Edit
                   </Button>
                 </td>
                 <td>
-                  <Button onClick={onDelete} width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button
+                    onClick={() => onDelete(row._id)}
+                    width={'50px'}
+                    height={'25px'}
+                    fontSize={'15px'}
+                  >
                     Delete
                   </Button>
                 </td>

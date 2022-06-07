@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import styles from './addEmployee.module.css';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Form from '../../Shared/Form';
 
-const AddEmployee = () => {
+const AddEmployee = (props) => {
   const [firstName, setFirstName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -47,10 +48,12 @@ const AddEmployee = () => {
 
   return (
     <div className={styles.container}>
-      <div>
-        <h2>Create New Employee</h2>
-      </div>
-      <form onSubmit={onSubmit}>
+      <Form
+        title="Create New Employee"
+        handleSubmit={onSubmit}
+        handleClose={props.closeAdd}
+        showModal={props.showAdd}
+      >
         <div>
           <label>First name</label>
           <input
@@ -87,7 +90,13 @@ const AddEmployee = () => {
           </select>
         </div> */}
         <div>
-          <Dropdown title="Gender" value={gender} onChange={valueChange}>
+          <Dropdown
+            title="Gender"
+            value={gender}
+            onChange={valueChange}
+            placeholder={'Select gender'}
+            // width={'100px'}
+          >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
@@ -133,13 +142,13 @@ const AddEmployee = () => {
           <label>Active</label>
           <input name="active" value={active} onChange={(e) => setActive(e.target.value)}></input>
         </div>
-        <div className={styles.submit}>
+        {/* <div className={styles.submit}>
           <input type="submit" value="Submit" onSubmit={onSubmit}></input>
-        </div>
-      </form>
-      <div className={styles.submit}>
+        </div> */}
+      </Form>
+      {/* <div className={styles.submit}>
         <button>Cancel</button>
-      </div>
+      </div> */}
     </div>
   );
 };

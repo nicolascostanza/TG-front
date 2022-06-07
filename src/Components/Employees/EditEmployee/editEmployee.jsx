@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import styles from './editEmployee.module.css';
 
-const params = window.location.search;
-const employeeId = params.substring(4);
+// const params = window.location.search;
+// const employeeId = params.substring(4);
 
-const EditEmployee = () => {
+const EditEmployee = (props) => {
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees/${employeeId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`)
       .then((response) => response.json())
       .then((response) => {
         setFirstName(response.data.firstName);
@@ -31,7 +31,7 @@ const EditEmployee = () => {
   const [active, setActive] = useState(false);
 
   const editEmployee = async (employee) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${employeeId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
