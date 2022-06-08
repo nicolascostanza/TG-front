@@ -5,6 +5,7 @@ import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
+import Sidebar from '../Shared/Sidebar';
 
 function Admins() {
   const [admins, setAdmins] = useState([]);
@@ -12,17 +13,19 @@ function Admins() {
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [showModalAdd, setShowModalAdd] = useState(false);
-  const [id, setId] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [active, setActive] = useState(false);
   const [method, setMethod] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
+  const [idEdit, setId] = useState('');
 
   useEffect(() => {
     requestList();
-  }, []);
+  }, [method]);
+
   const requestList = () => {
     fetch(`${process.env.REACT_APP_API_URL}/admins`)
       .then((data) => data.json())
@@ -35,19 +38,23 @@ function Admins() {
     console.log(admins);
   };
 
+  const onDelete = (id) => {
+    setShowModalAlert(true);
+    setDeleteId(id);
+  };
+
   const deleteAdmin = async () => {
     setShowModalAlert(false);
-    await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
+    await fetch(`${process.env.REACT_APP_API_URL}/admins/${deleteId}`, {
       method: 'DELETE'
     })
       .then((data) => data.json())
       .then((data) => {
         setData(data);
-        setAdmins(admins.filter((admin) => admin._id !== id));
+        setAdmins(admins.filter((admin) => admin._id !== deleteId));
         setShowModalMessage(true);
       });
     console.log(data);
-    // }
   };
   const handleCloseAlert = () => {
     setShowModalAlert(false);
@@ -55,68 +62,73 @@ function Admins() {
   const handleCloseMessage = () => {
     setShowModalMessage(false);
   };
-  const openModalDelete = () => {
-    setShowModalAlert(true);
-  };
+
   const handleCloseAdd = () => {
     setShowModalAdd(false);
   };
   const onAdd = () => {
     setShowModalAdd(true);
   };
-  // const onEdit = async () => {
-  //   const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`);
-  //   const data = await res.json();
-  // .then((data) => data.json())
-  // .then((data) => {
-  // setFirstName(data.data.firstName);
-  // setLastName(data.data.lastName);
-  // setEmail(data.data.email);
-  // setPassword(data.data.password);
-  // setActive(data.data.active);
-  // console.log(data.data);
-  // });
-  // let adminId = admins.filter((admin) => admin._id === id);
-  // console.log(adminId[0]);
-  // setShowModalAdd(true);
-  // };
-  //   const onAdd = () => {
-  //  redireccionar a los forms
-  //   };
+
+  const resetFields = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setActive(false);
+  };
   const addAdmin = async (admin) => {
-    if (confirm('Are you sure you want to create a Superadmin ?')) {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(admin)
-      });
-      const data = await res.json();
-      if (res.status === 201) {
-        setAdmins([...admins, data]);
-        alert(data.message);
-      } else {
-        alert(data.message);
-      }
+    resetFields();
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(admin)
+    });
+    const data = await res.json();
+    if (res.status === 201) {
+      setAdmins([...admins, data]);
+      setMethod('');
+      setShowModalAdd(false);
+      setData(data);
+      setShowModalMessage(true);
+    } else {
+      setData(data);
+      setShowModalMessage(true);
     }
   };
-  const editAdmin = async (admin) => {
-    if (confirm('Are you sure you want to edit it?')) {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(admin)
+  const onEdit = async (id) => {
+    setShowModalAdd(true);
+    fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
+      .then((response) => response.json())
+      .then((response) => {
+        setFirstName(response.data.firstName);
+        setLastName(response.data.lastName);
+        setEmail(response.data.email);
+        setPassword(response.data.password);
+        setActive(response.data.active);
       });
-      const data = await res.json();
-      if (res.status === 200) {
-        alert(data.message);
-        resetFields();
-      } else {
-        alert(data.message);
-      }
+    setId(id);
+  };
+
+  const editAdmin = async (admin) => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${idEdit}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(admin)
+    });
+    const data = await res.json();
+    if (res.status === 200) {
+      setMethod('');
+      handleCloseAdd(false);
+      resetFields();
+      setData(data);
+      setShowModalMessage(true);
+    } else {
+      alert(data.message);
     }
   };
   const onSubmit = (e) => {
@@ -130,18 +142,13 @@ function Admins() {
       alert('Something unexpected happened');
     }
   };
-  const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setActive(false);
-  };
 
-  console.log(id);
   console.log(firstName, lastName, email, password, active, method);
   return (
     <section className={styles.container}>
+      <div>
+        <Sidebar></Sidebar>
+      </div>
       <Modal
         showModal={showModalAlert}
         handleClose={handleCloseAlert}
@@ -154,9 +161,6 @@ function Admins() {
           Cancel
         </Button>
       </Modal>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
-        {data.message}
-      </Modal>
       <Form
         showModal={showModalAdd}
         handleClose={handleCloseAdd}
@@ -165,19 +169,34 @@ function Admins() {
       >
         <div>
           <label>Name</label>
-          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+          <input
+            type="text"
+            value={firstName}
+            required
+            onChange={(e) => setFirstName(e.target.value)}
+          />
         </div>
         <div>
           <label>Last Name</label>
-          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+          <input
+            type="text"
+            value={lastName}
+            required
+            onChange={(e) => setLastName(e.target.value)}
+          />
         </div>
         <div>
           <label>Email</label>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="text" value={email} required onChange={(e) => setEmail(e.target.value)} />
         </div>
         <div>
           <label>Password</label>
-          <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <input
+            type="password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </div>
         <div>
           <div>
@@ -193,16 +212,16 @@ function Admins() {
           </div>
         </div>
       </Form>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
+      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={''}>
         {data.message}
       </Modal>
       <Table
         title={'Admins'}
         headers={['_id', 'firstName', 'lastName', 'email', 'password', 'active']}
         data={admins}
-        onDelete={openModalDelete}
+        onDelete={onDelete}
         onAdd={onAdd}
-        // onEdit={onEdit}
+        onEdit={onEdit}
         setId={setId}
         setMethod={setMethod}
       />
