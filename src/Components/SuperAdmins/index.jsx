@@ -117,21 +117,20 @@ function SuperAdmins() {
   // add functions and submit
   const addSuperAdmin = async (superAdmin) => {
     resetFields();
-    if (confirm('Are you sure you want to create a Superadmin ?')) {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(superAdmin)
-      });
-      const data = await res.json();
-      if (res.status === 201) {
-        setList([...list, data]);
-        setMethod('');
-      } else {
-        alert(data.message);
-      }
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(superAdmin)
+    });
+    const data = await res.json();
+    if (res.status === 201) {
+      setList([...list, data]);
+      setMethod('');
+      setShowModalAdd(false);
+    } else {
+      alert(data.message);
     }
   };
   const onSubmit = (e) => {
