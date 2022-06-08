@@ -3,20 +3,13 @@ import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
 import Form from '../../Shared/Form';
 
-const params = new URLSearchParams(window.location.search);
-const timeSheetId = params.get('id');
-
-function EditTimeSheets() {
-  const [showModal] = useState(true);
-  const handleClose = () => {
-    window.location.href = '/time-sheets';
-  };
+function EditTimeSheets(props) {
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${timeSheetId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
         console.log(response.data);
-        setEmployeeId(response.data.employeeId);
+        setEmployeeId(response.data.employeeId._id);
         setDescription(response.data.description);
         setProject(response.data.project);
         setDate(response.data.date);
@@ -26,7 +19,7 @@ function EditTimeSheets() {
         setRole(response.data.role);
       });
   }, []);
-  const [employeeId, setEmployeeId] = useState({});
+  const [employeeId, setEmployeeId] = useState([]);
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
   const [date, setDate] = useState('');
@@ -36,7 +29,7 @@ function EditTimeSheets() {
   const [role, setRole] = useState('');
 
   const editTimeSheets = async (timeSheets) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${timeSheetId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
@@ -47,7 +40,6 @@ function EditTimeSheets() {
     console.log('DATA', data);
     if (res.status === 200) {
       alert('Time-sheet updated successfully');
-      window.location.href = '/time-sheets';
     } else if (res.status === 400) {
       alert('There was an error updating time-sheet');
     }
@@ -61,7 +53,7 @@ function EditTimeSheets() {
       project,
       date,
       hours,
-      task: [task[0]._id],
+      task: [...task],
       approved,
       role
     });
@@ -76,7 +68,7 @@ function EditTimeSheets() {
     setRole('');
   };
   return (
-    <Form showModal={showModal} handleClose={handleClose} handleSubmit={onSubmit}>
+    <Form showModal={props.showModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
       <div className={styles.tittle}>
         <h2> Edit Time-Sheet </h2>
       </div>
@@ -111,7 +103,7 @@ function EditTimeSheets() {
         <div>
           <label> Date </label>
           <input
-            type="text"
+            type="date"
             placeholder="Date"
             value={date}
             onChange={(e) => setDate(e.target.value)}
@@ -139,9 +131,8 @@ function EditTimeSheets() {
           <label> Approved </label>
           <input
             type="checkbox"
-            // checked={approved}
-            value={approved}
-            onChange={(e) => setApproved(e.target.value)}
+            checked={approved}
+            onChange={(e) => setApproved(e.target.checked)}
           />
         </div>
         <div>

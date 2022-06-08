@@ -46,7 +46,7 @@ function AddTimeSheets(props) {
       project,
       date,
       hours,
-      task: [task],
+      task: [...task],
       approved,
       role
     });

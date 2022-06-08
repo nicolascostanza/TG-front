@@ -39,12 +39,22 @@ function Table({ title, headers, data, onEdit, onDelete, onAdd }) {
                   return <td key={index}>{row[header]}</td>;
                 })}
                 <td>
-                  <Button onClick={onEdit} width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button
+                    onClick={() => onEdit(row._id)}
+                    width={'50px'}
+                    height={'25px'}
+                    fontSize={'15px'}
+                  >
                     Edit
                   </Button>
                 </td>
                 <td>
-                  <Button onClick={onDelete} width={'50px'} height={'25px'} fontSize={'15px'}>
+                  <Button
+                    onClick={() => onDelete(row._id)}
+                    width={'50px'}
+                    height={'25px'}
+                    fontSize={'15px'}
+                  >
                     Delete
                   </Button>
                 </td>
