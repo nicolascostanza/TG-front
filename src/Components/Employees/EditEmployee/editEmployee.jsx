@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
 import Form from '../../Shared/Form';
 import styles from './editEmployee.module.css';
-
-// const params = window.location.search;
-// const employeeId = params.substring(4);
 
 const EditEmployee = (props) => {
   const [firstName, setFirstName] = useState('');
@@ -14,7 +12,13 @@ const EditEmployee = (props) => {
   const [dob, setDob] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState();
+  const valueGenderChange = (e) => {
+    return setGender(e.target.value);
+  };
+  const valueActiveChange = (e) => {
+    return setActive(e.target.value);
+  };
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`)
       .then((response) => response.json())
@@ -74,7 +78,6 @@ const EditEmployee = (props) => {
   };
   return (
     <div>
-      {/* <form className={styles.container} onSubmit={onSubmit}> */}
       <Form
         title="Edit Employee"
         handleSubmit={onSubmit}
@@ -99,12 +102,17 @@ const EditEmployee = (props) => {
             <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
           </div>
           <div>
-            <label>Gender</label>
-            <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
+            <Dropdown
+              title="Gender"
+              value={gender}
+              onChange={valueGenderChange}
+              placeholder={'Select gender'}
+              width={'170px'}
+            >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
-            </select>
+            </Dropdown>
           </div>
           <div>
             <label>Address</label>
@@ -132,15 +140,17 @@ const EditEmployee = (props) => {
             <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}></input>
           </div>
           <div>
-            <label>Active</label>
-            <select type="text" value={active} onChange={(e) => setActive(e.target.value)}>
-              <option value="True">True</option>
-              <option value="False">False</option>
-            </select>
+            <Dropdown
+              title="Active"
+              value={active}
+              onChange={valueActiveChange}
+              placeholder={'Select status'}
+              width={'170px'}
+            >
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </Dropdown>
           </div>
-          {/* <div className={styles.submit}>
-            <input type="submit" value="Submit" onSubmit={onSubmit}></input>
-          </div> */}
         </div>
       </Form>
     </div>

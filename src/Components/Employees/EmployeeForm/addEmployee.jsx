@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import styles from './addEmployee.module.css';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
 import Form from '../../Shared/Form';
+import Modal from '../../Shared/Modal';
+import styles from './addEmployee.module.css';
 
 const AddEmployee = (props) => {
   const [firstName, setFirstName] = useState('');
@@ -12,7 +13,8 @@ const AddEmployee = (props) => {
   const [dob, setDob] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState();
+  const [showModal, setShowModal] = useState(false);
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -38,21 +40,34 @@ const AddEmployee = (props) => {
 
     fetch(url, createEmployee)
       .then((response) => response.json())
-      .then((data) => alert(data.message));
+      .then((response) => {
+        if (!response.error) {
+          props.closeAdd();
+          setShowModal(true);
+        }
+      });
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
-  const valueChange = (e) => {
-    console.log('e', e.target.value);
+  const valueGenderChange = (e) => {
     return setGender(e.target.value);
   };
-
+  const valueActiveChange = (e) => {
+    return setActive(e.target.value);
+  };
   return (
     <div className={styles.container}>
+      <Modal handleClose={handleCloseModal} showModal={showModal}>
+        <h2>Employee has been successfully created</h2>
+      </Modal>
       <Form
         title="Create New Employee"
         handleSubmit={onSubmit}
         handleClose={props.closeAdd}
         showModal={props.showAdd}
+        background
       >
         <div>
           <label>First name</label>
@@ -81,21 +96,13 @@ const AddEmployee = (props) => {
             onChange={(e) => setEmail(e.target.value)}
           ></input>
         </div>
-        {/* <div>
-          <label>Gender</label>
-          <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div> */}
         <div>
           <Dropdown
             title="Gender"
             value={gender}
-            onChange={valueChange}
+            onChange={valueGenderChange}
             placeholder={'Select gender'}
-            // width={'100px'}
+            width={'170px'}
           >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
@@ -139,8 +146,16 @@ const AddEmployee = (props) => {
           ></input>
         </div>
         <div>
-          <label>Active</label>
-          <input name="active" value={active} onChange={(e) => setActive(e.target.value)}></input>
+          <Dropdown
+            title="Active"
+            value={active}
+            onChange={valueActiveChange}
+            placeholder={'Select status'}
+            width={'170px'}
+          >
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </Dropdown>
         </div>
       </Form>
     </div>

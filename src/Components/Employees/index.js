@@ -1,11 +1,9 @@
-import React from 'react';
-import styles from './employees.module.css';
-import { useState, useEffect } from 'react';
-import Table from '../Shared/Table';
+import React, { useEffect, useState } from 'react';
 import Sidebar from '../Shared/Sidebar';
-// import Form from '../Shared/Form';
-import AddEmployee from './EmployeeForm/addEmployee';
+import Table from '../Shared/Table';
 import EditEmployee from './EditEmployee/editEmployee';
+import AddEmployee from './EmployeeForm/addEmployee';
+import styles from './employees.module.css';
 
 function Employees() {
   const headers = [
@@ -29,7 +27,6 @@ function Employees() {
   useEffect(() => {
     requestList();
   }, []);
-  //Request list
   const requestList = () => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
       .then((response) => response.json())
@@ -40,7 +37,6 @@ function Employees() {
         setEmployees(response.data);
       });
   };
-  // Delete employee
   const deleteEmployee = async (id) => {
     if (window.confirm('Do you want to delete this employee?')) {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
@@ -51,7 +47,6 @@ function Employees() {
         : alert('Error deleting this employee');
     }
   };
-  // Add employee
   const addEmployee = () => {
     setShowAdd(true);
     console.log('agregar empleado');
@@ -59,12 +54,9 @@ function Employees() {
   const closeAdd = () => {
     setShowAdd(false);
   };
-  // Edit employee
   const editEmployee = (id) => {
     setShowEdit(true);
     setEmployeeIdToEdit(id);
-    // console.log('a ver si llega', id);
-    // console.log('employeeIdToEdit', employeeIdToEdit);
   };
   const closeEdit = () => {
     setShowEdit(false);
@@ -80,7 +72,6 @@ function Employees() {
         <div>
           <EditEmployee showEdit={showEdit} closeEdit={closeEdit} id={employeeIdToEdit} />
         </div>
-        {/* <Form showModal={false} handleClose={() => {}} /> */}
         <Table
           title={'Employees'}
           headers={headers}
