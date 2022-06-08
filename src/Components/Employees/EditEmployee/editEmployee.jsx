@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import Form from '../../Shared/Form';
 import styles from './editEmployee.module.css';
 
 // const params = window.location.search;
 // const employeeId = params.substring(4);
 
 const EditEmployee = (props) => {
+  const [firstName, setFirstName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [adress, setAdress] = useState('');
+  const [dob, setDob] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [active, setActive] = useState(false);
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`)
       .then((response) => response.json())
       .then((response) => {
+        console.log(response);
         setFirstName(response.data.firstName);
         setSurname(response.data.surname);
         setEmail(response.data.email);
@@ -19,16 +30,7 @@ const EditEmployee = (props) => {
         setPhone(response.data.phone);
         setActive(response.data.active);
       });
-  }, []);
-  const [firstName, setFirstName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [gender, setGender] = useState('');
-  const [adress, setAdress] = useState('');
-  const [dob, setDob] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [active, setActive] = useState(false);
+  }, [props.id]);
 
   const editEmployee = async (employee) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`, {
@@ -72,10 +74,13 @@ const EditEmployee = (props) => {
   };
   return (
     <div>
-      <form className={styles.container} onSubmit={onSubmit}>
-        <div>
-          <h2>Edit Employee</h2>
-        </div>
+      {/* <form className={styles.container} onSubmit={onSubmit}> */}
+      <Form
+        title="Edit Employee"
+        handleSubmit={onSubmit}
+        handleClose={props.closeEdit}
+        showModal={props.showEdit}
+      >
         <div className={styles.form}>
           <div>
             <label>First name</label>
@@ -109,7 +114,7 @@ const EditEmployee = (props) => {
             <label>Dob</label>
             <input
               type="text"
-              placeholder="yyy-mm-dd"
+              placeholder="yyyy-mm-dd"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
             ></input>
@@ -133,14 +138,11 @@ const EditEmployee = (props) => {
               <option value="False">False</option>
             </select>
           </div>
-          <div className={styles.submit}>
+          {/* <div className={styles.submit}>
             <input type="submit" value="Submit" onSubmit={onSubmit}></input>
-          </div>
+          </div> */}
         </div>
-      </form>
-      <div className={styles.submit}>
-        <button>Cancel</button>
-      </div>
+      </Form>
     </div>
   );
 };

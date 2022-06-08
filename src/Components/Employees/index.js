@@ -3,8 +3,9 @@ import styles from './employees.module.css';
 import { useState, useEffect } from 'react';
 import Table from '../Shared/Table';
 import Sidebar from '../Shared/Sidebar';
-import Form from '../Shared/Form';
+// import Form from '../Shared/Form';
 import AddEmployee from './EmployeeForm/addEmployee';
+import EditEmployee from './EditEmployee/editEmployee';
 
 function Employees() {
   const headers = [
@@ -21,8 +22,9 @@ function Employees() {
   ];
 
   const [showAdd, setShowAdd] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
   const [employees, setEmployees] = useState([]);
-  // const [id, setId] = useState('');
+  const [employeeIdToEdit, setEmployeeIdToEdit] = useState('');
 
   useEffect(() => {
     requestList();
@@ -57,6 +59,16 @@ function Employees() {
   const closeAdd = () => {
     setShowAdd(false);
   };
+  // Edit employee
+  const editEmployee = (id) => {
+    setShowEdit(true);
+    setEmployeeIdToEdit(id);
+    // console.log('a ver si llega', id);
+    // console.log('employeeIdToEdit', employeeIdToEdit);
+  };
+  const closeEdit = () => {
+    setShowEdit(false);
+  };
 
   return (
     <section className={styles.container}>
@@ -65,12 +77,15 @@ function Employees() {
       </section>
       <AddEmployee showAdd={showAdd} closeAdd={closeAdd} />
       <section>
-        <Form showModal={false} handleClose={() => {}} />
+        <div>
+          <EditEmployee showEdit={showEdit} closeEdit={closeEdit} id={employeeIdToEdit} />
+        </div>
+        {/* <Form showModal={false} handleClose={() => {}} /> */}
         <Table
           title={'Employees'}
           headers={headers}
           data={employees}
-          onEdit={() => {}}
+          onEdit={editEmployee}
           onAdd={addEmployee}
           onDelete={deleteEmployee}
         />

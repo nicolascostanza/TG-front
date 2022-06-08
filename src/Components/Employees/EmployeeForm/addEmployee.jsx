@@ -142,13 +142,7 @@ const AddEmployee = (props) => {
           <label>Active</label>
           <input name="active" value={active} onChange={(e) => setActive(e.target.value)}></input>
         </div>
-        {/* <div className={styles.submit}>
-          <input type="submit" value="Submit" onSubmit={onSubmit}></input>
-        </div> */}
       </Form>
-      {/* <div className={styles.submit}>
-        <button>Cancel</button>
-      </div> */}
     </div>
   );
 };
