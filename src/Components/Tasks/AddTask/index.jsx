@@ -126,9 +126,6 @@ const AddTask = (props) => {
           </Dropdown>
         </div>
       </div>
-      <button className={styles.button} onClick={() => props.history.goBack()}>
-        Back to list
-      </button>
     </Form>
   );
 };

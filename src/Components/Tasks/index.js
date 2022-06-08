@@ -119,12 +119,12 @@ function Tasks() {
     <section className={styles.container}>
       <section className={styles.sidebar}>
         <Sidebar>
-          <a>prueba</a>
-          <p>prueba</p>
-          <p>prueba</p>
-          <p>prueba</p>
-          <p>prueba</p>
-          <p>prueba</p>
+          <h2>What to do</h2>
+          <ul>
+            <li>Side Tasks</li>
+            <li>Schedule</li>
+            <li>Monthly report</li>
+          </ul>
         </Sidebar>
       </section>
       <section className={styles.container}>
