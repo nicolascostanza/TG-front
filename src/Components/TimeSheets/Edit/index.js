@@ -8,7 +8,6 @@ function EditTimeSheets(props) {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.data);
         setEmployeeId(response.data.employeeId._id);
         setDescription(response.data.description);
         setProject(response.data.project);
@@ -18,7 +17,7 @@ function EditTimeSheets(props) {
         setApproved(response.data.approved);
         setRole(response.data.role);
       });
-  }, []);
+  }, [props.editId]);
   const [employeeId, setEmployeeId] = useState([]);
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
@@ -58,7 +57,7 @@ function EditTimeSheets(props) {
       role
     });
 
-    setEmployeeId({});
+    setEmployeeId('');
     setDescription('');
     setProject('');
     setDate('');
@@ -78,7 +77,7 @@ function EditTimeSheets(props) {
           <input
             type="text"
             placeholder="employeeId"
-            value={employeeId._id}
+            value={employeeId}
             onChange={(e) => setEmployeeId(e.target.value)}
           />
         </div>
