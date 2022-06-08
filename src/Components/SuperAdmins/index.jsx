@@ -4,6 +4,7 @@ import Table from '../Shared/Table';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
+import Sidebar from '../Shared/Sidebar';
 
 function SuperAdmins() {
   const headers = [
@@ -16,6 +17,7 @@ function SuperAdmins() {
     'createdAt',
     'updatedAt'
   ];
+  // states
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -49,6 +51,21 @@ function SuperAdmins() {
     setPassword('');
     setActive(false);
   };
+  // modals
+  const onAdd = () => {
+    resetFields();
+    setShowModalAdd(true);
+  };
+  const handleCloseAlert = () => {
+    setShowModalAlert(false);
+  };
+  const handleCloseMessage = () => {
+    setShowModalMessage(false);
+  };
+  const handleCloseAdd = () => {
+    setShowModalAdd(false);
+  };
+  // delete functions
   const onDelete = (id) => {
     setShowModalAlert(true);
     setDeleteId(id);
@@ -65,24 +82,7 @@ function SuperAdmins() {
         setShowModalMessage(true);
       });
   };
-  const onAdd = () => {
-    resetFields();
-    setShowModalAdd(true);
-  };
-  const handleCloseAlert = () => {
-    setShowModalAlert(false);
-  };
-  const handleCloseMessage = () => {
-    setShowModalMessage(false);
-  };
-  // const openModalDelete = () => {
-  //   setShowModalAlert(true);
-  // };
-  // add modals
-  const handleCloseAdd = () => {
-    setShowModalAdd(false);
-  };
-  // prueba
+  // edits functions
   const onEdit = async (id) => {
     setShowModalAdd(true);
     fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`)
@@ -114,9 +114,8 @@ function SuperAdmins() {
       alert(data.message);
     }
   };
-  // las funciones de la semana pasada
+  // add functions and submit
   const addSuperAdmin = async (superAdmin) => {
-    console.log('esto es el metodo: ', method);
     resetFields();
     if (confirm('Are you sure you want to create a Superadmin ?')) {
       const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
@@ -129,7 +128,6 @@ function SuperAdmins() {
       const data = await res.json();
       if (res.status === 201) {
         setList([...list, data]);
-        alert(data.message);
         setMethod('');
       } else {
         alert(data.message);
@@ -148,72 +146,76 @@ function SuperAdmins() {
     }
   };
   return (
-    <section className={styles.container}>
-      <Modal
-        showModal={showModalAlert}
-        handleClose={handleCloseAlert}
-        modalTitle={`Are you sure you want to delete the SuperAdmin?`}
-      >
-        <Button onClick={deleteAdmin} width={'50px'} height={'25px'} fontSize={'15px'}>
-          Accept
-        </Button>
-        <Button onClick={handleCloseAlert} width={'50px'} height={'25px'} fontSize={'15px'}>
-          Cancel
-        </Button>
-      </Modal>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
-        {data.message}
-      </Modal>
-      <Form
-        handleSubmit={onSubmit}
-        showModal={showModalAdd}
-        handleClose={handleCloseAdd}
-        title={method === 'POST' ? 'Create superadmin' : 'Edit Superadmin'}
-      >
-        <div>
-          <label>Name</label>
-          <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-        </div>
-        <div>
-          <label>LastName</label>
-          <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
-        </div>
-        <div>
-          <label>Email</label>
-          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label>Password</label>
-          <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <div>
+    <>
+      <div>
+        <Sidebar />
+      </div>
+      <section className={styles.container}>
+        <Modal
+          showModal={showModalAlert}
+          handleClose={handleCloseAlert}
+          modalTitle={`Are you sure you want to delete the SuperAdmin?`}
+        >
+          <Button onClick={deleteAdmin} width={'50px'} height={'25px'} fontSize={'15px'}>
+            Accept
+          </Button>
+          <Button onClick={handleCloseAlert} width={'50px'} height={'25px'} fontSize={'15px'}>
+            Cancel
+          </Button>
+        </Modal>
+        <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
+          {data.message}
+        </Modal>
+        <Form
+          handleSubmit={onSubmit}
+          showModal={showModalAdd}
+          handleClose={handleCloseAdd}
+          title={method === 'POST' ? 'Create superadmin' : 'Edit Superadmin'}
+        >
           <div>
-            <label>Active</label>
+            <label>Name</label>
+            <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
           </div>
           <div>
-            <input
-              type="checkbox"
-              checked={active}
-              value={active}
-              onChange={(e) => setActive(e.currentTarget.checked)}
-            />
+            <label>LastName</label>
+            <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
           </div>
-        </div>
-      </Form>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
-        {data.message}
-      </Modal>
-
-      <Table
-        title={'SuperAdmins'}
-        data={list}
-        headers={headers}
-        onAdd={onAdd}
-        onEdit={onEdit}
-        onDelete={onDelete}
-        setMethod={setMethod}
-      />
-    </section>
+          <div>
+            <label>Email</label>
+            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+          </div>
+          <div>
+            <label>Password</label>
+            <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+          </div>
+          <div>
+            <div>
+              <label>Active</label>
+            </div>
+            <div>
+              <input
+                type="checkbox"
+                checked={active}
+                value={active}
+                onChange={(e) => setActive(e.currentTarget.checked)}
+              />
+            </div>
+          </div>
+        </Form>
+        <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
+          {data.message}
+        </Modal>
+        <Table
+          title={'SuperAdmins'}
+          data={list}
+          headers={headers}
+          onAdd={onAdd}
+          onEdit={onEdit}
+          onDelete={onDelete}
+          setMethod={setMethod}
+        />
+      </section>
+    </>
   );
 }
 
