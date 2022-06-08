@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
-import ListItem from './ListItem';
 import EditProject from '../EditProject';
-import listStyles from './list.module.css';
 import Modal from '../../Shared/Modal';
+import Table from '../../Shared/Table';
+import CreateProject from '../CreateProject';
+import Sidebar from '../../Shared/Sidebar';
 
 function List() {
   const [projects, setProjects] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProject, setEditingProject] = useState({
     name: '',
     description: '',
@@ -16,6 +18,28 @@ function List() {
     projectManager: '',
     team: [],
     tasks: []
+  });
+
+  const handleCloseCreateModal = () => {
+    setShowCreateModal(false);
+  };
+
+  const handleOpenCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
+  const formattedProjects = projects.map((project) => {
+    return {
+      _id: project._id,
+      name: project.name,
+      description: project.description,
+      clientName: project.clientName,
+      startDate: new Date(project.startDate).toLocaleDateString(),
+      endDate: new Date(project.endDate).toLocaleDateString(),
+      projectManager: project.projectManager,
+      team: project.team.map((member) => member.firstName).join(' - ') || '-',
+      tasks: project.tasks.map((task) => task.taskName).join(' - ') || '-'
+    };
   });
 
   const editProject = (id) => {
@@ -62,6 +86,8 @@ function List() {
 
   return (
     <div>
+      <Sidebar></Sidebar>
+      {<CreateProject showCreateModal={showCreateModal} handleClose={handleCloseCreateModal} />}
       {edit ? (
         <Modal showModal={edit} handleClose={closeModal} modalTitle="Update project">
           <EditProject
@@ -73,37 +99,25 @@ function List() {
       ) : (
         ''
       )}
-      <table className={listStyles.table}>
-        <thead className={listStyles.tableHead}>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Client name</th>
-            <th>Start Date</th>
-            <th>End date</th>
-            <th>PM</th>
-            <th>Team</th>
-            <th>Tasks</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody className={listStyles.tableBody}>
-          {projects.map((project) => {
-            return (
-              <ListItem
-                key={project._id}
-                project={project}
-                editProject={editProject}
-                deleteProject={deleteProject}
-              />
-            );
-          })}
-        </tbody>
-      </table>
-      <a className={listStyles.createButton} href="/projects/create">
-        Create new project
-      </a>
+      <Table // HERE HERE HERE HERE HERE HERE
+        title="Projects"
+        headers={[
+          'name',
+          'description',
+          'clientName',
+          'startDate',
+          'endDate',
+          'projectManager',
+          'team',
+          'tasks',
+          '',
+          ''
+        ]}
+        data={formattedProjects}
+        onEdit={editProject}
+        onDelete={deleteProject}
+        onAdd={handleOpenCreateModal}
+      />
     </div>
   );
 }

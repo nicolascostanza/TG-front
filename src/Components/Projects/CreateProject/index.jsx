@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import addProjectStyles from './createProject.module.css';
 import { withRouter } from 'react-router-dom';
+import Form from '../../Shared/Form';
 
 const CreateProject = (props) => {
   const initialValues = {
@@ -102,169 +103,168 @@ const CreateProject = (props) => {
   };
 
   return (
-    <div className={addProjectStyles.formContainer}>
-      <div className={addProjectStyles.navContainer}>
-        <button onClick={() => props.history.goBack()}>Back to list</button>
-        <h3>Create a new project</h3>
-      </div>
-      <form className={addProjectStyles.form}>
-        <label>
-          Name:
-          <input
-            value={project.name}
-            onChange={handleInputChanges}
-            name="name"
-            type="text"
-            placeholder="Project name"
-          />
-        </label>
-        <label>
-          Description:
-          <input
-            value={project.description}
-            onChange={handleInputChanges}
-            name="description"
-            type="text"
-            placeholder="Project description"
-          />
-        </label>
-        <label>
-          Client Name:
-          <input
-            value={project.clientName}
-            onChange={handleInputChanges}
-            name="clientName"
-            type="text"
-            placeholder="Client name"
-          />
-        </label>
-        <label>
-          Start Date:
-          <input
-            value={project.startDate}
-            onChange={handleInputChanges}
-            name="startDate"
-            type="date"
-          />
-        </label>
-        <label>
-          End Date:
-          <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
-        </label>
-        <label>
-          Project Manager:
-          <input
-            value={project.projectManager}
-            onChange={handleInputChanges}
-            name="projectManager"
-            type="text"
-            placeholder="Project manager"
-          />
-        </label>
-        <label>
-          Team:
-          <input
-            value={project.team}
-            onChange={handleInputChanges}
-            name="team"
-            type="text"
-            placeholder="Search an employee"
-          />
-          <div className={addProjectStyles.optionContainer}>
-            {project.team.length > 0
-              ? allEmployees
-                  .filter(
-                    (employee) =>
-                      employee.email.match(new RegExp(project.team, 'i')) ||
-                      employee.firstName.match(new RegExp(project.team, 'i'))
-                  )
-                  .map((member) => {
-                    return (
-                      <p
-                        key={member._id}
-                        onClick={() =>
-                          selectedEmployees.find((emp) => emp === member._id)
-                            ? deleteFromSelectedEmployees(member._id)
-                            : appendToSelectedEmployees(member._id)
-                        }
-                        className={
-                          selectedEmployees.find((emp) => emp === member._id)
-                            ? addProjectStyles.selectedItem
-                            : addProjectStyles.notSelectedItem
-                        }
-                      >
-                        {member.firstName}: {member.email}
-                      </p>
-                    );
-                  })
-              : selectedEmployees.map((member) => {
-                  return (
-                    <p
-                      key={member}
-                      className={addProjectStyles.selectedItem}
-                      onClick={() => deleteFromSelectedEmployees(member)}
-                    >
-                      {allEmployees.find((emp) => emp._id === member).firstName} (
-                      {allEmployees.find((emp) => emp._id === member).email})
-                    </p>
-                  );
-                })}
-          </div>
-        </label>
-        <label>
-          Tasks:
-          <input
-            value={project.tasks}
-            onChange={handleInputChanges}
-            name="tasks"
-            type="text"
-            placeholder="Search a task"
-          />
-          {project.tasks.length > 0
-            ? allTasks
+    <Form
+      title="Create project"
+      showModal={props.showCreateModal}
+      handleSubmit={handleSubmit}
+      handleClose={props.handleClose}
+    >
+      <label>
+        Name:
+        <input
+          value={project.name}
+          onChange={handleInputChanges}
+          name="name"
+          type="text"
+          placeholder="Project name"
+        />
+      </label>
+      <label>
+        Description:
+        <input
+          value={project.description}
+          onChange={handleInputChanges}
+          name="description"
+          type="text"
+          placeholder="Project description"
+        />
+      </label>
+      <label>
+        Client Name:
+        <input
+          value={project.clientName}
+          onChange={handleInputChanges}
+          name="clientName"
+          type="text"
+          placeholder="Client name"
+        />
+      </label>
+      <label>
+        Start Date:
+        <input
+          value={project.startDate}
+          onChange={handleInputChanges}
+          name="startDate"
+          type="date"
+        />
+      </label>
+      <label>
+        End Date:
+        <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
+      </label>
+      <label>
+        Project Manager:
+        <input
+          value={project.projectManager}
+          onChange={handleInputChanges}
+          name="projectManager"
+          type="text"
+          placeholder="Project manager"
+        />
+      </label>
+      <label>
+        Team:
+        <input
+          value={project.team}
+          onChange={handleInputChanges}
+          name="team"
+          type="text"
+          placeholder="Search an employee"
+        />
+        <div className={addProjectStyles.optionContainer}>
+          {project.team.length > 0
+            ? allEmployees
                 .filter(
-                  (task) =>
-                    task.taskName.match(new RegExp(project.tasks, 'i')) ||
-                    task.taskDescription.match(new RegExp(project.tasks, 'i'))
+                  (employee) =>
+                    employee.email.match(new RegExp(project.team, 'i')) ||
+                    employee.firstName.match(new RegExp(project.team, 'i'))
                 )
-                .map((task) => {
+                .map((member) => {
                   return (
                     <p
-                      key={task._id}
+                      key={member._id}
                       onClick={() =>
-                        selectedTasks.find((item) => item === task._id)
-                          ? deleteFromSelectedTasks(task._id)
-                          : appendToSelectedTasks(task._id)
+                        selectedEmployees.find((emp) => emp === member._id)
+                          ? deleteFromSelectedEmployees(member._id)
+                          : appendToSelectedEmployees(member._id)
                       }
                       className={
-                        selectedTasks.find((item) => item === task._id)
+                        selectedEmployees.find((emp) => emp === member._id)
                           ? addProjectStyles.selectedItem
                           : addProjectStyles.notSelectedItem
                       }
                     >
-                      {task.taskName}: {task.taskDescription}
+                      {member.firstName}: {member.email}
                     </p>
                   );
                 })
-            : selectedTasks.map((task) => {
+            : selectedEmployees.map((member) => {
                 return (
                   <p
-                    key={task}
+                    key={member}
                     className={addProjectStyles.selectedItem}
-                    onClick={() => deleteFromSelectedTasks(task)}
+                    onClick={() => deleteFromSelectedEmployees(member)}
                   >
-                    {allTasks.find((item) => item._id === task).taskName}:{' '}
-                    {allTasks.find((item) => item._id === task).taskDescription}
+                    {allEmployees.find((emp) => emp._id === member).firstName} (
+                    {allEmployees.find((emp) => emp._id === member).email})
                   </p>
                 );
               })}
-        </label>
-        <div className={addProjectStyles.buttonContainer}>
+        </div>
+      </label>
+      <label>
+        Tasks:
+        <input
+          value={project.tasks}
+          onChange={handleInputChanges}
+          name="tasks"
+          type="text"
+          placeholder="Search a task"
+        />
+        {project.tasks.length > 0
+          ? allTasks
+              .filter(
+                (task) =>
+                  task.taskName.match(new RegExp(project.tasks, 'i')) ||
+                  task.taskDescription.match(new RegExp(project.tasks, 'i'))
+              )
+              .map((task) => {
+                return (
+                  <p
+                    key={task._id}
+                    onClick={() =>
+                      selectedTasks.find((item) => item === task._id)
+                        ? deleteFromSelectedTasks(task._id)
+                        : appendToSelectedTasks(task._id)
+                    }
+                    className={
+                      selectedTasks.find((item) => item === task._id)
+                        ? addProjectStyles.selectedItem
+                        : addProjectStyles.notSelectedItem
+                    }
+                  >
+                    {task.taskName}: {task.taskDescription}
+                  </p>
+                );
+              })
+          : selectedTasks.map((task) => {
+              return (
+                <p
+                  key={task}
+                  className={addProjectStyles.selectedItem}
+                  onClick={() => deleteFromSelectedTasks(task)}
+                >
+                  {allTasks.find((item) => item._id === task).taskName}:{' '}
+                  {allTasks.find((item) => item._id === task).taskDescription}
+                </p>
+              );
+            })}
+      </label>
+      {/* <div className={addProjectStyles.buttonContainer}>
           <button onClick={resetValues}>RESET</button>
           <button onClick={handleSubmit}>CREATE</button>
-        </div>
-      </form>
-    </div>
+        </div> */}
+    </Form>
   );
 };
 
