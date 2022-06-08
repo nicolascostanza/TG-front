@@ -3,6 +3,7 @@ import Sidebar from '../Shared/Sidebar';
 import { useEffect, useState } from 'react';
 import Table from '../Shared/Table';
 import Form from '../Shared/Form';
+import AddTask from './AddTask';
 
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
@@ -16,6 +17,14 @@ function Tasks() {
   const [status, setStatus] = useState('');
   const [tasks, setTask] = useState([]);
   const [editedId, setEditedId] = useState('');
+  const [showAddModal, setShowAddModal] = useState(false);
+  const openAddTask = () => {
+    setShowAddModal(true);
+  };
+  const handleClose = () => {
+    setShowAddModal(false);
+    setShowModal(false);
+  };
 
   const headers = [
     '_id',
@@ -56,10 +65,6 @@ function Tasks() {
       });
   };
 
-  const handleClose = () => {
-    setShowModal(false);
-  };
-
   const onSubmit = (e) => {
     e.preventDefault();
     editTask({
@@ -94,6 +99,7 @@ function Tasks() {
 
     if (res.status === 200) {
       alert('Task updated successfully');
+      handleClose();
     } else if (res.status === 400) {
       alert('Something went wrong');
     }
@@ -128,9 +134,10 @@ function Tasks() {
           headers={headers}
           onDelete={deleteTask}
           onEdit={onEdit}
-          onAdd={() => {}}
+          onAdd={openAddTask}
         />
       </section>
+      <AddTask showAddModal={showAddModal} handleClose={handleClose} handleSubmit={onSubmit} />
       <Form showModal={showModal} handleClose={handleClose} handleSubmit={onSubmit}>
         <div>
           <h2>Edit Task</h2>

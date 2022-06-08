@@ -7,10 +7,6 @@ import Form from '../../Shared/Form';
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
 const AddTask = (props) => {
-  const [showModal] = useState(true);
-  const handleClose = () => {
-    window.location.href = '/tasks';
-  };
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
     fetch(URL)
@@ -42,6 +38,7 @@ const AddTask = (props) => {
 
     if (res.status === 201) {
       alert('Task added successfully');
+      props.handleClose();
     } else if (res.status === 400 || res.status === 500) {
       alert('Something went wrong');
     }
@@ -71,7 +68,7 @@ const AddTask = (props) => {
   };
 
   return (
-    <Form showModal={showModal} handleClose={handleClose} handleSubmit={onSubmit}>
+    <Form showModal={props.showAddModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
       <div>
         <h2>Add New Task</h2>
       </div>
