@@ -1,6 +1,4 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-// import AdminAdd from '../Admins/AdminAdd/adminAdd';
-// import AdminEdit from '../Admins/AdminEdit/adminEdit';
 import Admins from '../Admins/index';
 import EditEmployee from '../Employees/EditEmployee/editEmployee';
 import AddEmployee from '../Employees/EmployeeForm/addEmployee';
