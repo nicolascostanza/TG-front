@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
 import Form from '../../Shared/Form';
+import Modal from '../../Shared/Modal';
 import styles from './editEmployee.module.css';
 
 const EditEmployee = (props) => {
@@ -13,6 +14,8 @@ const EditEmployee = (props) => {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
   const [active, setActive] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [titleModal, setTitleModal] = useState('');
   const valueGenderChange = (e) => {
     return setGender(e.target.value);
   };
@@ -46,9 +49,12 @@ const EditEmployee = (props) => {
     });
     const data = await res.json();
     if (res.status === 200 || res.status === 202 || res.status === 204) {
-      return alert(data.message);
+      props.closeEdit();
+      setShowModal(true);
+      setTitleModal(data.message);
     } else if (res.status === 400) {
-      return alert(data.message);
+      setShowModal(true);
+      setTitleModal(data.message);
     }
   };
 
@@ -76,8 +82,12 @@ const EditEmployee = (props) => {
     setPhone('');
     setActive(false);
   };
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
-    <div>
+    <div className={styles.container}>
       <Form
         title="Edit Employee"
         handleSubmit={onSubmit}
@@ -153,6 +163,9 @@ const EditEmployee = (props) => {
           </div>
         </div>
       </Form>
+      <Modal handleClose={handleCloseModal} showModal={showModal}>
+        <h2>{titleModal}</h2>
+      </Modal>
     </div>
   );
 };

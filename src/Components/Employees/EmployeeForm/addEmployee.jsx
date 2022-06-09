@@ -15,6 +15,7 @@ const AddEmployee = (props) => {
   const [phone, setPhone] = useState('');
   const [active, setActive] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [titleModal, setTitleModal] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -44,6 +45,10 @@ const AddEmployee = (props) => {
         if (!response.error) {
           props.closeAdd();
           setShowModal(true);
+          setTitleModal(response.message);
+        } else {
+          setShowModal(true);
+          setTitleModal(response.msg);
         }
       });
   };
@@ -59,9 +64,6 @@ const AddEmployee = (props) => {
   };
   return (
     <div className={styles.container}>
-      <Modal handleClose={handleCloseModal} showModal={showModal}>
-        <h2>Employee has been successfully created</h2>
-      </Modal>
       <Form
         title="Create New Employee"
         handleSubmit={onSubmit}
@@ -158,6 +160,9 @@ const AddEmployee = (props) => {
           </Dropdown>
         </div>
       </Form>
+      <Modal handleClose={handleCloseModal} showModal={showModal}>
+        <h2>{titleModal}</h2>
+      </Modal>
     </div>
   );
 };
