@@ -156,12 +156,14 @@ function Admins() {
         handleClose={handleCloseAlert}
         modalTitle={`Are you sure you want to delete the admin?`}
       >
-        <Button onClick={deleteAdmin} width={'50px'} height={'25px'} fontSize={'15px'}>
-          Accept
-        </Button>
-        <Button onClick={handleCloseAlert} width={'50px'} height={'25px'} fontSize={'15px'}>
-          Cancel
-        </Button>
+        <div className={styles.boxButtons}>
+          <Button onClick={deleteAdmin} width={'50px'} height={'25px'} fontSize={'15px'}>
+            Accept
+          </Button>
+          <Button onClick={handleCloseAlert} width={'50px'} height={'25px'} fontSize={'15px'}>
+            Cancel
+          </Button>
+        </div>
       </Modal>
       <Form
         showModal={showModalAdd}
