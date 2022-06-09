@@ -53,6 +53,7 @@ function SuperAdmins() {
   };
   // modals
   const onAdd = () => {
+    setMethod('POST');
     resetFields();
     setShowModalAdd(true);
   };
@@ -84,6 +85,7 @@ function SuperAdmins() {
   };
   // edits functions
   const onEdit = async (id) => {
+    setMethod('PUT');
     setShowModalAdd(true);
     fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`)
       .then((response) => response.json())
@@ -211,7 +213,6 @@ function SuperAdmins() {
           onAdd={onAdd}
           onEdit={onEdit}
           onDelete={onDelete}
-          setMethod={setMethod}
         />
       </section>
     </>
