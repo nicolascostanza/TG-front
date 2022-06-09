@@ -165,7 +165,7 @@ function Admins() {
         showModal={showModalAdd}
         handleClose={handleCloseAdd}
         handleSubmit={onSubmit}
-        title={method === 'POST' ? 'Create superadmin' : 'Edit Superadmin'}
+        title={method === 'POST' ? 'Create Admin' : 'Edit Admin'}
       >
         <div>
           <label>Name</label>
