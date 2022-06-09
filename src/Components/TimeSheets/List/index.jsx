@@ -3,6 +3,7 @@ import styles from '../List/list.module.css';
 import AddTimeSheets from '../Add';
 import Table from '../../Shared/Table';
 import EditTimeSheets from '../Edit';
+import Sidebar from '../../Shared/Sidebar';
 
 function TimeSheet() {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -48,25 +49,27 @@ function TimeSheet() {
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     return {
       _id: timeSheet._id,
-      employeeId: 'add', //timeSheet.employeeId.map((member) => member.firstName).join(' - ') || '-',
+      employeeId: timeSheet.employeeId._id,
       description: timeSheet.description,
       project: timeSheet.project,
-      date: new Date(timeSheet.date).toLocaleDateString(),
+      date: new Date(timeSheet.date.toString()).toLocaleDateString(),
       task: timeSheet.task.map((task) => task.taskName).join(' - ') || '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
       role: timeSheet.role
     };
   });
+  console.log(timeSheets);
   console.log(formattedTimeSheets);
   return (
     <div className={styles.container}>
+      <Sidebar></Sidebar>
       <EditTimeSheets showModal={showEditModal} handleClose={handleClose} editId={editId} />
       <AddTimeSheets showModal={showModal} handleClose={handleClose}></AddTimeSheets>
       <Table
         title="Timesheets"
         headers={[
-          'id',
+          '_id',
           'employeeId',
           'description',
           'project',

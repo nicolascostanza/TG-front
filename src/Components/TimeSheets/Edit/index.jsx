@@ -11,14 +11,14 @@ function EditTimeSheets(props) {
         setEmployeeId(response.data.employeeId._id);
         setDescription(response.data.description);
         setProject(response.data.project);
-        setDate(response.data.date);
+        setDate(new Date(response.data.date).toISOString().split('T')[0] || '');
         setHours(response.data.hours);
         setTask(response.data.task);
         setApproved(response.data.approved);
         setRole(response.data.role);
       });
   }, [props.editId]);
-  const [employeeId, setEmployeeId] = useState([]);
+  const [employeeId, setEmployeeId] = useState({});
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
   const [date, setDate] = useState('');
@@ -47,10 +47,11 @@ function EditTimeSheets(props) {
     e.preventDefault();
 
     editTimeSheets({
-      employeeId: employeeId._id,
+      employeeId,
       description,
       project,
-      date,
+      date: new Date(date).toISOString().split('T')[0] || '',
+      // date,
       hours,
       task: [...task],
       approved,
