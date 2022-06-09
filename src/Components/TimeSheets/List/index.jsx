@@ -52,7 +52,7 @@ function TimeSheet() {
       employeeId: timeSheet.employeeId._id,
       description: timeSheet.description,
       project: timeSheet.project,
-      date: new Date(timeSheet.date.toString()).toLocaleDateString(),
+      date: new Date(timeSheet.date).toDateString(),
       task: timeSheet.task.map((task) => task.taskName).join(' - ') || '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
