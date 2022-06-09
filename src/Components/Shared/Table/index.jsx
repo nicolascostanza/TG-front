@@ -106,10 +106,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                     width={'50px'}
                     height={'25px'}
                     fontSize={'15px'}
-                    onClick={() => {
-                      setMethod('PUT');
-                      onEdit(row._id);
-                    }}
+                    onClick={() => onEdit(row._id)}
                   >
                     Edit
                   </Button>

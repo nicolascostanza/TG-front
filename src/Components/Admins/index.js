@@ -67,6 +67,7 @@ function Admins() {
     setShowModalAdd(false);
   };
   const onAdd = () => {
+    setMethod('POST');
     setShowModalAdd(true);
   };
 
@@ -99,6 +100,7 @@ function Admins() {
     }
   };
   const onEdit = async (id) => {
+    setMethod('PUT');
     setShowModalAdd(true);
     fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
       .then((response) => response.json())
