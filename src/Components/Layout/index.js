@@ -24,8 +24,6 @@ function Layout() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/admins" component={Admins} />
-          {/* <Route exact path="/admins-add" component={AdminAdd} />
-          <Route exact path="/admins-edit" component={AdminEdit} /> */}
           <Route exact path="/super-admins" component={SuperAdmins} />
           <Route exact path="/employees" component={Employees} />
           <Route exact path="/employees/employee-add" component={AddEmployee} />
