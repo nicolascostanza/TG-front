@@ -1,9 +1,5 @@
 import React from 'react';
 import style from './dropdown.module.css';
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 const Dropdown = ({ children, title, value, onChange, placeholder, width }) => {
   return (
     <div className={style.container}>
