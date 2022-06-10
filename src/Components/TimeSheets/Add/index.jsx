@@ -28,14 +28,16 @@ function AddTimeSheets(props) {
       },
       body: JSON.stringify(timeSheet)
     });
-    const data = await res.json;
+    const data = await res.json();
     console.log(data);
 
     if (res.status === 201) {
-      saveTimeSheets([...timeSheets, data]);
+      saveTimeSheets([...timeSheets, data.data]);
       alert('Time-sheet added successfully');
+      clearFields();
     } else if (res.status === 400) {
       alert('There is an error on data');
+      clearFields();
     }
   };
   const onSubmit = (e) => {
@@ -50,6 +52,8 @@ function AddTimeSheets(props) {
       approved,
       role
     });
+  };
+  const clearFields = () => {
     setEmployeeId('');
     setDescription('');
     setProject('');
