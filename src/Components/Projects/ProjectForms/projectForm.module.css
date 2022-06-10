@@ -37,27 +37,6 @@
 	width: 100%;
 }
 
-.buttonContainer {
-	display: flex;
-	gap: 15px;
-	padding: 0;
-	width: 100%;
-	justify-content: space-between;
-}
-
-.form button {
-	color: white;
-	padding: 8px;
-	width: 50%;
-	margin-top: 8px;
-}
-
-.form button:first-child {
-	background-color: red;
-	border: none;
-	border-radius: 5px;
-}
-
 .form button:last-child {
 	background-color: green;
 	border: none;
@@ -92,4 +71,24 @@
 
 .notSelectedItem:hover {
 	background-color: #eee;
+}
+
+.chip {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	background-color: #eee;
+	height: 32px;
+	width: 100%;
+	border-radius: 16px;
+	padding: 7px 12px;
+	font-size: 14px;
+	margin: 8px 0;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.chip:hover > i {
+	color: red;
 }

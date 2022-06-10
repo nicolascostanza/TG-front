@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import EditProject from '../EditProject';
-import Modal from '../../Shared/Modal';
 import Table from '../../Shared/Table';
-import CreateProject from '../CreateProject';
+import EditProject from '../ProjectForms/EditProject';
+import CreateProject from '../ProjectForms/CreateProject';
 import Sidebar from '../../Shared/Sidebar';
 
 function List() {
@@ -20,27 +19,9 @@ function List() {
     tasks: []
   });
 
-  const handleCloseCreateModal = () => {
-    setShowCreateModal(false);
-  };
-
   const handleOpenCreateModal = () => {
     setShowCreateModal(true);
   };
-
-  const formattedProjects = projects.map((project) => {
-    return {
-      _id: project._id,
-      name: project.name,
-      description: project.description,
-      clientName: project.clientName,
-      startDate: new Date(project.startDate).toLocaleDateString(),
-      endDate: new Date(project.endDate).toLocaleDateString(),
-      projectManager: project.projectManager,
-      team: project.team.map((member) => member.firstName).join(' - ') || '-',
-      tasks: project.tasks.map((task) => task.taskName).join(' - ') || '-'
-    };
-  });
 
   const editProject = (id) => {
     const currentEditing = projects.find((project) => project._id === id);
@@ -49,7 +30,20 @@ function List() {
   };
 
   const closeModal = () => {
+    const iWantToClose = confirm('Are you sure you want to exit?');
+    if (iWantToClose) {
+      setShowCreateModal(false);
+      setEdit(false);
+    }
+  };
+
+  const forceCloseModal = () => {
+    setShowCreateModal(false);
     setEdit(false);
+  };
+
+  const appendToProjects = (project) => {
+    setProjects([...projects, project]);
   };
 
   const updateProjects = (editedProject) => {
@@ -85,21 +79,28 @@ function List() {
   }, []);
 
   return (
-    <div>
-      <Sidebar></Sidebar>
-      {<CreateProject showCreateModal={showCreateModal} handleClose={handleCloseCreateModal} />}
+    <>
+      <Sidebar>
+        <a>Your projects</a>
+      </Sidebar>
+      {showCreateModal ? (
+        <CreateProject
+          appendToProjects={appendToProjects}
+          showCreateModal={showCreateModal}
+          handleClose={closeModal}
+          forceCloseModal={forceCloseModal}
+        />
+      ) : null}
       {edit ? (
-        <Modal showModal={edit} handleClose={closeModal} modalTitle="Update project">
-          <EditProject
-            initial={editingProject}
-            updateProjects={updateProjects}
-            close={closeModal}
-          />
-        </Modal>
-      ) : (
-        ''
-      )}
-      <Table // HERE HERE HERE HERE HERE HERE
+        <EditProject
+          initial={editingProject}
+          showModal={edit}
+          handleClose={closeModal}
+          updateProjects={updateProjects}
+          forceCloseModal={forceCloseModal}
+        />
+      ) : null}
+      <Table
         title="Projects"
         headers={[
           'name',
@@ -113,12 +114,12 @@ function List() {
           '',
           ''
         ]}
-        data={formattedProjects}
+        data={projects}
         onEdit={editProject}
         onDelete={deleteProject}
         onAdd={handleOpenCreateModal}
       />
-    </div>
+    </>
   );
 }
 

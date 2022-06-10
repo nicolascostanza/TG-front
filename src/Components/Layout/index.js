@@ -32,12 +32,7 @@ function Layout() {
           <Route exact path="/employees" component={Employees} />
           <Route exact path="/employees/employee-add" component={AddEmployee} />
           <Route exact path="/employees/employee-edit" component={EditEmployee} />
-          <Route exact path="/projects">
-            <Projects form={false} />
-          </Route>
-          <Route exact path="/projects/create">
-            <Projects form={true} />
-          </Route>
+          <Route exact path="/projects" component={Projects} />
           <Route exact path="/time-sheets" component={TimeSheets} />
           <Route exact path="/time-sheets-add" component={AddTimeSheets} />
           <Route exact path="/time-sheets-edit" component={EditTimeSheets} />
