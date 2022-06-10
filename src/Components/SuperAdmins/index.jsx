@@ -17,7 +17,6 @@ function SuperAdmins() {
     'createdAt',
     'updatedAt'
   ];
-  // states
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -26,11 +25,12 @@ function SuperAdmins() {
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [showModalAdd, setShowModalAdd] = useState(false);
-  const [data, setData] = useState('');
   const [list, setList] = useState([]);
   const [method, setMethod] = useState('');
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
+  const [tittleModal, setTittleModal] = useState('');
+  const [message, setMessage] = useState('');
   useEffect(() => {
     requestList();
   }, [method]);
@@ -52,11 +52,6 @@ function SuperAdmins() {
     setActive(false);
   };
   // modals
-  const onAdd = () => {
-    setMethod('POST');
-    resetFields();
-    setShowModalAdd(true);
-  };
   const handleCloseAlert = () => {
     setShowModalAlert(false);
   };
@@ -66,22 +61,37 @@ function SuperAdmins() {
   const handleCloseAdd = () => {
     setShowModalAdd(false);
   };
-  // delete functions
-  const onDelete = (id) => {
-    setShowModalAlert(true);
-    setDeleteId(id);
+  // add functions and submit
+  const onAdd = () => {
+    setMethod('POST');
+    resetFields();
+    setShowModalAdd(true);
   };
-  const deleteAdmin = async () => {
-    setShowModalAlert(false);
-    await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${deleteId}`, {
-      method: 'DELETE'
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setData(data);
-        setList(list.filter((superadmin) => superadmin._id !== deleteId));
-        setShowModalMessage(true);
-      });
+  const addSuperAdmin = async (superAdmin) => {
+    resetFields();
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(superAdmin)
+    });
+    const data = await res.json();
+    setTittleModal('Created');
+    if (res.status === 201) {
+      setShowModalAdd(false);
+      setTittleModal('CREATED');
+      setMessage(data.message);
+      setShowModalMessage(true);
+      setList([...list, data]);
+      setMethod('');
+    } else {
+      setShowModalAdd(false);
+      setTittleModal('ERROR');
+      setMessage(data.message);
+      setShowModalMessage(true);
+      setMethod('');
+    }
   };
   // edits functions
   const onEdit = async (id) => {
@@ -110,29 +120,40 @@ function SuperAdmins() {
     if (res.status === 200) {
       handleCloseAdd(false);
       resetFields();
+      setTittleModal('EDITED');
+      setMessage(data.message);
+      setShowModalMessage(true);
       setMethod('');
-      showModalMessage(true);
     } else {
-      alert(data.message);
+      setShowModalAdd(false);
+      setTittleModal('ERROR');
+      setMessage(data.message);
+      setShowModalMessage(true);
+      setMethod('');
     }
   };
-  // add functions and submit
-  const addSuperAdmin = async (superAdmin) => {
-    resetFields();
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(superAdmin)
+  // delete functions
+  const onDelete = (id) => {
+    setShowModalAlert(true);
+    setDeleteId(id);
+  };
+  const deleteAdmin = async () => {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${deleteId}`, {
+      method: 'DELETE'
     });
     const data = await res.json();
-    if (res.status === 201) {
-      setList([...list, data]);
-      setMethod('');
-      setShowModalAdd(false);
+    if (res.status === 200) {
+      setList(list.filter((superadmin) => superadmin._id !== deleteId));
+      setShowModalAlert(false);
+      setTittleModal('DELETED');
+      setMessage(data.message);
+      setShowModalMessage(true);
     } else {
-      alert(data.message);
+      setShowModalAdd(false);
+      setTittleModal('ERROR');
+      setMessage(data.message);
+      setShowModalMessage(true);
+      setMethod('');
     }
   };
   const onSubmit = (e) => {
@@ -157,21 +178,22 @@ function SuperAdmins() {
           handleClose={handleCloseAlert}
           modalTitle={`Are you sure you want to delete the SuperAdmin?`}
         >
-          <Button onClick={deleteAdmin} width={'50px'} height={'25px'} fontSize={'15px'}>
-            Accept
-          </Button>
-          <Button onClick={handleCloseAlert} width={'50px'} height={'25px'} fontSize={'15px'}>
-            Cancel
-          </Button>
-        </Modal>
-        <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
-          {data.message}
+          <div className={styles.buttonsDeleteModal}>
+            <Button onClick={deleteAdmin} width={'100%'} height={'25px'} fontSize={'15px'}>
+              Accept
+            </Button>
+          </div>
+          <div className={styles.buttonsDeleteModal}>
+            <Button onClick={handleCloseAlert} width={'100%'} height={'25px'} fontSize={'15px'}>
+              Cancel
+            </Button>
+          </div>
         </Modal>
         <Form
           handleSubmit={onSubmit}
           showModal={showModalAdd}
           handleClose={handleCloseAdd}
-          title={method === 'POST' ? 'Create superadmin' : 'Edit Superadmin'}
+          title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
         >
           <div>
             <label>Name</label>
@@ -203,11 +225,15 @@ function SuperAdmins() {
             </div>
           </div>
         </Form>
-        <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={'delete'}>
-          {data.message}
+        <Modal
+          showModal={showModalMessage}
+          handleClose={handleCloseMessage}
+          modalTitle={tittleModal}
+        >
+          {message}
         </Modal>
         <Table
-          title={'SuperAdmins'}
+          title={'Super Admins'}
           data={list}
           headers={headers}
           onAdd={onAdd}
