@@ -22,7 +22,7 @@ function TimeSheet() {
     setShowEditModal(false);
   };
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
+    fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
       .then((response) => response.json())
       .then((response) => {
         setTimeSheets(response.data);
@@ -59,8 +59,6 @@ function TimeSheet() {
       role: timeSheet.role
     };
   });
-  console.log(timeSheets);
-  console.log(formattedTimeSheets);
   return (
     <div className={styles.container}>
       <Sidebar></Sidebar>
