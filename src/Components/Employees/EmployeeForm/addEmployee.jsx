@@ -161,7 +161,9 @@ const AddEmployee = (props) => {
           </Dropdown>
         </div>
       </Form>
-      <Modal handleClose={handleCloseModal} showModal={showModal} modalTitle={titleModal} />
+      <Modal handleClose={handleCloseModal} showModal={showModal}>
+        <h2>{titleModal}</h2>
+      </Modal>
     </div>
   );
 };

@@ -92,11 +92,8 @@ function Employees() {
         <Sidebar />
       </section>
       <AddEmployee showAdd={showAdd} closeAdd={closeAdd} />
-      <Modal
-        showModal={showModalAlert}
-        handleClose={handleCloseAlert}
-        modalTitle={`Are you sure you want to delete the employee?`}
-      >
+      <Modal showModal={showModalAlert} handleClose={handleCloseAlert}>
+        <h2>Are you sure you want to delete the employee?</h2>
         <div className={styles.buttonsDeleteModal}>
           <Button onClick={deleteEmployee} width={'100%'} height={'25px'} fontSize={'15px'}>
             Accept
@@ -108,8 +105,9 @@ function Employees() {
           </Button>
         </div>
       </Modal>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={tittleModal}>
-        {message}
+      <Modal showModal={showModalMessage} handleClose={handleCloseMessage}>
+        <h2>{tittleModal}</h2>
+        <p>{message}</p>
       </Modal>
       <section>
         <div>
