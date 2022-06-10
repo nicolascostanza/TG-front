@@ -94,7 +94,8 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                     header === 'updatedAt' ||
                     header === 'startDate' ||
                     header === 'endDate' ||
-                    header === 'date'
+                    header === 'date' ||
+                    header === 'dob'
                   ) {
                     return <td>{new Date(row[header]).toLocaleDateString()}</td>;
                   } else {
