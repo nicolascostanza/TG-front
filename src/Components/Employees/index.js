@@ -4,6 +4,8 @@ import Table from '../Shared/Table';
 import EditEmployee from './EditEmployee/editEmployee';
 import AddEmployee from './EmployeeForm/addEmployee';
 import styles from './employees.module.css';
+import Modal from '../Shared/Modal';
+import Button from '../Shared/Button/Button';
 
 function Employees() {
   const headers = [
@@ -23,10 +25,15 @@ function Employees() {
   const [showEdit, setShowEdit] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [employeeIdToEdit, setEmployeeIdToEdit] = useState('');
+  const [showModalAlert, setShowModalAlert] = useState(false);
+  const [deleteId, setDeleteId] = useState('');
+  const [tittleModal, setTittleModal] = useState('');
+  const [message, setMessage] = useState('');
+  const [showModalMessage, setShowModalMessage] = useState(false);
 
   useEffect(() => {
     requestList();
-  }, []);
+  }, [employees]);
   const requestList = () => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
       .then((response) => response.json())
@@ -38,18 +45,25 @@ function Employees() {
       });
   };
   const deleteEmployee = async (id) => {
-    if (window.confirm('Do you want to delete this employee?')) {
-      const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
-        method: 'DELETE'
-      });
-      res.status === 200
-        ? setEmployees(employees.filter((employee) => employee._id !== id))
-        : alert('Error deleting this employee');
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${deleteId}`, {
+      method: 'DELETE'
+    });
+    const data = await res.json();
+    if (res.status === 200) {
+      setEmployees(employees.filter((employee) => employee._id !== id));
+      setShowModalAlert(false);
+      setTittleModal('DELETED');
+      setMessage(data.message);
+      setShowModalMessage(true);
+    } else {
+      setShowModalAlert(false);
+      setTittleModal('ERROR');
+      setMessage(data.message);
+      setShowModalMessage(true);
     }
   };
   const addEmployee = () => {
     setShowAdd(true);
-    console.log('agregar empleado');
   };
   const closeAdd = () => {
     setShowAdd(false);
@@ -61,6 +75,16 @@ function Employees() {
   const closeEdit = () => {
     setShowEdit(false);
   };
+  const handleCloseAlert = () => {
+    setShowModalAlert(false);
+  };
+  const onDelete = (id) => {
+    setShowModalAlert(true);
+    setDeleteId(id);
+  };
+  const handleCloseMessage = () => {
+    setShowModalMessage(false);
+  };
 
   return (
     <section className={styles.container}>
@@ -68,6 +92,25 @@ function Employees() {
         <Sidebar />
       </section>
       <AddEmployee showAdd={showAdd} closeAdd={closeAdd} />
+      <Modal
+        showModal={showModalAlert}
+        handleClose={handleCloseAlert}
+        modalTitle={`Are you sure you want to delete the employee?`}
+      >
+        <div className={styles.buttonsDeleteModal}>
+          <Button onClick={deleteEmployee} width={'100%'} height={'25px'} fontSize={'15px'}>
+            Accept
+          </Button>
+        </div>
+        <div className={styles.buttonsDeleteModal}>
+          <Button onClick={handleCloseAlert} width={'100%'} height={'25px'} fontSize={'15px'}>
+            Cancel
+          </Button>
+        </div>
+      </Modal>
+      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={tittleModal}>
+        {message}
+      </Modal>
       <section>
         <div>
           <EditEmployee showEdit={showEdit} closeEdit={closeEdit} id={employeeIdToEdit} />
@@ -78,7 +121,7 @@ function Employees() {
           data={employees}
           onEdit={editEmployee}
           onAdd={addEmployee}
-          onDelete={deleteEmployee}
+          onDelete={onDelete}
         />
       </section>
     </section>
