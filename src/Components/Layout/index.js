@@ -10,8 +10,6 @@ import Header from '../Header/index';
 import Home from '../Home/index';
 import Projects from '../Projects';
 import SuperAdmins from '../SuperAdmins/index';
-import AddTask from '../Tasks/AddTask/index';
-import EditTask from '../Tasks/EditTask';
 import Tasks from '../Tasks/index';
 import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
@@ -42,8 +40,6 @@ function Layout() {
           <Route exact path="/time-sheets-add" component={AddTimeSheets} />
           <Route exact path="/time-sheets-edit" component={EditTimeSheets} />
           <Route exact path="/tasks" component={Tasks} />
-          <Route exact path="/tasks-add" component={AddTask} />
-          <Route exact path="/tasks-edit" component={EditTask} />
         </Switch>
         <Footer />
       </Router>

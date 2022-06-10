@@ -195,28 +195,49 @@ function SuperAdmins() {
           handleClose={handleCloseAdd}
           title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
         >
-          <div>
+          <div className={styles.inputsForm}>
             <label>Name</label>
-            <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+            <input
+              className={styles.inputsDivs}
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+            />
           </div>
-          <div>
+          <div className={styles.inputsForm}>
             <label>LastName</label>
-            <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} />
+            <input
+              className={styles.inputsDivs}
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+            />
           </div>
-          <div>
+          <div className={styles.inputsForm}>
             <label>Email</label>
-            <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <input
+              className={styles.inputsDivs}
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
-          <div>
+          <div className={styles.inputsForm}>
             <label>Password</label>
-            <input type="text" value={password} onChange={(e) => setPassword(e.target.value)} />
+            <input
+              className={styles.inputsDivs}
+              type="text"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
-          <div>
+          <div className={styles.inputsForm}>
             <div>
               <label>Active</label>
             </div>
             <div>
               <input
+                className={styles.inputsDivs}
                 type="checkbox"
                 checked={active}
                 value={active}
