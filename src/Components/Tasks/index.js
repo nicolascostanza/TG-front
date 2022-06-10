@@ -71,12 +71,12 @@ function Tasks() {
       parentProject: parentProject,
       taskName,
       taskDescription,
-      assignedEmployee: [assignedEmployee[0]],
+      assignedEmployee: assignedEmployee,
       startDate,
       status
     });
 
-    setParentProject({});
+    setParentProject('');
     setTaskName('');
     setTaskDescription('');
     setAssignedEmployee([]);
