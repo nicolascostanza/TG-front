@@ -30,9 +30,9 @@ function AddTimeSheets(props) {
     });
     const data = await res.json;
     console.log(data);
-    saveTimeSheets([...timeSheets, data]);
 
     if (res.status === 201) {
+      saveTimeSheets([...timeSheets, data]);
       alert('Time-sheet added successfully');
     } else if (res.status === 400) {
       alert('There is an error on data');
