@@ -46,6 +46,7 @@ const AddEmployee = (props) => {
           props.closeAdd();
           setShowModal(true);
           setTitleModal(response.message);
+          console.log(response.message);
         } else {
           setShowModal(true);
           setTitleModal(response.msg);
@@ -160,9 +161,7 @@ const AddEmployee = (props) => {
           </Dropdown>
         </div>
       </Form>
-      <Modal handleClose={handleCloseModal} showModal={showModal}>
-        <h2>{titleModal}</h2>
-      </Modal>
+      <Modal handleClose={handleCloseModal} showModal={showModal} modalTitle={titleModal} />
     </div>
   );
 };

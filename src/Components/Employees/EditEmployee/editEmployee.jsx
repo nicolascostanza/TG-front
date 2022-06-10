@@ -163,9 +163,7 @@ const EditEmployee = (props) => {
           </div>
         </div>
       </Form>
-      <Modal handleClose={handleCloseModal} showModal={showModal}>
-        <h2>{titleModal}</h2>
-      </Modal>
+      <Modal handleClose={handleCloseModal} showModal={showModal} modalTitle={titleModal} />
     </div>
   );
 };
