@@ -51,6 +51,15 @@ const EditEmployee = (props) => {
       props.closeEdit();
       setShowModal(true);
       setTitleModal(data.message);
+      setFirstName('');
+      setSurname('');
+      setEmail('');
+      setGender('');
+      setAdress('');
+      setDob('');
+      setPassword('');
+      setPhone('');
+      setActive(false);
     } else if (res.status === 400) {
       setShowModal(true);
       setTitleModal(data.message);
@@ -71,15 +80,6 @@ const EditEmployee = (props) => {
       phone,
       active
     });
-
-    setFirstName('');
-    setSurname('');
-    setEmail('');
-    setGender('');
-    setDob('');
-    setPassword('');
-    setPhone('');
-    setActive(false);
   };
   const handleCloseModal = () => {
     setShowModal(false);
