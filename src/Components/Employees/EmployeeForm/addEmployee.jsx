@@ -13,7 +13,7 @@ const AddEmployee = (props) => {
   const [dob, setDob] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
-  const [active, setActive] = useState();
+  const [active, setActive] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [titleModal, setTitleModal] = useState('');
 
@@ -100,8 +100,8 @@ const AddEmployee = (props) => {
           ></input>
         </div>
         <div>
+          <label>Gender</label>
           <Dropdown
-            title="Gender"
             value={gender}
             onChange={valueGenderChange}
             placeholder={'Select gender'}
@@ -149,8 +149,8 @@ const AddEmployee = (props) => {
           ></input>
         </div>
         <div>
+          <label>Active</label>
           <Dropdown
-            title="Active"
             value={active}
             onChange={valueActiveChange}
             placeholder={'Select status'}

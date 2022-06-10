@@ -26,7 +26,6 @@ const EditEmployee = (props) => {
     fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         setFirstName(response.data.firstName);
         setSurname(response.data.surname);
         setEmail(response.data.email);
@@ -112,8 +111,8 @@ const EditEmployee = (props) => {
             <input type="text" value={email} onChange={(e) => setEmail(e.target.value)}></input>
           </div>
           <div>
+            <label>Gender</label>
             <Dropdown
-              title="Gender"
               value={gender}
               onChange={valueGenderChange}
               placeholder={'Select gender'}
@@ -150,8 +149,8 @@ const EditEmployee = (props) => {
             <input type="number" value={phone} onChange={(e) => setPhone(e.target.value)}></input>
           </div>
           <div>
+            <label>Active</label>
             <Dropdown
-              title="Active"
               value={active}
               onChange={valueActiveChange}
               placeholder={'Select status'}
