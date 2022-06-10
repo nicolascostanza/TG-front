@@ -47,9 +47,10 @@ function EditTimeSheets(props) {
     if (res.status === 200) {
       setShowModalCorrect(true);
       setData(data);
+      clearFields();
     } else if (res.status === 400) {
       setShowModalIncorrect(true);
-      setData(data);
+      console.log(data);
     }
   };
   const onSubmit = (e) => {
@@ -66,7 +67,9 @@ function EditTimeSheets(props) {
       approved,
       role
     });
+  };
 
+  const clearFields = () => {
     setEmployeeId('');
     setDescription('');
     setProject('');
@@ -129,10 +132,10 @@ function EditTimeSheets(props) {
             />
           </div>
           <div>
-            <label> Task </label>
+            <label> Task ID </label>
             <input
               type="text"
-              placeholder="Task"
+              placeholder="Task ID"
               value={task && task[0] ? task[0]._id : ''}
               onChange={(e) => setTask(e.target.value)}
             />

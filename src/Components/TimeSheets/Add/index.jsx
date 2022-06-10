@@ -37,7 +37,6 @@ function AddTimeSheets(props) {
       body: JSON.stringify(timeSheet)
     });
     const data = await res.json();
-    console.log(data);
 
     if (res.status === 201) {
       saveTimeSheets([...timeSheets, data.data]);
@@ -45,7 +44,6 @@ function AddTimeSheets(props) {
       setData(data);
       clearFields();
     } else if (res.status === 400) {
-      clearFields();
       setShowModalIncorrect(true);
       setData(data);
     }
@@ -58,7 +56,7 @@ function AddTimeSheets(props) {
       project,
       date,
       hours,
-      task: [...task],
+      task: [task],
       approved,
       role
     });
@@ -128,11 +126,11 @@ function AddTimeSheets(props) {
             />
           </div>
           <div>
-            <label> Task </label>
+            <label> Task ID </label>
             <input
               type="text"
               placeholder="Task"
-              value={task._id}
+              value={task && task[0] ? task[0]._id : ''}
               onChange={(e) => setTask(e.target.value)}
             />
           </div>

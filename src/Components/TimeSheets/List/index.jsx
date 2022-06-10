@@ -53,7 +53,7 @@ function TimeSheet() {
       description: timeSheet.description,
       project: timeSheet.project,
       date: new Date(timeSheet.date).toDateString(),
-      task: timeSheet.task.map((task) => task.taskName).join(' - ') || '-',
+      task_name: timeSheet.task.map((task) => task.taskName).join(' - ') || '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
       role: timeSheet.role
@@ -72,7 +72,7 @@ function TimeSheet() {
           'description',
           'project',
           'date',
-          'task',
+          'task_name',
           'hours',
           'approved',
           'role'
