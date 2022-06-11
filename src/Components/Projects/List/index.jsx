@@ -3,9 +3,13 @@ import Table from '../../Shared/Table';
 import EditProject from '../ProjectForms/EditProject';
 import CreateProject from '../ProjectForms/CreateProject';
 import Sidebar from '../../Shared/Sidebar';
+import * as actions from '../../../redux/projects/actions';
+import { useDispatch, useSelector } from 'react-redux';
+
+// IMPORTANT: TRY TO EDIT A JUST CREATED PROJECT WILL BREAK THE APP
+// I SHOULD FIND A WAY TO POPULATE THE RESPONSE OF CREATE !!!!!!!!!
 
 function List() {
-  const [projects, setProjects] = useState([]);
   const [edit, setEdit] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProject, setEditingProject] = useState({
@@ -18,15 +22,17 @@ function List() {
     team: [],
     tasks: []
   });
+  const dispatch = useDispatch(); // So i can execute actions
+  const projects = useSelector((state) => state.projects.list); // So i can access the state
+
+  useEffect(() => {
+    getProjects().then((response) => {
+      dispatch(actions.getProjectsFulfilled(response.data));
+    });
+  }, []);
 
   const handleOpenCreateModal = () => {
     setShowCreateModal(true);
-  };
-
-  const editProject = (id) => {
-    const currentEditing = projects.find((project) => project._id === id);
-    setEdit(true);
-    setEditingProject(currentEditing);
   };
 
   const closeModal = () => {
@@ -43,7 +49,17 @@ function List() {
   };
 
   const appendToProjects = (project) => {
-    setProjects([...projects, project]);
+    dispatch(actions.addNewProject(project));
+  };
+
+  const getProjects = async () => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/projects`);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return error;
+    }
   };
 
   const updateProjects = (editedProject) => {
@@ -53,7 +69,14 @@ function List() {
       }
       return project;
     });
-    setProjects(updatedProjects);
+    dispatch(actions.updateProject(updatedProjects));
+  };
+
+  // This function set everything to edit a project
+  const editProject = (id) => {
+    const currentEditing = projects.find((project) => project._id === id);
+    setEdit(true);
+    setEditingProject(currentEditing);
   };
 
   const deleteProject = (id) => {
@@ -63,20 +86,11 @@ function List() {
         .then((response) => response.json())
         .then((json) => {
           alert(json.message);
-          setProjects(projects.filter((project) => project._id !== id));
+          dispatch(actions.deleteProject(projects.filter((project) => project._id !== id)));
         })
         .catch((error) => console.log(error));
     }
   };
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((response) => response.json())
-      .then((json) => {
-        setProjects(json.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   return (
     <>
