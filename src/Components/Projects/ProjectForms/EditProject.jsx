@@ -3,7 +3,7 @@ import Form from '../../Shared/Form';
 import projectForm from './projectForm.module.css';
 
 const EditProject = (props) => {
-  const { updateProjects, showModal, handleClose, forceCloseModal } = props;
+  const { updateProjectFulfilleds, showModal, handleClose, forceCloseModal } = props;
   const {
     _id: id,
     name,
@@ -82,7 +82,7 @@ const EditProject = (props) => {
       .then((json) => {
         if (!json.error) {
           alert(json.message);
-          updateProjects(json.data);
+          updateProjectFulfilleds(json.data);
           forceCloseModal();
         }
       })

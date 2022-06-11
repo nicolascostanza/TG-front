@@ -3,9 +3,14 @@ import Table from '../../Shared/Table';
 import EditProject from '../ProjectForms/EditProject';
 import CreateProject from '../ProjectForms/CreateProject';
 import Sidebar from '../../Shared/Sidebar';
+import * as actions from '../../../redux/projects/actions'; // This should be deleted later
+import * as thunks from '../../../redux/projects/thunks';
+import { useDispatch, useSelector } from 'react-redux';
+
+// IMPORTANT: TRY TO EDIT A JUST CREATED PROJECT WILL BREAK THE APP
+// I SHOULD FIND A WAY TO POPULATE THE RESPONSE OF CREATE !!!!!!!!!
 
 function List() {
-  const [projects, setProjects] = useState([]);
   const [edit, setEdit] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProject, setEditingProject] = useState({
@@ -18,15 +23,16 @@ function List() {
     team: [],
     tasks: []
   });
+  const dispatch = useDispatch(); // So i can execute actions
+  const projects = useSelector((state) => state.projects.list); // So i can access the state
+  const isFetching = useSelector((state) => state.projects.isFetching);
+
+  useEffect(() => {
+    dispatch(thunks.getProjects());
+  }, []);
 
   const handleOpenCreateModal = () => {
     setShowCreateModal(true);
-  };
-
-  const editProject = (id) => {
-    const currentEditing = projects.find((project) => project._id === id);
-    setEdit(true);
-    setEditingProject(currentEditing);
   };
 
   const closeModal = () => {
@@ -43,44 +49,44 @@ function List() {
   };
 
   const appendToProjects = (project) => {
-    setProjects([...projects, project]);
+    dispatch(actions.addNewProjectFulfilled(project));
   };
 
-  const updateProjects = (editedProject) => {
+  const updateProjectFulfilleds = (editedProject) => {
     const updatedProjects = projects.map((project) => {
       if (project._id === editedProject._id) {
         return editedProject;
       }
       return project;
     });
-    setProjects(updatedProjects);
+    dispatch(actions.updateProjectFulfilled(updatedProjects));
   };
 
-  const deleteProject = (id) => {
+  // This function set everything to edit a project
+  const editProject = (id) => {
+    const currentEditing = projects.find((project) => project._id === id);
+    setEdit(true);
+    setEditingProject(currentEditing);
+  };
+
+  const deleteProjectFulfilled = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, { method: 'delete' })
         .then((response) => response.json())
         .then((json) => {
           alert(json.message);
-          setProjects(projects.filter((project) => project._id !== id));
+          dispatch(
+            actions.deleteProjectFulfilled(projects.filter((project) => project._id !== id))
+          );
         })
         .catch((error) => console.log(error));
     }
   };
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((response) => response.json())
-      .then((json) => {
-        setProjects(json.data);
-      })
-      .catch((error) => console.log(error));
-  };
+  if (isFetching) {
+    return <div>Fetching...</div>;
+  }
 
   return (
     <>
@@ -100,7 +106,7 @@ function List() {
           initial={editingProject}
           showModal={edit}
           handleClose={closeModal}
-          updateProjects={updateProjects}
+          updateProjectFulfilleds={updateProjectFulfilleds}
           forceCloseModal={forceCloseModal}
         />
       ) : null}
@@ -118,7 +124,7 @@ function List() {
         ]}
         data={projects}
         onEdit={editProject}
-        onDelete={deleteProject}
+        onDelete={deleteProjectFulfilled}
         onAdd={handleOpenCreateModal}
       />
     </>
