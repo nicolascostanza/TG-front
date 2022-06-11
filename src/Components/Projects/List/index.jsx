@@ -70,13 +70,17 @@ function List() {
   };
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
       .then((json) => {
         setProjects(json.data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  };
 
   return (
     <>

@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import styles from './addEmployee.module.css';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Form from '../../Shared/Form';
+import Modal from '../../Shared/Modal';
+import styles from './addEmployee.module.css';
 
-const AddEmployee = () => {
+const AddEmployee = (props) => {
   const [firstName, setFirstName] = useState('');
   const [surname, setSurname] = useState('');
   const [email, setEmail] = useState('');
@@ -11,7 +13,9 @@ const AddEmployee = () => {
   const [dob, setDob] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [titleModal, setTitleModal] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -37,20 +41,37 @@ const AddEmployee = () => {
 
     fetch(url, createEmployee)
       .then((response) => response.json())
-      .then((data) => alert(data.message));
+      .then((response) => {
+        if (!response.error) {
+          props.closeAdd();
+          setShowModal(true);
+          setTitleModal(response.message);
+          console.log(response.message);
+        } else {
+          setShowModal(true);
+          setTitleModal(response.msg);
+        }
+      });
+  };
+  const handleCloseModal = () => {
+    setShowModal(false);
   };
 
-  const valueChange = (e) => {
-    console.log('e', e.target.value);
+  const valueGenderChange = (e) => {
     return setGender(e.target.value);
   };
-
+  const valueActiveChange = (e) => {
+    return setActive(e.target.value);
+  };
   return (
     <div className={styles.container}>
-      <div>
-        <h2>Create New Employee</h2>
-      </div>
-      <form onSubmit={onSubmit}>
+      <Form
+        title="Create New Employee"
+        handleSubmit={onSubmit}
+        handleClose={props.closeAdd}
+        showModal={props.showAdd}
+        background
+      >
         <div>
           <label>First name</label>
           <input
@@ -78,16 +99,14 @@ const AddEmployee = () => {
             onChange={(e) => setEmail(e.target.value)}
           ></input>
         </div>
-        {/* <div>
-          <label>Gender</label>
-          <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
-        </div> */}
         <div>
-          <Dropdown title="Gender" value={gender} onChange={valueChange}>
+          <label>Gender</label>
+          <Dropdown
+            value={gender}
+            onChange={valueGenderChange}
+            placeholder={'Select gender'}
+            width={'170px'}
+          >
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
@@ -131,15 +150,20 @@ const AddEmployee = () => {
         </div>
         <div>
           <label>Active</label>
-          <input name="active" value={active} onChange={(e) => setActive(e.target.value)}></input>
+          <Dropdown
+            value={active}
+            onChange={valueActiveChange}
+            placeholder={'Select status'}
+            width={'170px'}
+          >
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </Dropdown>
         </div>
-        <div className={styles.submit}>
-          <input type="submit" value="Submit" onSubmit={onSubmit}></input>
-        </div>
-      </form>
-      <div className={styles.submit}>
-        <button>Cancel</button>
-      </div>
+      </Form>
+      <Modal handleClose={handleCloseModal} showModal={showModal}>
+        <h2>{titleModal}</h2>
+      </Modal>
     </div>
   );
 };

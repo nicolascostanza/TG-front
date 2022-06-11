@@ -1,7 +1,6 @@
 import React from 'react';
 import style from './dropdown.module.css';
-
-const Dropdown = ({ children, title, value, onChange }) => {
+const Dropdown = ({ children, title, value, onChange, placeholder, width }) => {
   return (
     <div className={style.container}>
       <div>
@@ -10,7 +9,10 @@ const Dropdown = ({ children, title, value, onChange }) => {
         </label>
       </div>
       <div>
-        <select className={style.select} value={value} onChange={onChange}>
+        <select className={style.select} value={value} onChange={onChange} style={{ width }}>
+          <option hidden selected>
+            {placeholder}
+          </option>
           {children}
         </select>
       </div>

@@ -1,12 +1,29 @@
 import React, { useEffect, useState } from 'react';
+import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Form from '../../Shared/Form';
+import Modal from '../../Shared/Modal';
 import styles from './editEmployee.module.css';
 
-const params = window.location.search;
-const employeeId = params.substring(4);
-
-const EditEmployee = () => {
+const EditEmployee = (props) => {
+  const [firstName, setFirstName] = useState('');
+  const [surname, setSurname] = useState('');
+  const [email, setEmail] = useState('');
+  const [gender, setGender] = useState('');
+  const [adress, setAdress] = useState('');
+  const [dob, setDob] = useState('');
+  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState('');
+  const [active, setActive] = useState();
+  const [showModal, setShowModal] = useState(false);
+  const [titleModal, setTitleModal] = useState('');
+  const valueGenderChange = (e) => {
+    return setGender(e.target.value);
+  };
+  const valueActiveChange = (e) => {
+    return setActive(e.target.value);
+  };
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees/${employeeId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`)
       .then((response) => response.json())
       .then((response) => {
         setFirstName(response.data.firstName);
@@ -19,19 +36,10 @@ const EditEmployee = () => {
         setPhone(response.data.phone);
         setActive(response.data.active);
       });
-  }, []);
-  const [firstName, setFirstName] = useState('');
-  const [surname, setSurname] = useState('');
-  const [email, setEmail] = useState('');
-  const [gender, setGender] = useState('');
-  const [adress, setAdress] = useState('');
-  const [dob, setDob] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [active, setActive] = useState(false);
+  }, [props.id]);
 
   const editEmployee = async (employee) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${employeeId}`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/employees/${props.id}`, {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json'
@@ -40,9 +48,21 @@ const EditEmployee = () => {
     });
     const data = await res.json();
     if (res.status === 200 || res.status === 202 || res.status === 204) {
-      return alert(data.message);
+      props.closeEdit();
+      setShowModal(true);
+      setTitleModal(data.message);
+      setFirstName('');
+      setSurname('');
+      setEmail('');
+      setGender('');
+      setAdress('');
+      setDob('');
+      setPassword('');
+      setPhone('');
+      setActive(false);
     } else if (res.status === 400) {
-      return alert(data.message);
+      setShowModal(true);
+      setTitleModal(data.message);
     }
   };
 
@@ -60,22 +80,19 @@ const EditEmployee = () => {
       phone,
       active
     });
-
-    setFirstName('');
-    setSurname('');
-    setEmail('');
-    setGender('');
-    setDob('');
-    setPassword('');
-    setPhone('');
-    setActive(false);
   };
+  const handleCloseModal = () => {
+    setShowModal(false);
+  };
+
   return (
-    <div>
-      <form className={styles.container} onSubmit={onSubmit}>
-        <div>
-          <h2>Edit Employee</h2>
-        </div>
+    <div className={styles.container}>
+      <Form
+        title="Edit Employee"
+        handleSubmit={onSubmit}
+        handleClose={props.closeEdit}
+        showModal={props.showEdit}
+      >
         <div className={styles.form}>
           <div>
             <label>First name</label>
@@ -95,11 +112,16 @@ const EditEmployee = () => {
           </div>
           <div>
             <label>Gender</label>
-            <select type="text" value={gender} onChange={(e) => setGender(e.target.value)}>
+            <Dropdown
+              value={gender}
+              onChange={valueGenderChange}
+              placeholder={'Select gender'}
+              width={'170px'}
+            >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
-            </select>
+            </Dropdown>
           </div>
           <div>
             <label>Address</label>
@@ -109,7 +131,7 @@ const EditEmployee = () => {
             <label>Dob</label>
             <input
               type="text"
-              placeholder="yyy-mm-dd"
+              placeholder="yyyy-mm-dd"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
             ></input>
@@ -128,19 +150,21 @@ const EditEmployee = () => {
           </div>
           <div>
             <label>Active</label>
-            <select type="text" value={active} onChange={(e) => setActive(e.target.value)}>
-              <option value="True">True</option>
-              <option value="False">False</option>
-            </select>
-          </div>
-          <div className={styles.submit}>
-            <input type="submit" value="Submit" onSubmit={onSubmit}></input>
+            <Dropdown
+              value={active}
+              onChange={valueActiveChange}
+              placeholder={'Select status'}
+              width={'170px'}
+            >
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </Dropdown>
           </div>
         </div>
-      </form>
-      <div className={styles.submit}>
-        <button>Cancel</button>
-      </div>
+      </Form>
+      <Modal handleClose={handleCloseModal} showModal={showModal}>
+        <h2>{titleModal}</h2>
+      </Modal>
     </div>
   );
 };
