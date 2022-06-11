@@ -104,7 +104,8 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                 })}
                 <td>
                   <Button
-                    width={'50px'}
+                    className={styles.buttonsRows}
+                    width={'55px'}
                     height={'25px'}
                     fontSize={'15px'}
                     onClick={() => onEdit(row._id)}
@@ -115,7 +116,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                 <td>
                   <Button
                     onClick={() => onDelete(row._id)}
-                    width={'50px'}
+                    width={'55px'}
                     height={'25px'}
                     fontSize={'15px'}
                   >

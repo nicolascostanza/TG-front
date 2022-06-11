@@ -2,10 +2,18 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './addTask.module.css';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Form from '../../Shared/Form';
 
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
 const AddTask = (props) => {
+  const [parentProject, setParentProject] = useState('');
+  const [taskName, setTaskName] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [assignedEmployee, setAssignedEmployee] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [status, setStatus] = useState('');
+  const [refresh, setRefresh] = useState('');
   const [tasks, setTasks] = useState([]);
   useEffect(() => {
     fetch(URL)
@@ -14,14 +22,7 @@ const AddTask = (props) => {
         setTasks(response.data);
         console.log(response.data);
       });
-  }, []);
-
-  const [parentProject, setParentProject] = useState('');
-  const [taskName, setTaskName] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
-  const [assignedEmployee, setAssignedEmployee] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [status, setStatus] = useState('');
+  }, [refresh]);
 
   const addTask = async (task) => {
     const res = await fetch(URL, {
@@ -37,6 +38,8 @@ const AddTask = (props) => {
 
     if (res.status === 201) {
       alert('Task added successfully');
+      setRefresh('');
+      props.handleClose();
     } else if (res.status === 400 || res.status === 500) {
       alert('Something went wrong');
     }
@@ -66,7 +69,7 @@ const AddTask = (props) => {
   };
 
   return (
-    <form className={styles.container} onSubmit={onSubmit}>
+    <Form showModal={props.showAddModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
       <div>
         <h2>Add New Task</h2>
       </div>
@@ -117,26 +120,18 @@ const AddTask = (props) => {
           />
         </div>
         <div className={styles.dropdown}>
-          <Dropdown title="Status" value={status} onChange={valueChange}>
+          <Dropdown
+            title="Status"
+            value={status}
+            onChange={valueChange}
+            placeholder="Choose an option"
+          >
             <option value="Ready to deliver">Ready to deliver</option>
             <option value="Paused">Paused</option>
-            <option value="Cancelled">Cancelled</option>
           </Dropdown>
         </div>
-        {/* <div className={styles.dropdown}>
-          <label>Status:</label>
-          <select value={status} onChange={(e) => setStatus(e.target.value)}>
-            <option value="Ready to deliver">Ready to deliver</option>
-            <option value="Paused">Paused</option>
-            <option value="Cancelled">Cancelled</option>
-          </select>
-        </div> */}
       </div>
-      <input className={styles.button} type="submit" value="Add Task" />
-      <button className={styles.button} onClick={() => props.history.goBack()}>
-        Back to list
-      </button>
-    </form>
+    </Form>
   );
 };
 
