@@ -13,6 +13,7 @@ table{
 td{
     border: none;
     border-bottom: solid black 1px;
+    align-items: center;
 }
 thead{
     background-color: #ea3354;
@@ -48,4 +49,7 @@ tbody > :hover {
 }
 .buttons > div {
     margin: 5px;
+}
+tbody > tr > td > Button {
+    margin: 0 auto;
 }
