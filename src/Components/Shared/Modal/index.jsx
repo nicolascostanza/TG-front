@@ -5,7 +5,6 @@ const Modal = ({ children, showModal, handleClose, modalTitle }) => {
   if (!showModal) {
     return null;
   }
-
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modalContainer}>
