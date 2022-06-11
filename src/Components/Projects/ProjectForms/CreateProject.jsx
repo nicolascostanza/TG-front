@@ -1,10 +1,13 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Form from '../../Shared/Form';
+import { addNewProjectApi } from '../api';
 import projectForm from './projectForm.module.css';
+import { useDispatch } from 'react-redux';
 
 const CreateProject = (props) => {
-  const { appendToProjects, showCreateModal, handleClose, forceCloseModal } = props;
+  // const { appendToProjects, showCreateModal, handleClose, forceCloseModal } = props;
+  const { showCreateModal, handleClose, forceCloseModal } = props;
   const initialValues = {
     name: '',
     description: '',
@@ -21,6 +24,7 @@ const CreateProject = (props) => {
   const [allTasks, setAllTasks] = useState({});
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
+  const dispatch = useDispatch(); // So i can execute actions
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
@@ -50,42 +54,54 @@ const CreateProject = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_API_URL}/projects/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: project.name,
-        description: project.description,
-        clientName: project.clientName,
-        startDate: project.startDate,
-        endDate: project.endDate,
-        projectManager: project.projectManager,
-        team: selectedEmployees,
-        tasks: selectedTasks
-      })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (!json.error) {
-          alert(json.message);
-          appendToProjects(json.data);
-          resetValues(e);
-          forceCloseModal();
-        } else {
-          alert(json.message);
-        }
-      })
-      .catch((error) => console.log(error));
+    const newBody = {
+      name: project.name,
+      description: project.description,
+      clientName: project.clientName,
+      startDate: project.startDate,
+      endDate: project.endDate,
+      projectManager: project.projectManager,
+      team: selectedEmployees,
+      tasks: selectedTasks
+    };
+    dispatch(addNewProjectApi(newBody));
+    forceCloseModal();
+    // fetch(`${process.env.REACT_APP_API_URL}/projects/create`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     name: project.name,
+    //     description: project.description,
+    //     clientName: project.clientName,
+    //     startDate: project.startDate,
+    //     endDate: project.endDate,
+    //     projectManager: project.projectManager,
+    //     team: selectedEmployees,
+    //     tasks: selectedTasks
+    //   })
+    // })
+    //   .then((response) => response.json())
+    //   .then((json) => {
+    //     if (!json.error) {
+    //       alert(json.message);
+    //       appendToProjects(json.data);
+    //       resetValues(e);
+    //       forceCloseModal();
+    //     } else {
+    //       alert(json.message);
+    //     }
+    //   })
+    //   .catch((error) => console.log(error));
   };
 
-  const resetValues = (e) => {
-    e.preventDefault();
-    setProject(initialValues);
-    setSelectedEmployees([]);
-    setSelectedTasks([]);
-  };
+  // const resetValues = (e) => {
+  //   e.preventDefault();
+  //   setProject(initialValues);
+  //   setSelectedEmployees([]);
+  //   setSelectedTasks([]);
+  // };
 
   const appendToSelectedEmployees = (id) => {
     const previousState = selectedEmployees;

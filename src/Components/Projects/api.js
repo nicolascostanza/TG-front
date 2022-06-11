@@ -7,3 +7,20 @@ export const getProjectsApi = async () => {
     return error;
   }
 };
+
+export const addNewProjectApi = async (body) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    alert(data.message);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

@@ -11,6 +11,7 @@ const initialState = {
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    // GET INITIAL DATA
     case types.GET_PROJECTS_PENDING:
       return {
         ...state,
@@ -28,17 +29,31 @@ export const projectsReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
-    case types.ADD_NEW_PROJECT:
+    // ADD NEW PROJECT
+    case types.ADD_NEW_PROJECT_PENDING:
       return {
         ...state,
-        list: [...state.list, action.payload]
+        isFetching: true
       };
-    case types.UPDATE_PROJECT:
+    case types.ADD_NEW_PROJECT_FULFILLED:
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isFetching: false
+      };
+    case types.ADD_NEW_PROJECT_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    // UPDATE PROJECT
+    case types.UPDATE_PROJECT_FULFILLED:
       return {
         ...state,
         list: action.payload
       };
-    case types.DELETE_PROJECT:
+    case types.DELETE_PROJECT_FULFILLED:
       return {
         ...state,
         list: [...action.payload]
