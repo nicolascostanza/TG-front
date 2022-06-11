@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
-import ListItem from './ListItem';
-import EditProject from '../EditProject';
-import listStyles from './list.module.css';
-import Modal from '../../Shared/Modal';
+import Table from '../../Shared/Table';
+import EditProject from '../ProjectForms/EditProject';
+import CreateProject from '../ProjectForms/CreateProject';
+import Sidebar from '../../Shared/Sidebar';
 
 function List() {
   const [projects, setProjects] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProject, setEditingProject] = useState({
     name: '',
     description: '',
@@ -18,6 +19,10 @@ function List() {
     tasks: []
   });
 
+  const handleOpenCreateModal = () => {
+    setShowCreateModal(true);
+  };
+
   const editProject = (id) => {
     const currentEditing = projects.find((project) => project._id === id);
     setEdit(true);
@@ -25,7 +30,20 @@ function List() {
   };
 
   const closeModal = () => {
+    const iWantToClose = confirm('Are you sure you want to exit?');
+    if (iWantToClose) {
+      setShowCreateModal(false);
+      setEdit(false);
+    }
+  };
+
+  const forceCloseModal = () => {
+    setShowCreateModal(false);
     setEdit(false);
+  };
+
+  const appendToProjects = (project) => {
+    setProjects([...projects, project]);
   };
 
   const updateProjects = (editedProject) => {
@@ -52,59 +70,58 @@ function List() {
   };
 
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
     fetch(`${process.env.REACT_APP_API_URL}/projects`)
       .then((response) => response.json())
       .then((json) => {
         setProjects(json.data);
       })
       .catch((error) => console.log(error));
-  }, []);
+  };
 
   return (
-    <div>
+    <>
+      <Sidebar>
+        <a>Your projects</a>
+      </Sidebar>
+      {showCreateModal ? (
+        <CreateProject
+          appendToProjects={appendToProjects}
+          showCreateModal={showCreateModal}
+          handleClose={closeModal}
+          forceCloseModal={forceCloseModal}
+        />
+      ) : null}
       {edit ? (
-        <Modal showModal={edit} handleClose={closeModal} modalTitle="Update project">
-          <EditProject
-            initial={editingProject}
-            updateProjects={updateProjects}
-            close={closeModal}
-          />
-        </Modal>
-      ) : (
-        ''
-      )}
-      <table className={listStyles.table}>
-        <thead className={listStyles.tableHead}>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Client name</th>
-            <th>Start Date</th>
-            <th>End date</th>
-            <th>PM</th>
-            <th>Team</th>
-            <th>Tasks</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody className={listStyles.tableBody}>
-          {projects.map((project) => {
-            return (
-              <ListItem
-                key={project._id}
-                project={project}
-                editProject={editProject}
-                deleteProject={deleteProject}
-              />
-            );
-          })}
-        </tbody>
-      </table>
-      <a className={listStyles.createButton} href="/projects/create">
-        Create new project
-      </a>
-    </div>
+        <EditProject
+          initial={editingProject}
+          showModal={edit}
+          handleClose={closeModal}
+          updateProjects={updateProjects}
+          forceCloseModal={forceCloseModal}
+        />
+      ) : null}
+      <Table
+        title="Projects"
+        headers={[
+          'name',
+          'description',
+          'clientName',
+          'startDate',
+          'endDate',
+          'projectManager',
+          'team',
+          'tasks'
+        ]}
+        data={projects}
+        onEdit={editProject}
+        onDelete={deleteProject}
+        onAdd={handleOpenCreateModal}
+      />
+    </>
   );
 }
 
