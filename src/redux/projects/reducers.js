@@ -4,15 +4,29 @@ import * as types from './constants';
 // We need an initial state so it does not break
 
 const initialState = {
-  list: []
+  list: [],
+  isFetching: false,
+  error: ''
 };
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    case types.GET_PROJECTS_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
     case types.GET_PROJECTS_FULFILLED:
       return {
         ...state,
-        list: action.payload
+        list: action.payload,
+        isFetching: false
+      };
+    case types.GET_PROJECTS_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
       };
     case types.ADD_NEW_PROJECT:
       return {

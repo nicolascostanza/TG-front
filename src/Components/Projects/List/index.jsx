@@ -3,7 +3,8 @@ import Table from '../../Shared/Table';
 import EditProject from '../ProjectForms/EditProject';
 import CreateProject from '../ProjectForms/CreateProject';
 import Sidebar from '../../Shared/Sidebar';
-import * as actions from '../../../redux/projects/actions';
+import * as actions from '../../../redux/projects/actions'; // This should be deleted later
+import * as thunks from '../../../redux/projects/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
 // IMPORTANT: TRY TO EDIT A JUST CREATED PROJECT WILL BREAK THE APP
@@ -24,11 +25,10 @@ function List() {
   });
   const dispatch = useDispatch(); // So i can execute actions
   const projects = useSelector((state) => state.projects.list); // So i can access the state
+  const isFetching = useSelector((state) => state.projects.isFetching);
 
   useEffect(() => {
-    getProjects().then((response) => {
-      dispatch(actions.getProjectsFulfilled(response.data));
-    });
+    dispatch(thunks.getProjects());
   }, []);
 
   const handleOpenCreateModal = () => {
@@ -49,27 +49,17 @@ function List() {
   };
 
   const appendToProjects = (project) => {
-    dispatch(actions.addNewProject(project));
+    dispatch(actions.addNewProjectFulfilled(project));
   };
 
-  const getProjects = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/projects`);
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return error;
-    }
-  };
-
-  const updateProjects = (editedProject) => {
+  const updateProjectFulfilleds = (editedProject) => {
     const updatedProjects = projects.map((project) => {
       if (project._id === editedProject._id) {
         return editedProject;
       }
       return project;
     });
-    dispatch(actions.updateProject(updatedProjects));
+    dispatch(actions.updateProjectFulfilled(updatedProjects));
   };
 
   // This function set everything to edit a project
@@ -79,18 +69,24 @@ function List() {
     setEditingProject(currentEditing);
   };
 
-  const deleteProject = (id) => {
+  const deleteProjectFulfilled = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, { method: 'delete' })
         .then((response) => response.json())
         .then((json) => {
           alert(json.message);
-          dispatch(actions.deleteProject(projects.filter((project) => project._id !== id)));
+          dispatch(
+            actions.deleteProjectFulfilled(projects.filter((project) => project._id !== id))
+          );
         })
         .catch((error) => console.log(error));
     }
   };
+
+  if (isFetching) {
+    return <div>Fetching...</div>;
+  }
 
   return (
     <>
@@ -110,7 +106,7 @@ function List() {
           initial={editingProject}
           showModal={edit}
           handleClose={closeModal}
-          updateProjects={updateProjects}
+          updateProjectFulfilleds={updateProjectFulfilleds}
           forceCloseModal={forceCloseModal}
         />
       ) : null}
@@ -130,7 +126,7 @@ function List() {
         ]}
         data={projects}
         onEdit={editProject}
-        onDelete={deleteProject}
+        onDelete={deleteProjectFulfilled}
         onAdd={handleOpenCreateModal}
       />
     </>
