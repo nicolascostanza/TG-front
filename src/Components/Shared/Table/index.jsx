@@ -94,8 +94,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                     header === 'updatedAt' ||
                     header === 'startDate' ||
                     header === 'endDate' ||
-                    header === 'date' ||
-                    header === 'dob'
+                    header === 'date'
                   ) {
                     return <td>{new Date(row[header]).toLocaleDateString()}</td>;
                   } else {
@@ -104,8 +103,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                 })}
                 <td>
                   <Button
-                    className={styles.buttonsRows}
-                    width={'55px'}
+                    width={'50px'}
                     height={'25px'}
                     fontSize={'15px'}
                     onClick={() => onEdit(row._id)}
@@ -116,7 +114,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                 <td>
                   <Button
                     onClick={() => onDelete(row._id)}
-                    width={'55px'}
+                    width={'50px'}
                     height={'25px'}
                     fontSize={'15px'}
                   >

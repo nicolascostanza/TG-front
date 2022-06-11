@@ -1,12 +1,18 @@
 import { useState, useEffect } from 'react';
-import ListItem from './ListItem';
-import EditProject from '../EditProject';
-import listStyles from './list.module.css';
-import Modal from '../../Shared/Modal';
+import Table from '../../Shared/Table';
+import EditProject from '../ProjectForms/EditProject';
+import CreateProject from '../ProjectForms/CreateProject';
+import Sidebar from '../../Shared/Sidebar';
+import * as actions from '../../../redux/projects/actions'; // This should be deleted later
+import * as thunks from '../../../redux/projects/thunks';
+import { useDispatch, useSelector } from 'react-redux';
+
+// IMPORTANT: TRY TO EDIT A JUST CREATED PROJECT WILL BREAK THE APP
+// I SHOULD FIND A WAY TO POPULATE THE RESPONSE OF CREATE !!!!!!!!!
 
 function List() {
-  const [projects, setProjects] = useState([]);
   const [edit, setEdit] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProject, setEditingProject] = useState({
     name: '',
     description: '',
@@ -17,94 +23,113 @@ function List() {
     team: [],
     tasks: []
   });
+  const dispatch = useDispatch(); // So i can execute actions
+  const projects = useSelector((state) => state.projects.list); // So i can access the state
+  const isFetching = useSelector((state) => state.projects.isFetching);
 
-  const editProject = (id) => {
-    const currentEditing = projects.find((project) => project._id === id);
-    setEdit(true);
-    setEditingProject(currentEditing);
+  useEffect(() => {
+    dispatch(thunks.getProjects());
+  }, []);
+
+  const handleOpenCreateModal = () => {
+    setShowCreateModal(true);
   };
 
   const closeModal = () => {
+    const iWantToClose = confirm('Are you sure you want to exit?');
+    if (iWantToClose) {
+      setShowCreateModal(false);
+      setEdit(false);
+    }
+  };
+
+  const forceCloseModal = () => {
+    setShowCreateModal(false);
     setEdit(false);
   };
 
-  const updateProjects = (editedProject) => {
+  const appendToProjects = (project) => {
+    dispatch(actions.addNewProjectFulfilled(project));
+  };
+
+  const updateProjectFulfilleds = (editedProject) => {
     const updatedProjects = projects.map((project) => {
       if (project._id === editedProject._id) {
         return editedProject;
       }
       return project;
     });
-    setProjects(updatedProjects);
+    dispatch(actions.updateProjectFulfilled(updatedProjects));
   };
 
-  const deleteProject = (id) => {
+  // This function set everything to edit a project
+  const editProject = (id) => {
+    const currentEditing = projects.find((project) => project._id === id);
+    setEdit(true);
+    setEditingProject(currentEditing);
+  };
+
+  const deleteProjectFulfilled = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, { method: 'delete' })
         .then((response) => response.json())
         .then((json) => {
           alert(json.message);
-          setProjects(projects.filter((project) => project._id !== id));
+          dispatch(
+            actions.deleteProjectFulfilled(projects.filter((project) => project._id !== id))
+          );
         })
         .catch((error) => console.log(error));
     }
   };
 
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/projects`)
-      .then((response) => response.json())
-      .then((json) => {
-        setProjects(json.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  if (isFetching) {
+    return <div>Fetching...</div>;
+  }
 
   return (
-    <div>
+    <>
+      <Sidebar>
+        <a>Your projects</a>
+      </Sidebar>
+      {showCreateModal ? (
+        <CreateProject
+          appendToProjects={appendToProjects}
+          showCreateModal={showCreateModal}
+          handleClose={closeModal}
+          forceCloseModal={forceCloseModal}
+        />
+      ) : null}
       {edit ? (
-        <Modal showModal={edit} handleClose={closeModal} modalTitle="Update project">
-          <EditProject
-            initial={editingProject}
-            updateProjects={updateProjects}
-            close={closeModal}
-          />
-        </Modal>
-      ) : (
-        ''
-      )}
-      <table className={listStyles.table}>
-        <thead className={listStyles.tableHead}>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Client name</th>
-            <th>Start Date</th>
-            <th>End date</th>
-            <th>PM</th>
-            <th>Team</th>
-            <th>Tasks</th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody className={listStyles.tableBody}>
-          {projects.map((project) => {
-            return (
-              <ListItem
-                key={project._id}
-                project={project}
-                editProject={editProject}
-                deleteProject={deleteProject}
-              />
-            );
-          })}
-        </tbody>
-      </table>
-      <a className={listStyles.createButton} href="/projects/create">
-        Create new project
-      </a>
-    </div>
+        <EditProject
+          initial={editingProject}
+          showModal={edit}
+          handleClose={closeModal}
+          updateProjectFulfilleds={updateProjectFulfilleds}
+          forceCloseModal={forceCloseModal}
+        />
+      ) : null}
+      <Table
+        title="Projects"
+        headers={[
+          'name',
+          'description',
+          'clientName',
+          'startDate',
+          'endDate',
+          'projectManager',
+          'team',
+          'tasks',
+          '',
+          ''
+        ]}
+        data={projects}
+        onEdit={editProject}
+        onDelete={deleteProjectFulfilled}
+        onAdd={handleOpenCreateModal}
+      />
+    </>
   );
 }
 
