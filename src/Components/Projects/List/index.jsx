@@ -114,9 +114,7 @@ function List() {
           'endDate',
           'projectManager',
           'team',
-          'tasks',
-          '',
-          ''
+          'tasks'
         ]}
         data={projects}
         onEdit={editProject}
