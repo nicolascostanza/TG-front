@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import Form from '../../Shared/Form';
 import projectForm from './projectForm.module.css';
+import * as thunks from '../../../redux/projects/thunks';
+import { useDispatch } from 'react-redux';
 
 const EditProject = (props) => {
-  const { updateProjectFulfilleds, showModal, handleClose, forceCloseModal } = props;
+  // const { updateProjectFulfilleds, showModal, handleClose, forceCloseModal } = props;
+  const { showModal, handleClose } = props;
   const {
     _id: id,
     name,
@@ -31,6 +34,7 @@ const EditProject = (props) => {
   const [allTasks, setAllTasks] = useState({});
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
@@ -62,31 +66,17 @@ const EditProject = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_API_URL}/projects/edit/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: project.name,
-        description: project.description,
-        clientName: project.clientName,
-        startDate: project.startDate,
-        endDate: project.endDate,
-        projectManager: project.projectManager,
-        team: selectedEmployees,
-        tasks: selectedTasks
-      })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (!json.error) {
-          alert(json.message);
-          updateProjectFulfilleds(json.data);
-          forceCloseModal();
-        }
-      })
-      .catch((error) => console.log(error));
+    const updatedBody = {
+      name: project.name,
+      description: project.description,
+      clientName: project.clientName,
+      startDate: project.startDate,
+      endDate: project.endDate,
+      projectManager: project.projectManager,
+      team: selectedEmployees,
+      tasks: selectedTasks
+    };
+    dispatch(thunks.updateProject(updatedBody, id));
   };
 
   const appendToSelectedEmployees = (id) => {

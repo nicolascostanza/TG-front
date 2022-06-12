@@ -47,10 +47,19 @@ export const projectsReducer = (state = initialState, action) => {
         error: action.payload
       };
     // UPDATE PROJECT
+    case types.UPDATE_PROJECT_PENDING:
+      return {
+        ...state
+      };
     case types.UPDATE_PROJECT_FULFILLED:
       return {
         ...state,
-        list: action.payload
+        list: state.list.map((item) => (item._id === action.payload._id ? action.payload : item))
+      };
+    case types.UPDATE_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
       };
     // DELETE PROJECTS
     case types.DELETE_PROJECT_PENDING:

@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import Form from '../../Shared/Form';
-import * as thunks from '../../../redux/projects/thunks';
 import projectForm from './projectForm.module.css';
+import * as thunks from '../../../redux/projects/thunks';
 import { useDispatch } from 'react-redux';
 
 const CreateProject = (props) => {

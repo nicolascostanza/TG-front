@@ -25,6 +25,23 @@ export const addNewProjectApi = async (body) => {
   }
 };
 
+export const updateProjectApi = async (body, id) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/edit/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(body)
+    });
+    const data = await response.json();
+    alert(data.message);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const deleteProjectApi = async (id) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {

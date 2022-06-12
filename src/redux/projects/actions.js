@@ -35,6 +35,12 @@ export const updateProjectFulfilled = (project) => ({
   type: types.UPDATE_PROJECT_FULFILLED,
   payload: project
 });
+export const updateProjectPending = () => ({
+  type: types.UPDATE_PROJECT_PENDING
+});
+export const updateProjectFailed = () => ({
+  type: types.UPDATE_PROJECT_FAILED
+});
 
 // DELETE PROJECT
 export const deleteProjectFulfilled = (project) => ({
