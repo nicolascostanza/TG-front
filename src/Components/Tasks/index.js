@@ -4,6 +4,9 @@ import { useEffect, useState } from 'react';
 import Table from '../Shared/Table';
 import Form from '../Shared/Form';
 import AddTask from './AddTask';
+import * as actions from '../../redux/tasks/actions';
+import * as thunks from '../../redux/tasks/thunks';
+import { useDispatch, useSelector } from 'react-redux';
 
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
@@ -15,7 +18,7 @@ function Tasks() {
   const [assignedEmployee, setAssignedEmployee] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [status, setStatus] = useState('');
-  const [tasks, setTask] = useState([]);
+  // const [tasks, setTask] = useState([]);
   const [editedId, setEditedId] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const openAddTask = () => {
@@ -25,6 +28,9 @@ function Tasks() {
     setShowAddModal(false);
     setShowModal(false);
   };
+  const dispatch = useDispatch();
+  const tasks = useSelector((state) => state.tasks.list); //CAMBIAR POR TASKS
+  const isFetching = useSelector((state) => state.tasks.isFetching);
 
   const headers = [
     '_id',
@@ -40,13 +46,14 @@ function Tasks() {
   ];
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((response) => response.json())
-      .then((response) => {
-        setTask(response.data);
-        console.log(response.data);
-      })
-      .catch((err) => console.err(err));
+    // fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     setTask(response.data);
+    //     console.log(response.data);
+    //   })
+    //   .catch((err) => console.err(err));
+    dispatch(thunks.getTasks());
   }, []);
 
   const onEdit = (id) => {
@@ -86,6 +93,10 @@ function Tasks() {
     console.log(tasks);
   };
 
+  const appendToTasks = (task) => {
+    dispatch(actions.addTaskFullfilled(task));
+  };
+
   const editTask = async (task) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${editedId}`, {
       method: 'PUT',
@@ -105,15 +116,19 @@ function Tasks() {
     }
   };
 
-  const deleteTask = async (id) => {
+  // const deleteTask = async (id) => {
+  const deleteTaskFulllfilled = async (id) => {
     const resp = confirm('Are you sure you want to delete this task?');
     if (resp) {
       await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}`, {
         method: 'DELETE'
       });
-      setTask(tasks.filter((task) => task._id !== id));
+      // setTask(tasks.filter((task) => task._id !== id));
     }
   };
+  if (isFetching) {
+    return <div>Fetching...</div>;
+  }
 
   return (
     <section className={styles.container}>
@@ -132,12 +147,17 @@ function Tasks() {
           title={'Tasks'}
           data={tasks}
           headers={headers}
-          onDelete={deleteTask}
+          onDelete={deleteTaskFulllfilled}
           onEdit={onEdit}
           onAdd={openAddTask}
         />
       </section>
-      <AddTask showAddModal={showAddModal} handleClose={handleClose} handleSubmit={onSubmit} />
+      <AddTask
+        appendToTasks={appendToTasks}
+        showAddModal={showAddModal}
+        handleClose={handleClose}
+        handleSubmit={onSubmit}
+      />
       <Form showModal={showModal} handleClose={handleClose} handleSubmit={onSubmit}>
         <div>
           <h2>Edit Task</h2>
@@ -158,7 +178,7 @@ function Tasks() {
               type="text"
               placeholder="Task Name"
               value={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
+              // onChange={(e) => setTaskName(e.target.value)}
             />
           </div>
           <div>
@@ -167,7 +187,7 @@ function Tasks() {
               type="text"
               placeholder="Task description"
               value={taskDescription}
-              onChange={(e) => setTaskDescription(e.target.value)}
+              // onChange={(e) => setTaskDescription(e.target.value)}
             />
           </div>
           <div>
