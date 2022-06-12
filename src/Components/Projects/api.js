@@ -24,3 +24,16 @@ export const addNewProjectApi = async (body) => {
     return error;
   }
 };
+
+export const deleteProjectApi = async (id) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
+      method: 'delete'
+    });
+    const data = await response.json();
+    alert(data.message);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

@@ -6,7 +6,9 @@ import * as types from './constants';
 const initialState = {
   list: [],
   isFetching: false,
-  error: ''
+  error: '',
+  createModalShow: false,
+  editModalShow: false
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -32,19 +34,16 @@ export const projectsReducer = (state = initialState, action) => {
     // ADD NEW PROJECT
     case types.ADD_NEW_PROJECT_PENDING:
       return {
-        ...state,
-        isFetching: true
+        ...state
       };
     case types.ADD_NEW_PROJECT_FULFILLED:
       return {
         ...state,
-        list: [...state.list, action.payload],
-        isFetching: false
+        list: [...state.list, action.payload]
       };
     case types.ADD_NEW_PROJECT_FAILED:
       return {
         ...state,
-        isFetching: false,
         error: action.payload
       };
     // UPDATE PROJECT
@@ -53,10 +52,39 @@ export const projectsReducer = (state = initialState, action) => {
         ...state,
         list: action.payload
       };
+    // DELETE PROJECTS
+    case types.DELETE_PROJECT_PENDING:
+      return {
+        ...state
+      };
     case types.DELETE_PROJECT_FULFILLED:
       return {
         ...state,
-        list: [...action.payload]
+        list: state.list.filter((item) => item._id !== action.payload),
+        isFetching: false
+      };
+    case types.DELETE_PROJECT_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    // MODAL HANDLING FUNCTIONS
+    case types.CLOSE_ALL_MODALS:
+      return {
+        ...state,
+        createModalShow: false,
+        editModalShow: false
+      };
+    case types.SHOW_CREATE_MODAL:
+      return {
+        ...state,
+        createModalShow: true
+      };
+    case types.SHOW_EDIT_MODAL:
+      return {
+        ...state,
+        editModalShow: true
       };
     default:
       return state;

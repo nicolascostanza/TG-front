@@ -1,4 +1,4 @@
-import { getProjectsApi, addNewProjectApi } from '../../Components/Projects/api';
+import { getProjectsApi, addNewProjectApi, deleteProjectApi } from '../../Components/Projects/api';
 import * as actions from './actions';
 
 export const getProjects = () => {
@@ -14,15 +14,31 @@ export const getProjects = () => {
   };
 };
 
-export const addNewProject = async () => {
+export const addNewProject = (body) => {
   return (dispatch) => {
     dispatch(actions.addNewProjectPending());
-    addNewProjectApi()
+    addNewProjectApi(body)
       .then((response) => {
-        dispatch(actions.getProjectsFulfilled(response.data));
+        dispatch(actions.addNewProjectFulfilled(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
       })
       .catch((error) => {
-        dispatch(actions.getProjectsFailed(error));
+        dispatch(actions.addNewProjectFailed(error));
+      });
+  };
+};
+
+export const deleteProject = (id) => {
+  return (dispatch) => {
+    dispatch(actions.deleteProjectPending());
+    deleteProjectApi(id)
+      .then((response) => {
+        dispatch(actions.deleteProjectFulfilled(response.data));
+      })
+      .catch((error) => {
+        dispatch(actions.deleteProjectFailed(error));
       });
   };
 };

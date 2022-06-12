@@ -16,9 +16,9 @@ export const getProjectsFailed = (error) => ({
 });
 
 // ADD NEW PROJECT
-export const addNewProjectFulfilled = (projects) => ({
+export const addNewProjectFulfilled = (project) => ({
   type: types.ADD_NEW_PROJECT_FULFILLED,
-  payload: projects
+  payload: project
 });
 
 export const addNewProjectPending = () => ({
@@ -36,7 +36,30 @@ export const updateProjectFulfilled = (project) => ({
   payload: project
 });
 
+// DELETE PROJECT
 export const deleteProjectFulfilled = (project) => ({
   type: types.DELETE_PROJECT_FULFILLED,
-  payload: project
+  payload: project._id
+});
+
+export const deleteProjectPending = () => ({
+  type: types.DELETE_PROJECT_PENDING
+});
+
+export const deleteProjectFailed = (error) => ({
+  type: types.DELETE_PROJECT_FAILED,
+  payload: error
+});
+
+// MODAL HANDLING FUNCTIONS
+export const closeAllModals = () => ({
+  type: types.CLOSE_ALL_MODALS
+});
+
+export const showCreateModal = () => ({
+  type: types.SHOW_CREATE_MODAL
+});
+
+export const showEditModal = () => ({
+  type: types.SHOW_EDIT_MODAL
 });
