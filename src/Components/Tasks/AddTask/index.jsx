@@ -3,8 +3,10 @@ import { useState, useEffect } from 'react';
 import styles from './addTask.module.css';
 import Dropdown from '../../Shared/Dropdown/Dropdown';
 import Form from '../../Shared/Form';
+// import * as thunks from '../../../redux/tasks/thunks';
+// import { useDispatch } from 'react-redux';
 
-const URL = `${process.env.REACT_APP_API_URL}/tasks`;
+// const URL = `${process.env.REACT_APP_API_URL}/tasks`;
 
 const AddTask = (props) => {
   const [parentProject, setParentProject] = useState('');
@@ -13,8 +15,10 @@ const AddTask = (props) => {
   const [assignedEmployee, setAssignedEmployee] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [status, setStatus] = useState('');
-  const [refresh, setRefresh] = useState('');
+  const [refresh, setRefresh] = useState(true);
   const [tasks, setTasks] = useState([]);
+  // const dispatch = useDispatch();
+
   useEffect(() => {
     fetch(URL)
       .then((response) => response.json())
@@ -43,8 +47,11 @@ const AddTask = (props) => {
     } else if (res.status === 400 || res.status === 500) {
       alert('Something went wrong');
     }
-  };
 
+    // const addTask = async (task) => {
+    //   dispatch(thunks.addTask(task));
+    // };
+  };
   const onSubmit = (e) => {
     e.preventDefault();
     addTask({

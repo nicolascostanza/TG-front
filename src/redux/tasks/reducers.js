@@ -25,10 +25,22 @@ export const tasksReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
+    case types.ADD_TASK_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
     case types.ADD_TASK_FULLFILLED:
       return {
         ...state,
-        list: [...state.list, action.payload]
+        list: [...state.list, action.payload],
+        isFetching: false
+      };
+    case types.ADD_TASK_FAILED:
+      return {
+        ...state,
+        error: action.payload,
+        isFetching: false
       };
     case types.EDIT_TASK_FULLFILLED:
       return {

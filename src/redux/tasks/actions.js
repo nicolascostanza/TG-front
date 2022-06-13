@@ -19,12 +19,21 @@ export const addTaskFullfilled = (task) => ({
   payload: task
 });
 
+export const addTaskPending = () => ({
+  type: types.ADD_TASK_PENDING
+});
+
+export const addTaskFailed = (error) => ({
+  type: types.ADD_TASK_FAILED,
+  payload: error
+});
+
 export const editTaskFullfilled = (task) => ({
   type: types.EDIT_TASK_FULLFILLED,
   payload: task
 });
 
-export const deleteTaskFulllfilled = (task) => ({
+export const deleteTaskFullfilled = (task) => ({
   type: types.DELETE_TASK_FULLFILLED,
   payload: task
 });

@@ -7,3 +7,19 @@ export const getTasksApi = async () => {
     return error;
   }
 };
+
+export const addTaskApi = async (task) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(task)
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};

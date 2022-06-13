@@ -117,7 +117,7 @@ function Tasks() {
   };
 
   // const deleteTask = async (id) => {
-  const deleteTaskFulllfilled = async (id) => {
+  const deleteTaskFullfilled = async (id) => {
     const resp = confirm('Are you sure you want to delete this task?');
     if (resp) {
       await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}`, {
@@ -147,7 +147,7 @@ function Tasks() {
           title={'Tasks'}
           data={tasks}
           headers={headers}
-          onDelete={deleteTaskFulllfilled}
+          onDelete={deleteTaskFullfilled}
           onEdit={onEdit}
           onAdd={openAddTask}
         />
