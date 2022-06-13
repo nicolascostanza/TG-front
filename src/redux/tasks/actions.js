@@ -1,5 +1,6 @@
 import * as types from './constants';
 
+// GET TASKS
 export const getTasksFullfilled = (tasks) => ({
   type: types.GET_TASKS_FULLFILLED,
   payload: tasks
@@ -14,6 +15,7 @@ export const getTasksFailed = (error) => ({
   payload: error
 });
 
+// ADD TASK
 export const addTaskFullfilled = (task) => ({
   type: types.ADD_TASK_FULLFILLED,
   payload: task
@@ -28,11 +30,13 @@ export const addTaskFailed = (error) => ({
   payload: error
 });
 
+// EDIT TASK
 export const editTaskFullfilled = (task) => ({
   type: types.EDIT_TASK_FULLFILLED,
   payload: task
 });
 
+// DELETE TASK
 export const deleteTaskFullfilled = (task) => ({
   type: types.DELETE_TASK_FULLFILLED,
   payload: task

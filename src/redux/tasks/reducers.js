@@ -8,6 +8,7 @@ const initialState = {
 
 export const tasksReducer = (state = initialState, action) => {
   switch (action.type) {
+    // GET TASKS
     case types.GET_TASKS_PENDING:
       return {
         ...state,
@@ -25,6 +26,7 @@ export const tasksReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
+    // ADD TASK
     case types.ADD_TASK_PENDING:
       return {
         ...state,
@@ -42,11 +44,13 @@ export const tasksReducer = (state = initialState, action) => {
         error: action.payload,
         isFetching: false
       };
+    // EDIT TASK
     case types.EDIT_TASK_FULLFILLED:
       return {
         ...state,
         list: action.payload
       };
+    // DELETE TASK
     case types.DELETE_TASK_FULLFILLED:
       return {
         ...state,

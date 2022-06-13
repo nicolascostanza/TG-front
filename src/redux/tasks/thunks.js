@@ -14,12 +14,13 @@ export const getTasks = () => {
   };
 };
 
-export const addTask = () => {
+export const addTaskThunk = (newTask) => {
   return (dispatch) => {
     dispatch(actions.addTaskPending());
-    addTaskApi()
+    addTaskApi(newTask)
       .then((response) => {
         dispatch(actions.addTaskFullfilled(response.data));
+        console.log(response.data);
       })
       .catch((error) => {
         dispatch(actions.addTaskFailed(error));
