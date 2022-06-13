@@ -4,6 +4,8 @@ import AddTimeSheets from '../Add';
 import Table from '../../Shared/Table';
 import EditTimeSheets from '../Edit';
 import Sidebar from '../../Shared/Sidebar';
+import * as thunks from '../../../redux/timesheets/thunks';
+import { useDispatch, useSelector } from 'react-redux';
 
 function TimeSheet() {
   const [showEditModal, setShowEditModal] = useState(false);
@@ -11,7 +13,10 @@ function TimeSheet() {
     setEditId(id);
     setShowEditModal(true);
   };
-  const [timeSheets, setTimeSheets] = useState([]);
+  // const [timeSheets, setTimeSheets] = useState([]);
+  const dispatch = useDispatch();
+  const timeSheets = useSelector((state) => state.timesheet.list);
+  const isFetching = useSelector((state) => state.timesheet.isFetching);
   const [showModal, setShowModal] = useState(false);
   const openAddTimeSheet = () => {
     setShowModal(true);
@@ -22,30 +27,23 @@ function TimeSheet() {
     setShowEditModal(false);
   };
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
-      .then((response) => response.json())
-      .then((response) => {
-        setTimeSheets(response.data);
-      })
-      .catch((err) => console.err(err));
+    dispatch(thunks.getTimesheets());
+    // fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
+    //   .then((response) => response.json())
+    //   .then((response) => {
+    //     setTimeSheets(response.data);
+    //   })
+    // .catch((err) => console.err(err));
   }, []);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
-      fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${id}`, {
-        method: 'DELETE'
-      })
-        .then((response) => {
-          response.json();
-        })
-        .then((json) => {
-          if (json.status) {
-            alert('Succesfully deleted');
-          }
-        });
-      setTimeSheets(timeSheets.filter((timeSheet) => timeSheet._id !== id));
+      dispatch(thunks.deleteTimesheets(id));
     }
   };
+  if (isFetching) {
+    return <h2>Fetching</h2>;
+  }
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     return {
       _id: timeSheet._id,

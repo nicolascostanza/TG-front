@@ -15,7 +15,7 @@ export const getTimesheetFailed = (error) => ({
   payload: error
 });
 
-// ADD
+// // ADD
 export const addTimeSheetFulfilled = (timesheet) => ({
   type: types.ADD_TIMESHEET_FULFILLED,
   payload: timesheet
@@ -30,25 +30,25 @@ export const addTimeSheetFailed = (error) => ({
   payload: error
 });
 
-// UPDATE
-export const updateTimeSheetFulfilled = (timesheet) => ({
-  type: types.UPDATE_TIMESHEET_FULFILLED,
-  payload: timesheet
-});
+// // UPDATE
+// export const updateTimeSheetFulfilled = (timesheet) => ({
+//   type: types.UPDATE_TIMESHEET_FULFILLED,
+//   payload: timesheet
+// });
 
-export const updateTimeSheetPending = () => ({
-  type: types.UPDATE_TIMESHEET_PENDING
-});
+// export const updateTimeSheetPending = () => ({
+//   type: types.UPDATE_TIMESHEET_PENDING
+// });
 
-export const updateTimeSheetFailed = (error) => ({
-  type: types.UPDATE_TIMESHEET_FAILED,
-  payload: error
-});
+// export const updateTimeSheetFailed = (error) => ({
+//   type: types.UPDATE_TIMESHEET_FAILED,
+//   payload: error
+// });
 
 // DELETE
-export const deleteTimeSheetFulfilled = (timesheet) => ({
+export const deleteTimeSheetFulfilled = (id) => ({
   type: types.DELETE_TIMESHEET_FULFILLED,
-  payload: timesheet
+  payload: id
 });
 
 export const deleteTimeSheetPending = () => ({
