@@ -1,10 +1,16 @@
-import styles from './super-admins.module.css';
-import { useState, useEffect } from 'react';
-import Table from '../Shared/Table';
-import Modal from '../Shared/Modal';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getSuperadminError,
+  getSuperadminPending,
+  getSuperadminSuccess
+} from '../../redux/superadmins/actions';
 import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
+import Modal from '../Shared/Modal';
 import Sidebar from '../Shared/Sidebar';
+import Table from '../Shared/Table';
+import styles from './super-admins.module.css';
 
 function SuperAdmins() {
   const headers = [
@@ -17,6 +23,8 @@ function SuperAdmins() {
     'createdAt',
     'updatedAt'
   ];
+  const dispatch = useDispatch();
+  const superAdminsList = useSelector((state) => state.superAdmin.list);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,23 +33,29 @@ function SuperAdmins() {
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [showModalAdd, setShowModalAdd] = useState(false);
-  const [list, setList] = useState([]);
   const [method, setMethod] = useState('');
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
   const [tittleModal, setTittleModal] = useState('');
   const [message, setMessage] = useState('');
+
   useEffect(() => {
     requestList();
   }, [method]);
+
   const requestList = () => {
+    dispatch(getSuperadminPending());
     fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
       .then((response) => response.json())
       .then((response) => {
         response.data.map((superadmin) => {
           superadmin.active = superadmin.active ? 'true' : 'false';
         });
-        setList(response.data);
+        dispatch(getSuperadminSuccess(response.data));
+      })
+      .catch((error) => {
+        console.error(error);
+        dispatch(getSuperadminError(error));
       });
   };
   const resetFields = () => {
@@ -83,7 +97,6 @@ function SuperAdmins() {
       setTittleModal('CREATED');
       setMessage(data.message);
       setShowModalMessage(true);
-      setList([...list, data]);
       setMethod('');
     } else {
       setShowModalAdd(false);
@@ -143,7 +156,7 @@ function SuperAdmins() {
     });
     const data = await res.json();
     if (res.status === 200) {
-      setList(list.filter((superadmin) => superadmin._id !== deleteId));
+      /*setList(list.filter((superadmin) => superadmin._id !== deleteId)); */
       setShowModalAlert(false);
       setTittleModal('DELETED');
       setMessage(data.message);
@@ -255,7 +268,7 @@ function SuperAdmins() {
         </Modal>
         <Table
           title={'Super Admins'}
-          data={list}
+          data={superAdminsList}
           headers={headers}
           onAdd={onAdd}
           onEdit={onEdit}
