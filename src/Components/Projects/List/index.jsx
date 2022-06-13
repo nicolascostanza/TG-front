@@ -23,6 +23,7 @@ function List() {
     fetchTasks();
   }, []);
 
+  // LATER I SHOULD TAKE EMPLOYEES AND TASKS FROM STORE...
   const fetchEmployees = () => {
     fetch(`${process.env.REACT_APP_API_URL}/employees`)
       .then((response) => response.json())
@@ -52,10 +53,6 @@ function List() {
     }
   };
 
-  const appendToProjects = (project) => {
-    dispatch(actions.addNewProjectFulfilled(project));
-  };
-
   const updatedProject = (editedProject) => {
     const updatedProjects = projects.map((project) => {
       if (project._id === editedProject._id) {
@@ -66,17 +63,16 @@ function List() {
     dispatch(actions.updateProjectFulfilled(updatedProjects));
   };
 
-  // This function set everything to edit a project
+  // FUNCTION TO SET THE PROJECT EDITION
   const editProject = (id) => {
     const currentEditing = projects.find((project) => project._id === id);
-    dispatch(actions.showEditModal());
     setEditingProject(currentEditing);
+    dispatch(actions.showEditModal());
   };
 
   const deleteProject = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
-      console.log('Estoy seguro');
       dispatch(thunks.deleteProject(id));
     }
   };
@@ -94,7 +90,6 @@ function List() {
       </Sidebar>
       {showCreateModal ? (
         <CreateProject
-          appendToProjects={appendToProjects}
           showCreateModal={showCreateModal}
           handleClose={closeModal}
           allEmployees={allEmployees}

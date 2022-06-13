@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { withRouter } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import Form from '../../Shared/Form';
 import projectForm from './projectForm.module.css';
@@ -210,4 +209,4 @@ const CreateProject = (props) => {
   );
 };
 
-export default withRouter(CreateProject);
+export default CreateProject;
