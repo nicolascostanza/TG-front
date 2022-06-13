@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Form from '../../Shared/Form';
 import projectForm from './projectForm.module.css';
 import * as thunks from '../../../redux/projects/thunks';
 import { useDispatch } from 'react-redux';
 
 const EditProject = (props) => {
-  // const { updateProjectFulfilleds, showModal, handleClose, forceCloseModal } = props;
   const { showModal, handleClose } = props;
   const {
     _id: id,
@@ -14,10 +13,10 @@ const EditProject = (props) => {
     clientName,
     startDate,
     endDate,
-    projectManager,
-    team,
-    tasks
+    projectManager
   } = props.initial;
+  const { allEmployees, allTasks } = props;
+
   const initialValues = {
     name: name || '',
     description: description || '',
@@ -30,31 +29,9 @@ const EditProject = (props) => {
   };
 
   const [project, setProject] = useState(initialValues);
-  const [allEmployees, setAllEmployees] = useState({});
-  const [allTasks, setAllTasks] = useState({});
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllEmployees(json.data);
-        setSelectedEmployees([...team.map((member) => member._id)]);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllTasks(json.data);
-        setSelectedTasks([...tasks.map((task) => task._id)]);
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   const handleInputChanges = (e) => {
     const { name, value } = e.target;

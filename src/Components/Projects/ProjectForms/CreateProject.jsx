@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import Form from '../../Shared/Form';
 import projectForm from './projectForm.module.css';
 import * as thunks from '../../../redux/projects/thunks';
-import { useDispatch } from 'react-redux';
 
 const CreateProject = (props) => {
   const { showCreateModal, handleClose } = props;
@@ -17,31 +17,12 @@ const CreateProject = (props) => {
     team: [],
     tasks: []
   };
+  const { allEmployees, allTasks } = props;
 
   const [project, setProject] = useState(initialValues);
-  const [allEmployees, setAllEmployees] = useState({});
-  const [allTasks, setAllTasks] = useState({});
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllEmployees(json.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllTasks(json.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
 
   const handleInputChanges = (e) => {
     const { name, value } = e.target;
@@ -54,12 +35,7 @@ const CreateProject = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const newBody = {
-      name: project.name,
-      description: project.description,
-      clientName: project.clientName,
-      startDate: project.startDate,
-      endDate: project.endDate,
-      projectManager: project.projectManager,
+      ...project,
       team: selectedEmployees,
       tasks: selectedTasks
     };

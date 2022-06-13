@@ -7,20 +7,39 @@ import * as actions from '../../../redux/projects/actions';
 import * as thunks from '../../../redux/projects/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
-// IMPORTANT: TRY TO EDIT A JUST CREATED PROJECT WILL BREAK THE APP
-// I SHOULD FIND A WAY TO POPULATE THE RESPONSE OF CREATE !!!!!!!!!
-
 function List() {
   const [editingProject, setEditingProject] = useState({});
-  const dispatch = useDispatch(); // So i can execute actions
-  const projects = useSelector((state) => state.projects.list); // So i can access the state
+  const [allEmployees, setAllEmployees] = useState({});
+  const [allTasks, setAllTasks] = useState({});
+  const dispatch = useDispatch();
+  const projects = useSelector((state) => state.projects.list);
   const isFetching = useSelector((state) => state.projects.isFetching);
   const showCreateModal = useSelector((state) => state.projects.createModalShow);
   const showEditModal = useSelector((state) => state.projects.editModalShow);
 
   useEffect(() => {
     dispatch(thunks.getProjects());
+    fetchEmployees();
+    fetchTasks();
   }, []);
+
+  const fetchEmployees = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/employees`)
+      .then((response) => response.json())
+      .then((json) => {
+        setAllEmployees(json.data);
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const fetchTasks = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+      .then((response) => response.json())
+      .then((json) => {
+        setAllTasks(json.data);
+      })
+      .catch((error) => console.log(error));
+  };
 
   const handleOpenCreateModal = () => {
     dispatch(actions.showCreateModal());
@@ -33,15 +52,11 @@ function List() {
     }
   };
 
-  const forceCloseModal = () => {
-    dispatch(actions.closeAllModals());
-  };
-
   const appendToProjects = (project) => {
     dispatch(actions.addNewProjectFulfilled(project));
   };
 
-  const updateProjectFulfilleds = (editedProject) => {
+  const updatedProject = (editedProject) => {
     const updatedProjects = projects.map((project) => {
       if (project._id === editedProject._id) {
         return editedProject;
@@ -73,14 +88,17 @@ function List() {
   return (
     <>
       <Sidebar>
-        <a>Your projects</a>
+        <h2>Projects</h2>
+        <a>All your projects</a>
+        <a></a>
       </Sidebar>
       {showCreateModal ? (
         <CreateProject
           appendToProjects={appendToProjects}
           showCreateModal={showCreateModal}
           handleClose={closeModal}
-          forceCloseModal={forceCloseModal}
+          allEmployees={allEmployees}
+          allTasks={allTasks}
         />
       ) : null}
       {showEditModal ? (
@@ -88,8 +106,9 @@ function List() {
           initial={editingProject}
           showModal={showEditModal}
           handleClose={closeModal}
-          updateProjectFulfilleds={updateProjectFulfilleds}
-          forceCloseModal={forceCloseModal}
+          updatedProject={updatedProject}
+          allEmployees={allEmployees}
+          allTasks={allTasks}
         />
       ) : null}
       <Table
