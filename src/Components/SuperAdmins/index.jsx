@@ -5,6 +5,7 @@ import Modal from '../Shared/Modal';
 import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
 import Sidebar from '../Shared/Sidebar';
+import Loader from '../Shared/Loader/index';
 
 function SuperAdmins() {
   const headers = [
@@ -31,6 +32,7 @@ function SuperAdmins() {
   const [deleteId, setDeleteId] = useState('');
   const [tittleModal, setTittleModal] = useState('');
   const [message, setMessage] = useState('');
+  const [isloading, setIsLoading] = useState(true);
   useEffect(() => {
     requestList();
   }, [method]);
@@ -42,6 +44,7 @@ function SuperAdmins() {
           superadmin.active = superadmin.active ? 'true' : 'false';
         });
         setList(response.data);
+        setIsLoading(false);
       });
   };
   const resetFields = () => {
@@ -167,103 +170,111 @@ function SuperAdmins() {
       alert('Something unexpected happened');
     }
   };
-  return (
-    <>
-      <div>
-        <Sidebar />
-      </div>
-      <section className={styles.container}>
-        <Modal
-          showModal={showModalAlert}
-          handleClose={handleCloseAlert}
-          modalTitle={`Are you sure you want to delete the SuperAdmin?`}
-        >
-          <div className={styles.buttonsDeleteModal}>
-            <Button onClick={deleteAdmin} width={'100%'} height={'25px'} fontSize={'15px'}>
-              Accept
-            </Button>
-          </div>
-          <div className={styles.buttonsDeleteModal}>
-            <Button onClick={handleCloseAlert} width={'100%'} height={'25px'} fontSize={'15px'}>
-              Cancel
-            </Button>
-          </div>
-        </Modal>
-        <Form
-          handleSubmit={onSubmit}
-          showModal={showModalAdd}
-          handleClose={handleCloseAdd}
-          title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
-        >
-          <div className={styles.inputsForm}>
-            <label>Name</label>
-            <input
-              className={styles.inputsDivs}
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-          </div>
-          <div className={styles.inputsForm}>
-            <label>LastName</label>
-            <input
-              className={styles.inputsDivs}
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
-          <div className={styles.inputsForm}>
-            <label>Email</label>
-            <input
-              className={styles.inputsDivs}
-              type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className={styles.inputsForm}>
-            <label>Password</label>
-            <input
-              className={styles.inputsDivs}
-              type="text"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className={styles.inputsForm}>
-            <div>
-              <label>Active</label>
+  if (isloading) {
+    return (
+      <>
+        <Loader isLoading={isloading} />
+      </>
+    );
+  } else {
+    return (
+      <>
+        <div>
+          <Sidebar />
+        </div>
+        <section className={styles.container}>
+          <Modal
+            showModal={showModalAlert}
+            handleClose={handleCloseAlert}
+            modalTitle={`Are you sure you want to delete the SuperAdmin?`}
+          >
+            <div className={styles.buttonsDeleteModal}>
+              <Button onClick={deleteAdmin} width={'100%'} height={'25px'} fontSize={'15px'}>
+                Accept
+              </Button>
             </div>
-            <div>
+            <div className={styles.buttonsDeleteModal}>
+              <Button onClick={handleCloseAlert} width={'100%'} height={'25px'} fontSize={'15px'}>
+                Cancel
+              </Button>
+            </div>
+          </Modal>
+          <Form
+            handleSubmit={onSubmit}
+            showModal={showModalAdd}
+            handleClose={handleCloseAdd}
+            title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
+          >
+            <div className={styles.inputsForm}>
+              <label>Name</label>
               <input
                 className={styles.inputsDivs}
-                type="checkbox"
-                checked={active}
-                value={active}
-                onChange={(e) => setActive(e.currentTarget.checked)}
+                type="text"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
               />
             </div>
-          </div>
-        </Form>
-        <Modal
-          showModal={showModalMessage}
-          handleClose={handleCloseMessage}
-          modalTitle={tittleModal}
-        >
-          {message}
-        </Modal>
-        <Table
-          title={'Super Admins'}
-          data={list}
-          headers={headers}
-          onAdd={onAdd}
-          onEdit={onEdit}
-          onDelete={onDelete}
-        />
-      </section>
-    </>
-  );
+            <div className={styles.inputsForm}>
+              <label>LastName</label>
+              <input
+                className={styles.inputsDivs}
+                type="text"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </div>
+            <div className={styles.inputsForm}>
+              <label>Email</label>
+              <input
+                className={styles.inputsDivs}
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+            <div className={styles.inputsForm}>
+              <label>Password</label>
+              <input
+                className={styles.inputsDivs}
+                type="text"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </div>
+            <div className={styles.inputsForm}>
+              <div>
+                <label>Active</label>
+              </div>
+              <div>
+                <input
+                  className={styles.inputsDivs}
+                  type="checkbox"
+                  checked={active}
+                  value={active}
+                  onChange={(e) => setActive(e.currentTarget.checked)}
+                />
+              </div>
+            </div>
+          </Form>
+          <Modal
+            showModal={showModalMessage}
+            handleClose={handleCloseMessage}
+            modalTitle={tittleModal}
+          >
+            {message}
+          </Modal>
+          <Table
+            title={'Super Admins'}
+            data={list}
+            headers={headers}
+            onAdd={onAdd}
+            onEdit={onEdit}
+            onDelete={onDelete}
+          />
+        </section>
+      </>
+    );
+  }
 }
 
 export default SuperAdmins;
