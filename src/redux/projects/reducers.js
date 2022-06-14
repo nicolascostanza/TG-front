@@ -5,6 +5,8 @@ import * as types from './constants';
 
 const initialState = {
   list: [],
+  allEmployees: [], // Delete future implementation
+  allTasks: [], // Delete future implementation
   isFetching: false,
   error: '',
   createModalShow: false,
@@ -94,6 +96,42 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         editModalShow: true
+      };
+    // GET INITIAL TASKS DATA
+    case types.GET_TASKS_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.GET_TASKS_FULFILLED:
+      return {
+        ...state,
+        allTasks: action.payload,
+        isFetching: false
+      };
+    case types.GET_TASKS_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    // GET INITIAL EMPLOYEES DATA
+    case types.GET_EMPLOYEES_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.GET_EMPLOYEES_FULFILLED:
+      return {
+        ...state,
+        allEmployees: action.payload,
+        isFetching: false
+      };
+    case types.GET_EMPLOYEES_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
       };
     default:
       return state;

@@ -62,3 +62,32 @@ export const deleteProject = (id) => {
       });
   };
 };
+
+// DELETE AFTER MERGING WITH OTHER IMPLEMENTATIONS
+export const getTasks = () => {
+  return (dispatch) => {
+    dispatch(actions.getTasksPending());
+    api
+      .getTasksApi()
+      .then((response) => {
+        dispatch(actions.getTasksFulfilled(response.data));
+      })
+      .catch((error) => {
+        dispatch(actions.getTasksFailed(error));
+      });
+  };
+};
+
+export const getEmployees = () => {
+  return (dispatch) => {
+    dispatch(actions.getEmployeesPending());
+    api
+      .getEmployeesApi()
+      .then((response) => {
+        dispatch(actions.getEmployeesFulfilled(response.data));
+      })
+      .catch((error) => {
+        dispatch(actions.getEmployeesFailed(error));
+      });
+  };
+};

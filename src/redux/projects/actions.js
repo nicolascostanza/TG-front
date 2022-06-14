@@ -69,3 +69,33 @@ export const showCreateModal = () => ({
 export const showEditModal = () => ({
   type: types.SHOW_EDIT_MODAL
 });
+
+// GET INITIAL TASKS DATA
+export const getTasksFulfilled = (tasks) => ({
+  type: types.GET_TASKS_FULFILLED,
+  payload: tasks
+});
+
+export const getTasksPending = () => ({
+  type: types.GET_TASKS_PENDING
+});
+
+export const getTasksFailed = (error) => ({
+  type: types.GET_TASKS_FAILED,
+  payload: error
+});
+
+// GET INITIAL EMPLOYEES DATA
+export const getEmployeesFulfilled = (employees) => ({
+  type: types.GET_EMPLOYEES_FULFILLED,
+  payload: employees
+});
+
+export const getEmployeesPending = () => ({
+  type: types.GET_EMPLOYEES_PENDING
+});
+
+export const getEmployeesFailed = (error) => ({
+  type: types.GET_EMPLOYEES_FAILED,
+  payload: error
+});

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Table from '../../Shared/Table';
 import EditProject from '../ProjectForms/EditProject';
 import CreateProject from '../ProjectForms/CreateProject';
@@ -9,38 +9,19 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function List() {
   const [editingProject, setEditingProject] = useState({});
-  const [allEmployees, setAllEmployees] = useState({});
-  const [allTasks, setAllTasks] = useState({});
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.projects.list);
   const isFetching = useSelector((state) => state.projects.isFetching);
   const showCreateModal = useSelector((state) => state.projects.createModalShow);
   const showEditModal = useSelector((state) => state.projects.editModalShow);
+  const allEmployees = useSelector((state) => state.projects.allEmployees);
+  const allTasks = useSelector((state) => state.projects.allTasks);
 
   useEffect(() => {
     dispatch(thunks.getProjects());
-    fetchEmployees();
-    fetchTasks();
+    dispatch(thunks.getEmployees());
+    dispatch(thunks.getTasks());
   }, []);
-
-  // LATER I SHOULD TAKE EMPLOYEES AND TASKS FROM STORE...
-  const fetchEmployees = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllEmployees(json.data);
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const fetchTasks = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllTasks(json.data);
-      })
-      .catch((error) => console.log(error));
-  };
 
   const handleOpenCreateModal = () => {
     dispatch(actions.showCreateModal());
@@ -78,7 +59,7 @@ function List() {
   };
 
   if (isFetching) {
-    return <div>Fetching...</div>;
+    return <h3>Fetching...</h3>;
   }
 
   return (
