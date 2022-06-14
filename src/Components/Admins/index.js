@@ -10,8 +10,6 @@ import * as thunks from '../../redux/admins/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
 function Admins() {
-  //const [admins, setAdmins] = useState([]);
-  //const [data, setData] = useState('');
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [showModalAdd, setShowModalAdd] = useState(false);
@@ -22,7 +20,7 @@ function Admins() {
   const [active, setActive] = useState(false);
   const [method, setMethod] = useState(false);
   const [deleteId, setDeleteId] = useState('');
-  // const [idEdit, setId] = useState('');
+  const [idEdit, setId] = useState('');
   const dispatch = useDispatch();
   const admins = useSelector((state) => state.admins.list);
   const isFetching = useSelector((state) => state.admins.isFetching);
@@ -54,9 +52,11 @@ function Admins() {
     setShowModalAlert(false);
     dispatch(thunks.deleteAdmin(deleteId));
   };
+
   const handleCloseAlert = () => {
     setShowModalAlert(false);
   };
+
   const handleCloseMessage = () => {
     setShowModalMessage(false);
   };
@@ -64,84 +64,72 @@ function Admins() {
   const handleCloseAdd = () => {
     setShowModalAdd(false);
   };
+
   const onAdd = () => {
     setMethod('POST');
     setShowModalAdd(true);
   };
 
-  // const resetFields = () => {
-  //   setFirstName('');
-  //   setLastName('');
-  //   setEmail('');
-  //   setPassword('');
-  //   setActive(false);
-  // };
-  // const addAdmin = async (admin) => {
-  //   resetFields();
-  //   const res = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-type': 'application/json'
-  //     },
-  //     body: JSON.stringify(admin)
-  //   });
-  //   const data = await res.json();
-  //   if (res.status === 201) {
-  //     setAdmins([...admins, data]);
-  //     setMethod('');
-  //     setShowModalAdd(false);
-  //     setData(data);
-  //     setShowModalMessage(true);
-  //   } else {
-  //     setData(data);
-  //     setShowModalMessage(true);
-  //   }
-  // };
-  // const onEdit = async (id) => {
-  //   setMethod('PUT');
-  //   setShowModalAdd(true);
-  //   fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       setFirstName(response.data.firstName);
-  //       setLastName(response.data.lastName);
-  //       setEmail(response.data.email);
-  //       setPassword(response.data.password);
-  //       setActive(response.data.active);
-  //     });
-  //   setId(id);
-  // };
+  const resetFields = () => {
+    setFirstName('');
+    setLastName('');
+    setEmail('');
+    setPassword('');
+    setActive(false);
+  };
 
-  // const editAdmin = async (admin) => {
-  //   const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${idEdit}`, {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-type': 'application/json'
-  //     },
-  //     body: JSON.stringify(admin)
-  //   });
-  //   const data = await res.json();
-  //   if (res.status === 200) {
-  //     setMethod('');
-  //     handleCloseAdd(false);
-  //     resetFields();
-  //     setData(data);
-  //     setShowModalMessage(true);
-  //   } else {
-  //     alert(data.message);
-  //   }
-  // };
-  // const onSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (method === 'POST') {
-  //     addAdmin({ firstName, lastName, email, password, active });
-  //     resetFields();
-  //   } else if (method === 'PUT') {
-  //     editAdmin({ firstName, lastName, email, password, active });
-  //   } else {
-  //     alert('Something unexpected happened');
-  //   }
-  // };
+  const addAdmin = async (admin) => {
+    resetFields();
+    dispatch(thunks.addAdmin(admin));
+    setMethod('');
+    setShowModalAdd(false);
+    alert('Admin successfully created');
+  };
+
+  const onEdit = async (id) => {
+    setMethod('PUT');
+    setShowModalAdd(true);
+    fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
+      .then((response) => response.json())
+      .then((response) => {
+        setFirstName(response.data.firstName);
+        setLastName(response.data.lastName);
+        setEmail(response.data.email);
+        setPassword(response.data.password);
+        setActive(response.data.active);
+      });
+    setId(id);
+  };
+
+  const editAdmin = () => {
+    dispatch(thunks.updateAdmin(idEdit));
+    // const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${idEdit}`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify(admin)
+    // });
+    // const data = await res.json();
+    // if (res.status === 200) {
+    //   setMethod('');
+    //   handleCloseAdd(false);
+    //   resetFields();
+    // } else {
+    //   alert(data.message);
+    // }
+  };
+  const onSubmit = (e) => {
+    e.preventDefault();
+    if (method === 'POST') {
+      addAdmin({ firstName, lastName, email, password, active });
+      resetFields();
+    } else if (method === 'PUT') {
+      editAdmin({ firstName, lastName, email, password, active });
+    } else {
+      alert('Something unexpected happened');
+    }
+  };
 
   console.log(firstName, lastName, email, password, active, method);
   return (
@@ -166,7 +154,7 @@ function Admins() {
       <Form
         showModal={showModalAdd}
         handleClose={handleCloseAdd}
-        handleSubmit={'onSubmit'}
+        handleSubmit={onSubmit}
         title={method === 'POST' ? 'Create Admin' : 'Edit Admin'}
       >
         <div>
@@ -223,8 +211,8 @@ function Admins() {
         data={formattedAdmins}
         onDelete={onDelete}
         onAdd={onAdd}
-        onEdit={'onEdit'}
-        setId={'setId'}
+        onEdit={onEdit}
+        setId={setId}
         setMethod={setMethod}
       />
     </section>
