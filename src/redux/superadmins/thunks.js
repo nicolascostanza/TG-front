@@ -4,7 +4,7 @@ export const getSuperadmins = () => {
   return async (dispatch) => {
     dispatch(action.getSuperadminPending());
     try {
-      const response = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins`);
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`);
       const data = await response.json();
       data.data.map((superadmin) => {
         superadmin.active = superadmin.active ? 'true' : 'false';
@@ -19,7 +19,7 @@ export const addSuperadmin = (superadminNew) => {
   return async (dispatch) => {
     dispatch(action.addSuperadminPending());
     try {
-      const response = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins`, {
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
         method: 'POST',
         headers: {
           'Content-type': 'application/json'
@@ -55,7 +55,7 @@ export const editSuperadmins = (superadminEdited, superadminId) => {
     dispatch(action.editSuperadminPending());
     try {
       const response = await fetch(
-        `https://alfonso-trackgenix-server.vercel.app/super-admins/${superadminId}`,
+        `${process.env.REACT_APP_API_URL}/super-admins/${superadminId}`,
         {
           method: 'PUT',
           headers: {
@@ -93,7 +93,7 @@ export const deleteSuperadmin = (id) => {
   return async (dispatch) => {
     dispatch(action.deleteSuperadminPending());
     try {
-      const res = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins/${id}`, {
+      const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
         method: 'DELETE'
       });
       const data = await res.json();

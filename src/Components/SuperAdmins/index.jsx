@@ -27,6 +27,9 @@ function SuperAdmins() {
   const response = useSelector((state) => state.superAdmins.response);
   const isFetching = useSelector((state) => state.superAdmins.isFetching);
   const method = useSelector((state) => state.superAdmins.method);
+  const modalShowForm = useSelector((state) => state.superAdmins.showFormAddEdit);
+  const showModalDelete = useSelector((state) => state.superAdmins.showModalDelete);
+  const showModalMessage = useSelector((state) => state.superAdmins.showModalMessage);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -37,6 +40,7 @@ function SuperAdmins() {
   useEffect(() => {
     dispatch(thunks.getSuperadmins());
   }, []);
+  // functions for reset o complete inputs
   const resetFields = () => {
     setFirstName('');
     setLastName('');
@@ -52,17 +56,13 @@ function SuperAdmins() {
     setPassword(valuesForm[0].password);
     setActive(valuesForm[0].active === 'true' ? true : false);
   };
-  // modals form add edit, delete
-  const modalShowForm = useSelector((state) => state.superAdmins.showFormAddEdit);
-  const showModalDelete = useSelector((state) => state.superAdmins.showModalDelete);
-  const showModalMessage = useSelector((state) => state.superAdmins.showModalMessage);
+  // modals
   const closeModals = () => {
     dispatch(actions.closeModals());
   };
   const closeModalMessage = () => {
     dispatch(actions.closeModalMessage());
   };
-  // aca estan los metodos
   const onAdd = () => {
     dispatch(actions.showFormAddEdit('POST'));
     resetFields();
@@ -76,6 +76,7 @@ function SuperAdmins() {
     dispatch(actions.showModalDelete('DELETE'));
     setDeleteId(id);
   };
+  // disptachs for CRUD
   const deleteAdmin = async () => {
     dispatch(thunks.deleteSuperadmin(deleteId));
   };
