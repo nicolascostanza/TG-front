@@ -58,7 +58,6 @@ function Tasks() {
         setAssignedEmployee(response.data.assignedEmployee);
         setStartDate(response.data.startDate);
         setStatus(response.data.status);
-        console.log('edit modal data:', response.data);
       });
   };
 
