@@ -6,10 +6,12 @@ import Modal from '../Shared/Modal';
 import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
 import Sidebar from '../Shared/Sidebar';
+import * as thunks from '../../redux/admins/thunks';
+import { useDispatch, useSelector } from 'react-redux';
 
 function Admins() {
-  const [admins, setAdmins] = useState([]);
-  const [data, setData] = useState('');
+  //const [admins, setAdmins] = useState([]);
+  //const [data, setData] = useState('');
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [showModalAdd, setShowModalAdd] = useState(false);
@@ -19,42 +21,56 @@ function Admins() {
   const [password, setPassword] = useState('');
   const [active, setActive] = useState(false);
   const [method, setMethod] = useState(false);
-  const [deleteId, setDeleteId] = useState('');
-  const [idEdit, setId] = useState('');
+  //const [deleteId, setDeleteId] = useState('');
+  // const [idEdit, setId] = useState('');
+  const dispatch = useDispatch();
+  const admins = useSelector((state) => state.admins.list);
+  const isFetching = useSelector((state) => state.admins.isFetching);
 
   useEffect(() => {
-    requestList();
+    dispatch(thunks.getAdmins());
   }, [method]);
 
-  const requestList = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/admins`)
-      .then((data) => data.json())
-      .then((data) => {
-        data.data.map((admin) => {
-          admin.active = admin.active ? 'true' : 'false';
-        });
-        setAdmins(data.data);
-      });
-    console.log(admins);
-  };
+  if (isFetching) {
+    return <h2>Fetching</h2>;
+  }
+  const formattedAdmins = admins.map((admin) => {
+    return {
+      _id: admin._id,
+      firstName: admin.firstName,
+      lastName: admin.lastName,
+      password: admin.password,
+      active: admin.active ? 'Active' : 'No activity'
+    };
+  });
 
-  const onDelete = (id) => {
+  // const requestList = () => {
+  //   fetch(`${process.env.REACT_APP_API_URL}/admins`)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       setAdmins(response.data);
+  //     });
+  //   console.log(admins);
+  // };
+
+  const onDelete = () => {
     setShowModalAlert(true);
-    setDeleteId(id);
+    //setDeleteId(id);
   };
 
-  const deleteAdmin = async () => {
+  const deleteAdmin = (id) => {
     setShowModalAlert(false);
-    await fetch(`${process.env.REACT_APP_API_URL}/admins/${deleteId}`, {
-      method: 'DELETE'
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        setData(data);
-        setAdmins(admins.filter((admin) => admin._id !== deleteId));
-        setShowModalMessage(true);
-      });
-    console.log(data);
+    dispatch(thunks.deleteAdmin(id));
+    // await fetch(`${process.env.REACT_APP_API_URL}/admins/${deleteId}`, {
+    //   method: 'DELETE'
+    // })
+    //   .then((data) => data.json())
+    //   .then((data) => {
+    //     setData(data);
+    //     setAdmins(admins.filter((admin) => admin._id !== deleteId));
+    //     setShowModalMessage(true);
+    //   });
+    // console.log(data);
   };
   const handleCloseAlert = () => {
     setShowModalAlert(false);
@@ -71,79 +87,79 @@ function Admins() {
     setShowModalAdd(true);
   };
 
-  const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setActive(false);
-  };
-  const addAdmin = async (admin) => {
-    resetFields();
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(admin)
-    });
-    const data = await res.json();
-    if (res.status === 201) {
-      setAdmins([...admins, data]);
-      setMethod('');
-      setShowModalAdd(false);
-      setData(data);
-      setShowModalMessage(true);
-    } else {
-      setData(data);
-      setShowModalMessage(true);
-    }
-  };
-  const onEdit = async (id) => {
-    setMethod('PUT');
-    setShowModalAdd(true);
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
-      .then((response) => response.json())
-      .then((response) => {
-        setFirstName(response.data.firstName);
-        setLastName(response.data.lastName);
-        setEmail(response.data.email);
-        setPassword(response.data.password);
-        setActive(response.data.active);
-      });
-    setId(id);
-  };
+  // const resetFields = () => {
+  //   setFirstName('');
+  //   setLastName('');
+  //   setEmail('');
+  //   setPassword('');
+  //   setActive(false);
+  // };
+  // const addAdmin = async (admin) => {
+  //   resetFields();
+  //   const res = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
+  //     method: 'POST',
+  //     headers: {
+  //       'Content-type': 'application/json'
+  //     },
+  //     body: JSON.stringify(admin)
+  //   });
+  //   const data = await res.json();
+  //   if (res.status === 201) {
+  //     setAdmins([...admins, data]);
+  //     setMethod('');
+  //     setShowModalAdd(false);
+  //     setData(data);
+  //     setShowModalMessage(true);
+  //   } else {
+  //     setData(data);
+  //     setShowModalMessage(true);
+  //   }
+  // };
+  // const onEdit = async (id) => {
+  //   setMethod('PUT');
+  //   setShowModalAdd(true);
+  //   fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       setFirstName(response.data.firstName);
+  //       setLastName(response.data.lastName);
+  //       setEmail(response.data.email);
+  //       setPassword(response.data.password);
+  //       setActive(response.data.active);
+  //     });
+  //   setId(id);
+  // };
 
-  const editAdmin = async (admin) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${idEdit}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(admin)
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      setMethod('');
-      handleCloseAdd(false);
-      resetFields();
-      setData(data);
-      setShowModalMessage(true);
-    } else {
-      alert(data.message);
-    }
-  };
-  const onSubmit = (e) => {
-    e.preventDefault();
-    if (method === 'POST') {
-      addAdmin({ firstName, lastName, email, password, active });
-      resetFields();
-    } else if (method === 'PUT') {
-      editAdmin({ firstName, lastName, email, password, active });
-    } else {
-      alert('Something unexpected happened');
-    }
-  };
+  // const editAdmin = async (admin) => {
+  //   const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${idEdit}`, {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-type': 'application/json'
+  //     },
+  //     body: JSON.stringify(admin)
+  //   });
+  //   const data = await res.json();
+  //   if (res.status === 200) {
+  //     setMethod('');
+  //     handleCloseAdd(false);
+  //     resetFields();
+  //     setData(data);
+  //     setShowModalMessage(true);
+  //   } else {
+  //     alert(data.message);
+  //   }
+  // };
+  // const onSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (method === 'POST') {
+  //     addAdmin({ firstName, lastName, email, password, active });
+  //     resetFields();
+  //   } else if (method === 'PUT') {
+  //     editAdmin({ firstName, lastName, email, password, active });
+  //   } else {
+  //     alert('Something unexpected happened');
+  //   }
+  // };
 
   console.log(firstName, lastName, email, password, active, method);
   return (
@@ -168,7 +184,7 @@ function Admins() {
       <Form
         showModal={showModalAdd}
         handleClose={handleCloseAdd}
-        handleSubmit={onSubmit}
+        handleSubmit={'onSubmit'}
         title={method === 'POST' ? 'Create Admin' : 'Edit Admin'}
       >
         <div>
@@ -217,16 +233,16 @@ function Admins() {
         </div>
       </Form>
       <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={''}>
-        {data.message}
+        {'data.message'}
       </Modal>
       <Table
         title={'Admins'}
         headers={['_id', 'firstName', 'lastName', 'email', 'password', 'active']}
-        data={admins}
+        data={formattedAdmins}
         onDelete={onDelete}
         onAdd={onAdd}
-        onEdit={onEdit}
-        setId={setId}
+        onEdit={'onEdit'}
+        setId={'setId'}
         setMethod={setMethod}
       />
     </section>
