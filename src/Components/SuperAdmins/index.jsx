@@ -46,7 +46,7 @@ function SuperAdmins() {
     setLastName('');
     setEmail('');
     setPassword('');
-    setActive(false);
+    setActive(true);
   };
   const fillForm = (id) => {
     const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
@@ -67,7 +67,7 @@ function SuperAdmins() {
     dispatch(actions.showFormAddEdit('POST'));
     resetFields();
   };
-  const onEdit = async (id) => {
+  const onEdit = (id) => {
     dispatch(actions.showFormAddEdit('PUT'));
     setId(id);
     fillForm(id);
@@ -156,7 +156,7 @@ function SuperAdmins() {
             <label>Password</label>
             <input
               className={styles.inputsDivs}
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -194,7 +194,6 @@ function SuperAdmins() {
       </section>
     </>
   );
-  // }
 }
 
 export default SuperAdmins;
