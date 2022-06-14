@@ -5,6 +5,7 @@ import Table from '../../Shared/Table';
 import EditTimeSheets from '../Edit';
 import Sidebar from '../../Shared/Sidebar';
 import * as thunks from '../../../redux/timesheets/thunks';
+import * as actions from '../../../redux/timesheets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
 function TimeSheet() {
@@ -17,23 +18,16 @@ function TimeSheet() {
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
-  const [showModal, setShowModal] = useState(false);
+  const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const openAddTimeSheet = () => {
-    setShowModal(true);
+    dispatch(actions.showCreateModal());
   };
   const [editId, setEditId] = useState('');
   const handleClose = () => {
-    setShowModal(false);
-    setShowEditModal(false);
+    dispatch(actions.closeModals());
   };
   useEffect(() => {
     dispatch(thunks.getTimesheets());
-    // fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setTimeSheets(response.data);
-    //   })
-    // .catch((err) => console.err(err));
   }, []);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
@@ -61,7 +55,7 @@ function TimeSheet() {
     <div className={styles.container}>
       <Sidebar></Sidebar>
       <EditTimeSheets showModal={showEditModal} handleClose={handleClose} editId={editId} />
-      <AddTimeSheets showModal={showModal} handleClose={handleClose}></AddTimeSheets>
+      <AddTimeSheets showCreateModal={showCreateModal} handleClose={handleClose}></AddTimeSheets>
       <Table
         title="Timesheets"
         headers={[

@@ -1,7 +1,8 @@
 import {
   getTimesheetApi,
   deleteTimesheetApi,
-  addTimesheetApi
+  addTimesheetApi,
+  editTimesheetApi
 } from '../../Components/TimeSheets/api';
 import * as actions from './actions';
 
@@ -31,15 +32,34 @@ export const deleteTimesheets = (id) => {
   };
 };
 
-export const addTimesheets = (TimeSheet) => {
+export const addTimesheets = (timeSheet) => {
   return (dispatch) => {
     dispatch(actions.addTimeSheetPending());
-    addTimesheetApi(TimeSheet)
+    addTimesheetApi(timeSheet)
       .then((response) => {
         dispatch(actions.addTimeSheetFulfilled(response.data));
+        if (!response.error) {
+          dispatch(actions.closeModals());
+        }
       })
       .catch((error) => {
         dispatch(actions.addTimeSheetFailed(error));
+      });
+  };
+};
+
+export const editTimesheet = (newBody, id) => {
+  return (dispatch) => {
+    dispatch(actions.updateTimeSheetPending());
+    editTimesheetApi(newBody, id)
+      .then((response) => {
+        dispatch(actions.updateTimeSheetFulfilled(response.data));
+        if (!response.error) {
+          dispatch(actions.closeModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.updateTimeSheetFailed(error));
       });
   };
 };

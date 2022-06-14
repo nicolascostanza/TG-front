@@ -38,3 +38,19 @@ export const addTimesheetApi = async (timeSheet) => {
     return err;
   }
 };
+
+export const editTimesheetApi = async (newBody, id) => {
+  try {
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(newBody)
+    });
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    return err;
+  }
+};

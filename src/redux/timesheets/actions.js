@@ -31,19 +31,18 @@ export const addTimeSheetFailed = (error) => ({
 });
 
 // // UPDATE
-// export const updateTimeSheetFulfilled = (timesheet) => ({
-//   type: types.UPDATE_TIMESHEET_FULFILLED,
-//   payload: timesheet
-// });
+export const updateTimeSheetFulfilled = (timesheet) => ({
+  type: types.UPDATE_TIMESHEET_FULFILLED,
+  payload: timesheet
+});
 
-// export const updateTimeSheetPending = () => ({
-//   type: types.UPDATE_TIMESHEET_PENDING
-// });
+export const updateTimeSheetPending = () => ({
+  type: types.UPDATE_TIMESHEET_PENDING
+});
 
-// export const updateTimeSheetFailed = (error) => ({
-//   type: types.UPDATE_TIMESHEET_FAILED,
-//   payload: error
-// });
+export const updateTimeSheetFailed = () => ({
+  type: types.UPDATE_TIMESHEET_FAILED
+});
 
 // DELETE
 export const deleteTimeSheetFulfilled = (id) => ({
@@ -58,4 +57,16 @@ export const deleteTimeSheetPending = () => ({
 export const deleteTimeSheetFailed = (error) => ({
   type: types.DELETE_TIMESHEET_FAILED,
   payload: error
+});
+
+export const showCreateModal = () => ({
+  type: types.SHOW_CREATE_MODAL
+});
+
+export const showEditModal = () => ({
+  type: types.SHOW_EDIT_MODAL
+});
+
+export const closeModals = () => ({
+  type: types.CLOSE_MODALS
 });

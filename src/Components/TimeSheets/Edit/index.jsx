@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
 import Form from '../../Shared/Form';
 import Modal from '../../Shared/Modal';
+import * as thunks from '../../../redux/timesheets/thunks';
+import { useDispatch } from 'react-redux';
 
 function EditTimeSheets(props) {
   useEffect(() => {
@@ -29,29 +31,31 @@ function EditTimeSheets(props) {
   const [role, setRole] = useState('');
   const [showModalCorrect, setShowModalCorrect] = useState(false);
   const [showModalIncorrect, setShowModalIncorrect] = useState(false);
-  const [data, setData] = useState('');
+  const dispatch = useDispatch();
+  // const [data, setData] = useState('');
   const handleCloseMessage = () => {
     setShowModalCorrect(false);
     setShowModalIncorrect(false);
   };
 
-  const editTimeSheets = async (timeSheets) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(timeSheets)
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      setShowModalCorrect(true);
-      setData(data);
-      clearFields();
-    } else if (res.status === 400) {
-      setShowModalIncorrect(true);
-      console.log(data);
-    }
+  const editTimeSheets = async (newBody) => {
+    dispatch(thunks.editTimesheet(newBody, id))
+    // const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify(timeSheets)
+    // });
+    // const data = await res.json();
+    // if (res.status === 200) {
+    //   setShowModalCorrect(true);
+    //   setData(data);
+    //   clearFields();
+    // } else if (res.status === 400) {
+    //   setShowModalIncorrect(true);
+    //   console.log(data);
+    // }
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -69,16 +73,16 @@ function EditTimeSheets(props) {
     });
   };
 
-  const clearFields = () => {
-    setEmployeeId('');
-    setDescription('');
-    setProject('');
-    setDate('');
-    setHours('');
-    setTask([]);
-    setApproved(false);
-    setRole('');
-  };
+  // const clearFields = () => {
+  //   setEmployeeId('');
+  //   setDescription('');
+  //   setProject('');
+  //   setDate('');
+  //   setHours('');
+  //   setTask([]);
+  //   setApproved(false);
+  //   setRole('');
+  // };
   return (
     <section>
       <Form showModal={props.showModal} handleClose={props.handleClose} handleSubmit={onSubmit}>

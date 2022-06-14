@@ -3,7 +3,9 @@ import * as types from './constants';
 const initialState = {
   list: [],
   isFetching: false,
-  error: ''
+  error: '',
+  showCreateModal: false,
+  showEditModal: false
 };
 
 export const timesheetReducer = (state = initialState, action) => {
@@ -45,23 +47,22 @@ export const timesheetReducer = (state = initialState, action) => {
         error: action.payload
       };
     // //UPDATE
-    // case types.UPDATE_TIMESHEET_PENDING:
-    //   return {
-    //     ...state,
-    //     isFetching: true
-    //   };
-    // case types.UPDATE_TIMESHEET_FULFILLED:
-    //   return {
-    //     ...state,
-    //     list: action.payload,
-    //     isFetching: false
-    //   };
-    // case types.UPDATE_TIMESHEET_FAILED:
-    //   return {
-    //     ...state,
-    //     isFetching: false,
-    //     error: action.payload
-    //   };
+    case types.UPDATE_TIMESHEET_PENDING:
+      return {
+        ...state
+      };
+    case types.UPDATE_TIMESHEET_FULFILLED:
+      return {
+        ...state,
+        list: state.list.map((newField) =>
+          newField._id === action.payload._id ? action.payload : newField
+        )
+      };
+    case types.UPDATE_TIMESHEET_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
     //DELETE
     case types.DELETE_TIMESHEET_PENDING:
       return {
@@ -79,6 +80,22 @@ export const timesheetReducer = (state = initialState, action) => {
         ...state,
         isFetching: false,
         error: action.payload
+      };
+    case types.SHOW_CREATE_MODAL:
+      return {
+        ...state,
+        showCreateModal: true
+      };
+    case types.SHOW_EDIT_MODAL:
+      return {
+        ...state,
+        showEditModal: true
+      };
+    case types.CLOSE_MODALS:
+      return {
+        ...state,
+        showCreateModal: false,
+        showEditModal: false
       };
     default:
       return state;
