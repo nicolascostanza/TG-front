@@ -50,7 +50,8 @@ const AddTask = (props) => {
   // };
   const addTask = async (task) => {
     dispatch(thunks.addTask(task));
-    console.log('TASK', task);
+    props.handleClose();
+    console.log('NEW TASK', task);
   };
   const onSubmit = (e) => {
     e.preventDefault();

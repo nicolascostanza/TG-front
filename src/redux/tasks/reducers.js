@@ -1,5 +1,7 @@
 import * as types from './constants';
 
+let taskUpdate = [];
+
 const initialState = {
   list: [],
   isFetching: false,
@@ -8,7 +10,7 @@ const initialState = {
 
 export const tasksReducer = (state = initialState, action) => {
   switch (action.type) {
-    // GET TASKS
+    // ******GET TASKS******
     case types.GET_TASKS_PENDING:
       return {
         ...state,
@@ -26,7 +28,7 @@ export const tasksReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
-    // ADD TASK
+    // ******ADD TASK******
     case types.ADD_TASK_PENDING:
       return {
         ...state,
@@ -44,7 +46,7 @@ export const tasksReducer = (state = initialState, action) => {
         error: action.payload,
         isFetching: false
       };
-    // DELETE TASK
+    // ******DELETE TASK******
     case types.DELETE_TASK_PENDING:
       return {
         ...state,
@@ -62,11 +64,37 @@ export const tasksReducer = (state = initialState, action) => {
         error: action.payload,
         isFetching: false
       };
-    // EDIT TASK
-    case types.EDIT_TASK_FULLFILLED:
+    // ******EDIT TASK******
+    case types.EDIT_TASK_PENDING:
       return {
         ...state,
-        list: action.payload
+        isFetching: true
+      };
+    case types.EDIT_TASK_FULLFILLED:
+      // return {
+      //   ...state,
+      //   list: action.payload,
+      //   isFetching: false
+      // };
+      taskUpdate = state.list.map((task) => {
+        // console.log(task);
+        if (task._id === action.payload._id) {
+          return action.payload;
+        } else {
+          return task;
+        }
+      });
+      return {
+        ...state,
+        list: taskUpdate,
+        isFetching: false
+      };
+
+    case types.EDIT_TASK_FAILED:
+      return {
+        ...state,
+        error: action.payload,
+        isFetching: false
       };
     default:
       return state;

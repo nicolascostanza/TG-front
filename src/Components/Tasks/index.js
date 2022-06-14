@@ -68,7 +68,7 @@ function Tasks() {
         setAssignedEmployee(response.data.assignedEmployee);
         setStartDate(response.data.startDate);
         setStatus(response.data.status);
-        console.log('data:', response.data);
+        console.log('edit modal data:', response.data);
       });
   };
 
@@ -98,22 +98,25 @@ function Tasks() {
   // };
 
   const editTask = async (task) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${editedId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(task)
-    });
-    console.log(editedId);
-    await res.json();
-
-    if (res.status === 200) {
-      alert('Task updated successfully');
-      handleClose();
-    } else if (res.status === 400) {
-      alert('Something went wrong');
-    }
+    // const res = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${editedId}`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify(task)
+    // });
+    // console.log(editedId);
+    // await res.json();
+    // console.log('what is task', task);
+    // console.log('what is editedId', editedId);
+    dispatch(thunks.editTask(task, editedId));
+    handleClose();
+    // if (res.status === 200) {
+    //   alert('Task updated successfully');
+    //   handleClose();
+    // } else if (res.status === 400) {
+    //   alert('Something went wrong');
+    // }
   };
 
   const deleteTask = async (id) => {
@@ -181,7 +184,7 @@ function Tasks() {
               type="text"
               placeholder="Task Name"
               value={taskName}
-              // onChange={(e) => setTaskName(e.target.value)}
+              onChange={(e) => setTaskName(e.target.value)}
             />
           </div>
           <div>
@@ -190,7 +193,7 @@ function Tasks() {
               type="text"
               placeholder="Task description"
               value={taskDescription}
-              // onChange={(e) => setTaskDescription(e.target.value)}
+              onChange={(e) => setTaskDescription(e.target.value)}
             />
           </div>
           <div>

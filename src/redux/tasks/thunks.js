@@ -1,4 +1,4 @@
-import { getTasksApi, addTaskApi, deleteTaskApi } from '../../Components/Tasks/api';
+import { getTasksApi, addTaskApi, deleteTaskApi, editTaskApi } from '../../Components/Tasks/api';
 import * as actions from './actions';
 
 export const getTasks = () => {
@@ -40,6 +40,22 @@ export const deleteTask = (id) => {
       .catch((error) => {
         dispatch(actions.deleteTaskFailed(error));
         // console.log('error: ', error);
+      });
+  };
+};
+
+export const editTask = (taskNewInfo, id) => {
+  return async (dispatch) => {
+    // console.log('eesteee', taskNewInfo);
+    dispatch(actions.editTaskPending());
+    await editTaskApi(taskNewInfo, id)
+      .then((response) => {
+        console.log(response);
+        dispatch(actions.editTaskFullfilled(response));
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(actions.editTaskFailed(error));
       });
   };
 };

@@ -37,3 +37,29 @@ export const deleteTaskApi = async (id) => {
   }
   // setTask(tasks.filter((task) => task._id !== id));
 };
+
+export const editTaskApi = async (taskNewInfo, editedTaskId) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${editedTaskId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      body: JSON.stringify(taskNewInfo)
+    });
+    console.log('response', response);
+    // console.log('que es esto', editedTaskId);
+    // console.log('que es esto otro', taskNewInfo);
+    const data = await response.json();
+    // if (response.status === 200) {
+    //   alert('Task updated successfully');
+    //   // handleClose();
+    // } else if (response.status === 400) {
+    //   alert('Something went wrong');
+    // }
+    // console.log('dataa ', data);
+    return data.data;
+  } catch (error) {
+    return error;
+  }
+};

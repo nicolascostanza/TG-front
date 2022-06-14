@@ -50,3 +50,12 @@ export const editTaskFullfilled = (task) => ({
   type: types.EDIT_TASK_FULLFILLED,
   payload: task
 });
+
+export const editTaskPending = () => ({
+  type: types.EDIT_TASK_PENDING
+});
+
+export const editTaskFailed = (error) => ({
+  type: types.EDIT_TASK_FAILED,
+  payload: error
+});
