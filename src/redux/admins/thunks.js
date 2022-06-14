@@ -32,10 +32,10 @@ export const addAdmin = (admin) => {
   };
 };
 
-export const updateAdmin = (id) => {
+export const updateAdmin = (body, id) => {
   return (dispatch) => {
     dispatch(actions.updateAdminPending());
-    updateAdminApi(id)
+    updateAdminApi(body, id)
       .then((response) => {
         dispatch(actions.updateAdminFulfilled(response.data));
       })

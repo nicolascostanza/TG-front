@@ -50,7 +50,7 @@ export const adminsReducer = (state = initialState, action) => {
     case types.UPDATE_ADMIN_FULFILLED:
       return {
         ...state,
-        list: action.payload,
+        list: state.list.map((item) => (item._id === action.payload._id ? action.payload : item)),
         isFetching: false
       };
     case types.UPDATE_ADMIN_FAILED:

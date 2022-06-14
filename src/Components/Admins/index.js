@@ -101,23 +101,13 @@ function Admins() {
     setId(id);
   };
 
-  const editAdmin = () => {
-    dispatch(thunks.updateAdmin(idEdit));
-    // const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${idEdit}`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-type': 'application/json'
-    //   },
-    //   body: JSON.stringify(admin)
-    // });
-    // const data = await res.json();
-    // if (res.status === 200) {
-    //   setMethod('');
-    //   handleCloseAdd(false);
-    //   resetFields();
-    // } else {
-    //   alert(data.message);
-    // }
+  const editAdmin = (body) => {
+    dispatch(thunks.updateAdmin(body, idEdit));
+    if (isFetching) {
+      return <h2>Fetching</h2>;
+    }
+    setMethod('');
+    handleCloseAdd(false);
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -202,9 +192,7 @@ function Admins() {
           </div>
         </div>
       </Form>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={''}>
-        {'data.message'}
-      </Modal>
+      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={''} />
       <Table
         title={'Admins'}
         headers={['_id', 'firstName', 'lastName', 'email', 'password', 'active']}
