@@ -1,4 +1,9 @@
-import { getAdminsApi, addAdminApi, deleteAdminApi } from '../../Components/Admins/api';
+import {
+  getAdminsApi,
+  addAdminApi,
+  updateAdminApi,
+  deleteAdminApi
+} from '../../Components/Admins/api';
 import * as actions from './actions';
 
 export const getAdmins = () => {
@@ -23,6 +28,19 @@ export const addAdmin = (admin) => {
       })
       .catch((error) => {
         dispatch(actions.addAdminFailed(error));
+      });
+  };
+};
+
+export const updateAdmin = (id) => {
+  return (dispatch) => {
+    dispatch(actions.updateAdminPending());
+    updateAdminApi(id)
+      .then((response) => {
+        dispatch(actions.updateAdminFulfilled(response.data));
+      })
+      .catch((error) => {
+        dispatch(actions.updateAdminFailed(error));
       });
   };
 };

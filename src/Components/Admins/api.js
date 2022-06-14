@@ -26,7 +26,7 @@ export const addAdminApi = async (admin) => {
 
 export const updateAdminApi = async (body, id) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/edit/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'

@@ -21,7 +21,7 @@ function Admins() {
   const [password, setPassword] = useState('');
   const [active, setActive] = useState(false);
   const [method, setMethod] = useState(false);
-  //const [deleteId, setDeleteId] = useState('');
+  const [deleteId, setDeleteId] = useState('');
   // const [idEdit, setId] = useState('');
   const dispatch = useDispatch();
   const admins = useSelector((state) => state.admins.list);
@@ -39,38 +39,20 @@ function Admins() {
       _id: admin._id,
       firstName: admin.firstName,
       lastName: admin.lastName,
+      email: admin.email,
       password: admin.password,
-      active: admin.active ? 'Active' : 'No activity'
+      active: admin.active ? 'true' : 'false'
     };
   });
 
-  // const requestList = () => {
-  //   fetch(`${process.env.REACT_APP_API_URL}/admins`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       setAdmins(response.data);
-  //     });
-  //   console.log(admins);
-  // };
-
-  const onDelete = () => {
+  const onDelete = (id) => {
     setShowModalAlert(true);
-    //setDeleteId(id);
+    setDeleteId(id);
   };
 
-  const deleteAdmin = (id) => {
+  const deleteAdmin = () => {
     setShowModalAlert(false);
-    dispatch(thunks.deleteAdmin(id));
-    // await fetch(`${process.env.REACT_APP_API_URL}/admins/${deleteId}`, {
-    //   method: 'DELETE'
-    // })
-    //   .then((data) => data.json())
-    //   .then((data) => {
-    //     setData(data);
-    //     setAdmins(admins.filter((admin) => admin._id !== deleteId));
-    //     setShowModalMessage(true);
-    //   });
-    // console.log(data);
+    dispatch(thunks.deleteAdmin(deleteId));
   };
   const handleCloseAlert = () => {
     setShowModalAlert(false);
