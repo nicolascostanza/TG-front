@@ -11,7 +11,7 @@ function EditTimeSheets(props) {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
-        setEmployeeId(response.data.employeeId._id);
+        setEmployeeId(response.data.employeeId ? response.data.employeeId._id : '');
         setDescription(response.data.description);
         setProject(response.data.project);
         setDate(new Date(response.data.date).toISOString().split('T')[0] || '');
@@ -38,8 +38,8 @@ function EditTimeSheets(props) {
     setShowModalIncorrect(false);
   };
 
-  const editTimeSheets = async (newBody) => {
-    dispatch(thunks.editTimesheet(newBody, id))
+  const editTimeSheets = async (newBody, id) => {
+    dispatch(thunks.editTimesheet(newBody, id));
     // const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`, {
     //   method: 'PUT',
     //   headers: {
@@ -60,17 +60,20 @@ function EditTimeSheets(props) {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    editTimeSheets({
-      employeeId,
-      description,
-      project,
-      date: new Date(date).toISOString().split('T')[0] || '',
-      // date,
-      hours,
-      task: [...task],
-      approved,
-      role
-    });
+    editTimeSheets(
+      {
+        employeeId,
+        description,
+        project,
+        date: new Date(date).toISOString().split('T')[0] || '',
+        // date,
+        hours,
+        task: [...task],
+        approved,
+        role
+      },
+      props.editId
+    );
   };
 
   // const clearFields = () => {
@@ -167,16 +170,12 @@ function EditTimeSheets(props) {
         showModal={showModalCorrect}
         handleClose={handleCloseMessage}
         modalTitle={'The Time sheet has been updated successfully'}
-      >
-        {data.message}
-      </Modal>
+      ></Modal>
       <Modal
         showModal={showModalIncorrect}
         handleClose={handleCloseMessage}
         modalTitle={'The was an error updating time sheet'}
-      >
-        {data.message}
-      </Modal>
+      ></Modal>
     </section>
   );
 }

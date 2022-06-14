@@ -18,7 +18,11 @@ export const getTimesheetFailed = (error) => ({
 // // ADD
 export const addTimeSheetFulfilled = (timesheet) => ({
   type: types.ADD_TIMESHEET_FULFILLED,
-  payload: timesheet
+  payload: {
+    ...timesheet,
+    employeeId: { _id: timesheet.employeeId },
+    task: { _id: timesheet.task }
+  }
 });
 
 export const addTimeSheetPending = () => ({
@@ -33,7 +37,11 @@ export const addTimeSheetFailed = (error) => ({
 // // UPDATE
 export const updateTimeSheetFulfilled = (timesheet) => ({
   type: types.UPDATE_TIMESHEET_FULFILLED,
-  payload: timesheet
+  payload: {
+    ...timesheet,
+    employeeId: { _id: timesheet.employeeId },
+    task: { _id: timesheet.task }
+  }
 });
 
 export const updateTimeSheetPending = () => ({

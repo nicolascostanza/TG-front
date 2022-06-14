@@ -19,6 +19,8 @@ function TimeSheet() {
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
+  // const [tasks, setTasks] = useState([]);
+  // const [employees, setEmployees] = useState([]);
   const openAddTimeSheet = () => {
     dispatch(actions.showCreateModal());
   };
@@ -26,9 +28,33 @@ function TimeSheet() {
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
+  // const [newTimeSheets, setNewTimeSheets] = useState('');
+  // if (editId !== '') {
+  //   const newTimesheets = timeSheets.filter((item) => item._id === editId);
+  // }
   useEffect(() => {
     dispatch(thunks.getTimesheets());
+    // fetchTasks();
+    // fetchEmployees();
   }, []);
+  // const fetchTasks = () => {
+  //   fetch(`${process.env.REACT_APP_API_URL}/tasks`)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       setTasks(response.data);
+  //     })
+  //     .catch((err) => console.err(err));
+  // };
+  // const fetchEmployees = () => {
+  //   fetch(`${process.env.REACT_APP_API_URL}/employees`)
+  //     .then((response) => response.json())
+  //     .then((response) => {
+  //       response.data.map((employee) => {
+  //         employee.active = employee.active ? 'true' : 'false';
+  //       });
+  //       setEmployees(response.data);
+  //     });
+  // };
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
@@ -40,12 +66,13 @@ function TimeSheet() {
   }
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     return {
+      ...timeSheet,
       _id: timeSheet._id,
       employeeId: timeSheet.employeeId._id,
       description: timeSheet.description,
       project: timeSheet.project,
       date: new Date(timeSheet.date).toDateString(),
-      task_name: timeSheet.task.map((task) => task.taskName).join(' - ') || '-',
+      task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
       role: timeSheet.role
@@ -54,7 +81,12 @@ function TimeSheet() {
   return (
     <div className={styles.container}>
       <Sidebar></Sidebar>
-      <EditTimeSheets showModal={showEditModal} handleClose={handleClose} editId={editId} />
+      <EditTimeSheets
+        showModal={showEditModal}
+        handleClose={handleClose}
+        editId={editId}
+        // newTimesheets={newTimesheets}
+      />
       <AddTimeSheets showCreateModal={showCreateModal} handleClose={handleClose}></AddTimeSheets>
       <Table
         title="Timesheets"
