@@ -44,17 +44,29 @@ export const tasksReducer = (state = initialState, action) => {
         error: action.payload,
         isFetching: false
       };
+    // DELETE TASK
+    case types.DELETE_TASK_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.DELETE_TASK_FULLFILLED:
+      return {
+        ...state,
+        list: state.list.filter((task) => task._id !== action.payload),
+        isFetching: false
+      };
+    case types.DELETE_TASK_FAILED:
+      return {
+        ...state,
+        error: action.payload,
+        isFetching: false
+      };
     // EDIT TASK
     case types.EDIT_TASK_FULLFILLED:
       return {
         ...state,
         list: action.payload
-      };
-    // DELETE TASK
-    case types.DELETE_TASK_FULLFILLED:
-      return {
-        ...state,
-        list: [...action.payload]
       };
     default:
       return state;

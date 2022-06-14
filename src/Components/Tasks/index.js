@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Table from '../Shared/Table';
 import Form from '../Shared/Form';
 import AddTask from './AddTask';
-import * as actions from '../../redux/tasks/actions';
+// import * as actions from '../../redux/tasks/actions';
 import * as thunks from '../../redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,7 +31,7 @@ function Tasks() {
   const dispatch = useDispatch();
   const tasks = useSelector((state) => state.tasks.list); //CAMBIAR POR TASKS
   const isFetching = useSelector((state) => state.tasks.isFetching);
-
+  // console.log(tasks.length);
   const headers = [
     '_id',
     'parentProject',
@@ -93,9 +93,9 @@ function Tasks() {
     console.log(tasks);
   };
 
-  const appendToTasks = (task) => {
-    dispatch(actions.addTaskFullfilled(task));
-  };
+  // const appendToTasks = (task) => {
+  //   dispatch(actions.addTaskFullfilled(task));
+  // };
 
   const editTask = async (task) => {
     const res = await fetch(`${process.env.REACT_APP_API_URL}/tasks/${editedId}`, {
@@ -116,14 +116,17 @@ function Tasks() {
     }
   };
 
-  // const deleteTask = async (id) => {
-  const deleteTaskFullfilled = async (id) => {
-    const resp = confirm('Are you sure you want to delete this task?');
-    if (resp) {
-      await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}`, {
-        method: 'DELETE'
-      });
-      // setTask(tasks.filter((task) => task._id !== id));
+  const deleteTask = async (id) => {
+    // const deleteTaskFullfilled = async (id) => {
+    const deleteConfirm = confirm('Are you sure you want to delete this task?');
+    if (deleteConfirm) {
+      // await fetch(`${process.env.REACT_APP_API_URL}/tasks/${id}`, {
+      //   method: 'DELETE'
+      // });
+      // // setTask(tasks.filter((task) => task._id !== id));
+      dispatch(thunks.deleteTask(id));
+      // dispatch(thunks.getTasks());
+      // console.log('deleteTask ', id);
     }
   };
   if (isFetching) {
@@ -147,13 +150,13 @@ function Tasks() {
           title={'Tasks'}
           data={tasks}
           headers={headers}
-          onDelete={deleteTaskFullfilled}
+          onDelete={deleteTask}
           onEdit={onEdit}
           onAdd={openAddTask}
         />
       </section>
       <AddTask
-        appendToTasks={appendToTasks}
+        // appendToTasks={appendToTasks}
         showAddModal={showAddModal}
         handleClose={handleClose}
         handleSubmit={onSubmit}

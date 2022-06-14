@@ -30,14 +30,23 @@ export const addTaskFailed = (error) => ({
   payload: error
 });
 
-// EDIT TASK
-export const editTaskFullfilled = (task) => ({
-  type: types.EDIT_TASK_FULLFILLED,
-  payload: task
-});
-
 // DELETE TASK
 export const deleteTaskFullfilled = (task) => ({
   type: types.DELETE_TASK_FULLFILLED,
+  payload: task._id
+});
+
+export const deleteTaskPending = () => ({
+  type: types.DELETE_TASK_PENDING
+});
+
+export const deleteTaskFailed = (error) => ({
+  type: types.DELETE_TASK_FAILED,
+  payload: error
+});
+
+// EDIT TASK
+export const editTaskFullfilled = (task) => ({
+  type: types.EDIT_TASK_FULLFILLED,
   payload: task
 });

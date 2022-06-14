@@ -49,7 +49,7 @@ const AddTask = (props) => {
   //   }
   // };
   const addTask = async (task) => {
-    dispatch(thunks.addTaskThunk(task));
+    dispatch(thunks.addTask(task));
     console.log('TASK', task);
   };
   const onSubmit = (e) => {
