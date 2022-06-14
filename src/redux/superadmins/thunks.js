@@ -1,8 +1,7 @@
 import * as action from './actions';
 
-export const getSuperadmins = (setIsLoading) => {
+export const getSuperadmins = () => {
   return async (dispatch) => {
-    setIsLoading(true);
     dispatch(action.getSuperadminPending());
     try {
       const response = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins`);
@@ -11,21 +10,13 @@ export const getSuperadmins = (setIsLoading) => {
         superadmin.active = superadmin.active ? 'true' : 'false';
       });
       dispatch(action.getSuperadminSuccess(data.data));
-      setIsLoading(false);
     } catch (error) {
-      setIsLoading(false);
       dispatch(action.getSuperadminSuccess(error));
     }
   };
 };
-export const addSuperadmin = (
-  { firstName, lastName, email, password, active },
-  handleCloseAdd,
-  setShowModalMessage,
-  setIsLoading
-) => {
+export const addSuperadmin = ({ firstName, lastName, email, password, active }) => {
   return async (dispatch) => {
-    setIsLoading(true);
     dispatch(action.addSuperadminPending());
     try {
       const response = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins`, {
@@ -55,25 +46,16 @@ export const addSuperadmin = (
           res.message
         )
       );
-      setIsLoading(false);
-      handleCloseAdd();
-      setShowModalMessage(true);
+      dispatch(action.closeModals());
+      dispatch(action.showModalMessage());
     } catch (error) {
-      setIsLoading(false);
       dispatch(action.addSuperadminError(error));
-      setShowModalMessage(true);
+      dispatch(action.showModalMessage());
     }
   };
 };
-export const editSuperadmins = (
-  superadmin,
-  superadminId,
-  handleCloseAdd,
-  setShowModalMessage,
-  setIsLoading
-) => {
+export const editSuperadmins = (superadmin, superadminId) => {
   return async (dispatch) => {
-    setIsLoading(true);
     dispatch(action.editSuperadminPending());
     try {
       const response = await fetch(
@@ -108,19 +90,16 @@ export const editSuperadmins = (
           res.message
         )
       );
-      setIsLoading(false);
-      handleCloseAdd();
-      setShowModalMessage(true);
+      dispatch(action.closeModals());
+      dispatch(action.showModalMessage());
     } catch (error) {
-      setIsLoading(false);
       dispatch(action.editSuperadminError(error));
-      setShowModalMessage(true);
+      dispatch(action.showModalMessage());
     }
   };
 };
-export const deleteSuperadmin = (id, handleCloseAlert, setShowModalMessage, setIsLoading) => {
+export const deleteSuperadmin = (id) => {
   return async (dispatch) => {
-    setIsLoading(true);
     dispatch(action.deleteSuperadminPending());
     try {
       const res = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins/${id}`, {
@@ -128,13 +107,11 @@ export const deleteSuperadmin = (id, handleCloseAlert, setShowModalMessage, setI
       });
       const data = await res.json();
       dispatch(action.deleteSuperadminSuccess(id, data.message));
-      setIsLoading(false);
-      handleCloseAlert();
-      setShowModalMessage(true);
+      dispatch(action.closeModals());
+      dispatch(action.showModalMessage());
     } catch (error) {
-      setIsLoading(false);
       dispatch(action.deleteSuperadminError(error.message));
-      setShowModalMessage(true);
+      dispatch(action.showModalMessage());
     }
   };
 };

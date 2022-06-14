@@ -10,14 +10,22 @@ import {
   EDIT_SUPERADMIN_ERROR,
   DELETE_SUPERADMIN_ERROR,
   DELETE_SUPERADMIN_PENDING,
-  DELETE_SUPERADMIN_SUCCESS
+  DELETE_SUPERADMIN_SUCCESS,
+  SHOW_FORM_ADD_EDIT,
+  SHOW_MODAL_DELETE,
+  SHOW_MODAL_MESSAGE,
+  CLOSE_MODALS,
+  CLOSE_MODAL_MESSAGE
 } from './constants';
 
 const initialState = {
   list: [],
   isFetching: false,
   message: '',
-  response: false
+  response: false,
+  showFormAddEdit: false,
+  showModalDelete: false,
+  showModalMessage: false
 };
 let superadminsUpdates = [];
 export const superAdminReducer = (state = initialState, action) => {
@@ -112,6 +120,32 @@ export const superAdminReducer = (state = initialState, action) => {
         isFetching: false,
         message: action.payload,
         response: false
+      };
+    case SHOW_FORM_ADD_EDIT:
+      return {
+        ...state,
+        showFormAddEdit: true
+      };
+    case SHOW_MODAL_DELETE:
+      return {
+        ...state,
+        showModalDelete: true
+      };
+    case SHOW_MODAL_MESSAGE:
+      return {
+        ...state,
+        showModalMessage: true
+      };
+    case CLOSE_MODALS:
+      return {
+        ...state,
+        showFormAddEdit: false,
+        showModalDelete: false
+      };
+    case CLOSE_MODAL_MESSAGE:
+      return {
+        ...state,
+        showModalMessage: false
       };
     default:
       return state;

@@ -10,7 +10,12 @@ import {
   EDIT_SUPERADMIN_SUCCESS,
   DELETE_SUPERADMIN_PENDING,
   DELETE_SUPERADMIN_SUCCESS,
-  DELETE_SUPERADMIN_ERROR
+  DELETE_SUPERADMIN_ERROR,
+  SHOW_FORM_ADD_EDIT,
+  SHOW_MODAL_DELETE,
+  SHOW_MODAL_MESSAGE,
+  CLOSE_MODALS,
+  CLOSE_MODAL_MESSAGE
 } from './constants';
 export const getSuperadminPending = () => ({
   type: GET_SUPERADMIN_PENDING
@@ -55,4 +60,19 @@ export const deleteSuperadminSuccess = (superAdminId, message) => ({
 export const deleteSuperadminError = (error) => ({
   type: DELETE_SUPERADMIN_ERROR,
   payload: error
+});
+export const showFormAddEdit = () => ({
+  type: SHOW_FORM_ADD_EDIT
+});
+export const closeModals = () => ({
+  type: CLOSE_MODALS
+});
+export const showModalDelete = () => ({
+  type: SHOW_MODAL_DELETE
+});
+export const showModalMessage = () => ({
+  type: SHOW_MODAL_MESSAGE
+});
+export const closeModalMessage = () => ({
+  type: CLOSE_MODAL_MESSAGE
 });
