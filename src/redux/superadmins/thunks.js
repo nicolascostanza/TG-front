@@ -15,7 +15,7 @@ export const getSuperadmins = () => {
     }
   };
 };
-export const addSuperadmin = ({ firstName, lastName, email, password, active }) => {
+export const addSuperadmin = (superadminNew) => {
   return async (dispatch) => {
     dispatch(action.addSuperadminPending());
     try {
@@ -24,22 +24,18 @@ export const addSuperadmin = ({ firstName, lastName, email, password, active }) 
         headers: {
           'Content-type': 'application/json'
         },
-        body: JSON.stringify({ firstName, lastName, email, password, active })
+        body: JSON.stringify(superadminNew)
       });
       const res = await response.json();
       if (res.error) {
         throw res.message;
       }
-      active = active ? 'true' : 'false';
+      superadminNew.active = superadminNew.active ? 'true' : 'false';
       dispatch(
         action.addSuperadminSuccess(
           {
+            ...superadminNew,
             _id: res.data._id,
-            firstName,
-            lastName,
-            email,
-            password,
-            active,
             createdAt: res.data.createdAt,
             updatedAt: res.data.updatedAt
           },
@@ -54,7 +50,7 @@ export const addSuperadmin = ({ firstName, lastName, email, password, active }) 
     }
   };
 };
-export const editSuperadmins = (superadmin, superadminId) => {
+export const editSuperadmins = (superadminEdited, superadminId) => {
   return async (dispatch) => {
     dispatch(action.editSuperadminPending());
     try {
@@ -65,24 +61,19 @@ export const editSuperadmins = (superadmin, superadminId) => {
           headers: {
             'Content-type': 'application/json'
           },
-          body: JSON.stringify(superadmin)
+          body: JSON.stringify(superadminEdited)
         }
       );
       const res = await response.json();
-      const { firstName, lastName, email, password, active } = superadmin;
       if (res.error) {
         throw res.message;
       }
-      superadmin.active = superadmin.active ? 'true' : 'false';
+      superadminEdited.active = superadminEdited.active ? 'true' : 'false';
       dispatch(
         action.editSuperadminSuccess(
           {
+            ...superadminEdited,
             _id: res.data._id,
-            firstName,
-            lastName,
-            email,
-            password,
-            active: active ? 'true' : 'false',
             createdAt: res.data.createdAt,
             updatedAt: res.data.updatedAt
           },

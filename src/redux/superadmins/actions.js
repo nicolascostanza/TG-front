@@ -61,17 +61,19 @@ export const deleteSuperadminError = (error) => ({
   type: DELETE_SUPERADMIN_ERROR,
   payload: error
 });
-export const showFormAddEdit = () => ({
-  type: SHOW_FORM_ADD_EDIT
+export const showFormAddEdit = (method) => ({
+  type: SHOW_FORM_ADD_EDIT,
+  payload: method
 });
-export const closeModals = () => ({
-  type: CLOSE_MODALS
-});
-export const showModalDelete = () => ({
-  type: SHOW_MODAL_DELETE
+export const showModalDelete = (method) => ({
+  type: SHOW_MODAL_DELETE,
+  payload: method
 });
 export const showModalMessage = () => ({
   type: SHOW_MODAL_MESSAGE
+});
+export const closeModals = () => ({
+  type: CLOSE_MODALS
 });
 export const closeModalMessage = () => ({
   type: CLOSE_MODAL_MESSAGE

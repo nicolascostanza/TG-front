@@ -25,7 +25,8 @@ const initialState = {
   response: false,
   showFormAddEdit: false,
   showModalDelete: false,
-  showModalMessage: false
+  showModalMessage: false,
+  method: ''
 };
 let superadminsUpdates = [];
 export const superAdminReducer = (state = initialState, action) => {
@@ -124,12 +125,14 @@ export const superAdminReducer = (state = initialState, action) => {
     case SHOW_FORM_ADD_EDIT:
       return {
         ...state,
-        showFormAddEdit: true
+        showFormAddEdit: true,
+        method: action.payload
       };
     case SHOW_MODAL_DELETE:
       return {
         ...state,
-        showModalDelete: true
+        showModalDelete: true,
+        method: action.payload
       };
     case SHOW_MODAL_MESSAGE:
       return {

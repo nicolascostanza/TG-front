@@ -26,12 +26,12 @@ function SuperAdmins() {
   const message = useSelector((state) => state.superAdmins.message);
   const response = useSelector((state) => state.superAdmins.response);
   const isFetching = useSelector((state) => state.superAdmins.isFetching);
+  const method = useSelector((state) => state.superAdmins.method);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [active, setActive] = useState(false);
-  const [method, setMethod] = useState('');
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
   useEffect(() => {
@@ -44,6 +44,14 @@ function SuperAdmins() {
     setPassword('');
     setActive(false);
   };
+  const fillForm = (id) => {
+    const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
+    setFirstName(valuesForm[0].firstName);
+    setLastName(valuesForm[0].lastName);
+    setEmail(valuesForm[0].email);
+    setPassword(valuesForm[0].password);
+    setActive(valuesForm[0].active === 'true' ? true : false);
+  };
   // modals form add edit, delete
   const modalShowForm = useSelector((state) => state.superAdmins.showFormAddEdit);
   const showModalDelete = useSelector((state) => state.superAdmins.showModalDelete);
@@ -54,28 +62,22 @@ function SuperAdmins() {
   const closeModalMessage = () => {
     dispatch(actions.closeModalMessage());
   };
+  // aca estan los metodos
+  const onAdd = () => {
+    dispatch(actions.showFormAddEdit('POST'));
+    resetFields();
+  };
+  const onEdit = async (id) => {
+    dispatch(actions.showFormAddEdit('PUT'));
+    setId(id);
+    fillForm(id);
+  };
   const onDelete = (id) => {
-    dispatch(actions.showModalDelete());
+    dispatch(actions.showModalDelete('DELETE'));
     setDeleteId(id);
   };
   const deleteAdmin = async () => {
     dispatch(thunks.deleteSuperadmin(deleteId));
-  };
-  const onAdd = () => {
-    setMethod('POST');
-    dispatch(actions.showFormAddEdit());
-    resetFields();
-  };
-  const onEdit = async (id) => {
-    setMethod('PUT');
-    dispatch(actions.showFormAddEdit());
-    setId(id);
-    const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
-    setFirstName(valuesForm[0].firstName);
-    setLastName(valuesForm[0].lastName);
-    setEmail(valuesForm[0].email);
-    setPassword(valuesForm[0].password);
-    setActive(valuesForm[0].active === 'true' ? true : false);
   };
   const onSubmit = (e) => {
     e.preventDefault();
