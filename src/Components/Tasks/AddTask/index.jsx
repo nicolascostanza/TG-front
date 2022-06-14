@@ -6,8 +6,6 @@ import Form from '../../Shared/Form';
 import * as thunks from '../../../redux/tasks/thunks';
 import { useDispatch } from 'react-redux';
 
-// const URL = `${process.env.REACT_APP_API_URL}/tasks`;
-
 const AddTask = (props) => {
   const [parentProject, setParentProject] = useState('');
   const [taskName, setTaskName] = useState('');
@@ -15,39 +13,8 @@ const AddTask = (props) => {
   const [assignedEmployee, setAssignedEmployee] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [status, setStatus] = useState('');
-  // const [refresh, setRefresh] = useState(true);
-  // const [tasks, setTasks] = useState([]);
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       setTasks(response.data);
-  //       console.log(response.data);
-  //     });
-  // }, []);
-
-  // const addTask = async (task) => {
-  //   const res = await fetch(`${process.env.REACT_APP_API_URL}/tasks`, {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-type': 'application/json'
-  //     },
-  //     body: JSON.stringify(task)
-  //   });
-  //   const data = await res.json();
-
-  //   setTasks([...tasks, data]);
-
-  //   if (res.status === 201) {
-  //     alert('Task added successfully');
-  //     // setRefresh('');
-  //     props.handleClose();
-  //   } else if (res.status === 400 || res.status === 500) {
-  //     alert('Something went wrong');
-  //   }
-  // };
   const addTask = async (task) => {
     dispatch(thunks.addTask(task));
     props.handleClose();

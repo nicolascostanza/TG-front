@@ -30,12 +30,10 @@ export const deleteTaskApi = async (id) => {
       method: 'DELETE'
     });
     const data = await response.json();
-    // console.log('data: ', data);
     return data;
   } catch (error) {
     return error;
   }
-  // setTask(tasks.filter((task) => task._id !== id));
 };
 
 export const editTaskApi = async (taskNewInfo, editedTaskId) => {
@@ -48,16 +46,7 @@ export const editTaskApi = async (taskNewInfo, editedTaskId) => {
       body: JSON.stringify(taskNewInfo)
     });
     console.log('response', response);
-    // console.log('que es esto', editedTaskId);
-    // console.log('que es esto otro', taskNewInfo);
     const data = await response.json();
-    // if (response.status === 200) {
-    //   alert('Task updated successfully');
-    //   // handleClose();
-    // } else if (response.status === 400) {
-    //   alert('Something went wrong');
-    // }
-    // console.log('dataa ', data);
     return data.data;
   } catch (error) {
     return error;

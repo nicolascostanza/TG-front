@@ -35,18 +35,15 @@ export const deleteTask = (id) => {
     deleteTaskApi(id)
       .then((response) => {
         dispatch(actions.deleteTaskFullfilled(response.data));
-        // console.log('id para borrar', response.data);
       })
       .catch((error) => {
         dispatch(actions.deleteTaskFailed(error));
-        // console.log('error: ', error);
       });
   };
 };
 
 export const editTask = (taskNewInfo, id) => {
   return async (dispatch) => {
-    // console.log('eesteee', taskNewInfo);
     dispatch(actions.editTaskPending());
     await editTaskApi(taskNewInfo, id)
       .then((response) => {
