@@ -1,58 +1,40 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Table from '../../Shared/Table';
 import EditProject from '../ProjectForms/EditProject';
 import CreateProject from '../ProjectForms/CreateProject';
 import Sidebar from '../../Shared/Sidebar';
-import * as actions from '../../../redux/projects/actions'; // This should be deleted later
+import * as actions from '../../../redux/projects/actions';
 import * as thunks from '../../../redux/projects/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
-// IMPORTANT: TRY TO EDIT A JUST CREATED PROJECT WILL BREAK THE APP
-// I SHOULD FIND A WAY TO POPULATE THE RESPONSE OF CREATE !!!!!!!!!
-
 function List() {
-  const [edit, setEdit] = useState(false);
-  const [showCreateModal, setShowCreateModal] = useState(false);
-  const [editingProject, setEditingProject] = useState({
-    name: '',
-    description: '',
-    clientName: '',
-    startDate: '',
-    endDate: '',
-    projectManager: '',
-    team: [],
-    tasks: []
-  });
-  const dispatch = useDispatch(); // So i can execute actions
-  const projects = useSelector((state) => state.projects.list); // So i can access the state
+  const [editingProject, setEditingProject] = useState({});
+  const dispatch = useDispatch();
+  const projects = useSelector((state) => state.projects.list);
   const isFetching = useSelector((state) => state.projects.isFetching);
+  const showCreateModal = useSelector((state) => state.projects.createModalShow);
+  const showEditModal = useSelector((state) => state.projects.editModalShow);
+  const allEmployees = useSelector((state) => state.projects.allEmployees);
+  const allTasks = useSelector((state) => state.projects.allTasks);
 
   useEffect(() => {
     dispatch(thunks.getProjects());
+    dispatch(thunks.getEmployees());
+    dispatch(thunks.getTasks());
   }, []);
 
   const handleOpenCreateModal = () => {
-    setShowCreateModal(true);
+    dispatch(actions.showCreateModal());
   };
 
   const closeModal = () => {
     const iWantToClose = confirm('Are you sure you want to exit?');
     if (iWantToClose) {
-      setShowCreateModal(false);
-      setEdit(false);
+      dispatch(actions.closeAllModals());
     }
   };
 
-  const forceCloseModal = () => {
-    setShowCreateModal(false);
-    setEdit(false);
-  };
-
-  const appendToProjects = (project) => {
-    dispatch(actions.addNewProjectFulfilled(project));
-  };
-
-  const updateProjectFulfilleds = (editedProject) => {
+  const updatedProject = (editedProject) => {
     const updatedProjects = projects.map((project) => {
       if (project._id === editedProject._id) {
         return editedProject;
@@ -62,52 +44,47 @@ function List() {
     dispatch(actions.updateProjectFulfilled(updatedProjects));
   };
 
-  // This function set everything to edit a project
+  // FUNCTION TO SET THE PROJECT EDITION
   const editProject = (id) => {
     const currentEditing = projects.find((project) => project._id === id);
-    setEdit(true);
     setEditingProject(currentEditing);
+    dispatch(actions.showEditModal());
   };
 
-  const deleteProjectFulfilled = (id) => {
+  const deleteProject = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, { method: 'delete' })
-        .then((response) => response.json())
-        .then((json) => {
-          alert(json.message);
-          dispatch(
-            actions.deleteProjectFulfilled(projects.filter((project) => project._id !== id))
-          );
-        })
-        .catch((error) => console.log(error));
+      dispatch(thunks.deleteProject(id));
     }
   };
 
   if (isFetching) {
-    return <div>Fetching...</div>;
+    return <h3>Fetching...</h3>;
   }
 
   return (
     <>
       <Sidebar>
-        <a>Your projects</a>
+        <h2>Projects</h2>
+        <a>All your projects</a>
+        <a></a>
       </Sidebar>
       {showCreateModal ? (
         <CreateProject
-          appendToProjects={appendToProjects}
           showCreateModal={showCreateModal}
           handleClose={closeModal}
-          forceCloseModal={forceCloseModal}
+          allEmployees={allEmployees}
+          allTasks={allTasks}
         />
       ) : null}
-      {edit ? (
+      {showEditModal ? (
         <EditProject
           initial={editingProject}
-          showModal={edit}
+          showModal={showEditModal}
           handleClose={closeModal}
-          updateProjectFulfilleds={updateProjectFulfilleds}
-          forceCloseModal={forceCloseModal}
+          updatedProject={updatedProject}
+          allEmployees={allEmployees}
+          allTasks={allTasks}
         />
       ) : null}
       <Table
@@ -124,7 +101,7 @@ function List() {
         ]}
         data={projects}
         onEdit={editProject}
-        onDelete={deleteProjectFulfilled}
+        onDelete={deleteProject}
         onAdd={handleOpenCreateModal}
       />
     </>
