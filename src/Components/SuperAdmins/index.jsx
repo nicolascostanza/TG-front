@@ -5,11 +5,9 @@ import Form from '../Shared/Form';
 import Modal from '../Shared/Modal';
 import Sidebar from '../Shared/Sidebar';
 import Table from '../Shared/Table';
+import Loader from '../Shared/Loader/index.jsx';
 import styles from './super-admins.module.css';
-
-// mio
 import * as thunks from '../../redux/superadmins/thunks';
-// import * as action from '../../redux/superadmins/actions';
 
 function SuperAdmins() {
   const headers = [
@@ -24,6 +22,8 @@ function SuperAdmins() {
   ];
   const dispatch = useDispatch();
   const superAdminsList = useSelector((state) => state.superAdmins.list);
+  const message = useSelector((state) => state.superAdmins.message);
+  const response = useSelector((state) => state.superAdmins.response);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
@@ -35,10 +35,10 @@ function SuperAdmins() {
   const [method, setMethod] = useState('');
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
-  // const [tittleModal, setTittleModal] = useState('');
-  // const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
-    dispatch(thunks.getSuperadmins());
+    dispatch(thunks.getSuperadmins(setIsLoading));
+    setIsLoading(false);
   }, []);
   const resetFields = () => {
     setFirstName('');
@@ -57,78 +57,30 @@ function SuperAdmins() {
   const handleCloseAdd = () => {
     setShowModalAdd(false);
   };
-
-  // edits functions
-  const onEdit = async (id) => {
-    setMethod('PUT');
-    setShowModalAdd(true);
-    // fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`)
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     setFirstName(response.data.firstName);
-    //     setLastName(response.data.lastName);
-    //     setEmail(response.data.email);
-    //     setPassword(response.data.password);
-    //     setActive(response.data.active);
-    //   });
-    setId(id);
-  };
-  // const Editing = async (superAdmin) => {
-  //   const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${ids}`, {
-  //     method: 'PUT',
-  //     headers: {
-  //       'Content-type': 'application/json'
-  //     },
-  //     body: JSON.stringify(superAdmin)
-  //   });
-  //   const data = await res.json();
-  //   if (res.status === 200) {
-  //     handleCloseAdd(false);
-  //     resetFields();
-  //     setTittleModal('EDITED');
-  //     setMessage(data.message);
-  //     setShowModalMessage(true);
-  //     setMethod('');
-  //   } else {
-  //     setShowModalAdd(false);
-  //     setTittleModal('ERROR');
-  //     setMessage(data.message);
-  //     setShowModalMessage(true);
-  //     setMethod('');
-  //   }
-  // };
-  // delete functions
   const onDelete = (id) => {
     setShowModalAlert(true);
     setDeleteId(id);
   };
-
-  // const deleteProject = (id) => {
-  //   const areYouSure = confirm('Are you sure you want to delete it?');
-  //   if (areYouSure) {
-  //     dispatch(thunks.deleteProject(id));
-  //   }
-  // };
   const deleteAdmin = async () => {
-    dispatch(thunks.deleteSuperadmin(deleteId));
-    // if (res.status === 200) {
-    //   /*setList(list.filter((superadmin) => superadmin._id !== deleteId)); */
-    //   setShowModalAlert(false);
-    //   setTittleModal('DELETED');
-    //   setMessage(data.message);
-    //   setShowModalMessage(true);
-    // } else {
-    //   setShowModalAdd(false);
-    //   setTittleModal('ERROR');
-    //   setMessage(data.message);
-    //   setShowModalMessage(true);
-    //   setMethod('');
+    dispatch(
+      thunks.deleteSuperadmin(deleteId, handleCloseAlert, setShowModalMessage, setIsLoading)
+    );
   };
-  // add functions and submit
   const onAdd = () => {
     setMethod('POST');
     resetFields();
     setShowModalAdd(true);
+  };
+  const onEdit = async (id) => {
+    setMethod('PUT');
+    setShowModalAdd(true);
+    setId(id);
+    const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
+    setFirstName(valuesForm[0].firstName);
+    setLastName(valuesForm[0].lastName);
+    setEmail(valuesForm[0].email);
+    setPassword(valuesForm[0].password);
+    setActive(valuesForm[0].active === 'true' ? true : false);
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -140,10 +92,11 @@ function SuperAdmins() {
       active
     };
     if (method === 'POST') {
-      dispatch(thunks.addSuperadmin(superAdmin));
+      dispatch(thunks.addSuperadmin(superAdmin, handleCloseAdd, setShowModalMessage, setIsLoading));
     } else if (method === 'PUT') {
-      dispatch(thunks.editSuperadmins(superAdmin, ids));
-      // Editing({ firstName, lastName, email, password, active });
+      dispatch(
+        thunks.editSuperadmins(superAdmin, ids, handleCloseAdd, setShowModalMessage, setIsLoading)
+      );
     } else {
       alert('Something unexpected happened');
     }
@@ -154,11 +107,9 @@ function SuperAdmins() {
         <Sidebar />
       </div>
       <section className={styles.container}>
-        <Modal
-          showModal={showModalAlert}
-          handleClose={handleCloseAlert}
-          modalTitle={`Are you sure you want to delete the SuperAdmin?`}
-        >
+        <Modal showModal={showModalAlert} handleClose={handleCloseAlert} modalTitle={`DELETE`}>
+          <Loader isLoading={isLoading} />
+          <h4>Are you sure you want to delete the SuperAdmin?</h4>
           <div className={styles.buttonsDeleteModal}>
             <Button onClick={deleteAdmin} width={'100%'} height={'25px'} fontSize={'15px'}>
               Accept
@@ -176,6 +127,7 @@ function SuperAdmins() {
           handleClose={handleCloseAdd}
           title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
         >
+          <Loader isLoading={isLoading} />
           <div className={styles.inputsForm}>
             <label>Name</label>
             <input
@@ -230,11 +182,9 @@ function SuperAdmins() {
         <Modal
           showModal={showModalMessage}
           handleClose={handleCloseMessage}
-          // modalTitle={tittleModal}
-          modalTitle={'titulo'}
+          modalTitle={response ? 'SUCCESS' : 'WARNING'}
         >
-          {/* {message} */}
-          {'mensaje'}
+          {message}
         </Modal>
         <Table
           title={'Super Admins'}
@@ -247,6 +197,7 @@ function SuperAdmins() {
       </section>
     </>
   );
+  // }
 }
 
 export default SuperAdmins;

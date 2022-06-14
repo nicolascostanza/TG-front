@@ -1,7 +1,8 @@
 import * as action from './actions';
 
-export const getSuperadmins = () => {
+export const getSuperadmins = (setIsLoading) => {
   return async (dispatch) => {
+    setIsLoading(true);
     dispatch(action.getSuperadminPending());
     try {
       const response = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins`);
@@ -10,14 +11,21 @@ export const getSuperadmins = () => {
         superadmin.active = superadmin.active ? 'true' : 'false';
       });
       dispatch(action.getSuperadminSuccess(data.data));
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       dispatch(action.getSuperadminSuccess(error));
     }
   };
 };
-// add
-export const addSuperadmin = ({ firstName, lastName, email, password, active }) => {
+export const addSuperadmin = (
+  { firstName, lastName, email, password, active },
+  handleCloseAdd,
+  setShowModalMessage,
+  setIsLoading
+) => {
   return async (dispatch) => {
+    setIsLoading(true);
     dispatch(action.addSuperadminPending());
     try {
       const response = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins`, {
@@ -32,15 +40,40 @@ export const addSuperadmin = ({ firstName, lastName, email, password, active }) 
         throw res.message;
       }
       active = active ? 'true' : 'false';
-      dispatch(action.addSuperadminSuccess({ firstName, lastName, email, password, active }));
+      dispatch(
+        action.addSuperadminSuccess(
+          {
+            _id: res.data._id,
+            firstName,
+            lastName,
+            email,
+            password,
+            active,
+            createdAt: res.data.createdAt,
+            updatedAt: res.data.updatedAt
+          },
+          res.message
+        )
+      );
+      setIsLoading(false);
+      handleCloseAdd();
+      setShowModalMessage(true);
     } catch (error) {
+      setIsLoading(false);
       dispatch(action.addSuperadminError(error));
+      setShowModalMessage(true);
     }
   };
 };
-// edit
-export const editSuperadmins = (superadmin, superadminId) => {
+export const editSuperadmins = (
+  superadmin,
+  superadminId,
+  handleCloseAdd,
+  setShowModalMessage,
+  setIsLoading
+) => {
   return async (dispatch) => {
+    setIsLoading(true);
     dispatch(action.editSuperadminPending());
     try {
       const response = await fetch(
@@ -54,28 +87,54 @@ export const editSuperadmins = (superadmin, superadminId) => {
         }
       );
       const res = await response.json();
+      const { firstName, lastName, email, password, active } = superadmin;
       if (res.error) {
         throw res.message;
       }
       superadmin.active = superadmin.active ? 'true' : 'false';
-      dispatch(action.editSuperadminSuccess(superadmin, superadminId));
+      dispatch(
+        action.editSuperadminSuccess(
+          {
+            _id: res.data._id,
+            firstName,
+            lastName,
+            email,
+            password,
+            active: active ? 'true' : 'false',
+            createdAt: res.data.createdAt,
+            updatedAt: res.data.updatedAt
+          },
+          superadminId,
+          res.message
+        )
+      );
+      setIsLoading(false);
+      handleCloseAdd();
+      setShowModalMessage(true);
     } catch (error) {
+      setIsLoading(false);
       dispatch(action.editSuperadminError(error));
+      setShowModalMessage(true);
     }
   };
 };
-
-// delete
-export const deleteSuperadmin = (id) => {
+export const deleteSuperadmin = (id, handleCloseAlert, setShowModalMessage, setIsLoading) => {
   return async (dispatch) => {
+    setIsLoading(true);
     dispatch(action.deleteSuperadminPending());
     try {
-      await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins/${id}`, {
+      const res = await fetch(`https://alfonso-trackgenix-server.vercel.app/super-admins/${id}`, {
         method: 'DELETE'
       });
-      dispatch(action.deleteSuperadminSuccess(id));
+      const data = await res.json();
+      dispatch(action.deleteSuperadminSuccess(id, data.message));
+      setIsLoading(false);
+      handleCloseAlert();
+      setShowModalMessage(true);
     } catch (error) {
-      dispatch(action.deleteSuperadminError(error));
+      setIsLoading(false);
+      dispatch(action.deleteSuperadminError(error.message));
+      setShowModalMessage(true);
     }
   };
 };

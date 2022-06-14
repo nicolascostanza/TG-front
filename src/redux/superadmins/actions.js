@@ -10,12 +10,8 @@ import {
   EDIT_SUPERADMIN_SUCCESS,
   DELETE_SUPERADMIN_PENDING,
   DELETE_SUPERADMIN_SUCCESS,
-  DELETE_SUPERADMIN_ERROR,
-  GETBYID_SUPERADMIN_PENDING,
-  GETBYID_SUPERADMIN_SUCCESS,
-  GETBYID_SUPERADMIN_ERROR
+  DELETE_SUPERADMIN_ERROR
 } from './constants';
-// gets
 export const getSuperadminPending = () => ({
   type: GET_SUPERADMIN_PENDING
 });
@@ -27,51 +23,36 @@ export const getSuperadminError = (error) => ({
   type: GET_SUPERADMIN_ERROR,
   payload: error
 });
-// add
 export const addSuperadminPending = () => ({
   type: ADD_SUPERADMIN_PENDING
 });
-export const addSuperadminSuccess = (superAdmin) => ({
+export const addSuperadminSuccess = (superAdmin, message) => ({
   type: ADD_SUPERADMIN_SUCCESS,
-  payload: superAdmin
+  payload: { superAdmin, message }
 });
 export const addSuperadminError = (error) => ({
   type: ADD_SUPERADMIN_ERROR,
   payload: error
 });
-// edit
 export const editSuperadminPending = () => ({
   type: EDIT_SUPERADMIN_PENDING
 });
-export const editSuperadminSuccess = (superAdmin, id) => ({
+export const editSuperadminSuccess = (superAdmin, id, message) => ({
   type: EDIT_SUPERADMIN_SUCCESS,
-  payload: { superAdmin, id }
+  payload: { superAdmin, id, message }
 });
 export const editSuperadminError = (error) => ({
   type: EDIT_SUPERADMIN_ERROR,
   payload: error
 });
-// delete
 export const deleteSuperadminPending = () => ({
   type: DELETE_SUPERADMIN_PENDING
 });
-export const deleteSuperadminSuccess = (superAdminId) => ({
+export const deleteSuperadminSuccess = (superAdminId, message) => ({
   type: DELETE_SUPERADMIN_SUCCESS,
-  payload: superAdminId
+  payload: { superAdminId, message }
 });
 export const deleteSuperadminError = (error) => ({
   type: DELETE_SUPERADMIN_ERROR,
-  payload: error
-});
-// getbyid
-export const getByIdSuperadminPending = () => ({
-  type: GETBYID_SUPERADMIN_PENDING
-});
-export const getByIdSuperadminSuccess = (superAdmin) => ({
-  type: GETBYID_SUPERADMIN_SUCCESS,
-  payload: superAdmin
-});
-export const getByIdSuperadminError = (error) => ({
-  type: GETBYID_SUPERADMIN_ERROR,
   payload: error
 });

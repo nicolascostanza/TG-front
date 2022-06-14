@@ -5,9 +5,6 @@ import {
   GET_SUPERADMIN_ERROR,
   GET_SUPERADMIN_PENDING,
   GET_SUPERADMIN_SUCCESS,
-  GETBYID_SUPERADMIN_PENDING,
-  GETBYID_SUPERADMIN_SUCCESS,
-  GETBYID_SUPERADMIN_ERROR,
   EDIT_SUPERADMIN_SUCCESS,
   EDIT_SUPERADMIN_PENDING,
   EDIT_SUPERADMIN_ERROR,
@@ -19,7 +16,8 @@ import {
 const initialState = {
   list: [],
   isFetching: false,
-  error: ''
+  message: '',
+  response: false
 };
 let superadminsUpdates = [];
 export const superAdminReducer = (state = initialState, action) => {
@@ -27,41 +25,50 @@ export const superAdminReducer = (state = initialState, action) => {
     case GET_SUPERADMIN_PENDING:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        message: ''
       };
     case GET_SUPERADMIN_SUCCESS:
       return {
         ...state,
         list: action.payload,
-        isFetching: false
+        isFetching: false,
+        message: '',
+        response: true
       };
     case GET_SUPERADMIN_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.payload
+        message: action.payload,
+        response: false
       };
     case ADD_SUPERADMIN_PENDING:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        message: ''
       };
     case ADD_SUPERADMIN_SUCCESS:
       return {
         ...state,
-        list: [...state.list, action.payload],
-        isFetching: false
+        list: [...state.list, action.payload.superAdmin],
+        isFetching: false,
+        message: action.payload.message,
+        response: true
       };
     case ADD_SUPERADMIN_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.payload
+        message: action.payload,
+        response: false
       };
     case EDIT_SUPERADMIN_PENDING:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        message: ''
       };
     case EDIT_SUPERADMIN_SUCCESS:
       superadminsUpdates = state.list.map((superadmin) => {
@@ -74,47 +81,37 @@ export const superAdminReducer = (state = initialState, action) => {
       return {
         ...state,
         list: superadminsUpdates,
-        isFetching: false
+        isFetching: false,
+        message: action.payload.message,
+        response: true
       };
     case EDIT_SUPERADMIN_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.payload
+        message: action.payload,
+        response: false
       };
     case DELETE_SUPERADMIN_PENDING:
       return {
         ...state,
-        isFetching: true
+        isFetching: true,
+        message: ''
       };
     case DELETE_SUPERADMIN_SUCCESS:
       return {
         ...state,
-        list: state.list.filter((superadmin) => superadmin._id !== action.payload),
-        isFetching: false
+        list: state.list.filter((superadmin) => superadmin._id !== action.payload.superAdminId),
+        isFetching: false,
+        message: action.payload.message,
+        response: true
       };
     case DELETE_SUPERADMIN_ERROR:
       return {
         ...state,
         isFetching: false,
-        error: action.payload
-      };
-    case GETBYID_SUPERADMIN_PENDING:
-      return {
-        ...state,
-        isFetching: true
-      };
-    case GETBYID_SUPERADMIN_SUCCESS:
-      return {
-        ...state,
-        list: action.payload,
-        isFetching: false
-      };
-    case GETBYID_SUPERADMIN_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        error: action.payload
+        message: action.payload,
+        response: false
       };
     default:
       return state;
