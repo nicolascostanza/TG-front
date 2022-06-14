@@ -34,7 +34,7 @@ function SuperAdmins() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
   useEffect(() => {
@@ -46,7 +46,7 @@ function SuperAdmins() {
     setLastName('');
     setEmail('');
     setPassword('');
-    setActive(false);
+    setActive(true);
   };
   const fillForm = (id) => {
     const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
@@ -156,7 +156,7 @@ function SuperAdmins() {
             <label>Password</label>
             <input
               className={styles.inputsDivs}
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
