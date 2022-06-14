@@ -66,6 +66,7 @@ function Admins() {
   };
 
   const onAdd = () => {
+    resetFields();
     setMethod('POST');
     setShowModalAdd(true);
   };
