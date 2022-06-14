@@ -107,6 +107,7 @@ function Admins() {
       return <h2>Fetching</h2>;
     }
     setMethod('');
+    resetFields();
     handleCloseAdd(false);
   };
   const onSubmit = (e) => {
