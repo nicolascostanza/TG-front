@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './admins.module.css';
 import Table from '../Shared/Table';
+import Loader from '../Shared/Loader';
 import Modal from '../Shared/Modal';
 import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
@@ -29,9 +30,6 @@ function Admins() {
     dispatch(thunks.getAdmins());
   }, [method]);
 
-  if (isFetching) {
-    return <h2>Fetching</h2>;
-  }
   const formattedAdmins = admins.map((admin) => {
     return {
       _id: admin._id,
@@ -79,6 +77,15 @@ function Admins() {
     setActive(false);
   };
 
+  const fillInputs = (id) => {
+    const values = admins.filter((admin) => admin._id === id);
+    setFirstName(values[0].firstName);
+    setLastName(values[0].lastName);
+    setEmail(values[0].email);
+    setPassword(values[0].password);
+    setActive(values[0].active === 'true' ? true : false);
+  };
+
   const addAdmin = async (admin) => {
     resetFields();
     dispatch(thunks.addAdmin(admin));
@@ -90,15 +97,7 @@ function Admins() {
   const onEdit = async (id) => {
     setMethod('PUT');
     setShowModalAdd(true);
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
-      .then((response) => response.json())
-      .then((response) => {
-        setFirstName(response.data.firstName);
-        setLastName(response.data.lastName);
-        setEmail(response.data.email);
-        setPassword(response.data.password);
-        setActive(response.data.active);
-      });
+    fillInputs(id);
     setId(id);
   };
 
@@ -111,6 +110,7 @@ function Admins() {
     resetFields();
     handleCloseAdd(false);
   };
+
   const onSubmit = (e) => {
     e.preventDefault();
     if (method === 'POST') {
@@ -123,22 +123,23 @@ function Admins() {
     }
   };
 
-  console.log(firstName, lastName, email, password, active, method);
   return (
     <section className={styles.container}>
       <div>
         <Sidebar></Sidebar>
       </div>
+      <Loader isLoading={isFetching} />
       <Modal
         showModal={showModalAlert}
         handleClose={handleCloseAlert}
         modalTitle={`Are you sure you want to delete the admin?`}
       >
+        <Loader isLoading={isFetching} />
         <div className={styles.boxButtons}>
-          <Button onClick={deleteAdmin} width={'50px'} height={'25px'} fontSize={'15px'}>
+          <Button onClick={deleteAdmin} width={'75px'} height={'25px'} fontSize={'15px'}>
             Accept
           </Button>
-          <Button onClick={handleCloseAlert} width={'50px'} height={'25px'} fontSize={'15px'}>
+          <Button onClick={handleCloseAlert} width={'75px'} height={'25px'} fontSize={'15px'}>
             Cancel
           </Button>
         </div>
@@ -149,6 +150,7 @@ function Admins() {
         handleSubmit={onSubmit}
         title={method === 'POST' ? 'Create Admin' : 'Edit Admin'}
       >
+        <Loader isLoading={isFetching} />
         <div>
           <label>Name</label>
           <input
