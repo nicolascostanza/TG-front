@@ -37,6 +37,7 @@ function EditTimeSheets(props) {
     setShowModalCorrect(false);
     setShowModalIncorrect(false);
   };
+  const { showEditModal, handleClose } = props;
 
   const editTimeSheets = async (newBody, id) => {
     dispatch(thunks.editTimesheet(newBody, id));
@@ -88,7 +89,7 @@ function EditTimeSheets(props) {
   // };
   return (
     <section>
-      <Form showModal={props.showModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
+      <Form showModal={showEditModal} handleClose={handleClose} handleSubmit={onSubmit}>
         <div className={styles.tittle}>
           <h2> Edit Time-Sheet </h2>
         </div>

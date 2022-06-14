@@ -9,16 +9,16 @@ import * as actions from '../../../redux/timesheets/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
 function TimeSheet() {
-  const [showEditModal, setShowEditModal] = useState(false);
-  const openEditTimeSheet = (id) => {
-    setEditId(id);
-    setShowEditModal(true);
-  };
-  // const [timeSheets, setTimeSheets] = useState([]);
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
+  const showEditModal = useSelector((state) => state.timesheet.showEditModal);
+  const openEditTimeSheet = (id) => {
+    setEditId(id);
+    dispatch(actions.showEditModal());
+  };
+  // const [timeSheets, setTimeSheets] = useState([]);
   // const [tasks, setTasks] = useState([]);
   // const [employees, setEmployees] = useState([]);
   const openAddTimeSheet = () => {
@@ -71,8 +71,10 @@ function TimeSheet() {
       employeeId: timeSheet.employeeId._id,
       description: timeSheet.description,
       project: timeSheet.project,
-      date: new Date(timeSheet.date).toDateString(),
-      task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
+      date: timeSheet.date ? new Date(timeSheet.date).toDateString() : '',
+      task_name: timeSheet.task.length
+        ? timeSheet.task.map((task) => task.taskName).join(' - ')
+        : '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
       role: timeSheet.role
@@ -82,7 +84,7 @@ function TimeSheet() {
     <div className={styles.container}>
       <Sidebar></Sidebar>
       <EditTimeSheets
-        showModal={showEditModal}
+        showEditModal={showEditModal}
         handleClose={handleClose}
         editId={editId}
         // newTimesheets={newTimesheets}
