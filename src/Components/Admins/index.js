@@ -91,7 +91,6 @@ function Admins() {
     dispatch(thunks.addAdmin(admin));
     setMethod('');
     setShowModalAdd(false);
-    alert('Admin successfully created');
   };
 
   const onEdit = async (id) => {

@@ -18,8 +18,15 @@ export const addAdminApi = async (admin) => {
       body: JSON.stringify(admin)
     });
     const data = await response.json();
-    return data;
+    console.log(data);
+    if (response.status === 201) {
+      alert(data.message);
+      return data;
+    } else if (response.status === 400 || response.status === 500) {
+      alert(data.message);
+    }
   } catch (err) {
+    console.log(err);
     return err;
   }
 };
