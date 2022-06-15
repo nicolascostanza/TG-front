@@ -21,6 +21,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
     <div className={styles.container}>
       <h2>{title}</h2>
       <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
+        <i className="fa-solid fa-plus"></i>
         ADD
       </Button>
       <table className={styles.table}>
@@ -105,22 +106,22 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                 <td>
                   <Button
                     className={styles.buttonsRows}
-                    width={'55px'}
+                    width={'50px'}
                     height={'25px'}
-                    fontSize={'15px'}
+                    fontSize={'13px'}
                     onClick={() => onEdit(row._id)}
                   >
-                    Edit
+                    <i className="fa-solid fa-pencil"></i>
                   </Button>
                 </td>
                 <td>
                   <Button
                     onClick={() => onDelete(row._id)}
-                    width={'55px'}
+                    width={'50px'}
                     height={'25px'}
-                    fontSize={'15px'}
+                    fontSize={'13px'}
                   >
-                    Delete
+                    <i className="fa-solid fa-xmark"></i>
                   </Button>
                 </td>
               </tr>
@@ -134,24 +135,24 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
         </div>
         <div>
           <Button
-            width={'100px'}
+            width={'50px'}
             height={'40px'}
             fontSize={'15px'}
             disabled={indexPage <= 1}
             onClick={() => previousPage()}
           >
-            Previous
+            <i className="fa-solid fa-angle-left"></i>
           </Button>
         </div>
         <div>
           <Button
-            width={'100px'}
+            width={'50px'}
             height={'40px'}
             fontSize={'15px'}
             disabled={indexPage >= data.length / 10}
             onClick={() => nextPage()}
           >
-            Next
+            <i className="fa-solid fa-angle-right"></i>
           </Button>
         </div>
       </div>
