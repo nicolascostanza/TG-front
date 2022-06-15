@@ -16,14 +16,14 @@ function AddTimeSheets(props) {
   const [role, setRole] = useState('');
   const [showModalCorrect, setShowModalCorrect] = useState(false);
   const [showModalIncorrect, setShowModalIncorrect] = useState(false);
+  const { showCreateModal, handleClose } = props;
+  const dispatch = useDispatch();
+  const addTimeSheets = async (timeSheet) => {
+    dispatch(thunks.addTimesheets(timeSheet));
+  };
   const handleCloseMessage = () => {
     setShowModalCorrect(false);
     setShowModalIncorrect(false);
-  };
-  const dispatch = useDispatch();
-  const { showCreateModal, handleClose } = props;
-  const addTimeSheets = async (timeSheet) => {
-    dispatch(thunks.addTimesheets(timeSheet));
   };
   const onSubmit = (e) => {
     e.preventDefault();

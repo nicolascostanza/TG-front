@@ -12,54 +12,27 @@ function TimeSheet() {
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
+  const [editId, setEditId] = useState('');
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
-  const openEditTimeSheet = (id) => {
-    setEditId(id);
-    dispatch(actions.showEditModal());
-  };
-  // const [timeSheets, setTimeSheets] = useState([]);
-  // const [tasks, setTasks] = useState([]);
-  // const [employees, setEmployees] = useState([]);
-  const openAddTimeSheet = () => {
-    dispatch(actions.showCreateModal());
-  };
-  const [editId, setEditId] = useState('');
-  const handleClose = () => {
-    dispatch(actions.closeModals());
-  };
-  // const [newTimeSheets, setNewTimeSheets] = useState('');
-  // if (editId !== '') {
-  //   const newTimesheets = timeSheets.filter((item) => item._id === editId);
-  // }
   useEffect(() => {
     dispatch(thunks.getTimesheets());
-    // fetchTasks();
-    // fetchEmployees();
   }, []);
-  // const fetchTasks = () => {
-  //   fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       setTasks(response.data);
-  //     })
-  //     .catch((err) => console.err(err));
-  // };
-  // const fetchEmployees = () => {
-  //   fetch(`${process.env.REACT_APP_API_URL}/employees`)
-  //     .then((response) => response.json())
-  //     .then((response) => {
-  //       response.data.map((employee) => {
-  //         employee.active = employee.active ? 'true' : 'false';
-  //       });
-  //       setEmployees(response.data);
-  //     });
-  // };
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
       dispatch(thunks.deleteTimesheets(id));
     }
+  };
+  const openAddTimeSheet = () => {
+    dispatch(actions.showCreateModal());
+  };
+  const openEditTimeSheet = (id) => {
+    setEditId(id);
+    dispatch(actions.showEditModal());
+  };
+  const handleClose = () => {
+    dispatch(actions.closeModals());
   };
   if (isFetching) {
     return <h2>Fetching</h2>;
@@ -83,12 +56,7 @@ function TimeSheet() {
   return (
     <div className={styles.container}>
       <Sidebar></Sidebar>
-      <EditTimeSheets
-        showEditModal={showEditModal}
-        handleClose={handleClose}
-        editId={editId}
-        // newTimesheets={newTimesheets}
-      />
+      <EditTimeSheets showEditModal={showEditModal} handleClose={handleClose} editId={editId} />
       <AddTimeSheets showCreateModal={showCreateModal} handleClose={handleClose}></AddTimeSheets>
       <Table
         title="Timesheets"
