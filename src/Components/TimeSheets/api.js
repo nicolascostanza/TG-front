@@ -33,8 +33,10 @@ export const addTimesheetApi = async (timeSheet) => {
       body: JSON.stringify(timeSheet)
     });
     const data = await response.json();
+    alert('Time-sheet successfully created');
     return data;
   } catch (err) {
+    alert('There has been an error creating time-sheet');
     return err;
   }
 };
@@ -49,8 +51,10 @@ export const editTimesheetApi = async (newBody, id) => {
       body: JSON.stringify(newBody)
     });
     const data = await res.json();
+    alert('Time-sheet successfully updated');
     return data;
   } catch (err) {
+    alert('There has been an error updating time-sheet');
     return err;
   }
 };
