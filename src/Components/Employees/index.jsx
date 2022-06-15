@@ -7,7 +7,6 @@ import Dropdown from '../Shared/Dropdown/Dropdown';
 import Form from '../Shared/Form';
 import Button from '../Shared/Button/Button';
 import * as thunks from '../../redux/employees/thunks';
-import * as actions from '../../redux/employees/actions';
 import { useDispatch, useSelector } from 'react-redux';
 
 function Employees() {
@@ -24,7 +23,7 @@ function Employees() {
     'active'
   ];
 
-  // const [showAddEdit, setShowAddEdit] = useState(false);
+  const [showAddEdit, setShowAddEdit] = useState(false);
   const [employeeIdToEdit, setEmployeeIdToEdit] = useState('');
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [deleteId, setDeleteId] = useState('');
@@ -45,7 +44,6 @@ function Employees() {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees.list);
   const isFetching = useSelector((state) => state.employees.isFetching);
-  const showAddEdit = useSelector((state) => state.employees.showAddEdit);
 
   useEffect(() => {
     dispatch(thunks.getEmployees());
@@ -78,7 +76,7 @@ function Employees() {
     resetFields();
     setMethod('POST');
     setTittleModal('Add new Employee');
-    dispatch(actions.showAddEdit(true));
+    setShowAddEdit(true);
   };
 
   const formEmployeeEdit = (id) => {
@@ -102,7 +100,7 @@ function Employees() {
     setPassword(employeeToEdit[0].password);
     setPhone(employeeToEdit[0].phone);
     setActive(employeeToEdit[0].active === 'true' ? true : false);
-    dispatch(actions.showAddEdit(true));
+    setShowAddEdit(true);
     setEmployeeIdToEdit(id);
   };
 
@@ -119,7 +117,7 @@ function Employees() {
   };
 
   const closeForm = () => {
-    dispatch(actions.showAddEdit(false));
+    setShowAddEdit(false);
     setMethod('');
   };
 
@@ -140,7 +138,7 @@ function Employees() {
         })
       );
       if (!error) {
-        // dispatch(actions.showAddEdit(false));
+        setShowAddEdit(false);
         setMethod('');
         resetFields();
       }
@@ -160,10 +158,15 @@ function Employees() {
           active: active ? 'true' : 'false'
         })
       );
+      if (!error) {
+        setShowAddEdit(false);
+        setMethod('');
+      }
       setShowModalMessage(true);
     } else {
       alert('Something unexpected happened');
     }
+    resetFields();
   };
 
   if (isFetching) {

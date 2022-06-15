@@ -53,7 +53,3 @@ export const editEmployeeError = (error) => ({
   type: types.EDIT_EMPLOYEE_ERROR,
   payload: error
 });
-export const showAddEdit = (show) => ({
-  type: types.SHOW_MODAL_EDIT,
-  payload: show
-});

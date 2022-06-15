@@ -58,29 +58,26 @@ export const addEmployee = (newEmployee) => {
       console.log(res);
       const { firstName, surname, email, gender, adress, dob, password, phone, active } =
         newEmployee;
-      if (!res.error) {
-        dispatch(actions.showAddEdit(false));
-        // throw res.error;
-        dispatch(
-          actions.addEmployeeSucces(
-            {
-              _id: res.data._id,
-              firstName,
-              surname,
-              email,
-              gender,
-              adress,
-              dob,
-              password,
-              phone,
-              active: active ? 'true' : 'false'
-            },
-            res
-          )
-        );
-      } else {
-        alert(res.error);
+      if (res.error) {
+        throw res.error;
       }
+      dispatch(
+        actions.addEmployeeSucces(
+          {
+            _id: res.data._id,
+            firstName,
+            surname,
+            email,
+            gender,
+            adress,
+            dob,
+            password,
+            phone,
+            active: active ? 'true' : 'false'
+          },
+          res
+        )
+      );
     } catch (error) {
       console.log(error);
       dispatch(actions.addEmployeeError(error));
@@ -114,11 +111,10 @@ export const editEmployee = (newEmployee) => {
       );
       const res = await response.json();
       newEmployee.active = newEmployee.active ? 'true' : 'false';
-      if (!res.error) {
-        dispatch(actions.showAddEdit(false));
-        dispatch(actions.editEmployeeSucces(newEmployee, res));
-        // throw res.message;
+      if (res.error) {
+        throw res.message;
       }
+      dispatch(actions.editEmployeeSucces(newEmployee, res));
     } catch (error) {
       dispatch(actions.editEmployeeError(error));
     }

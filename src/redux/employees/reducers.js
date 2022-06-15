@@ -4,8 +4,7 @@ const initialState = {
   list: [],
   isFetching: false,
   error: false,
-  message: '',
-  showAddEdit: false
+  message: ''
 };
 let updatedEmployee = [];
 
@@ -80,6 +79,7 @@ export const employeesReducer = (state = initialState, action) => {
         ...state,
         list: updatedEmployee,
         error: action.payload.res.error,
+        isFetching: false,
         message: action.payload.res.message
       };
     case types.EDIT_EMPLOYEE_PENDING:
@@ -93,11 +93,6 @@ export const employeesReducer = (state = initialState, action) => {
         isFetching: false,
         error: true,
         message: action.payload
-      };
-    case types.SHOW_MODAL_EDIT:
-      return {
-        ...state,
-        showAddEdit: action.payload
       };
     default:
       return state;
