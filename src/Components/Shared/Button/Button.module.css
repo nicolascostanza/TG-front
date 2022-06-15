@@ -9,13 +9,13 @@
   text-transform: uppercase;
   cursor: pointer;
   align-items: center;
-  background-color: #37386794;
+  background-color: #40417d;
   border: none;
   border-radius: 5px;
   transition: 250ms;
 }
 .Button:hover {
-  box-shadow: 0 3px 3px black;
+  box-shadow: 0 3px 7px rgb(38, 38, 38);
 }
 .Button:focus {
 background: #3738671a;
@@ -23,6 +23,7 @@ color: #37386766;
 }
 .Button:active {
 background: #373867;
+color: red;
 }
 .Button:disabled{
   cursor: auto;

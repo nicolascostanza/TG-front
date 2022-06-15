@@ -4,6 +4,13 @@
     font-size: 13px;
     width: 90%;
 }
+
+.addButton{
+    width: 100px;
+    height: 100px;
+    background-color: red;
+}
+
 table{
     margin-top: 10px;
     border-collapse: collapse;
@@ -20,6 +27,8 @@ thead{
     height: 50px;
     border-radius: 10px;
     max-width: 1200px;
+    color: white;
+    text-transform: uppercase;
 }
 tr{
     height: 50px;
