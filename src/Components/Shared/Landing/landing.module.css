@@ -1,0 +1,27 @@
+.iconsHeader{
+    display: flex;
+    justify-content: end;
+    list-style: none;
+}
+.iconsHeader > li {
+    padding: 10px;
+    cursor: pointer;
+}
+.header{
+    margin: 0 5%;
+    border-bottom: 3px solid #373867;
+}
+.sidebar{
+    width: 20%;
+    background-color: red;
+    height: 100vh;
+}
+.sidebarMain{
+    display: flex;
+}
+.firstSection{
+    width: 80%;
+}
+.buttonText{
+    color: black;
+}

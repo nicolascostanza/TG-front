@@ -1,0 +1,66 @@
+aside{
+    width: 100%;
+}
+aside p{
+    color: #373867;
+    font-family: 'Roboto', sans-serif;
+}
+nav ul li{
+    width: 80%;
+    margin-left: 10%;
+    padding: 4% 3% 3% 0;
+    border-bottom: 1px solid #373867;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 0.875em;
+    line-height: 1em;
+}
+nav ul li a{
+    color: #373867;
+}
+a{
+    text-decoration: none;
+}
+a:visited{
+    color: #373867;
+}
+aside > p:nth-child(4){
+    margin-left: 2.1875em;
+    padding: 18px 25px 15px 0;
+}
+address{
+    margin-left: 10%;
+    padding-bottom: 15px;
+}
+address ul li{
+    margin-bottom: 5px;
+    color: #373867;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.875em;
+    line-height: 1em;
+}
+.menu-gral{
+    background-color: #D9D9E2;
+    height: 100%;
+}
+.menu, .contact-us{
+    width: 65px;
+    margin: 10% 0 0 8%;
+    border-bottom: 3px solid #AACE9B;
+    color: #373867;
+    font-size: 1.7vw;
+    font-family: 'Roboto', sans-serif;
+}
+.contact-us {
+    width: 105px;
+}
+.contact-us-subtext{
+    margin: 3% 0 3% 10%;
+}
+.text-contact{
+    padding-left: 0.3125em;
+    font-size: 1vw;
+}

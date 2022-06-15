@@ -1,0 +1,33 @@
+header{
+    width: auto;
+    background-color: #373867;
+    height: 3em;
+    padding-top: 0.3125em;
+    padding-bottom: 0.2em;
+}
+header a:nth-child(2){
+    text-decoration: none;
+}
+.hamburger-menu{
+    display: none;
+    color: #ffffff;
+    font-size: 2.5em;
+    padding-left: 0.625em;
+    padding-bottom: 30px;
+}
+.header-radium{
+    padding-left: 20px;
+    color: #49A37B;
+    font-size: 2.5em;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+}
+.header-rocket{
+    padding: 10px 0 10px -20px;
+    color: #AACE9B;
+    font-size: 2.5em;
+    font-weight: lighter;
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+}
