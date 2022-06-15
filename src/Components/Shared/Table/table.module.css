@@ -20,6 +20,7 @@ thead{
     height: 50px;
     border-radius: 10px;
     max-width: 1200px;
+    color: #323153;
 }
 tr{
     height: 50px;
@@ -40,7 +41,7 @@ tbody > :nth-child(odd) {
 }
 tbody > :hover {
 	background-color:#7e8795;
-    color: white;
+    color: #E4EAF3;
     cursor: pointer;
 }
 .buttons{
