@@ -49,7 +49,7 @@ tbody > :nth-child(odd) {
 }
 tbody > :hover {
 	background-color:#7e8795;
-    color: white;
+    color: #E4EAF3;
     cursor: pointer;
 }
 .buttons{
