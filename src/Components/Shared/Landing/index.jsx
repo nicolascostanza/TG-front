@@ -1,30 +1,73 @@
 import React from 'react';
 import styles from './landing.module.css';
-import Button from '../Button/Button';
+import Sidebar from '../Sidebar/index';
+import img1 from './assets/img/img1.png';
+import img2 from './assets/img/img2.png';
+import img3 from './assets/img/img3.png';
+import img4 from './assets/img/img4.png';
+import img5 from './assets/img/img5.png';
 
 function Landing() {
   return (
-    <div>
-      <header className={styles.header}>
-        <nav>
-          <ul className={styles.iconsHeader}>
-            <li>FB</li>
-            <li>TWT</li>
-            <li>LKDIN</li>
-            <li>IG</li>
-            <li>GITHUB</li>
-          </ul>
-        </nav>
-      </header>
+    <>
+      <div className={styles.sidebar}>
+        <Sidebar />
+      </div>
+      <nav>
+        <ul className={styles.iconsHeader}>
+          <li>
+            <a
+              href={'https://www.facebook.com/radiumrocket'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="fa-brands fa-facebook"></i>
+            </a>
+          </li>
+          <li>
+            <a href={'https://twitter.com/radiumrocket'} target="_blank" rel="noopener noreferrer">
+              <i className="fa-brands fa-twitter"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              href={'https://www.linkedin.com/company/radium-rocket'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="fa-brands fa-linkedin"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              href={'https://www.instagram.com/radium.rocket/'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="fa-brands fa-instagram"></i>
+            </a>
+          </li>
+          <li>
+            <a
+              href={'https://github.com/radiumrocketapps'}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <i className="fa-brands fa-github"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
       <div className={styles.sidebarMain}>
-        <aside className={styles.sidebar}>sidebar</aside>
         <main className={styles.mainSection}>
           <section className={styles.firstSection}>
-            <div>
-              <h1>Hi, we are Trackgenix SA</h1>
-              <p>A FREE AND FULLY RESPONSIBE SITE</p>
-              {/* <img src="./assets/img/reloj.jpg" alt="Reloj" /> */}
-              <p>
+            <div className={styles.resizeTablet}>
+              <h1 className={styles.tittle}>Hi, we are Trackgenix SA</h1>
+              <div className={styles.imgTablet}>
+                <img className={styles.imgTabletSize} src={img5} alt="Reloj" />
+              </div>
+              <p className={styles.subtittle}>A FREE AND FULLY RESPONSIBE SITE</p>
+              <p className={styles.textMainSection}>
                 Scelerisque augue scelerisque pharetra, platea rutrum. Orci est faucibus tempor
                 pellentesque vulputate. Arcu in cras iaculis scelerisque odio venenatis magna nisl.
                 Suspendisse maecenas ac sit urna neque eu amet, cras. Vel amet, id accumsan
@@ -39,17 +82,209 @@ function Landing() {
                 Interdum vel, pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo
                 nulla. Ac mauris ac ultrices egestas maecenas suspendisse leo, mi.
               </p>
-              <Button backgroundColor={'#FFF'} className={styles.buttonText}>
+              <button backgroundColor={'#FFF'} className={styles.buttonMore}>
                 LEARN MORE
-              </Button>
+              </button>
             </div>
-            <div>
-              <img src="./assets/img/reloj.jpg" alt="Reloj" />
+            <div className={styles.wrapImage}>
+              <img className={styles.imgMainSection} src={img5} alt="Reloj" />
             </div>
           </section>
+          <h2>Functionalities</h2>
+          <section className={styles.secondSection}>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img1} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Record of worked hours</h3>
+                  <p className={styles.text}>
+                    This app has a lot of hours for each member of the company, so you can then
+                    accept, reject or edit them to your liking to optimize work time
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img2} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Reports</h3>
+                  <p className={styles.text}>
+                    You will have a section where you will find the reports of all areas of your
+                    company, both in the form of graphics and text. they are useful to detect
+                    possible opportunities
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img3} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Resources management</h3>
+                  <p className={styles.text}>
+                    You will be able to manage your expenses, costs, salaries and all kinds of
+                    economic movement of your company to make the best possible decisions
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img4} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Multiple roles</h3>
+                  <p className={styles.text}>
+                    You will have a list of all the members of the company with their respective
+                    roles and functions, which you can add, delete and change their role.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div className={styles.separator}></div>
+          <h2>Reasons why you need us</h2>
+          <section className={styles.secondSection}>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img1} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Productivity enhancer</h3>
+                  <p className={styles.text}>
+                    This app has a lot of hours for each member of the company, so you can then
+                    accept, reject or edit them to your liking to optimize work time
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img2} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Decision making</h3>
+                  <p className={styles.text}>
+                    You will have a section where you will find the reports of all areas of your
+                    company, both in the form of graphics and text. they are useful to detect
+                    possible opportunities
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img3} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Work traceability</h3>
+                  <p className={styles.text}>
+                    You will be able to manage your expenses, costs, salaries and all kinds of
+                    economic movement of your company to make the best possible decisions
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className={styles.group}>
+              <div className={styles.imagenLeftBox}>
+                <img src={img4} alt="trangenix" />
+                <div className={styles.subGroup}>
+                  <h3>Leadership and team management</h3>
+                  <p className={styles.text}>
+                    You will have a list of all the members of the company with their respective
+                    roles and functions, which you can add, delete and change their role.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div className={styles.separator}></div>
+          <div>
+            <h2>Request information</h2>
+            <form>
+              <div className={styles.nameEmailForm}>
+                <input type="text" placeholder="Name" />
+                <input type="text" placeholder="Email" />
+              </div>
+              <div>
+                <select className={styles.selectLanding} placeholder={'Category'} width={'800px'}>
+                  <option value="">Human Resources</option>
+                  <option value="">Systems</option>
+                  <option value="">Commercialization</option>
+                </select>
+              </div>
+              <div className={styles.messageForm}>
+                <textarea placeholder="Enter your message"></textarea>
+              </div>
+              <div className={styles.buttonsForm}>
+                <button className={styles.buttonForm} type="submit">
+                  Send Message
+                </button>
+              </div>
+            </form>
+          </div>
+          <div className={styles.separator}></div>
+          <section className={styles.listFooter}>
+            <div>
+              <h4>Products</h4>
+              <ol>
+                <li>Features</li>
+                <li>Downloads</li>
+                <li>Integrations</li>
+                <li>Extras</li>
+              </ol>
+            </div>
+            <div>
+              <h4>Company</h4>
+              <ol>
+                <li>About us</li>
+                <li>Customers</li>
+                <li>Resources</li>
+                <li>Blog</li>
+              </ol>
+            </div>
+            <div>
+              <h4>Support</h4>
+              <ol>
+                <li>Help</li>
+                <li>Tutorials</li>
+                <li>API</li>
+                <li>Contact</li>
+              </ol>
+            </div>
+          </section>
+          <div className={styles.buttonsFooterDiv}></div>
+          <div className={styles.separator}></div>
+          <footer>
+            <div className={styles.divFooter}>
+              <a href={'https://www.facebook.com/radiumrocket'} target={'_blank'} rel="noreferrer">
+                <i className="fa-brands fa-facebook"></i>
+              </a>
+              <a href={'https://twitter.com/radiumrocket'} target={'_blank'} rel="noreferrer">
+                <i className="fa-brands fa-twitter"></i>
+              </a>
+              <a
+                href={'https://www.linkedin.com/company/radium-rocket'}
+                target={'_blank'}
+                rel="noreferrer"
+              >
+                <i className="fa-brands fa-linkedin"></i>
+              </a>
+              <a
+                href={'https://www.instagram.com/radium.rocket/'}
+                target={'_blank'}
+                rel="noreferrer"
+              >
+                <i className="fa-brands fa-instagram"></i>
+              </a>
+              <a href={'https://github.com/radiumrocketapps'} target={'_blank'} rel="noreferrer">
+                <i className="fa-brands fa-github"></i>
+              </a>
+            </div>
+            <div className={styles.titleFooter}>
+              <p>Trackgenix ®</p>
+            </div>
+          </footer>
         </main>
       </div>
-    </div>
+    </>
   );
 }
 
