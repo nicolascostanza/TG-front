@@ -1,10 +1,14 @@
-import styles from './super-admins.module.css';
-import { useState, useEffect } from 'react';
-import Table from '../Shared/Table';
-import Modal from '../Shared/Modal';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../Shared/Button/Button';
 import Form from '../Shared/Form';
+import Modal from '../Shared/Modal';
 import Sidebar from '../Shared/Sidebar';
+import Table from '../Shared/Table';
+import Loader from '../Shared/Loader/index.jsx';
+import styles from './super-admins.module.css';
+import * as thunks from '../../redux/superadmins/thunks';
+import * as actions from '../../redux/superadmins/actions';
 
 function SuperAdmins() {
   const headers = [
@@ -17,184 +21,110 @@ function SuperAdmins() {
     'createdAt',
     'updatedAt'
   ];
+  const dispatch = useDispatch();
+  const superAdminsList = useSelector((state) => state.superAdmins.list);
+  const message = useSelector((state) => state.superAdmins.message);
+  const response = useSelector((state) => state.superAdmins.response);
+  const isFetching = useSelector((state) => state.superAdmins.isFetching);
+  const method = useSelector((state) => state.superAdmins.method);
+  const modalShowForm = useSelector((state) => state.superAdmins.showFormAddEdit);
+  const showModalDelete = useSelector((state) => state.superAdmins.showModalDelete);
+  const showModalMessage = useSelector((state) => state.superAdmins.showModalMessage);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [active, setActive] = useState(false);
-  const [showModalMessage, setShowModalMessage] = useState(false);
-  const [showModalAlert, setShowModalAlert] = useState(false);
-  const [showModalAdd, setShowModalAdd] = useState(false);
-  const [list, setList] = useState([]);
-  const [method, setMethod] = useState('');
+  const [active, setActive] = useState(true);
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
-  const [tittleModal, setTittleModal] = useState('');
-  const [message, setMessage] = useState('');
   useEffect(() => {
-    requestList();
-  }, [method]);
-  const requestList = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
-      .then((response) => response.json())
-      .then((response) => {
-        response.data.map((superadmin) => {
-          superadmin.active = superadmin.active ? 'true' : 'false';
-        });
-        setList(response.data);
-      });
-  };
+    dispatch(thunks.getSuperadmins());
+  }, []);
+  // functions for reset o complete inputs
   const resetFields = () => {
     setFirstName('');
     setLastName('');
     setEmail('');
     setPassword('');
-    setActive(false);
+    setActive(true);
+  };
+  const fillForm = (id) => {
+    const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
+    setFirstName(valuesForm[0].firstName);
+    setLastName(valuesForm[0].lastName);
+    setEmail(valuesForm[0].email);
+    setPassword(valuesForm[0].password);
+    setActive(valuesForm[0].active === 'true' ? true : false);
   };
   // modals
-  const handleCloseAlert = () => {
-    setShowModalAlert(false);
+  const closeModals = () => {
+    dispatch(actions.closeModals());
   };
-  const handleCloseMessage = () => {
-    setShowModalMessage(false);
+  const closeModalMessage = () => {
+    dispatch(actions.closeModalMessage());
   };
-  const handleCloseAdd = () => {
-    setShowModalAdd(false);
-  };
-  // add functions and submit
   const onAdd = () => {
-    setMethod('POST');
+    dispatch(actions.showFormAddEdit('POST'));
     resetFields();
-    setShowModalAdd(true);
   };
-  const addSuperAdmin = async (superAdmin) => {
-    resetFields();
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(superAdmin)
-    });
-    const data = await res.json();
-    setTittleModal('Created');
-    if (res.status === 201) {
-      setShowModalAdd(false);
-      setTittleModal('CREATED');
-      setMessage(data.message);
-      setShowModalMessage(true);
-      setList([...list, data]);
-      setMethod('');
-    } else {
-      setShowModalAdd(false);
-      setTittleModal('ERROR');
-      setMessage(data.message);
-      setShowModalMessage(true);
-      setMethod('');
-    }
-  };
-  // edits functions
   const onEdit = async (id) => {
-    setMethod('PUT');
-    setShowModalAdd(true);
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`)
-      .then((response) => response.json())
-      .then((response) => {
-        setFirstName(response.data.firstName);
-        setLastName(response.data.lastName);
-        setEmail(response.data.email);
-        setPassword(response.data.password);
-        setActive(response.data.active);
-      });
+    dispatch(actions.showFormAddEdit('PUT'));
     setId(id);
+    fillForm(id);
   };
-  const Editing = async (superAdmin) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${ids}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(superAdmin)
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      handleCloseAdd(false);
-      resetFields();
-      setTittleModal('EDITED');
-      setMessage(data.message);
-      setShowModalMessage(true);
-      setMethod('');
-    } else {
-      setShowModalAdd(false);
-      setTittleModal('ERROR');
-      setMessage(data.message);
-      setShowModalMessage(true);
-      setMethod('');
-    }
-  };
-  // delete functions
   const onDelete = (id) => {
-    setShowModalAlert(true);
+    dispatch(actions.showModalDelete('DELETE'));
     setDeleteId(id);
   };
+  // disptachs for CRUD
   const deleteAdmin = async () => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${deleteId}`, {
-      method: 'DELETE'
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      setList(list.filter((superadmin) => superadmin._id !== deleteId));
-      setShowModalAlert(false);
-      setTittleModal('DELETED');
-      setMessage(data.message);
-      setShowModalMessage(true);
-    } else {
-      setShowModalAdd(false);
-      setTittleModal('ERROR');
-      setMessage(data.message);
-      setShowModalMessage(true);
-      setMethod('');
-    }
+    dispatch(thunks.deleteSuperadmin(deleteId));
   };
   const onSubmit = (e) => {
     e.preventDefault();
+    const superAdmin = {
+      firstName,
+      lastName,
+      email,
+      password,
+      active
+    };
     if (method === 'POST') {
-      addSuperAdmin({ firstName, lastName, email, password, active });
-      resetFields();
+      dispatch(thunks.addSuperadmin(superAdmin));
     } else if (method === 'PUT') {
-      Editing({ firstName, lastName, email, password, active });
+      dispatch(thunks.editSuperadmins(superAdmin, ids));
     } else {
       alert('Something unexpected happened');
     }
   };
   return (
     <>
+      <Loader isLoading={isFetching} />
       <div>
         <Sidebar />
       </div>
       <section className={styles.container}>
-        <Modal
-          showModal={showModalAlert}
-          handleClose={handleCloseAlert}
-          modalTitle={`Are you sure you want to delete the SuperAdmin?`}
-        >
+        <Modal showModal={showModalDelete} handleClose={closeModals} modalTitle={`DELETE`}>
+          <Loader isLoading={isFetching} />
+          <h4>Are you sure you want to delete the SuperAdmin?</h4>
           <div className={styles.buttonsDeleteModal}>
             <Button onClick={deleteAdmin} width={'100%'} height={'25px'} fontSize={'15px'}>
               Accept
             </Button>
           </div>
           <div className={styles.buttonsDeleteModal}>
-            <Button onClick={handleCloseAlert} width={'100%'} height={'25px'} fontSize={'15px'}>
+            <Button onClick={closeModals} width={'100%'} height={'25px'} fontSize={'15px'}>
               Cancel
             </Button>
           </div>
         </Modal>
         <Form
           handleSubmit={onSubmit}
-          showModal={showModalAdd}
-          handleClose={handleCloseAdd}
+          showModal={modalShowForm}
+          handleClose={closeModals}
           title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
         >
+          <Loader isLoading={isFetching} />
           <div className={styles.inputsForm}>
             <label>Name</label>
             <input
@@ -226,7 +156,7 @@ function SuperAdmins() {
             <label>Password</label>
             <input
               className={styles.inputsDivs}
-              type="text"
+              type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -248,14 +178,14 @@ function SuperAdmins() {
         </Form>
         <Modal
           showModal={showModalMessage}
-          handleClose={handleCloseMessage}
-          modalTitle={tittleModal}
+          handleClose={closeModalMessage}
+          modalTitle={response ? 'SUCCESS' : 'WARNING'}
         >
           {message}
         </Modal>
         <Table
           title={'Super Admins'}
-          data={list}
+          data={superAdminsList}
           headers={headers}
           onAdd={onAdd}
           onEdit={onEdit}
