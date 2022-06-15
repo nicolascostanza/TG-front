@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
-import { withRouter } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import Form from '../../Shared/Form';
 import projectForm from './projectForm.module.css';
+import * as thunks from '../../../redux/projects/thunks';
 
 const CreateProject = (props) => {
-  const { appendToProjects, showCreateModal, handleClose, forceCloseModal } = props;
+  const { showCreateModal, handleClose } = props;
   const initialValues = {
     name: '',
     description: '',
@@ -15,30 +16,12 @@ const CreateProject = (props) => {
     team: [],
     tasks: []
   };
+  const { allEmployees, allTasks } = props;
 
   const [project, setProject] = useState(initialValues);
-  const [allEmployees, setAllEmployees] = useState({});
-  const [allTasks, setAllTasks] = useState({});
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/employees`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllEmployees(json.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
-
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/tasks`)
-      .then((response) => response.json())
-      .then((json) => {
-        setAllTasks(json.data);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+  const dispatch = useDispatch();
 
   const handleInputChanges = (e) => {
     const { name, value } = e.target;
@@ -50,41 +33,12 @@ const CreateProject = (props) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`${process.env.REACT_APP_API_URL}/projects/create`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        name: project.name,
-        description: project.description,
-        clientName: project.clientName,
-        startDate: project.startDate,
-        endDate: project.endDate,
-        projectManager: project.projectManager,
-        team: selectedEmployees,
-        tasks: selectedTasks
-      })
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        if (!json.error) {
-          alert(json.message);
-          appendToProjects(json.data);
-          resetValues(e);
-          forceCloseModal();
-        } else {
-          alert(json.message);
-        }
-      })
-      .catch((error) => console.log(error));
-  };
-
-  const resetValues = (e) => {
-    e.preventDefault();
-    setProject(initialValues);
-    setSelectedEmployees([]);
-    setSelectedTasks([]);
+    const newBody = {
+      ...project,
+      team: selectedEmployees,
+      tasks: selectedTasks
+    };
+    dispatch(thunks.addNewProject(newBody));
   };
 
   const appendToSelectedEmployees = (id) => {
@@ -255,4 +209,4 @@ const CreateProject = (props) => {
   );
 };
 
-export default withRouter(CreateProject);
+export default CreateProject;

@@ -5,8 +5,10 @@ import logo from '../Loader/assets/loader.gif';
 function Loader({ isLoading }) {
   if (isLoading) {
     return (
-      <div className={styles.container}>
-        <img src={logo} alt="loading..." />
+      <div className={styles.background}>
+        <div className={styles.container}>
+          <img className={styles.photo} src={logo} alt="loading..." />
+        </div>
       </div>
     );
   } else {
