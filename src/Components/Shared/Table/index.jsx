@@ -97,7 +97,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                     header === 'date' ||
                     header === 'dob'
                   ) {
-                    return <td>{new Date(row[header]).toLocaleDateString()}</td>;
+                    return <td>{new Date(row[header]).toISOString().split('T')[0]}</td>;
                   } else {
                     return <td key={index}>{row[header]}</td>;
                   }
