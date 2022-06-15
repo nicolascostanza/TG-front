@@ -83,7 +83,7 @@ function Admins() {
     setLastName(values[0].lastName);
     setEmail(values[0].email);
     setPassword(values[0].password);
-    setActive(values[0].active === 'true' ? true : false);
+    setActive(values[0].active);
   };
 
   const addAdmin = async (admin) => {
