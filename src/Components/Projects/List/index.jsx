@@ -1,26 +1,31 @@
 import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import Table from '../../Shared/Table';
 import EditProject from '../ProjectForms/EditProject';
 import CreateProject from '../ProjectForms/CreateProject';
 import Sidebar from '../../Shared/Sidebar';
+import Loader from '../../Shared/Loader';
 import * as actions from '../../../redux/projects/actions';
-import * as thunks from '../../../redux/projects/thunks';
-import { useDispatch, useSelector } from 'react-redux';
+import * as projectsThunks from '../../../redux/projects/thunks';
+import * as employeesThunks from '../../../redux/employees/thunks';
+import * as tasksThunks from '../../../redux/tasks/thunks';
 
 function List() {
   const [editingProject, setEditingProject] = useState({});
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.projects.list);
-  const isFetching = useSelector((state) => state.projects.isFetching);
+  const allEmployees = useSelector((state) => state.employees.list);
+  const allTasks = useSelector((state) => state.tasks.list);
+  const isFetchingProjects = useSelector((state) => state.projects.isFetching);
+  const isFetchingEmployees = useSelector((state) => state.employees.isFetching);
+  const isFetchingTasks = useSelector((state) => state.tasks.isFetching);
   const showCreateModal = useSelector((state) => state.projects.createModalShow);
   const showEditModal = useSelector((state) => state.projects.editModalShow);
-  const allEmployees = useSelector((state) => state.projects.allEmployees);
-  const allTasks = useSelector((state) => state.projects.allTasks);
 
   useEffect(() => {
-    dispatch(thunks.getProjects());
-    dispatch(thunks.getEmployees());
-    dispatch(thunks.getTasks());
+    dispatch(projectsThunks.getProjects());
+    dispatch(employeesThunks.getEmployees());
+    dispatch(tasksThunks.getTasks());
   }, []);
 
   const handleOpenCreateModal = () => {
@@ -54,16 +59,13 @@ function List() {
   const deleteProject = (id) => {
     const areYouSure = confirm('Are you sure you want to delete it?');
     if (areYouSure) {
-      dispatch(thunks.deleteProject(id));
+      dispatch(projectsThunks.deleteProject(id));
     }
   };
 
-  if (isFetching) {
-    return <h3>Fetching...</h3>;
-  }
-
   return (
     <>
+      <Loader isLoading={isFetchingProjects || isFetchingEmployees || isFetchingTasks} />
       <Sidebar>
         <h2>Projects</h2>
         <a>All your projects</a>

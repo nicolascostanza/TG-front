@@ -13,10 +13,10 @@ function Employees() {
   const headers = [
     '_id',
     'firstName',
-    'surname',
+    'lastName',
     'email',
     'gender',
-    'adress',
+    'address',
     'dob',
     'password',
     'phone',
@@ -30,10 +30,10 @@ function Employees() {
   const [tittleModal, setTittleModal] = useState('');
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [firstName, setFirstName] = useState('');
-  const [surname, setSurname] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [gender, setGender] = useState('');
-  const [adress, setAdress] = useState('');
+  const [address, setAddress] = useState('');
   const [dob, setDob] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
@@ -89,10 +89,10 @@ function Employees() {
       }
     });
     setFirstName(employeeToEdit[0].firstName);
-    setSurname(employeeToEdit[0].surname);
+    setLastName(employeeToEdit[0].lastName);
     setEmail(employeeToEdit[0].email);
     setGender(employeeToEdit[0].gender);
-    setAdress(employeeToEdit[0].adress);
+    setAddress(employeeToEdit[0].address);
     setDob(new Date(employeeToEdit[0].dob).toISOString().split('T')[0] || '');
     setPassword(employeeToEdit[0].password);
     setPhone(employeeToEdit[0].phone);
@@ -103,10 +103,10 @@ function Employees() {
 
   const resetFields = () => {
     setFirstName('');
-    setSurname('');
+    setLastName('');
     setEmail('');
     setGender('');
-    setAdress('');
+    setAddress('');
     setDob('');
     setPassword('');
     setPhone('');
@@ -124,10 +124,10 @@ function Employees() {
       dispatch(
         thunks.addEmployee({
           firstName,
-          surname,
+          lastName,
           email,
           gender,
-          adress,
+          address,
           dob,
           password,
           phone,
@@ -145,10 +145,10 @@ function Employees() {
         thunks.editEmployee({
           _id: employeeIdToEdit,
           firstName,
-          surname,
+          lastName,
           email,
           gender,
-          adress,
+          address,
           dob,
           password,
           phone,
@@ -218,12 +218,12 @@ function Employees() {
             ></input>
           </div>
           <div>
-            <label>Surname</label>
+            <label>Last name</label>
             <input
               type="text"
-              name="surname"
-              value={surname}
-              onChange={(e) => setSurname(e.target.value)}
+              name="lastName"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
             ></input>
           </div>
           <div>
@@ -249,12 +249,12 @@ function Employees() {
             </Dropdown>
           </div>
           <div>
-            <label>Adress</label>
+            <label>Address</label>
             <input
               type="text"
-              name="adress"
-              value={adress}
-              onChange={(e) => setAdress(e.target.value)}
+              name="address"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
             ></input>
           </div>
           <div>
