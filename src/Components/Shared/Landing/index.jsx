@@ -92,52 +92,56 @@ function Landing() {
           </section>
           <h2>Functionalities</h2>
           <section className={styles.secondSection}>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img1} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Record of worked hours</h3>
-                  <p className={styles.text}>
-                    This app has a lot of hours for each member of the company, so you can then
-                    accept, reject or edit them to your liking to optimize work time
-                  </p>
+            <div className={styles.peerSeparator}>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <img src={img1} alt="trangenix" id={styles['descriptionImage']} />
+                  <div className={styles.subGroup}>
+                    <h3>Record of worked hours</h3>
+                    <p className={styles.text}>
+                      This app has a lot of hours for each member of the company, so you can then
+                      accept, reject or edit them to your liking to optimize work time
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <img src={img2} alt="trangenix" id={styles['descriptionImage']} />
+                  <div className={styles.subGroup}>
+                    <h3>Reports</h3>
+                    <p className={styles.text}>
+                      You will have a section where you will find the reports of all areas of your
+                      company, both in the form of graphics and text. they are useful to detect
+                      possible opportunities
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img2} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Reports</h3>
-                  <p className={styles.text}>
-                    You will have a section where you will find the reports of all areas of your
-                    company, both in the form of graphics and text. they are useful to detect
-                    possible opportunities
-                  </p>
+            <div className={styles.peerSeparator}>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <img src={img3} alt="trangenix" id={styles['descriptionImage']} />
+                  <div className={styles.subGroup}>
+                    <h3>Resources management</h3>
+                    <p className={styles.text}>
+                      You will be able to manage your expenses, costs, salaries and all kinds of
+                      economic movement of your company to make the best possible decisions
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img3} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Resources management</h3>
-                  <p className={styles.text}>
-                    You will be able to manage your expenses, costs, salaries and all kinds of
-                    economic movement of your company to make the best possible decisions
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img4} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Multiple roles</h3>
-                  <p className={styles.text}>
-                    You will have a list of all the members of the company with their respective
-                    roles and functions, which you can add, delete and change their role.
-                  </p>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <img src={img4} alt="trangenix" id={styles['descriptionImage']} />
+                  <div className={styles.subGroup}>
+                    <h3>Multiple roles</h3>
+                    <p className={styles.text}>
+                      You will have a list of all the members of the company with their respective
+                      roles and functions, which you can add, delete and change their role.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -145,52 +149,58 @@ function Landing() {
           <div className={styles.separator}></div>
           <h2>Reasons why you need us</h2>
           <section className={styles.secondSection}>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img1} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Productivity enhancer</h3>
-                  <p className={styles.text}>
-                    This app has a lot of hours for each member of the company, so you can then
-                    accept, reject or edit them to your liking to optimize work time
-                  </p>
+            <div className={styles.peerSeparator}>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <div className={styles.descriptionImage}>
+                    <img src={img1} alt="trangenix" id={styles['descriptionImage']} />
+                  </div>
+                  <div className={styles.subGroup}>
+                    <h3>Productivity enhancer</h3>
+                    <p className={styles.text}>
+                      This app has a lot of hours for each member of the company, so you can then
+                      accept, reject or edit them to your liking to optimize work time
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <img src={img2} alt="trangenix" id={styles['descriptionImage']} />
+                  <div className={styles.subGroup}>
+                    <h3>Decision making</h3>
+                    <p className={styles.text}>
+                      You will have a section where you will find the reports of all areas of your
+                      company, both in the form of graphics and text. they are useful to detect
+                      possible opportunities
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img2} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Decision making</h3>
-                  <p className={styles.text}>
-                    You will have a section where you will find the reports of all areas of your
-                    company, both in the form of graphics and text. they are useful to detect
-                    possible opportunities
-                  </p>
+            <div className={styles.peerSeparator}>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <img src={img3} alt="trangenix" id={styles['descriptionImage']} />
+                  <div className={styles.subGroup}>
+                    <h3>Work traceability</h3>
+                    <p className={styles.text}>
+                      You will be able to manage your expenses, costs, salaries and all kinds of
+                      economic movement of your company to make the best possible decisions
+                    </p>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img3} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Work traceability</h3>
-                  <p className={styles.text}>
-                    You will be able to manage your expenses, costs, salaries and all kinds of
-                    economic movement of your company to make the best possible decisions
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className={styles.group}>
-              <div className={styles.imagenLeftBox}>
-                <img src={img4} alt="trangenix" />
-                <div className={styles.subGroup}>
-                  <h3>Leadership and team management</h3>
-                  <p className={styles.text}>
-                    You will have a list of all the members of the company with their respective
-                    roles and functions, which you can add, delete and change their role.
-                  </p>
+              <div className={styles.group}>
+                <div className={styles.imagenLeftBox}>
+                  <img src={img4} alt="trangenix" id={styles['descriptionImage']} />
+                  <div className={styles.subGroup}>
+                    <h3>Leadership and team management</h3>
+                    <p className={styles.text}>
+                      You will have a list of all the members of the company with their respective
+                      roles and functions, which you can add, delete and change their role.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
