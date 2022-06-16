@@ -4,11 +4,13 @@ import thunk from 'redux-thunk';
 import { projectsReducer } from './projects/reducers';
 import { employeesReducer } from './employees/reducers';
 import { superAdminReducer } from './superadmins/reducers';
+import { adminsReducer } from './admins/reducers';
 
 const rootReducer = combineReducers({
   projects: projectsReducer,
   employees: employeesReducer,
-  superAdmins: superAdminReducer
+  superAdmins: superAdminReducer,
+  admins: adminsReducer
 });
 
 const configureStore = () => {
