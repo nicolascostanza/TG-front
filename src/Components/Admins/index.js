@@ -35,7 +35,6 @@ function Admins() {
         });
         setAdmins(data.data);
       });
-    console.log(admins);
   };
 
   const onDelete = (id) => {
@@ -54,7 +53,6 @@ function Admins() {
         setAdmins(admins.filter((admin) => admin._id !== deleteId));
         setShowModalMessage(true);
       });
-    console.log(data);
   };
   const handleCloseAlert = () => {
     setShowModalAlert(false);
@@ -145,7 +143,6 @@ function Admins() {
     }
   };
 
-  console.log(firstName, lastName, email, password, active, method);
   return (
     <section className={styles.container}>
       <div>

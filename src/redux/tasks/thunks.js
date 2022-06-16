@@ -20,7 +20,6 @@ export const addTask = (newTask) => {
     addTaskApi(newTask)
       .then((response) => {
         dispatch(actions.addTaskFullfilled(response.data));
-        console.log(response.data);
       })
       .catch((error) => {
         dispatch(actions.addTaskFailed(error));
@@ -30,7 +29,6 @@ export const addTask = (newTask) => {
 
 export const deleteTask = (id) => {
   return (dispatch) => {
-    console.log('id para borrar1 ', id);
     dispatch(actions.deleteTaskPending());
     deleteTaskApi(id)
       .then((response) => {
@@ -47,11 +45,9 @@ export const editTask = (taskNewInfo, id) => {
     dispatch(actions.editTaskPending());
     await editTaskApi(taskNewInfo, id)
       .then((response) => {
-        console.log(response);
         dispatch(actions.editTaskFullfilled(response));
       })
       .catch((error) => {
-        console.log(error);
         dispatch(actions.editTaskFailed(error));
       });
   };

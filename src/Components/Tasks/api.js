@@ -17,12 +17,10 @@ export const addTaskApi = async (task) => {
       },
       body: JSON.stringify(task)
     });
-    console.log('status ', response);
     if (response.status == 201) {
       const data = await response.json();
       return data;
     }
-    console.log(response);
     alert('There has been an error creating the task');
   } catch (error) {
     return error;
@@ -50,7 +48,6 @@ export const editTaskApi = async (taskNewInfo, editedTaskId) => {
       },
       body: JSON.stringify(taskNewInfo)
     });
-    console.log('response', response);
     const data = await response.json();
     return data.data;
   } catch (error) {

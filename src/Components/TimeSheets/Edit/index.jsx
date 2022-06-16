@@ -50,7 +50,6 @@ function EditTimeSheets(props) {
       clearFields();
     } else if (res.status === 400) {
       setShowModalIncorrect(true);
-      console.log(data);
     }
   };
   const onSubmit = (e) => {

@@ -4,7 +4,8 @@ import { useEffect, useState } from 'react';
 import Table from '../Shared/Table';
 import Form from '../Shared/Form';
 import AddTask from './AddTask';
-import * as thunks from '../../redux/tasks/thunks';
+import * as taskThunks from '../../redux/tasks/thunks';
+import * as employeesThunks from '../../redux/employees/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
 const URL = `${process.env.REACT_APP_API_URL}/tasks`;
@@ -43,7 +44,8 @@ function Tasks() {
   ];
 
   useEffect(() => {
-    dispatch(thunks.getTasks());
+    dispatch(taskThunks.getTasks());
+    dispatch(employeesThunks.getEmployees());
   }, []);
 
   const onEdit = (id) => {
@@ -78,19 +80,17 @@ function Tasks() {
     setAssignedEmployee([]);
     setStartDate('');
     setStatus('');
-
-    console.log(tasks);
   };
 
   const editTask = async (task) => {
-    dispatch(thunks.editTask(task, editedId));
+    dispatch(taskThunks.editTask(task, editedId));
     handleClose();
   };
 
   const deleteTask = async (id) => {
     const deleteConfirm = confirm('Are you sure you want to delete this task?');
     if (deleteConfirm) {
-      dispatch(thunks.deleteTask(id));
+      dispatch(taskThunks.deleteTask(id));
     }
   };
   if (isFetching) {
