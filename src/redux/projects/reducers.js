@@ -5,12 +5,17 @@ import * as types from './constants';
 
 const initialState = {
   list: [],
+  allEmployees: [], // Delete future implementation
+  allTasks: [], // Delete future implementation
   isFetching: false,
-  error: ''
+  error: '',
+  createModalShow: false,
+  editModalShow: false
 };
 
 export const projectsReducer = (state = initialState, action) => {
   switch (action.type) {
+    // GET INITIAL DATA
     case types.GET_PROJECTS_PENDING:
       return {
         ...state,
@@ -28,20 +33,105 @@ export const projectsReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
-    case types.ADD_NEW_PROJECT:
+    // ADD NEW PROJECT
+    case types.ADD_NEW_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.ADD_NEW_PROJECT_FULFILLED:
       return {
         ...state,
         list: [...state.list, action.payload]
       };
-    case types.UPDATE_PROJECT:
+    case types.ADD_NEW_PROJECT_FAILED:
       return {
         ...state,
-        list: action.payload
+        error: action.payload
       };
-    case types.DELETE_PROJECT:
+    // UPDATE PROJECT
+    case types.UPDATE_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.UPDATE_PROJECT_FULFILLED:
       return {
         ...state,
-        list: [...action.payload]
+        list: state.list.map((item) => (item._id === action.payload._id ? action.payload : item))
+      };
+    case types.UPDATE_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // DELETE PROJECTS
+    case types.DELETE_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.DELETE_PROJECT_FULFILLED:
+      return {
+        ...state,
+        list: state.list.filter((item) => item._id !== action.payload),
+        isFetching: false
+      };
+    case types.DELETE_PROJECT_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    // MODAL HANDLING FUNCTIONS
+    case types.CLOSE_ALL_MODALS:
+      return {
+        ...state,
+        createModalShow: false,
+        editModalShow: false
+      };
+    case types.SHOW_CREATE_MODAL:
+      return {
+        ...state,
+        createModalShow: true
+      };
+    case types.SHOW_EDIT_MODAL:
+      return {
+        ...state,
+        editModalShow: true
+      };
+    // GET INITIAL TASKS DATA
+    case types.GET_TASKS_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.GET_TASKS_FULFILLED:
+      return {
+        ...state,
+        allTasks: action.payload,
+        isFetching: false
+      };
+    case types.GET_TASKS_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    // GET INITIAL EMPLOYEES DATA
+    case types.GET_EMPLOYEES_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.GET_EMPLOYEES_FULFILLED:
+      return {
+        ...state,
+        allEmployees: action.payload,
+        isFetching: false
+      };
+    case types.GET_EMPLOYEES_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
       };
     default:
       return state;

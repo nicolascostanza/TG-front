@@ -1,7 +1,5 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Admins from '../Admins/index';
-import EditEmployee from '../Employees/EditEmployee/editEmployee';
-import AddEmployee from '../Employees/EmployeeForm/addEmployee';
 import Employees from '../Employees/index';
 import Footer from '../Footer/index';
 import Header from '../Header/index';
@@ -24,8 +22,6 @@ function Layout() {
           <Route exact path="/admins" component={Admins} />
           <Route exact path="/super-admins" component={SuperAdmins} />
           <Route exact path="/employees" component={Employees} />
-          <Route exact path="/employees/employee-add" component={AddEmployee} />
-          <Route exact path="/employees/employee-edit" component={EditEmployee} />
           <Route exact path="/projects" component={Projects} />
           <Route exact path="/time-sheets" component={TimeSheets} />
           <Route exact path="/time-sheets-add" component={AddTimeSheets} />
