@@ -1,34 +1,27 @@
 .Button {
   display: flex;
-  justify-content: center;
-  width: 220px;
+  justify-content: space-evenly;
+  width: 250px;
   height: 60px;
   padding: 10px;
   font-weight: bold;
   color: white;
+  text-transform: uppercase;
   cursor: pointer;
-  display: flex;
   align-items: center;
-  background-color: #37386794;
+  background-color: #40417d;
   border: none;
   border-radius: 5px;
-  box-shadow: 2px 2px 4px #00000026;
-  transition: 250ms;
+  transition: 150ms;
 }
 .Button:hover {
-  background-color: #373867;
+  box-shadow: 0 3px 7px rgb(38, 38, 38);
 }
-.Button:focus {
-background: #3738671a;
-color: #37386766;
-}
+
 .Button:active {
-background: #373867;
-transform: translateY(3px);
+background: #6a6bad;
 }
-.Button:active {
-color: #AACE9B;
-}
+
 .Button:disabled{
   cursor: auto;
 }
