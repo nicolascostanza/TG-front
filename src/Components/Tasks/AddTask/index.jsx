@@ -21,6 +21,7 @@ const AddTask = (props) => {
   };
   const onSubmit = (e) => {
     e.preventDefault();
+    console.log(e);
     addTask({
       parentProject,
       taskName,
@@ -42,6 +43,11 @@ const AddTask = (props) => {
     return setStatus(e.target.value);
   };
 
+  // const handleError = (e) => {
+  //   console.log(e);
+  //   if()
+  // };
+
   return (
     <Form showModal={props.showAddModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
       <div>
@@ -54,6 +60,7 @@ const AddTask = (props) => {
             type="text"
             placeholder="Parent Project ID"
             value={parentProject}
+            // onBlur={(e) => handleError(e.target.value)}
             onChange={(e) => setParentProject(e.target.value)}
           />
         </div>

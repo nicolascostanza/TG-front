@@ -17,8 +17,13 @@ export const addTaskApi = async (task) => {
       },
       body: JSON.stringify(task)
     });
-    const data = await response.json();
-    return data;
+    console.log('status ', response);
+    if (response.status == 201) {
+      const data = await response.json();
+      return data;
+    }
+    console.log(response);
+    alert('There has been an error creating the task');
   } catch (error) {
     return error;
   }
