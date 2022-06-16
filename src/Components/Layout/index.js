@@ -1,6 +1,9 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Admins from '../Admins/index';
 import Employees from '../Employees/index';
+import EmployeesHome from '../Employees/EmployeesFlow/Home';
+import EmployeesProfile from '../Employees/EmployeesFlow/Profile';
+import EmployeesSignUp from '../Employees/EmployeesFlow/SignUp';
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -22,6 +25,9 @@ function Layout() {
           <Route exact path="/admins" component={Admins} />
           <Route exact path="/super-admins" component={SuperAdmins} />
           <Route exact path="/employees" component={Employees} />
+          <Route exact path="/employees/home/:id" component={EmployeesHome} />
+          <Route exact path="/employees/profile/:id" component={EmployeesProfile} />
+          <Route exact path="/employees/signup" component={EmployeesSignUp} />
           <Route exact path="/projects" component={Projects} />
           <Route exact path="/time-sheets" component={TimeSheets} />
           <Route exact path="/time-sheets-add" component={AddTimeSheets} />
