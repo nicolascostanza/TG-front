@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
 import Form from '../../Shared/Form';
 import Modal from '../../Shared/Modal';
+import * as thunks from '../../../redux/timesheets/thunks';
+import { useDispatch } from 'react-redux';
 
 function EditTimeSheets(props) {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
-        setEmployeeId(response.data.employeeId._id);
+        setEmployeeId(response.data.employeeId ? response.data.employeeId._id : '');
         setDescription(response.data.description);
         setProject(response.data.project);
         setDate(new Date(response.data.date).toISOString().split('T')[0] || '');
@@ -29,58 +31,38 @@ function EditTimeSheets(props) {
   const [role, setRole] = useState('');
   const [showModalCorrect, setShowModalCorrect] = useState(false);
   const [showModalIncorrect, setShowModalIncorrect] = useState(false);
-  const [data, setData] = useState('');
+  const dispatch = useDispatch();
   const handleCloseMessage = () => {
     setShowModalCorrect(false);
     setShowModalIncorrect(false);
   };
+  const { showEditModal, handleClose } = props;
 
-  const editTimeSheets = async (timeSheets) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(timeSheets)
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      setShowModalCorrect(true);
-      setData(data);
-      clearFields();
-    } else if (res.status === 400) {
-      setShowModalIncorrect(true);
-    }
+  const editTimeSheets = async (newBody, id) => {
+    dispatch(thunks.editTimesheet(newBody, id));
   };
   const onSubmit = (e) => {
     e.preventDefault();
 
-    editTimeSheets({
-      employeeId,
-      description,
-      project,
-      date: new Date(date).toISOString().split('T')[0] || '',
-      // date,
-      hours,
-      task: [...task],
-      approved,
-      role
-    });
+    editTimeSheets(
+      {
+        employeeId,
+        description,
+        project,
+        date: new Date(date).toISOString().split('T')[0] || '',
+        // date,
+        hours,
+        task: [...task],
+        approved,
+        role
+      },
+      props.editId
+    );
   };
 
-  const clearFields = () => {
-    setEmployeeId('');
-    setDescription('');
-    setProject('');
-    setDate('');
-    setHours('');
-    setTask([]);
-    setApproved(false);
-    setRole('');
-  };
   return (
     <section>
-      <Form showModal={props.showModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
+      <Form showModal={showEditModal} handleClose={handleClose} handleSubmit={onSubmit}>
         <div className={styles.tittle}>
           <h2> Edit Time-Sheet </h2>
         </div>
@@ -162,16 +144,12 @@ function EditTimeSheets(props) {
         showModal={showModalCorrect}
         handleClose={handleCloseMessage}
         modalTitle={'The Time sheet has been updated successfully'}
-      >
-        {data.message}
-      </Modal>
+      ></Modal>
       <Modal
         showModal={showModalIncorrect}
         handleClose={handleCloseMessage}
         modalTitle={'The was an error updating time sheet'}
-      >
-        {data.message}
-      </Modal>
+      ></Modal>
     </section>
   );
 }

@@ -1,18 +1,11 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './Form.module.css';
 import Form from '../../Shared/Form';
 import Modal from '../../Shared/Modal';
+import * as thunks from '../../../redux/timesheets/thunks';
+import { useDispatch } from 'react-redux';
 
 function AddTimeSheets(props) {
-  const [timeSheets, saveTimeSheets] = useState([]);
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
-      .then((response) => response.json())
-      .then((response) => {
-        saveTimeSheets(response.data);
-      });
-  }, []);
   const [employeeId, setEmployeeId] = useState('');
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
@@ -23,30 +16,14 @@ function AddTimeSheets(props) {
   const [role, setRole] = useState('');
   const [showModalCorrect, setShowModalCorrect] = useState(false);
   const [showModalIncorrect, setShowModalIncorrect] = useState(false);
-  const [data, setData] = useState('');
+  const { showCreateModal, handleClose } = props;
+  const dispatch = useDispatch();
+  const addTimeSheets = async (timeSheet) => {
+    dispatch(thunks.addTimesheets(timeSheet));
+  };
   const handleCloseMessage = () => {
     setShowModalCorrect(false);
     setShowModalIncorrect(false);
-  };
-  const addTimeSheets = async (timeSheet) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(timeSheet)
-    });
-    const data = await res.json();
-
-    if (res.status === 201) {
-      saveTimeSheets([...timeSheets, data.data]);
-      setShowModalCorrect(true);
-      setData(data);
-      clearFields();
-    } else if (res.status === 400) {
-      setShowModalIncorrect(true);
-      setData(data);
-    }
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -61,22 +38,12 @@ function AddTimeSheets(props) {
       role
     });
   };
-  const clearFields = () => {
-    setEmployeeId('');
-    setDescription('');
-    setProject('');
-    setDate('');
-    setHours('');
-    setTask([]);
-    setApproved(false);
-    setRole('');
-  };
   return (
     <section>
       <Form
         handleSubmit={onSubmit}
-        showModal={props.showModal}
-        handleClose={props.handleClose}
+        showModal={showCreateModal}
+        handleClose={handleClose}
         title="Add Time Sheet"
       >
         <div className={styles.container}>
@@ -157,16 +124,12 @@ function AddTimeSheets(props) {
         showModal={showModalCorrect}
         handleClose={handleCloseMessage}
         modalTitle={'The Time sheet has been created successfully'}
-      >
-        {data.message}
-      </Modal>
+      ></Modal>
       <Modal
         showModal={showModalIncorrect}
         handleClose={handleCloseMessage}
         modalTitle={'The was an error creating time sheet'}
-      >
-        {data.message}
-      </Modal>
+      ></Modal>
     </section>
   );
 }
