@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import Sidebar from '../../Shared/Sidebar';
 import styles from './signup.module.css';
+import Button from '../../Shared/Button/Button';
 
 function SignUp() {
   const [firstName, setFirstName] = useState('');
@@ -28,7 +29,7 @@ function SignUp() {
       <section>
         <Sidebar />
       </section>
-      <section>
+      <section className={styles.form}>
         <form onSubmit={onSubmit}>
           <h1>Sign Up</h1>
           <div>
@@ -108,12 +109,21 @@ function SignUp() {
             </div>
             <div>
               <input
+                className={styles.checkbox}
                 type="checkbox"
                 checked={active}
                 value={active}
                 onChange={(e) => setActive(e.currentTarget.checked)}
               />
             </div>
+            <div className={styles.button}>
+              <Button onClick={''} width={'100px'} height={'35px'} fontSize={'15px'}>
+                send
+              </Button>
+            </div>
+            {/* <div className={styles.button}>
+              <input type="submit" value="Send" />
+            </div> */}
           </div>
         </form>
       </section>
