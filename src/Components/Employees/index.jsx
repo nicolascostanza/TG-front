@@ -83,14 +83,11 @@ function Employees() {
     setMethod('PUT');
     setTittleModal('Update Employee');
     setEmployeeIdToEdit(id);
-    console.log(employees);
-    console.log(id);
     const employeeToEdit = employees.filter((employee) => {
       if (employee._id === id) {
         return employee;
       }
     });
-    console.log(employeeToEdit);
     setFirstName(employeeToEdit[0].firstName);
     setSurname(employeeToEdit[0].surname);
     setEmail(employeeToEdit[0].email);

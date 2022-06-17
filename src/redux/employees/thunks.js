@@ -55,7 +55,6 @@ export const addEmployee = (newEmployee) => {
         })
       });
       const res = await response.json();
-      console.log(res);
       const { firstName, surname, email, gender, adress, dob, password, phone, active } =
         newEmployee;
       if (res.error) {
@@ -79,7 +78,6 @@ export const addEmployee = (newEmployee) => {
         )
       );
     } catch (error) {
-      console.log(error);
       dispatch(actions.addEmployeeError(error));
     }
   };

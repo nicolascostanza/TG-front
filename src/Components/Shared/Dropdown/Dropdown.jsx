@@ -10,9 +10,7 @@ const Dropdown = ({ children, title, value, onChange, placeholder, width }) => {
       </div>
       <div>
         <select className={style.select} value={value} onChange={onChange} style={{ width }}>
-          <option hidden selected>
-            {placeholder}
-          </option>
+          <option hidden>{placeholder}</option>
           {children}
         </select>
       </div>
