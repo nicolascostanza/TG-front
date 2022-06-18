@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../Shared/Button/Button';
+import Button from '../Shared/Button';
 import Form from '../Shared/Form';
 import Modal from '../Shared/Modal';
 import Sidebar from '../Shared/Sidebar';

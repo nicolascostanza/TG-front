@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Table from '../../Shared/Table';
-import EditProject from '../ProjectForms/EditProject';
-import CreateProject from '../ProjectForms/CreateProject';
-import Sidebar from '../../Shared/Sidebar';
-import Loader from '../../Shared/Loader';
-import * as actions from '../../../redux/projects/actions';
-import * as projectsThunks from '../../../redux/projects/thunks';
-import * as employeesThunks from '../../../redux/employees/thunks';
-import * as tasksThunks from '../../../redux/tasks/thunks';
+import Table from 'Components/Shared/Table';
+import EditProject from 'Components/Projects/ProjectForms/EditProject';
+import CreateProject from 'Components/Projects/ProjectForms/CreateProject';
+import Sidebar from 'Components/Shared/Sidebar';
+import Loader from 'Components/Shared/Loader';
+import * as actions from 'redux/projects/actions';
+import * as projectsThunks from 'redux/projects/thunks';
+import * as employeesThunks from 'redux/employees/thunks';
+import * as tasksThunks from 'redux/tasks/thunks';
 
 function List() {
   const [editingProject, setEditingProject] = useState({});

@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import Form from '../../Shared/Form';
-import projectForm from './projectForm.module.css';
-import * as thunks from '../../../redux/projects/thunks';
 import { useDispatch } from 'react-redux';
+import Form from 'Components/Shared/Form';
+import projectForm from './projectForm.module.css';
+import * as thunks from 'redux/projects/thunks';
 
 const EditProject = (props) => {
   const { showModal, handleClose } = props;
