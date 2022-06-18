@@ -44,10 +44,10 @@ export const addEmployee = (newEmployee) => {
         },
         body: JSON.stringify({
           firstName: newEmployee.firstName,
-          surname: newEmployee.surname,
+          lastName: newEmployee.lastName,
           email: newEmployee.email,
           gender: newEmployee.gender,
-          adress: newEmployee.adress,
+          address: newEmployee.address,
           dob: newEmployee.dob,
           password: newEmployee.password,
           phone: newEmployee.phone,
@@ -55,7 +55,7 @@ export const addEmployee = (newEmployee) => {
         })
       });
       const res = await response.json();
-      const { firstName, surname, email, gender, adress, dob, password, phone, active } =
+      const { firstName, lastName, email, gender, address, dob, password, phone, active } =
         newEmployee;
       if (res.error) {
         throw res.error;
@@ -65,10 +65,10 @@ export const addEmployee = (newEmployee) => {
           {
             _id: res.data._id,
             firstName,
-            surname,
+            lastName,
             email,
             gender,
-            adress,
+            address,
             dob,
             password,
             phone,
@@ -96,10 +96,10 @@ export const editEmployee = (newEmployee) => {
           },
           body: JSON.stringify({
             firstName: newEmployee.firstName,
-            surname: newEmployee.surname,
+            lastName: newEmployee.lastName,
             email: newEmployee.email,
             gender: newEmployee.gender,
-            adress: newEmployee.adress,
+            address: newEmployee.address,
             dob: newEmployee.dob,
             password: newEmployee.password,
             phone: newEmployee.phone,

@@ -69,7 +69,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                         <td>
                           <Dropdown width={'150px'} placeholder={'Employees'}>
                             {row[header].map((element) => {
-                              return <option key={Math.random()}>{element.surname}</option>;
+                              return <option key={Math.random()}>{element.lastName}</option>;
                             })}
                             ;
                           </Dropdown>
@@ -86,7 +86,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                     return (
                       <td key={Math.random()}>
                         {row[header].employeeId !== null
-                          ? `${row[header].firstName} ${row[header].surname}`
+                          ? `${row[header].firstName} ${row[header].lastName}`
                           : 'none'}
                       </td>
                     );
