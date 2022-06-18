@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from 'Components/Shared/Table';
-import EditProject from '../ProjectForms/EditProject';
-import CreateProject from '../ProjectForms/CreateProject';
+import EditProject from 'Components/Projects/ProjectForms/EditProject';
+import CreateProject from 'Components/Projects/ProjectForms/CreateProject';
 import Sidebar from 'Components/Shared/Sidebar';
 import Loader from 'Components/Shared/Loader';
 import * as actions from 'redux/projects/actions';
