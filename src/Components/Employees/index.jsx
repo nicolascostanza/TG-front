@@ -3,9 +3,9 @@ import Sidebar from '../Shared/Sidebar';
 import Table from '../Shared/Table';
 import styles from './employees.module.css';
 import Modal from '../Shared/Modal';
-import Dropdown from '../Shared/Dropdown/Dropdown';
+import Dropdown from '../Shared/Dropdown';
 import Form from '../Shared/Form';
-import Button from '../Shared/Button/Button';
+import Button from '../Shared/Button';
 import * as thunks from '../../redux/employees/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 

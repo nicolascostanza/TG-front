@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState } from 'react';
 import styles from './table.module.css';
-import Button from '../Button/Button.jsx';
-import Dropdown from '../Dropdown/Dropdown';
+import Button from '../Button/index.jsx';
+import Dropdown from '../Dropdown';
 
 function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
   const [indexPage, setIndexPage] = useState(1);

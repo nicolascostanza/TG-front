@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import styles from './addTask.module.css';
-import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Dropdown from '../../Shared/Dropdown';
 import Form from '../../Shared/Form';
 import * as thunks from '../../../redux/tasks/thunks';
 import { useDispatch } from 'react-redux';
