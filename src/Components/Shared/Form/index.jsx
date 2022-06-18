@@ -2,7 +2,7 @@
 import React from 'react';
 import styles from './form.module.css';
 import Modal from '../Modal';
-import Button from '../Button/Button';
+import Button from '../Button';
 
 const Form = ({ children, title, handleSubmit, showModal, handleClose }) => {
   return (

@@ -4,7 +4,7 @@ import styles from './admins.module.css';
 import Table from '../Shared/Table';
 import Loader from '../Shared/Loader';
 import Modal from '../Shared/Modal';
-import Button from '../Shared/Button/Button';
+import Button from '../Shared/Button';
 import Form from '../Shared/Form';
 import Sidebar from '../Shared/Sidebar';
 import * as thunks from '../../redux/admins/thunks';

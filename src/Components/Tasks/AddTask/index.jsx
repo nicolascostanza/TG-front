@@ -1,10 +1,10 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './addTask.module.css';
-import Dropdown from '../../Shared/Dropdown/Dropdown';
+import Dropdown from '../../Shared/Dropdown';
 import Form from '../../Shared/Form';
-
-const URL = `${process.env.REACT_APP_API_URL}/tasks`;
+import * as thunks from '../../../redux/tasks/thunks';
+import { useDispatch } from 'react-redux';
 
 const AddTask = (props) => {
   const [parentProject, setParentProject] = useState('');
@@ -13,38 +13,12 @@ const AddTask = (props) => {
   const [assignedEmployee, setAssignedEmployee] = useState([]);
   const [startDate, setStartDate] = useState('');
   const [status, setStatus] = useState('');
-  const [refresh, setRefresh] = useState('');
-  const [tasks, setTasks] = useState([]);
-  useEffect(() => {
-    fetch(URL)
-      .then((response) => response.json())
-      .then((response) => {
-        setTasks(response.data);
-        console.log(response.data);
-      });
-  }, [refresh]);
+  const dispatch = useDispatch();
 
   const addTask = async (task) => {
-    const res = await fetch(URL, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(task)
-    });
-    const data = await res.json();
-
-    setTasks([...tasks, data]);
-
-    if (res.status === 201) {
-      alert('Task added successfully');
-      setRefresh('');
-      props.handleClose();
-    } else if (res.status === 400 || res.status === 500) {
-      alert('Something went wrong');
-    }
+    dispatch(thunks.addTask(task));
+    props.handleClose();
   };
-
   const onSubmit = (e) => {
     e.preventDefault();
     addTask({
@@ -64,7 +38,6 @@ const AddTask = (props) => {
   };
 
   const valueChange = (e) => {
-    console.log('e', e.target.value);
     return setStatus(e.target.value);
   };
 
@@ -80,6 +53,7 @@ const AddTask = (props) => {
             type="text"
             placeholder="Parent Project ID"
             value={parentProject}
+            // onBlur={(e) => handleError(e.target.value)}
             onChange={(e) => setParentProject(e.target.value)}
           />
         </div>
