@@ -1,29 +1,44 @@
 import { useState } from 'react';
 import styles from './Form.module.css';
 import Form from '../../Shared/Form';
-import Modal from '../../Shared/Modal';
 import * as thunks from '../../../redux/timesheets/thunks';
 import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 
 function AddTimeSheets(props) {
   const [employeeId, setEmployeeId] = useState('');
-  const [description, setDescription] = useState('');
-  const [project, setProject] = useState('');
-  const [date, setDate] = useState('');
-  const [hours, setHours] = useState('');
+  const [description] = useState('');
+  const [project] = useState('');
+  const [date] = useState('');
+  const [hours] = useState('');
   const [task, setTask] = useState([]);
-  const [approved, setApproved] = useState(false);
-  const [role, setRole] = useState('');
-  const [showModalCorrect, setShowModalCorrect] = useState(false);
-  const [showModalIncorrect, setShowModalIncorrect] = useState(false);
+  const [approved] = useState(false);
+  const [role] = useState('');
   const { showCreateModal, handleClose } = props;
   const dispatch = useDispatch();
+  const schema = Joi.object({
+    employeeId: Joi.string().required(),
+    description: Joi.string().min(3).max(80),
+    project: Joi.string().min(3).required(),
+    date: Joi.date().required(),
+    hours: Joi.number().min(1).required(),
+    task: Joi.array().required(),
+    approved: Joi.bool().required(),
+    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required()
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
+
   const addTimeSheets = async (timeSheet) => {
     dispatch(thunks.addTimesheets(timeSheet));
-  };
-  const handleCloseMessage = () => {
-    setShowModalCorrect(false);
-    setShowModalIncorrect(false);
   };
   const onSubmit = (e) => {
     e.preventDefault();
@@ -41,60 +56,47 @@ function AddTimeSheets(props) {
   return (
     <section>
       <Form
-        handleSubmit={onSubmit}
+        handleSubmit={handleSubmit(onSubmit)}
         showModal={showCreateModal}
         handleClose={handleClose}
         title="Add Time Sheet"
       >
         <div className={styles.container}>
           <div>
-            <label> Employee ID </label>
+            <label htmlFor="employeeId"> Employee ID </label>
             <input
+              {...register('employeeId', { required: true })}
               type="text"
               placeholder="Employee ID"
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}
             />
+            {errors.employeeId?.type === 'required' && <p>This field must be complete</p>}
           </div>
           <div>
-            <label> Description </label>
+            <label htmlFor="description"> Description </label>
             <input
+              {...register('description', { required: true })}
               type="text"
               placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
           </div>
           <div>
-            <label> Project </label>
-            <input
-              type="text"
-              placeholder="Project"
-              value={project}
-              onChange={(e) => setProject(e.target.value)}
-            />
+            <label htmlFor="project"> Project </label>
+            <input {...register('project', { required: true })} type="text" placeholder="Project" />
           </div>
           <div>
-            <label> Date </label>
-            <input
-              type="date"
-              placeholder="YYYY-MM-DD"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
+            <label htmlFor="date"> Date </label>
+            <input {...register('date', { required: true })} type="date" placeholder="YYYY-MM-DD" />
           </div>
           <div>
-            <label> Hours </label>
-            <input
-              type="number"
-              placeholder="Hours"
-              value={hours}
-              onChange={(e) => setHours(e.target.value)}
-            />
+            <label htmlFor="hours"> Hours </label>
+            <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
           </div>
           <div>
-            <label> Task ID </label>
+            <label htmlFor="task"> Task ID </label>
             <input
+              {...register('task', { required: true })}
               type="text"
               placeholder="Task"
               value={task && task[0] ? task[0]._id : ''}
@@ -102,34 +104,15 @@ function AddTimeSheets(props) {
             />
           </div>
           <div>
-            <label> Approved </label>
-            <input
-              type="checkbox"
-              checked={approved}
-              onChange={(e) => setApproved(e.target.checked)}
-            />
+            <label htmlFor="approved"> Approved </label>
+            <input {...register('approved', { required: true })} type="checkbox" />
           </div>
           <div>
-            <label> Role </label>
-            <input
-              type="text"
-              placeholder="Role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            />
+            <label htmlFor="role"> Role </label>
+            <input {...register('role', { required: true })} type="text" placeholder="Role" />
           </div>
         </div>
       </Form>
-      <Modal
-        showModal={showModalCorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The Time sheet has been created successfully'}
-      ></Modal>
-      <Modal
-        showModal={showModalIncorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The was an error creating time sheet'}
-      ></Modal>
     </section>
   );
 }
