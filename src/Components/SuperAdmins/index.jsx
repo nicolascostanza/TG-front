@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 import Button from '../Shared/Button';
 import Form from '../Shared/Form';
 import Modal from '../Shared/Modal';
@@ -22,6 +25,39 @@ function SuperAdmins() {
     'updatedAt'
   ];
   const dispatch = useDispatch();
+  const schema = Joi.object({
+    firstName: Joi.string()
+      .min(3)
+      .max(50)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    lastName: Joi.string()
+      .min(3)
+      .max(50)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .lowercase()
+      .required()
+      .regex(
+        // eslint-disable-next-line no-useless-escape
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      ),
+    password: Joi.string()
+      .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/)
+      .required(),
+    active: Joi.boolean()
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
+
   const superAdminsList = useSelector((state) => state.superAdmins.list);
   const message = useSelector((state) => state.superAdmins.message);
   const response = useSelector((state) => state.superAdmins.response);
@@ -119,47 +155,59 @@ function SuperAdmins() {
           </div>
         </Modal>
         <Form
-          handleSubmit={onSubmit}
-          showModal={modalShowForm}
-          handleClose={closeModals}
           title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
+          showModal={modalShowForm}
+          handleSubmit={handleSubmit(onSubmit)}
+          handleClose={closeModals}
         >
           <Loader isLoading={isFetching} />
           <div className={styles.inputsForm}>
-            <label>Name</label>
+            <label htmlFor="firstName">First Name</label>
             <input
-              className={styles.inputsDivs}
+              {...register('firstName', {
+                required: true,
+                maxLength: 50
+              })}
+              name="firstName"
               type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
             />
+            {errors.firstName?.type === 'required' && <p>This field is required</p>}
+            {errors.firstName?.type === 'maxLength' && (
+              <p>This field must contains less than 50 characters</p>
+            )}
           </div>
           <div className={styles.inputsForm}>
-            <label>LastName</label>
+            <label htmlFor="lastName">Last Name</label>
             <input
-              className={styles.inputsDivs}
+              {...register('lastName', {
+                required: true,
+                maxLength: 50
+              })}
+              name="lastName"
               type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
             />
+            {errors.lastName?.type === 'required' && <p>This field is required</p>}
+            {errors.lastName?.type === 'maxLength' && (
+              <p>This field must contains less than 50 characters</p>
+            )}
           </div>
           <div className={styles.inputsForm}>
-            <label>Email</label>
+            <label htmlFor="email">Email</label>
             <input
-              className={styles.inputsDivs}
+              {...register('email', {
+                required: true,
+                pattern:
+                  // eslint-disable-next-line no-useless-escape
+                  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              })}
+              name="email"
               type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
             />
+            {errors.email?.type === 'pattern' && <p>This field must be valid</p>}
           </div>
           <div className={styles.inputsForm}>
-            <label>Password</label>
-            <input
-              className={styles.inputsDivs}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <label htmlFor="password">Password</label>
+            <input {...register('password', { required: true })} name="password" type="password" />
           </div>
           <div className={styles.inputsForm}>
             <div>
@@ -170,7 +218,6 @@ function SuperAdmins() {
                 className={styles.inputsDivs}
                 type="checkbox"
                 checked={active}
-                value={active}
                 onChange={(e) => setActive(e.currentTarget.checked)}
               />
             </div>
