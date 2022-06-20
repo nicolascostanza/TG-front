@@ -80,6 +80,7 @@ function AddTimeSheets(props) {
               type="text"
               placeholder="Description"
             />
+            {errors.description?.type === 'required' && <p>This field must be complete</p>}
           </div>
           <div>
             <label htmlFor="project"> Project </label>
