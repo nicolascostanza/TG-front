@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 import Form from 'Components/Shared/Form';
 import projectForm from './projectForm.module.css';
 import * as thunks from 'redux/projects/thunks';
@@ -22,6 +25,30 @@ const CreateProject = (props) => {
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
+  const schema = Joi.object({
+    name: Joi.string()
+      .min(3)
+      .max(30)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    description: Joi.string().min(3).max(200).required(),
+    clientName: Joi.string().min(3).max(30).required(),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
+    projectManager: Joi.string().min(3).max(30).required(),
+    team: Joi.array(),
+    tasks: Joi.array()
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
+
+  console.log(errors);
 
   const handleInputChanges = (e) => {
     const { name, value } = e.target;
@@ -31,10 +58,10 @@ const CreateProject = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const submitNewProject = (data, e) => {
     e.preventDefault();
     const newBody = {
-      ...project,
+      ...data,
       team: selectedEmployees,
       tasks: selectedTasks
     };
@@ -65,52 +92,43 @@ const CreateProject = (props) => {
     <Form
       title="Create project"
       showModal={showCreateModal}
-      handleSubmit={handleSubmit}
+      handleSubmit={handleSubmit(submitNewProject)}
       handleClose={handleClose}
     >
-      <label>Name</label>
+      <label htmlFor="name">Name</label>
       <input
-        value={project.name}
-        onChange={handleInputChanges}
+        {...register('name', { required: true })}
         name="name"
         type="text"
         placeholder="Project name"
       />
 
-      <label>Description</label>
+      <label htmlFor="description">Description</label>
       <input
-        value={project.description}
-        onChange={handleInputChanges}
+        {...register('description')}
         name="description"
         type="text"
         placeholder="Project description"
       />
 
-      <label>Client Name</label>
+      <label htmlFor="clientName">Client Name</label>
+      <input {...register('clientName')} name="clientName" type="text" placeholder="Client name" />
+
+      <label htmlFor="startDate">Start Date</label>
+      <input {...register('startDate')} name="startDate" type="date" />
+
+      <label htmlFor="endDate">End Date</label>
+      <input {...register('endDate')} name="endDate" type="date" />
+
+      <label htmlFor="projectManager">Project Manager</label>
       <input
-        value={project.clientName}
-        onChange={handleInputChanges}
-        name="clientName"
-        type="text"
-        placeholder="Client name"
-      />
-
-      <label>Start Date</label>
-      <input value={project.startDate} onChange={handleInputChanges} name="startDate" type="date" />
-
-      <label>End Date</label>
-      <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
-
-      <label>Project Manager</label>
-      <input
-        value={project.projectManager}
-        onChange={handleInputChanges}
+        {...register('projectManager')}
         name="projectManager"
         type="text"
         placeholder="Project manager"
       />
 
-      <label>Team</label>
+      <label htmlFor="team">Team</label>
       <input
         value={project.team}
         onChange={handleInputChanges}
@@ -158,8 +176,7 @@ const CreateProject = (props) => {
               );
             })}
       </div>
-
-      <label>Tasks</label>
+      <label htmlFor="tasks">Tasks</label>
       <input
         value={project.tasks}
         onChange={handleInputChanges}
