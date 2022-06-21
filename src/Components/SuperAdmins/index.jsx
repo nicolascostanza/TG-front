@@ -3,15 +3,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
-import Button from '../Shared/Button';
-import Form from '../Shared/Form';
-import Modal from '../Shared/Modal';
-import Sidebar from '../Shared/Sidebar';
-import Table from '../Shared/Table';
-import Loader from '../Shared/Loader/index.jsx';
-import styles from './super-admins.module.css';
-import * as thunks from '../../redux/superadmins/thunks';
-import * as actions from '../../redux/superadmins/actions';
+import Button from 'Components/Shared/Button';
+import Form from 'Components/Shared/Form';
+import Modal from 'Components/Shared/Modal';
+import Sidebar from 'Components/Shared/Sidebar';
+import Table from 'Components/Shared/Table';
+import Loader from 'Components/Shared/Loader/index.jsx';
+import styles from 'Components/SuperAdmins/super-admins.module.css';
+import * as thunks from 'redux/superadmins/thunks';
+import * as actions from 'redux/superadmins/actions';
 
 function SuperAdmins() {
   const headers = [
@@ -41,16 +41,6 @@ function SuperAdmins() {
       .required(),
     active: Joi.boolean()
   });
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    mode: 'onBlur',
-    resolver: joiResolver(schema)
-  });
-
-  console.log(errors);
 
   const superAdminsList = useSelector((state) => state.superAdmins.list);
   const message = useSelector((state) => state.superAdmins.message);
@@ -67,6 +57,12 @@ function SuperAdmins() {
   const [active, setActive] = useState(true);
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
+  const [initialValues] = useState({
+    firstName: method === 'PUT' ? 'Fernando' : '',
+    lastName: 'Carbone',
+    email: 'pass@radium.com',
+    password: 'hajshalskdj23'
+  });
   useEffect(() => {
     dispatch(thunks.getSuperadmins());
   }, []);
@@ -127,6 +123,16 @@ function SuperAdmins() {
       alert('Something unexpected happened');
     }
   };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema),
+    defaultValues: { ...initialValues }
+  });
+  console.log(errors);
   return (
     <>
       <Loader isLoading={isFetching} />
