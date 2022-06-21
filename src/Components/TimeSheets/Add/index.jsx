@@ -37,6 +37,8 @@ function AddTimeSheets(props) {
     resolver: joiResolver(schema)
   });
 
+  console.log(errors);
+
   const addTimeSheets = async (timeSheet) => {
     dispatch(thunks.addTimesheets(timeSheet));
   };
@@ -71,7 +73,7 @@ function AddTimeSheets(props) {
               value={employeeId}
               onChange={(e) => setEmployeeId(e.target.value)}
             />
-            {errors.employeeId?.type === 'required' && <p>This field must be complete</p>}
+            {errors.employeeId?.type === 'string.empty' && <p>{errors.employeeId.message}</p>}
           </div>
           <div>
             <label htmlFor="description"> Description </label>
@@ -80,19 +82,25 @@ function AddTimeSheets(props) {
               type="text"
               placeholder="Description"
             />
-            {errors.description?.type === 'required' && <p>This field must be complete</p>}
+            {errors.description?.type === 'string.empty' && <p>{errors.description.message}</p>}
+            {errors.description?.type === 'string.min' && <p>{errors.description.message}</p>}
           </div>
           <div>
             <label htmlFor="project"> Project </label>
             <input {...register('project', { required: true })} type="text" placeholder="Project" />
+            {errors.project?.type === 'string.empty' && <p>{errors.project.message}</p>}
+            {errors.project?.type === 'string.min' && <p>{errors.project.message}</p>}
           </div>
           <div>
             <label htmlFor="date"> Date </label>
             <input {...register('date', { required: true })} type="date" placeholder="YYYY-MM-DD" />
+            {errors.date?.type === 'date.base' && <p>{errors.date.message}</p>}
           </div>
           <div>
             <label htmlFor="hours"> Hours </label>
             <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
+            {errors.hours?.type === 'number.base' && <p>{errors.hours.message}</p>}
+            {errors.hours?.type === 'number.min' && <p>{errors.hours.message}</p>}
           </div>
           <div>
             <label htmlFor="task"> Task ID </label>
@@ -103,6 +111,7 @@ function AddTimeSheets(props) {
               value={task && task[0] ? task[0]._id : ''}
               onChange={(e) => setTask(e.target.value)}
             />
+            {errors.task?.type === 'array.base' && <p>{errors.task.message}</p>}
           </div>
           <div>
             <label htmlFor="approved"> Approved </label>
@@ -111,6 +120,7 @@ function AddTimeSheets(props) {
           <div>
             <label htmlFor="role"> Role </label>
             <input {...register('role', { required: true })} type="text" placeholder="Role" />
+            {errors.role?.type === 'any.only' && <p>{errors.role.message}</p>}
           </div>
         </div>
       </Form>
