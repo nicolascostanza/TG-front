@@ -28,14 +28,11 @@ function SignUp() {
     mode: 'onBlur',
     resolver: joiResolver(employeeValidationSignUp)
   });
-
-  console.log('errors: ', errors);
-
   const onSubmit = (data) => {
+    console.log(data);
     dispatch(thunksEmployee.addEmployee(data));
     setShowModalMessage(true);
   };
-  // console.log(getValues());
   return (
     <section className={styles.container}>
       <section>
@@ -115,9 +112,6 @@ function SignUp() {
           </div>
           <div>
             <div className={styles.button}>
-              {/* <Button width={'100px'} height={'35px'} fontSize={'15px'}>
-                send
-              </Button> */}
               <div className={styles.button}>
                 <input type="submit" value="Send" />
               </div>

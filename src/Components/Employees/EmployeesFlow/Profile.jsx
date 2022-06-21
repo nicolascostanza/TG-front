@@ -33,7 +33,7 @@ function Profile() {
     mode: 'onBlur',
     resolver: joiResolver(employeeValidationUpdate)
   });
-  const onSubmitUpdate = (data) => {
+  const onSubmit = (data) => {
     console.log('asdasdsa');
     const employee2 = { ...data, _id: param.id };
     dispatch(thunksEmployee.editEmployee(employee2));
@@ -43,6 +43,10 @@ function Profile() {
       console.log('bien pa');
       setUpdate(!update);
     }
+  };
+  const prueba = () => {
+    console.log('Hola Mundo');
+    handleSubmit(onSubmit);
   };
 
   return (
@@ -57,8 +61,7 @@ function Profile() {
       >
         EDIT
       </button>
-
-      <form className={styles.form} onSubmit={handleSubmit(onSubmitUpdate)}>
+      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>First Name</label>
           {update ? (
@@ -73,7 +76,7 @@ function Profile() {
                 placeholder={employeeSelected[0]?.firstName}
                 error={appendErrors.firstName?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.firstName && <p className={styles.errorInput}>{errors.firstName?.message}</p>}
             </>
           )}
         </div>
@@ -91,7 +94,7 @@ function Profile() {
                 placeholder={employeeSelected[0]?.lastName}
                 error={appendErrors.firstName?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
             </>
           )}
         </div>
@@ -109,7 +112,7 @@ function Profile() {
                 placeholder={employeeSelected[0]?.email}
                 error={appendErrors.firstName?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
             </>
           )}
         </div>
@@ -127,7 +130,7 @@ function Profile() {
                 placeholder={employeeSelected[0]?.password}
                 error={appendErrors.firstName?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
             </>
           )}
         </div>
@@ -142,7 +145,7 @@ function Profile() {
                 <option value="Female">Female</option>
                 <option value="Other">Other</option>
               </select>
-              <p>{errors.message}</p>
+              {errors.gender && <p className={styles.errorInput}>{errors.gender?.message}</p>}
             </>
           )}
         </div>
@@ -160,7 +163,7 @@ function Profile() {
                 placeholder={employeeSelected[0]?.address}
                 error={appendErrors.address?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.address && <p className={styles.errorInput}>{errors.address?.message}</p>}
             </>
           )}
         </div>
@@ -178,7 +181,7 @@ function Profile() {
                 placeholder={employeeSelected[0]?.phone}
                 error={appendErrors.phone?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
             </>
           )}
         </div>
@@ -196,7 +199,7 @@ function Profile() {
                 placeholder={employeeSelected[0]?.dob}
                 error={appendErrors.dob?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.dob && <p className={styles.errorInput}>{errors.dob?.message}</p>}
             </>
           )}
         </div>
@@ -214,13 +217,12 @@ function Profile() {
                 placeholder={employeeSelected[0]?.active}
                 error={appendErrors.active?.message}
               ></input>
-              <p>{errors.message}</p>
+              {errors.active && <p className={styles.errorInput}>{errors.dob?.message}</p>}
             </>
           )}
         </div>
-        <div className={styles.button}>
-          <input type="submit" value="Send" />
-        </div>
+        {/* <input type="submit" value="Send" /> */}
+        <input type="submit" onClick={prueba()} value="UPDATE"></input>
         <button className={styles.edit} onClick={(e) => e.preventDefault()}>
           CANCEL
         </button>
