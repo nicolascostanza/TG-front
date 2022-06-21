@@ -1,0 +1,24 @@
+.form {
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: inherit black;
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    align-self: center;
+    padding: 3%;
+    background-color: #EBEBF0;
+}
+.label{
+    color: #666666
+}
+p{
+    border-bottom: 0.5px black solid;
+}
+.edit{
+    width: 10%;
+    padding: 10, 15;
+    background-color: #AACE9B;
+    border: none;
+    border-radius: 5px;
+}

@@ -10,7 +10,7 @@ export const getProjectsApi = async () => {
 
 export const addNewProjectApi = async (body) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/create`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -27,7 +27,7 @@ export const addNewProjectApi = async (body) => {
 
 export const updateProjectApi = async (body, id) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/edit/${id}`, {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
@@ -49,26 +49,6 @@ export const deleteProjectApi = async (id) => {
     });
     const data = await response.json();
     alert(data.message);
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const getEmployeesApi = async () => {
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/employees`);
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return error;
-  }
-};
-
-export const getTasksApi = async () => {
-  try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/tasks`);
-    const data = await response.json();
     return data;
   } catch (error) {
     return error;
