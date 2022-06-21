@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import Sidebar from '../Shared/Sidebar';
-import Table from '../Shared/Table';
-import styles from './employees.module.css';
-import Modal from '../Shared/Modal';
-// import Dropdown from '../Shared/Dropdown';
-import Form from '../Shared/Form';
-import Button from '../Shared/Button';
-import * as thunks from '../../redux/employees/thunks';
+import Sidebar from 'Components/Shared/Sidebar';
+import Table from 'Components/Shared/Table';
+import styles from 'Components/Employees/employees.module.css';
+import Modal from 'Components/Shared/Modal';
+import Dropdown from 'Components/Shared/Dropdown';
+import Form from 'Components/Shared/Form';
+import Button from 'Components/Shared/Button';
+import * as thunks from 'redux/employees/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Joi from 'joi';
 import { joiResolver } from '@hookform/resolvers/joi';
+import Loader from 'Components/Shared/Loader';
 
 const schema = Joi.object({
   firstName: Joi.string()
@@ -33,7 +34,7 @@ const schema = Joi.object({
     .required()
     .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/),
   phone: Joi.string().regex(/^[0-9\-+]{9,10}$/),
-  active: Joi.boolean().required()
+  active: Joi.boolean()
 });
 
 function Employees() {
@@ -56,15 +57,15 @@ function Employees() {
   const [deleteId, setDeleteId] = useState('');
   const [tittleModal, setTittleModal] = useState('');
   const [showModalMessage, setShowModalMessage] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [gender, setGender] = useState('');
-  const [address, setAddress] = useState('');
-  const [dob, setDob] = useState('');
-  const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [active, setActive] = useState('');
+  // const [firstName, setFirstName] = useState('');
+  // const [lastName, setLastName] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [gender, setGender] = useState('');
+  // const [address, setAddress] = useState('');
+  // const [dob, setDob] = useState('');
+  // const [password, setPassword] = useState('');
+  // const [phone, setPhone] = useState('');
+  // const [active, setActive] = useState('');
   const [method, setMethod] = useState('');
   const message = useSelector((state) => state.employees.message);
   const error = useSelector((state) => state.employees.response);
@@ -143,16 +144,16 @@ function Employees() {
     // console.log('coso raro: ', employeeToEdit[0].lastName);
     // setFirstName(register.firstName);
     // setLastName(register.lastName);
-    watch(firstName, employeeToEdit[0].firstName);
-    setFirstName(employeeToEdit[0].firstName);
-    setLastName(employeeToEdit[0].lastName);
-    setEmail(employeeToEdit[0].email);
-    setGender(employeeToEdit[0].gender);
-    setAddress(employeeToEdit[0].address);
-    setDob(new Date(employeeToEdit[0].dob).toISOString().split('T')[0] || '');
-    setPassword(employeeToEdit[0].password);
-    setPhone(employeeToEdit[0].phone);
-    setActive(employeeToEdit[0].active === 'true' ? true : false);
+    // watch(firstName, employeeToEdit[0].firstName);
+    // setFirstName(employeeToEdit[0].firstName);
+    // setLastName(employeeToEdit[0].lastName);
+    // setEmail(employeeToEdit[0].email);
+    // setGender(employeeToEdit[0].gender);
+    // setAddress(employeeToEdit[0].address);
+    // setDob(new Date(employeeToEdit[0].dob).toISOString().split('T')[0] || '');
+    // setPassword(employeeToEdit[0].password);
+    // setPhone(employeeToEdit[0].phone);
+    // setActive(employeeToEdit[0].active === 'true' ? true : false);
     setShowAddEdit(true);
     setEmployeeIdToEdit(id);
     reset({
@@ -187,7 +188,7 @@ function Employees() {
       dob: '',
       password: '',
       phone: '',
-      active: ''
+      active: false
     });
   };
 
@@ -199,22 +200,22 @@ function Employees() {
 
   const onSubmit = (data) => {
     // e.preventDefault();
-    // console.log(data);
+    console.log(data);
     if (method === 'POST') {
-      dispatch(
-        thunks.addEmployee({
-          firstName,
-          lastName,
-          email,
-          gender,
-          address,
-          dob,
-          password,
-          phone,
-          active: active ? 'true' : 'false'
-        })
-      );
-      // dispatch(thunks.addEmployee(data));
+      // dispatch(
+      //   thunks.addEmployee({
+      //     firstName: data.firstName,
+      //     lastName: data.lastName,
+      //     email: data.email,
+      //     gender: data.gender,
+      //     address: data.address,
+      //     dob: data.dob,
+      //     password: data.password,
+      //     phone: data.phone,
+      //     active: data.active
+      //   })
+      // );
+      dispatch(thunks.addEmployee(data));
       resetFields();
       if (!error) {
         setShowAddEdit(false);
@@ -237,7 +238,7 @@ function Employees() {
           active: data.active
         })
       );
-      console.log('dataaa: ', data);
+      // console.log('dataaa: ', data);
       // dispatch(thunks.editEmployee(data));
       if (!error) {
         setShowAddEdit(false);
@@ -250,12 +251,13 @@ function Employees() {
     resetFields();
   };
 
-  if (isFetchingEmployees) {
-    return <div>Fetching...</div>;
-  }
+  // if (isFetchingEmployees) {
+  //   return <Loader />;
+  // }
 
   return (
     <section className={styles.container}>
+      <Loader isLoading={isFetchingEmployees} />
       <section>
         <Sidebar />
       </section>
@@ -326,26 +328,28 @@ function Employees() {
             {errors.email && <p className={styles.error}>{errors.email.message}</p>}
           </div>
           <div>
-            {/* <label htmlFor="Gender">Gender</label>
+            {/* <label htmlFor="Gender">Gender</label> */}
             <Dropdown
-              value={gender}
               // onChange={valueGenderChange}
-              placeholder={'Select gender'}
               width={'189.63px'}
+              placeholder={'Select gender'}
+              value={'gender'}
               registerValue={'gender'}
+              register={register}
               title={'Gender'}
+              error={errors.gender?.message}
             >
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
-            </Dropdown> */}
-            <label htmlFor="Gender">Gender</label>
+            </Dropdown>
+            {/* <label htmlFor="Gender">Gender</label>
             <select {...register('gender')}>
               <option hidden>Select gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
-            </select>
+            </select> */}
             {errors.gender && <p className={styles.error}>{errors.gender.message}</p>}
           </div>
           <div>

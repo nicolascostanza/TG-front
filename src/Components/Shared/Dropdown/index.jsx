@@ -1,10 +1,16 @@
 import React from 'react';
 import style from './dropdown.module.css';
-import { useForm } from 'react-hook-form';
 
-const Dropdown = ({ children, title, value, placeholder, width, registerValue }) => {
-  const { register } = useForm();
-
+const Dropdown = ({
+  children,
+  title,
+  value,
+  placeholder,
+  width,
+  registerValue,
+  register,
+  error
+}) => {
   return (
     <div className={style.container}>
       <div>
@@ -13,16 +19,11 @@ const Dropdown = ({ children, title, value, placeholder, width, registerValue })
         </label>
       </div>
       <div>
-        <select
-          className={style.select}
-          // value={value}
-          // onChange={onChange}
-          style={{ width }}
-          {...register({ registerValue })}
-        >
+        <select className={style.select} style={{ width }} {...register(registerValue)}>
           <option hidden>{placeholder}</option>
           {children}
         </select>
+        {error && <p className={style.error}>{error}</p>}
       </div>
     </div>
   );
