@@ -26,20 +26,12 @@ function SuperAdmins() {
   ];
   const dispatch = useDispatch();
   const schema = Joi.object({
-    firstName: Joi.string()
-      .min(3)
-      .max(50)
-      .required()
-      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
-    lastName: Joi.string()
-      .min(3)
-      .max(50)
-      .required()
-      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    firstName: Joi.string().min(3).max(50).required(),
+    lastName: Joi.string().min(3).max(50).required(),
     email: Joi.string()
       .email({ tlds: { allow: false } })
-      .lowercase()
       .required()
+      .lowercase()
       .regex(
         // eslint-disable-next-line no-useless-escape
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
@@ -166,14 +158,22 @@ function SuperAdmins() {
           <div className={styles.inputsForm}>
             <label htmlFor="firstName">First Name</label>
             <input {...register('firstName')} name="firstName" type="text" placeholder="John" />
-            {errors.firstName?.type === 'string.empty' && <p>{errors.firstName.message}</p>}
-            {errors.firstName?.type === 'string.min' && <p>{errors.firstName.message}</p>}
+            {errors.firstName?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.firstName.message}</p>
+            )}
+            {errors.firstName?.type === 'string.min' && (
+              <p className={styles.error}>{errors.firstName.message}</p>
+            )}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="lastName">Last Name</label>
             <input {...register('lastName')} name="lastName" type="text" placeholder="Doe" />
-            {errors.lastName?.type === 'string.empty' && <p>{errors.lastName.message}</p>}
-            {errors.lastName?.type === 'string.min' && <p>{errors.lastName.message}</p>}
+            {errors.lastName?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.lastName.message}</p>
+            )}
+            {errors.lastName?.type === 'string.min' && (
+              <p className={styles.error}>{errors.lastName.message}</p>
+            )}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="email">Email</label>
@@ -183,12 +183,22 @@ function SuperAdmins() {
               type="text"
               placeholder="trackgenix@radium.com"
             />
-            {errors.email?.type === 'string.empty' && <p>{errors.email.message}</p>}
+            {errors.email?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.email.message}</p>
+            )}
+            {errors.email?.type === 'string.email' && (
+              <p className={styles.error}>{errors.email.message}</p>
+            )}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="password">Password</label>
-            <input {...register('password', { required: true })} />
-            {errors.password?.type === 'string.empty' && <p>{errors.password.message}</p>}
+            <input {...register('password')} type="password" />
+            {errors.password?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.password.message}</p>
+            )}
+            {errors.password?.type === 'string.pattern.base' && (
+              <p className={styles.error}>{errors.password.message}</p>
+            )}
           </div>
           <div className={styles.inputsForm}>
             <div>
