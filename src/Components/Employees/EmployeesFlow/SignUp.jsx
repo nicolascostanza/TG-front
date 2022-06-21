@@ -6,12 +6,12 @@ import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import validations from './validations';
 import Modal from '../../Shared/Modal';
-import * as thunks from '../../../redux/employees/thunks';
+import * as thunksEmployee from '../../../redux/employees/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
 function SignUp() {
   const message = useSelector((state) => state.employees.message);
-  const error = useSelector((state) => state.employees.response);
+  // const error = useSelector((state) => state.employees.response);
   const dispatch = useDispatch();
   const [showModalMessage, setShowModalMessage] = useState(false);
   const handleCloseMessage = () => {
@@ -25,23 +25,20 @@ function SignUp() {
     formState: { errors },
     reset
   } = useForm({
-    mode: 'onChange',
+    mode: 'onBlur',
     resolver: joiResolver(validations)
   });
 
-  console.log(errors);
+  console.log('errors: ', errors);
 
   const onSubmit = (data) => {
-    dispatch(thunks.addEmployee({ data }));
-    if (!error) {
-      reset;
-    }
+    console.log(data);
+    dispatch(thunksEmployee.addEmployee(data));
     setShowModalMessage(true);
 
-    console.log('on submit');
-    console.log(data);
+    console.log(data.gender);
   };
-
+  // console.log(getValues());
   return (
     <section className={styles.container}>
       <section>
@@ -63,18 +60,13 @@ function SignUp() {
             {errors.firstName && <p className={styles.errorInput}>{errors.firstName?.message}</p>}
           </div>
           <div>
-            <label>Surname</label>
+            <label>Last Name</label>
             <input
               type="text"
-              {...register('surName')}
-              error={appendErrors.surName?.message}
+              {...register('lastName')}
+              error={appendErrors.lastName?.message}
             ></input>
-            {errors.surName && <p className={styles.errorInput}>{errors.surName?.message}</p>}
-          </div>
-          <div>
-            <label>Email</label>
-            <input type="text" {...register('email')} error={appendErrors.email?.message}></input>
-            {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
+            {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
           </div>
           <div>
             <label>Gender</label>
@@ -100,6 +92,16 @@ function SignUp() {
             {errors.dob && <p className={styles.errorInput}>{errors.dob?.message}</p>}
           </div>
           <div>
+            <label>Phone</label>
+            <input type="text" {...register('phone')} error={appendErrors.phone?.message}></input>
+            {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
+          </div>
+          <div>
+            <label>Email</label>
+            <input type="text" {...register('email')} error={appendErrors.email?.message}></input>
+            {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
+          </div>
+          <div>
             <label>Password</label>
             <input
               type="password"
@@ -109,23 +111,21 @@ function SignUp() {
             {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
           </div>
           <div>
-            <label>Phone</label>
-            <input type="text" {...register('phone')} error={appendErrors.phone?.message}></input>
-            {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
+            <label>Active</label>
           </div>
           <div>
-            <div>
-              <label>Active</label>
-            </div>
-            <div>
-              <input className={styles.checkbox} type="checkbox" {...register('active')} />
-            </div>
+            <input className={styles.checkbox} type="checkbox" {...register('active')} />
+          </div>
+          <div>
             <div className={styles.button}>
               {/* <Button width={'100px'} height={'35px'} fontSize={'15px'}>
                 send
               </Button> */}
               <div className={styles.button}>
                 <input type="submit" value="Send" />
+              </div>
+              <div className={styles.button}>
+                <button onClick={() => reset()}>Reset</button>
               </div>
             </div>
           </div>
