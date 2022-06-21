@@ -50,37 +50,26 @@ function SuperAdmins() {
   const modalShowForm = useSelector((state) => state.superAdmins.showFormAddEdit);
   const showModalDelete = useSelector((state) => state.superAdmins.showModalDelete);
   const showModalMessage = useSelector((state) => state.superAdmins.showModalMessage);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [active, setActive] = useState(true);
+  // const [active, setActive] = useState(true);
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
-  const [initialValues] = useState({
-    firstName: method === 'PUT' ? 'Fernando' : '',
-    lastName: 'Carbone',
-    email: 'pass@radium.com',
-    password: 'hajshalskdj23'
-  });
+
   useEffect(() => {
     dispatch(thunks.getSuperadmins());
-  }, []);
+    if (method !== 'PUT') {
+      reset({});
+    }
+  }, [method]);
   // functions for reset o complete inputs
-  const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setActive(true);
-  };
   const fillForm = (id) => {
-    const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
-    setFirstName(valuesForm[0].firstName);
-    setLastName(valuesForm[0].lastName);
-    setEmail(valuesForm[0].email);
-    setPassword(valuesForm[0].password);
-    setActive(valuesForm[0].active === 'true' ? true : false);
+    const valuesForm = superAdminsList.find((superadmin) => superadmin._id === id);
+    reset({
+      firstName: valuesForm.firstName,
+      lastName: valuesForm.lastName,
+      email: valuesForm.email,
+      password: valuesForm.password,
+      active: false
+    });
   };
   // modals
   const closeModals = () => {
@@ -91,7 +80,7 @@ function SuperAdmins() {
   };
   const onAdd = () => {
     dispatch(actions.showFormAddEdit('POST'));
-    resetFields();
+    reset({});
   };
   const onEdit = async (id) => {
     dispatch(actions.showFormAddEdit('PUT'));
@@ -106,14 +95,14 @@ function SuperAdmins() {
   const deleteAdmin = async () => {
     dispatch(thunks.deleteSuperadmin(deleteId));
   };
-  const onSubmit = (e) => {
+  const onSubmit = (data, e) => {
     e.preventDefault();
     const superAdmin = {
-      firstName,
-      lastName,
-      email,
-      password,
-      active
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      active: Boolean(data.active)
     };
     if (method === 'POST') {
       dispatch(thunks.addSuperadmin(superAdmin));
@@ -126,13 +115,17 @@ function SuperAdmins() {
   const {
     register,
     handleSubmit,
+    reset,
+    getValues,
+    // setValue,
     formState: { errors }
   } = useForm({
     mode: 'onBlur',
-    resolver: joiResolver(schema),
-    defaultValues: { ...initialValues }
+    resolver: joiResolver(schema)
   });
-  console.log(errors);
+  const formData = getValues('active');
+  console.log(formData);
+  // console.log(errors);
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -212,10 +205,11 @@ function SuperAdmins() {
             </div>
             <div>
               <input
-                className={styles.inputsDivs}
                 type="checkbox"
-                checked={active}
-                onChange={(e) => setActive(e.currentTarget.checked)}
+                className={styles.inputsDivs}
+                {...register('active')}
+                checked={!formData}
+                // onChange={setValue('active', getValues('active'))}
               />
             </div>
           </div>
