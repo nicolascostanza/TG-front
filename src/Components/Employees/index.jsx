@@ -74,17 +74,32 @@ function Employees() {
 
   useEffect(() => {
     dispatch(thunks.getEmployees());
+    // reset({
+    //   firstName: '',
+    //   lastName: '',
+    //   email: '',
+    //   gender: '',
+    //   address: '',
+    //   dob: '',
+    //   password: '',
+    //   phone: '',
+    //   active: ''
+    // });
   }, []);
 
   const {
     handleSubmit,
     register,
     watch,
-    formState: { errors }
-  } = useForm({ mode: 'onBlur', resolver: joiResolver(schema) });
+    formState: { errors },
+    reset
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
 
   console.log(watch(register.firstName));
-  console.log('Errors: ', errors);
+  // console.log('Errors: ', errors);
 
   // const valueGenderChange = (e) => {
   //   return setGender(e.target.value);
@@ -125,6 +140,10 @@ function Employees() {
         return employee;
       }
     });
+    // console.log('coso raro: ', employeeToEdit[0].lastName);
+    // setFirstName(register.firstName);
+    // setLastName(register.lastName);
+    watch(firstName, employeeToEdit[0].firstName);
     setFirstName(employeeToEdit[0].firstName);
     setLastName(employeeToEdit[0].lastName);
     setEmail(employeeToEdit[0].email);
@@ -136,28 +155,51 @@ function Employees() {
     setActive(employeeToEdit[0].active === 'true' ? true : false);
     setShowAddEdit(true);
     setEmployeeIdToEdit(id);
+    reset({
+      firstName: employeeToEdit[0].firstName,
+      lastName: employeeToEdit[0].lastName,
+      email: employeeToEdit[0].email,
+      gender: employeeToEdit[0].gender,
+      address: employeeToEdit[0].address,
+      dob: new Date(employeeToEdit[0].dob).toISOString().split('T')[0] || '',
+      password: employeeToEdit[0].password,
+      phone: employeeToEdit[0].phone,
+      active: employeeToEdit[0].active === 'true' ? true : false
+    });
   };
 
   const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setGender('');
-    setAddress('');
-    setDob('');
-    setPassword('');
-    setPhone('');
-    setActive(false);
+    // setFirstName('');
+    // setLastName('');
+    // setEmail('');
+    // setGender('');
+    // setAddress('');
+    // setDob('');
+    // setPassword('');
+    // setPhone('');
+    // setActive(false);
+    reset({
+      firstName: '',
+      lastName: '',
+      email: '',
+      gender: '',
+      address: '',
+      dob: '',
+      password: '',
+      phone: '',
+      active: ''
+    });
   };
 
   const closeForm = () => {
     setShowAddEdit(false);
     setMethod('');
+    resetFields();
   };
 
   const onSubmit = (data) => {
     // e.preventDefault();
-    console.log(data);
+    // console.log(data);
     if (method === 'POST') {
       dispatch(
         thunks.addEmployee({
@@ -172,6 +214,8 @@ function Employees() {
           active: active ? 'true' : 'false'
         })
       );
+      // dispatch(thunks.addEmployee(data));
+      resetFields();
       if (!error) {
         setShowAddEdit(false);
         setMethod('');
@@ -182,17 +226,19 @@ function Employees() {
       dispatch(
         thunks.editEmployee({
           _id: employeeIdToEdit,
-          firstName,
-          lastName,
-          email,
-          gender,
-          address,
-          dob,
-          password,
-          phone,
-          active: active ? 'true' : 'false'
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          gender: data.gender,
+          address: data.address,
+          dob: data.dob,
+          password: data.password,
+          phone: data.phone,
+          active: data.active
         })
       );
+      console.log('dataaa: ', data);
+      // dispatch(thunks.editEmployee(data));
       if (!error) {
         setShowAddEdit(false);
         setMethod('');
