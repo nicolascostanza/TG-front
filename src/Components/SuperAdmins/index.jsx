@@ -58,6 +58,8 @@ function SuperAdmins() {
     resolver: joiResolver(schema)
   });
 
+  console.log(errors);
+
   const superAdminsList = useSelector((state) => state.superAdmins.list);
   const message = useSelector((state) => state.superAdmins.message);
   const response = useSelector((state) => state.superAdmins.response);
@@ -163,51 +165,30 @@ function SuperAdmins() {
           <Loader isLoading={isFetching} />
           <div className={styles.inputsForm}>
             <label htmlFor="firstName">First Name</label>
-            <input
-              {...register('firstName', {
-                required: true,
-                maxLength: 50
-              })}
-              name="firstName"
-              type="text"
-            />
-            {errors.firstName?.type === 'required' && <p>This field is required</p>}
-            {errors.firstName?.type === 'maxLength' && (
-              <p>This field must contains less than 50 characters</p>
-            )}
+            <input {...register('firstName')} name="firstName" type="text" placeholder="John" />
+            {errors.firstName?.type === 'string.empty' && <p>{errors.firstName.message}</p>}
+            {errors.firstName?.type === 'string.min' && <p>{errors.firstName.message}</p>}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="lastName">Last Name</label>
-            <input
-              {...register('lastName', {
-                required: true,
-                maxLength: 50
-              })}
-              name="lastName"
-              type="text"
-            />
-            {errors.lastName?.type === 'required' && <p>This field is required</p>}
-            {errors.lastName?.type === 'maxLength' && (
-              <p>This field must contains less than 50 characters</p>
-            )}
+            <input {...register('lastName')} name="lastName" type="text" placeholder="Doe" />
+            {errors.lastName?.type === 'string.empty' && <p>{errors.lastName.message}</p>}
+            {errors.lastName?.type === 'string.min' && <p>{errors.lastName.message}</p>}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="email">Email</label>
             <input
-              {...register('email', {
-                required: true,
-                pattern:
-                  // eslint-disable-next-line no-useless-escape
-                  /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-              })}
+              {...register('email')}
               name="email"
               type="text"
+              placeholder="trackgenix@radium.com"
             />
-            {errors.email?.type === 'pattern' && <p>This field must be valid</p>}
+            {errors.email?.type === 'string.empty' && <p>{errors.email.message}</p>}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="password">Password</label>
-            <input {...register('password', { required: true })} name="password" type="password" />
+            <input {...register('password', { required: true })} />
+            {errors.password?.type === 'string.empty' && <p>{errors.password.message}</p>}
           </div>
           <div className={styles.inputsForm}>
             <div>
