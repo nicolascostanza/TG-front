@@ -12,6 +12,7 @@ import { useForm } from 'react-hook-form';
 import Joi from 'joi';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Loader from 'Components/Shared/Loader';
+// import Input from 'Components/Shared/Input';
 
 const schema = Joi.object({
   firstName: Joi.string()
@@ -57,15 +58,6 @@ function Employees() {
   const [deleteId, setDeleteId] = useState('');
   const [tittleModal, setTittleModal] = useState('');
   const [showModalMessage, setShowModalMessage] = useState(false);
-  // const [firstName, setFirstName] = useState('');
-  // const [lastName, setLastName] = useState('');
-  // const [email, setEmail] = useState('');
-  // const [gender, setGender] = useState('');
-  // const [address, setAddress] = useState('');
-  // const [dob, setDob] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [phone, setPhone] = useState('');
-  // const [active, setActive] = useState('');
   const [method, setMethod] = useState('');
   const message = useSelector((state) => state.employees.message);
   const error = useSelector((state) => state.employees.response);
@@ -75,36 +67,17 @@ function Employees() {
 
   useEffect(() => {
     dispatch(thunks.getEmployees());
-    // reset({
-    //   firstName: '',
-    //   lastName: '',
-    //   email: '',
-    //   gender: '',
-    //   address: '',
-    //   dob: '',
-    //   password: '',
-    //   phone: '',
-    //   active: ''
-    // });
   }, []);
 
   const {
     handleSubmit,
     register,
-    watch,
     formState: { errors },
     reset
   } = useForm({
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-
-  console.log(watch(register.firstName));
-  // console.log('Errors: ', errors);
-
-  // const valueGenderChange = (e) => {
-  //   return setGender(e.target.value);
-  // };
 
   const onDelete = (id) => {
     setShowModalAlert(true);
@@ -141,19 +114,6 @@ function Employees() {
         return employee;
       }
     });
-    // console.log('coso raro: ', employeeToEdit[0].lastName);
-    // setFirstName(register.firstName);
-    // setLastName(register.lastName);
-    // watch(firstName, employeeToEdit[0].firstName);
-    // setFirstName(employeeToEdit[0].firstName);
-    // setLastName(employeeToEdit[0].lastName);
-    // setEmail(employeeToEdit[0].email);
-    // setGender(employeeToEdit[0].gender);
-    // setAddress(employeeToEdit[0].address);
-    // setDob(new Date(employeeToEdit[0].dob).toISOString().split('T')[0] || '');
-    // setPassword(employeeToEdit[0].password);
-    // setPhone(employeeToEdit[0].phone);
-    // setActive(employeeToEdit[0].active === 'true' ? true : false);
     setShowAddEdit(true);
     setEmployeeIdToEdit(id);
     reset({
@@ -170,15 +130,6 @@ function Employees() {
   };
 
   const resetFields = () => {
-    // setFirstName('');
-    // setLastName('');
-    // setEmail('');
-    // setGender('');
-    // setAddress('');
-    // setDob('');
-    // setPassword('');
-    // setPhone('');
-    // setActive(false);
     reset({
       firstName: '',
       lastName: '',
@@ -199,22 +150,7 @@ function Employees() {
   };
 
   const onSubmit = (data) => {
-    // e.preventDefault();
-    console.log(data);
     if (method === 'POST') {
-      // dispatch(
-      //   thunks.addEmployee({
-      //     firstName: data.firstName,
-      //     lastName: data.lastName,
-      //     email: data.email,
-      //     gender: data.gender,
-      //     address: data.address,
-      //     dob: data.dob,
-      //     password: data.password,
-      //     phone: data.phone,
-      //     active: data.active
-      //   })
-      // );
       dispatch(thunks.addEmployee(data));
       resetFields();
       if (!error) {
@@ -238,8 +174,6 @@ function Employees() {
           active: data.active
         })
       );
-      // console.log('dataaa: ', data);
-      // dispatch(thunks.editEmployee(data));
       if (!error) {
         setShowAddEdit(false);
         setMethod('');
@@ -250,10 +184,6 @@ function Employees() {
     }
     resetFields();
   };
-
-  // if (isFetchingEmployees) {
-  //   return <Loader />;
-  // }
 
   return (
     <section className={styles.container}>
@@ -294,43 +224,49 @@ function Employees() {
           showModal={showAddEdit}
           background
         >
+          {/* ESTO COMENTADO ES PARA IMPLEMENTAR EL INPUT COPARTIDO */}
           <div>
             <label htmlFor="First name">First name</label>
-            <input
-              type="text"
-              // name="firstName"
-              // value={firstName}
-              // onChange={(e) => setFirstName(e.target.value)}
-              {...register('firstName')}
-            />
+            <input type="text" {...register('firstName')} />
             {errors.firstName && <p className={styles.error}>{errors.firstName.message}</p>}
           </div>
+          {/* <Input
+            type={'text'}
+            htmlForProp={'First name'}
+            label={'First name'}
+            register={register}
+            name={'firstName'}
+            error={errors.firstName?.message}
+            width={'189.63px'}
+          /> */}
           <div>
             <label htmlFor="Last name">Last name</label>
-            <input
-              type="text"
-              // name="lastName"
-              // value={lastName}
-              // onChange={(e) => setLastName(e.target.value)}
-              {...register('lastName')}
-            />
+            <input type="text" {...register('lastName')} />
             {errors.lastName && <p className={styles.error}>{errors.lastName.message}</p>}
           </div>
+          {/* <Input
+            type={'text'}
+            htmlForProp={'Last name'}
+            label={'Last name'}
+            register={register}
+            name={'lastName'}
+            error={errors.lastName?.message}
+          /> */}
           <div>
             <label htmlFor="Email">Email</label>
-            <input
-              type="text"
-              // name="email"
-              // value={email}
-              // onChange={(e) => setEmail(e.target.value)}
-              {...register('email')}
-            />
+            <input type="text" {...register('email')} />
             {errors.email && <p className={styles.error}>{errors.email.message}</p>}
           </div>
+          {/* <Input
+            type={'text'}
+            htmlForProp={'Email'}
+            label={'Email'}
+            register={register}
+            name={'email'}
+            error={errors.email?.message}
+          /> */}
           <div>
-            {/* <label htmlFor="Gender">Gender</label> */}
             <Dropdown
-              // onChange={valueGenderChange}
               width={'189.63px'}
               placeholder={'Select gender'}
               value={'gender'}
@@ -343,71 +279,65 @@ function Employees() {
               <option value="Female">Female</option>
               <option value="Other">Other</option>
             </Dropdown>
-            {/* <label htmlFor="Gender">Gender</label>
-            <select {...register('gender')}>
-              <option hidden>Select gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select> */}
-            {errors.gender && <p className={styles.error}>{errors.gender.message}</p>}
           </div>
           <div>
             <label htmlFor="Address">Address</label>
-            <input
-              type="text"
-              // name="address"
-              // value={address}
-              // onChange={(e) => setAddress(e.target.value)}
-              {...register('address')}
-            />
+            <input type="text" {...register('address')} />
             {errors.address && <p className={styles.error}>{errors.address.message}</p>}
           </div>
+          {/* <Input
+            type={'text'}
+            htmlForProp={'Address'}
+            label={'Address'}
+            register={register}
+            name={'address'}
+            error={errors.address?.message}
+          /> */}
           <div>
             <label htmlFor="Date of birth">Dob</label>
-            <input
-              type="date"
-              // name="dob"
-              // value={dob}
-              // onChange={(e) => setDob(e.target.value)}
-              {...register('dob')}
-            />
+            <input type="date" {...register('dob')} />
             {errors.dob && <p className={styles.error}>{errors.dob.message}</p>}
           </div>
+          {/* <Input
+            type={'date'}
+            htmlForProp={'Date of birth'}
+            label={'Date of birth'}
+            register={register}
+            name={'dob'}
+            error={errors.dob?.message}
+          /> */}
           <div>
             <label htmlFor="Password">Password</label>
-            <input
-              type="password"
-              // name="password"
-              // value={password}
-              // onChange={(e) => setPassword(e.target.value)}
-              {...register('password')}
-            />
+            <input type="password" {...register('password')} />
             {errors.password && <p className={styles.error}>{errors.password.message}</p>}
           </div>
+          {/* <Input
+            type={'password'}
+            htmlForProp={'Password'}
+            label={'Password'}
+            register={register}
+            name={'password'}
+            error={errors.password?.message}
+          /> */}
           <div>
             <label htmlFor="Phone">Phone</label>
-            <input
-              type="number"
-              // name="phone"
-              // value={phone}
-              // onChange={(e) => setPhone(e.target.value)}
-              {...register('phone')}
-            />
+            <input type="number" {...register('phone')} />
             {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
           </div>
+          {/* <Input
+            type={'number'}
+            htmlForProp={'Phone'}
+            label={'Phone'}
+            register={register}
+            name={'phone'}
+            error={errors.phone?.message}
+          /> */}
           <div>
             <div>
               <label htmlFor="Active?">Active</label>
             </div>
             <div>
-              <input
-                type="checkbox"
-                // checked={active}
-                // value={active}
-                // onChange={(e) => setActive(e.currentTarget.checked)}
-                {...register('active')}
-              />
+              <input type="checkbox" {...register('active')} />
             </div>
           </div>
         </Form>
