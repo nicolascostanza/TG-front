@@ -22,7 +22,6 @@ function Admins() {
   const dispatch = useDispatch();
   const admins = useSelector((state) => state.admins.list);
   const isFetching = useSelector((state) => state.admins.isFetching);
-  const [values, setValue] = [{ firstName: '', lastName: '', email: '', password: '', active: '' }];
   const schema = Joi.object({
     firstName: Joi.string()
       .min(3)
@@ -48,18 +47,20 @@ function Admins() {
     reset,
     formState: { errors }
   } = useForm({
-    mode: 'onChange',
-    resolver: joiResolver(schema),
-    defaultValues: {
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      password: values.password,
-      active: values.active
-    }
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
   });
   useEffect(() => {
     dispatch(thunks.getAdmins());
+    if (method !== 'PUT') {
+      reset({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        active: false
+      });
+    }
   }, [method]);
 
   const formattedAdmins = admins.map((admin) => {
@@ -100,28 +101,9 @@ function Admins() {
     setShowModalAdd(true);
   };
 
-  /*   const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setActive(false);
-  }; */
-  /*   if (values) {
-    useEffect(() => {
-      reset({
-        firstName: values.firstName,
-        lastName: values.lastName,
-        email: values.email,
-        password: values.password,
-        active: values.active
-      });
-    }, []);
-  } */
-
   const fillInputs = (id) => {
     const valu = admins.filter((admin) => admin._id === id);
-    setValue(valu);
+    reset(...valu);
   };
 
   const addAdmin = async (admin) => {
