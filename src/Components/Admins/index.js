@@ -1,31 +1,63 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import styles from './admins.module.css';
-import Table from '../Shared/Table';
-import Loader from '../Shared/Loader';
-import Modal from '../Shared/Modal';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import * as thunks from '../../redux/admins/thunks';
 import Button from '../Shared/Button';
 import Form from '../Shared/Form';
+import Loader from '../Shared/Loader';
+import Modal from '../Shared/Modal';
 import Sidebar from '../Shared/Sidebar';
-import * as thunks from '../../redux/admins/thunks';
-import { useDispatch, useSelector } from 'react-redux';
+import Table from '../Shared/Table';
+import styles from './admins.module.css';
 
 function Admins() {
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [showModalAdd, setShowModalAdd] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [active, setActive] = useState(false);
   const [method, setMethod] = useState(false);
   const [deleteId, setDeleteId] = useState('');
   const [idEdit, setId] = useState('');
   const dispatch = useDispatch();
   const admins = useSelector((state) => state.admins.list);
   const isFetching = useSelector((state) => state.admins.isFetching);
-
+  const [values, setValue] = [{ firstName: '', lastName: '', email: '', password: '', active: '' }];
+  const schema = Joi.object({
+    firstName: Joi.string()
+      .min(3)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    lastName: Joi.string()
+      .min(3)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .min(7)
+      .required(),
+    password: Joi.string()
+      .min(8)
+      .required()
+      .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/),
+    active: Joi.boolean().required()
+  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm({
+    mode: 'onChange',
+    resolver: joiResolver(schema),
+    defaultValues: {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      active: values.active
+    }
+  });
   useEffect(() => {
     dispatch(thunks.getAdmins());
   }, [method]);
@@ -64,30 +96,35 @@ function Admins() {
   };
 
   const onAdd = () => {
-    resetFields();
     setMethod('POST');
     setShowModalAdd(true);
   };
 
-  const resetFields = () => {
+  /*   const resetFields = () => {
     setFirstName('');
     setLastName('');
     setEmail('');
     setPassword('');
     setActive(false);
-  };
+  }; */
+  /*   if (values) {
+    useEffect(() => {
+      reset({
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        password: values.password,
+        active: values.active
+      });
+    }, []);
+  } */
 
   const fillInputs = (id) => {
-    const values = admins.filter((admin) => admin._id === id);
-    setFirstName(values[0].firstName);
-    setLastName(values[0].lastName);
-    setEmail(values[0].email);
-    setPassword(values[0].password);
-    setActive(values[0].active);
+    const valu = admins.filter((admin) => admin._id === id);
+    setValue(valu);
   };
 
   const addAdmin = async (admin) => {
-    resetFields();
     dispatch(thunks.addAdmin(admin));
     setMethod('');
     setShowModalAdd(false);
@@ -106,17 +143,15 @@ function Admins() {
       return <h2>Fetching</h2>;
     }
     setMethod('');
-    resetFields();
     handleCloseAdd(false);
   };
 
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
+    console.log(data);
     if (method === 'POST') {
-      addAdmin({ firstName, lastName, email, password, active });
-      resetFields();
+      addAdmin(data);
     } else if (method === 'PUT') {
-      editAdmin({ firstName, lastName, email, password, active });
+      editAdmin(data);
     } else {
       alert('Something unexpected happened');
     }
@@ -138,6 +173,9 @@ function Admins() {
           <Button onClick={deleteAdmin} width={'75px'} height={'25px'} fontSize={'15px'}>
             Accept
           </Button>
+          <Button onClick={() => reset()} width={'75px'} height={'25px'} fontSize={'15px'}>
+            Reset form
+          </Button>
           <Button onClick={handleCloseAlert} width={'75px'} height={'25px'} fontSize={'15px'}>
             Cancel
           </Button>
@@ -146,52 +184,37 @@ function Admins() {
       <Form
         showModal={showModalAdd}
         handleClose={handleCloseAdd}
-        handleSubmit={onSubmit}
+        handleSubmit={handleSubmit(onSubmit)}
         title={method === 'POST' ? 'Create Admin' : 'Edit Admin'}
       >
         <Loader isLoading={isFetching} />
         <div>
-          <label>Name</label>
-          <input
-            type="text"
-            value={firstName}
-            required
-            onChange={(e) => setFirstName(e.target.value)}
-          />
+          <label htmlFor="firstName">Name</label>
+          <input {...register('firstName')} name="firstName" type="text" />
+          {errors.firstName?.message && <p>{errors.firstName?.message}</p>}
         </div>
         <div>
-          <label>Last Name</label>
-          <input
-            type="text"
-            value={lastName}
-            required
-            onChange={(e) => setLastName(e.target.value)}
-          />
+          <label htmlFor="lastName">Last Name</label>
+          <input {...register('lastName')} name="lastName" type="text" />
+          {errors.lastName?.message && <p>{errors.lastName?.message}</p>}
         </div>
         <div>
-          <label>Email</label>
-          <input type="text" value={email} required onChange={(e) => setEmail(e.target.value)} />
+          <label htmlFor="email">Email</label>
+          <input {...register('email')} name="email" type="email" />
+          {errors.email?.message && <p>{errors.email?.message}</p>}
         </div>
         <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <label htmlFor="password">Password</label>
+          <input {...register('password')} name="password" type="password" />
+          {errors.password?.message && <p>{errors.password?.message}</p>}
         </div>
         <div>
           <div>
-            <label>Active</label>
+            <label htmlFor="active">Active</label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              checked={active}
-              value={active}
-              onChange={(e) => setActive(e.currentTarget.checked)}
-            />
+            <input type="checkbox" name="active" {...register('active')} />
+            {errors.active?.message && <p>{errors.active?.message}</p>}
           </div>
         </div>
       </Form>
