@@ -29,13 +29,58 @@ const CreateProject = (props) => {
     name: Joi.string()
       .min(3)
       .max(30)
-      .required()
-      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
-    description: Joi.string().min(3).max(200).required(),
-    clientName: Joi.string().min(3).max(30).required(),
-    startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
-    projectManager: Joi.string().min(3).max(30).required(),
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'Name must contain 3 or more characters',
+        'string.max': 'Name must contain 30 or less characters',
+        'string.pattern.base': 'Name is not valid',
+        'string.empty': 'This field is required'
+      })
+      .required(),
+    description: Joi.string()
+      .min(3)
+      .max(200)
+      .messages({
+        'string.min': 'Description must contain 3 or more characters',
+        'string.max': 'Name must contain 200 or less characters',
+        'string.empty': 'This field is required'
+      })
+      .required(),
+    clientName: Joi.string()
+      .min(3)
+      .max(30)
+      .messages({
+        'string.min': 'Client name must contain 3 or more characters',
+        'string.max': 'Client name must contain 30 or less characters',
+        'string.empty': 'This field is required'
+      })
+      .required(),
+    startDate: Joi.date()
+      .messages({
+        'date.base': 'Date is not valid',
+        'date.empty': 'This field is required'
+      })
+      .required(),
+    endDate: Joi.date()
+      .greater(Joi.ref('startDate'))
+      .messages({
+        'date.base': 'Date is not valid',
+        'date.greater': 'End date must be after the start date',
+        'date.empty': 'This field is required'
+      })
+      .required(),
+    projectManager: Joi.string()
+      .min(3)
+      .max(30)
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'Project manager name must contain 3 or more letters',
+        'string.max': 'Project manager name must contain 30 or less letters',
+        'string.empty': 'This field is required',
+        'string.pattern.base': 'Name is not valid',
+        'string.regex': 'Project manager name is not valid'
+      })
+      .required(),
     team: Joi.array(),
     tasks: Joi.array()
   });
@@ -47,8 +92,6 @@ const CreateProject = (props) => {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-
-  console.log(errors);
 
   const handleInputChanges = (e) => {
     const { name, value } = e.target;
@@ -102,6 +145,7 @@ const CreateProject = (props) => {
         type="text"
         placeholder="Project name"
       />
+      {errors.name?.type ? <p className={projectForm.error}>{errors.name.message}</p> : null}
 
       <label htmlFor="description">Description</label>
       <input
@@ -110,15 +154,25 @@ const CreateProject = (props) => {
         type="text"
         placeholder="Project description"
       />
+      {errors.description?.type ? (
+        <p className={projectForm.error}>{errors.description.message}</p>
+      ) : null}
 
       <label htmlFor="clientName">Client Name</label>
       <input {...register('clientName')} name="clientName" type="text" placeholder="Client name" />
+      {errors.clientName?.type ? (
+        <p className={projectForm.error}>{errors.clientName.message}</p>
+      ) : null}
 
       <label htmlFor="startDate">Start Date</label>
       <input {...register('startDate')} name="startDate" type="date" />
+      {errors.startDate?.type ? (
+        <p className={projectForm.error}>{errors.startDate.message}</p>
+      ) : null}
 
       <label htmlFor="endDate">End Date</label>
       <input {...register('endDate')} name="endDate" type="date" />
+      {errors.endDate?.type ? <p className={projectForm.error}>{errors.endDate.message}</p> : null}
 
       <label htmlFor="projectManager">Project Manager</label>
       <input
@@ -127,6 +181,9 @@ const CreateProject = (props) => {
         type="text"
         placeholder="Project manager"
       />
+      {errors.projectManager?.type ? (
+        <p className={projectForm.error}>{errors.projectManager.message}</p>
+      ) : null}
 
       <label htmlFor="team">Team</label>
       <input

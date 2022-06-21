@@ -1,5 +1,8 @@
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 import Form from 'Components/Shared/Form';
 import projectForm from './projectForm.module.css';
 import * as thunks from 'redux/projects/thunks';
@@ -13,9 +16,12 @@ const EditProject = (props) => {
     clientName,
     startDate,
     endDate,
-    projectManager
+    projectManager,
+    team,
+    tasks
   } = props.initial;
-  const { allEmployees, allTasks } = props;
+  const allEmployees = useSelector((state) => state.employees.list);
+  const allTasks = useSelector((state) => state.tasks.list);
 
   const initialValues = {
     name: name || '',
@@ -31,7 +37,86 @@ const EditProject = (props) => {
   const [project, setProject] = useState(initialValues);
   const [selectedEmployees, setSelectedEmployees] = useState([]);
   const [selectedTasks, setSelectedTasks] = useState([]);
+  useEffect(() => {
+    setSelectedEmployees([...team.map((member) => member._id)]);
+    setSelectedTasks([...tasks.map((task) => task._id)]);
+  }, []);
   const dispatch = useDispatch();
+  const schema = Joi.object({
+    name: Joi.string()
+      .min(3)
+      .max(30)
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'Name must contain 3 or more characters',
+        'string.max': 'Name must contain 30 or less characters',
+        'string.pattern.base': 'Name is not valid',
+        'string.empty': 'This field is required'
+      })
+      .required(),
+    description: Joi.string()
+      .min(3)
+      .max(200)
+      .messages({
+        'string.min': 'Description must contain 3 or more characters',
+        'string.max': 'Name must contain 200 or less characters',
+        'string.empty': 'This field is required'
+      })
+      .required(),
+    clientName: Joi.string()
+      .min(3)
+      .max(30)
+      .messages({
+        'string.min': 'Client name must contain 3 or more characters',
+        'string.max': 'Client name must contain 30 or less characters',
+        'string.empty': 'This field is required'
+      })
+      .required(),
+    startDate: Joi.date()
+      .messages({
+        'date.base': 'Date is not valid',
+        'date.empty': 'This field is required'
+      })
+      .required(),
+    endDate: Joi.date()
+      .greater(Joi.ref('startDate'))
+      .messages({
+        'date.base': 'Date is not valid',
+        'date.greater': 'End date must be after the start date',
+        'date.empty': 'This field is required'
+      })
+      .required(),
+    projectManager: Joi.string()
+      .min(3)
+      .max(30)
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'Project manager name must contain 3 or more letters',
+        'string.max': 'Project manager name must contain 30 or less letters',
+        'string.empty': 'This field is required',
+        'string.pattern.base': 'Name is not valid',
+        'string.regex': 'Project manager name is not valid'
+      })
+      .required(),
+    team: Joi.array(),
+    tasks: Joi.array()
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema),
+    defaultValues: {
+      name: name || '',
+      description: description || '',
+      clientName: clientName || '',
+      startDate: new Date(startDate).toISOString().split('T')[0] || '',
+      endDate: new Date(endDate).toISOString().split('T')[0] || '',
+      projectManager: projectManager || ''
+    }
+  });
 
   const handleInputChanges = (e) => {
     const { name, value } = e.target;
@@ -41,15 +126,15 @@ const EditProject = (props) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const submitEditProject = (data, e) => {
     e.preventDefault();
     const updatedBody = {
-      name: project.name,
-      description: project.description,
-      clientName: project.clientName,
-      startDate: project.startDate,
-      endDate: project.endDate,
-      projectManager: project.projectManager,
+      name: data.name,
+      description: data.description,
+      clientName: data.clientName,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      projectManager: data.projectManager,
       team: selectedEmployees,
       tasks: selectedTasks
     };
@@ -79,54 +164,56 @@ const EditProject = (props) => {
   return (
     <Form
       title="Edit projects"
-      handleSubmit={handleSubmit}
+      handleSubmit={handleSubmit(submitEditProject)}
       showModal={showModal}
       handleClose={handleClose}
       className={projectForm.form}
     >
-      <label>Name</label>
-      <input
-        value={project.name}
-        onChange={handleInputChanges}
-        name="name"
-        type="text"
-        placeholder="Project name"
-      />
+      <label htmlFor="name">Name</label>
+      <input {...register('name', { required: true })} type="text" placeholder="Project name" />
+      {errors.name?.type ? <p className={projectForm.error}>{errors.name.message}</p> : null}
 
-      <label>Description</label>
+      <label htmlFor="description">Description</label>
       <input
-        value={project.description}
-        onChange={handleInputChanges}
-        name="description"
+        {...register('description', { required: true })}
         type="text"
         placeholder="Project description"
       />
+      {errors.description?.type ? (
+        <p className={projectForm.error}>{errors.description.message}</p>
+      ) : null}
 
-      <label>Client Name</label>
+      <label htmlFor="clientName">Client Name</label>
       <input
-        value={project.clientName}
-        onChange={handleInputChanges}
-        name="clientName"
+        {...register('clientName', { required: true })}
         type="text"
         placeholder="Client name"
       />
+      {errors.clientName?.type ? (
+        <p className={projectForm.error}>{errors.clientName.message}</p>
+      ) : null}
 
-      <label>Start Date</label>
-      <input value={project.startDate} onChange={handleInputChanges} name="startDate" type="date" />
+      <label htmlFor="startDate">Start Date</label>
+      <input {...register('startDate', { required: true })} type="date" />
+      {errors.startDate?.type ? (
+        <p className={projectForm.error}>{errors.startDate.message}</p>
+      ) : null}
 
-      <label>End Date</label>
-      <input value={project.endDate} onChange={handleInputChanges} name="endDate" type="date" />
+      <label htmlFor="endDate">End Date</label>
+      <input {...register('endDate', { required: true })} type="date" />
+      {errors.endDate?.type ? <p className={projectForm.error}>{errors.endDate.message}</p> : null}
 
-      <label>Project Manager</label>
+      <label htmlFor="projectManager">Project Manager</label>
       <input
-        value={project.projectManager}
-        onChange={handleInputChanges}
-        name="projectManager"
+        {...register('projectManager', { required: true })}
         type="text"
         placeholder="Project manager"
       />
+      {errors.projectManager?.type ? (
+        <p className={projectForm.error}>{errors.projectManager.message}</p>
+      ) : null}
 
-      <label>Team</label>
+      <label htmlFor="team">Team</label>
       <input
         value={project.team}
         onChange={handleInputChanges}
@@ -175,7 +262,7 @@ const EditProject = (props) => {
             );
           })}
 
-      <label>Tasks</label>
+      <label htmlFor="tasks">Tasks</label>
       <input
         value={project.tasks}
         onChange={handleInputChanges}
