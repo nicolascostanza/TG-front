@@ -2,178 +2,228 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styles from './profile.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import * as thunksEmployee from '../../../redux/employees/thunks';
+import { appendErrors, useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import { employeeValidationUpdate } from './validations';
 
 function Profile() {
   const param = useParams();
-  const initValues = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    gender: '',
-    adress: '',
-    dob: '',
-    active: false,
-    phone: ''
-  };
+  const dispatch = useDispatch();
   const [update, setUpdate] = useState(true);
-  const [employee, setEmployee] = useState(initValues);
-
+  const employees = useSelector((state) => state.employees.list);
+  const employeeSelected = employees.filter((employee) => employee._id === param.id);
+  // const message = useSelector((state) => state.employees.message);
+  const response = useSelector((state) => state.employees.error);
   useEffect(() => {
-    requestById();
+    dispatch(thunksEmployee.getEmployees());
+    fetch(`${process.env.REACT_APP_API_URL}/employees/${param.id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        reset(data.data);
+      });
   }, []);
-
-  const handleInputChanges = (e) => {
-    const { name, value } = e.target;
-    setEmployee({
-      ...employee,
-      [name]: value
-    });
-  };
-  const requestById = async () => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/employees/${param.id}`);
-      const res = await response.json();
-      if (res.error) {
-        throw res.message;
-      }
-      setEmployee(res.data);
-    } catch (error) {
-      console.log(error);
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(employeeValidationUpdate)
+  });
+  const onSubmitUpdate = (data) => {
+    console.log('asdasdsa');
+    const employee2 = { ...data, _id: param.id };
+    dispatch(thunksEmployee.editEmployee(employee2));
+    if (response) {
+      console.log('mal');
+    } else {
+      console.log('bien pa');
+      setUpdate(!update);
     }
   };
 
   return (
     <>
-      <h1>Welcome {employee.firstName}</h1>
-      <button className={styles.edit} onClick={() => setUpdate(!update)}>
+      <h1>Welcome {employeeSelected[0]?.firstName}</h1>
+      <button
+        className={styles.edit}
+        onClick={(e) => {
+          e.preventDefault();
+          setUpdate(!update);
+        }}
+      >
         EDIT
       </button>
-      <form className={styles.form}>
+
+      <form className={styles.form} onSubmit={handleSubmit(onSubmitUpdate)}>
         <div>
-          <label className={styles.label}>Name</label>
+          <label>First Name</label>
           {update ? (
-            <p>{employee.firstName}</p>
+            <p>{employeeSelected[0]?.firstName}</p>
           ) : (
-            <input
-              type="text"
-              name="firstName"
-              disabled={update}
-              value={employee.firstName}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="text"
+                name="firstName"
+                {...register('firstName')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.firstName}
+                error={appendErrors.firstName?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Last Name</label>
+          <label>Last Name</label>
           {update ? (
-            <p>{employee.lastName}</p>
+            <p>{employeeSelected[0]?.lastName}</p>
           ) : (
-            <input
-              type="text"
-              name="email"
-              disabled={update}
-              value={employee.lastName}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="text"
+                name="lastName"
+                {...register('lastName')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.lastName}
+                error={appendErrors.firstName?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Email</label>
+          <label>Email</label>
           {update ? (
-            <p>{employee.email}</p>
+            <p>{employeeSelected[0]?.email}</p>
           ) : (
-            <input
-              type="text"
-              name="email"
-              disabled={update}
-              value={employee.email}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="email"
+                name="email"
+                {...register('email')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.email}
+                error={appendErrors.firstName?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Password</label>
+          <label>Password</label>
           {update ? (
-            <p>{employee.password}</p>
+            <p>{employeeSelected[0]?.password}</p>
           ) : (
-            <input
-              type="text"
-              name="password"
-              disabled={update}
-              value={employee.password}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="password"
+                name="password"
+                {...register('password')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.password}
+                error={appendErrors.firstName?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Gender</label>
+          <label>Gender</label>
           {update ? (
-            <p>{employee.gender}</p>
+            <p>{employeeSelected[0]?.gender}</p>
           ) : (
-            <select>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
+            <>
+              <select {...register('gender')}>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Address</label>
+          <label>Address</label>
           {update ? (
-            <p>{employee.adress}</p>
+            <p>{employeeSelected[0]?.address}</p>
           ) : (
-            <input
-              type="text"
-              name="address"
-              disabled={update}
-              value={employee.adress}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="text"
+                name="address"
+                {...register('address')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.address}
+                error={appendErrors.address?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Phone</label>
+          <label>Phone</label>
           {update ? (
-            <p>{employee.phone}</p>
+            <p>{employeeSelected[0]?.phone}</p>
           ) : (
-            <input
-              type="text"
-              name="phone"
-              disabled={update}
-              value={employee.phone}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="number"
+                name="phone"
+                {...register('phone')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.phone}
+                error={appendErrors.phone?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Date Of Birth</label>
+          <label>Date of Birthday</label>
           {update ? (
-            ''
+            <p>{new Date(employeeSelected[0]?.dob).toString()}</p>
           ) : (
-            // <p>{new Date(employee.dob).toISOString().split('T')[0]}</p>
-            <input
-              type="date"
-              name="date"
-              disabled={update}
-              value={employee.dob}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="date"
+                name="dob"
+                {...register('dob')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.dob}
+                error={appendErrors.dob?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
         <div>
-          <label className={styles.label}>Active</label>
+          <label>Active</label>
           {update ? (
-            <p>{employee.active ? 'true' : 'false'}</p>
+            <p>{employeeSelected[0]?.active}</p>
           ) : (
-            <input
-              type="checkbox"
-              name="active"
-              disabled={update}
-              value={employee.active}
-              onChange={handleInputChanges}
-            ></input>
+            <>
+              <input
+                type="checkbox"
+                name="active"
+                {...register('active')}
+                disabled={update}
+                placeholder={employeeSelected[0]?.active}
+                error={appendErrors.active?.message}
+              ></input>
+              <p>{errors.message}</p>
+            </>
           )}
         </div>
+        <div className={styles.button}>
+          <input type="submit" value="Send" />
+        </div>
+        <button className={styles.edit} onClick={(e) => e.preventDefault()}>
+          CANCEL
+        </button>
       </form>
     </>
   );

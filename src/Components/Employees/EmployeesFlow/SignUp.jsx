@@ -4,7 +4,7 @@ import styles from './signup.module.css';
 // import Button from '../../Shared/Button';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import validations from './validations';
+import { employeeValidationSignUp } from './validations';
 import Modal from '../../Shared/Modal';
 import * as thunksEmployee from '../../../redux/employees/thunks';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,17 +26,14 @@ function SignUp() {
     reset
   } = useForm({
     mode: 'onBlur',
-    resolver: joiResolver(validations)
+    resolver: joiResolver(employeeValidationSignUp)
   });
 
   console.log('errors: ', errors);
 
   const onSubmit = (data) => {
-    console.log(data);
     dispatch(thunksEmployee.addEmployee(data));
     setShowModalMessage(true);
-
-    console.log(data.gender);
   };
   // console.log(getValues());
   return (
