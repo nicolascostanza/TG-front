@@ -7,6 +7,7 @@ import * as thunksEmployee from '../../../redux/employees/thunks';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationUpdate } from './validations';
+import Modal from '../../Shared/Modal';
 
 function Profile() {
   const param = useParams();
@@ -16,6 +17,7 @@ function Profile() {
   const employeeSelected = employees.filter((employee) => employee._id === param.id);
   const message = useSelector((state) => state.employees.message);
   const response = useSelector((state) => state.employees.error);
+  const [showModalMessage, setShowModalMessage] = useState(false);
   useEffect(() => {
     dispatch(thunksEmployee.getEmployees());
     fetch(`${process.env.REACT_APP_API_URL}/employees/${param.id}`)
@@ -56,6 +58,11 @@ function Profile() {
     } else {
       setUpdate(!update);
     }
+    setShowModalMessage(true);
+  };
+  const handleCloseMessage = () => {
+    setShowModalMessage(false);
+    setShowModalMessage('');
   };
 
   return (
@@ -70,6 +77,9 @@ function Profile() {
       >
         EDIT
       </button>
+      <Modal showModal={showModalMessage} handleClose={handleCloseMessage}>
+        <p>{message}</p>
+      </Modal>
       <form className={styles.form} onSubmit={handleSubmit(UpdateEmployee)}>
         <div>
           <label>First Name</label>
