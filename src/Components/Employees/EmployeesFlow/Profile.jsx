@@ -14,14 +14,26 @@ function Profile() {
   const [update, setUpdate] = useState(true);
   const employees = useSelector((state) => state.employees.list);
   const employeeSelected = employees.filter((employee) => employee._id === param.id);
-  // const message = useSelector((state) => state.employees.message);
+  const message = useSelector((state) => state.employees.message);
   const response = useSelector((state) => state.employees.error);
   useEffect(() => {
     dispatch(thunksEmployee.getEmployees());
     fetch(`${process.env.REACT_APP_API_URL}/employees/${param.id}`)
       .then((response) => response.json())
       .then((data) => {
-        reset(data.data);
+        const { firstName, lastName, email, password, gender, address, phone, dob, active } =
+          data.data;
+        reset({
+          firstName,
+          lastName,
+          email,
+          password,
+          gender,
+          address,
+          phone,
+          dob: new Date(dob).toISOString().split('T')[0],
+          active
+        });
       });
   }, []);
   const {
@@ -33,20 +45,17 @@ function Profile() {
     mode: 'onBlur',
     resolver: joiResolver(employeeValidationUpdate)
   });
-  const onSubmit = (data) => {
-    console.log('asdasdsa');
-    const employee2 = { ...data, _id: param.id };
-    dispatch(thunksEmployee.editEmployee(employee2));
+  const UpdateEmployee = (data) => {
+    console.log('submiteo');
+    console.log(data);
+    const employee = { ...data, _id: param.id };
+    dispatch(thunksEmployee.editEmployee(employee));
+    console.log(message);
     if (response) {
-      console.log('mal');
+      console.log(response);
     } else {
-      console.log('bien pa');
       setUpdate(!update);
     }
-  };
-  const prueba = () => {
-    console.log('Hola Mundo');
-    handleSubmit(onSubmit);
   };
 
   return (
@@ -61,7 +70,7 @@ function Profile() {
       >
         EDIT
       </button>
-      <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
+      <form className={styles.form} onSubmit={handleSubmit(UpdateEmployee)}>
         <div>
           <label>First Name</label>
           {update ? (
@@ -222,7 +231,7 @@ function Profile() {
           )}
         </div>
         {/* <input type="submit" value="Send" /> */}
-        <input type="submit" onClick={prueba()} value="UPDATE"></input>
+        <input type="submit" value="submit"></input>
         <button className={styles.edit} onClick={(e) => e.preventDefault()}>
           CANCEL
         </button>

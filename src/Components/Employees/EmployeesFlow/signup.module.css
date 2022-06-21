@@ -1,51 +1,116 @@
 .form {
-    display: flex;
-    justify-content: center;
-    width: 50%;
-    margin: 25px auto;
-    border: 1px solid black;
-    border-radius: 15px;
-    padding-left: 35px;
-    padding-bottom: 35px;
+  display: flex;
+  justify-content: center;
+  width: 60%;
+  margin: 25px auto;
+  background: #ebebf0;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding-left: 35px;
+  padding-bottom: 35px;
 }
 
 .form form {
-    display: flex;
-    flex-direction: column;
-    flex: wrap;
-    width: 75%;
+  display: flex;
+  flex-direction: column;
+  flex: wrap;
+  width: 90%;
 }
 
 .form h1 {
-    padding-top: 25px;
-    font-size: 24px;
-    text-transform: uppercase;
+  padding-top: 25px;
+  text-transform: uppercase;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 55px;
+  line-height: 64px;
+  color: #373867;
+  text-align: center;
 }
 
-.form input:not(.checkbox), select {
-    display: block;
-    padding: 6px;
-    border-radius: 2px;
-    resize: none;
-    width: 100%;
+.form input:not(.checkbox),
+select {
+  display: block;
+  padding: 6px;
+  border: 1px solid #373867;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 5px;
+  resize: none;
+  width: 100%;
+}
+.inputContainer {
+  margin: 10px 20px;
+  width: 80%;
+}
+.formFlex {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-between;
 }
 
 .checkbox {
-    align-self: flex-start;
+  align-self: flex-start;
+}
+.buttonsContainer {
+  margin: 30px 0;
+  display: flex;
+  justify-content: space-around;
+}
+.buttonContinue {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  width: 45%;
+  height: auto;
+  background: #aace9b;
+  border-radius: 5px;
+  border: 1px solid #373867;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+  display: flex;
+  color: #373867;
+}
+.buttonReset {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  width: 45%;
+  height: auto;
+  background: #ebebf0;
+  color: #373867;
+  border-radius: 5px;
+  border: 1px solid #373867;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+  display: flex;
 }
 
-.button {
-    width: 100%;
-    display: flex;
+.errorInput {
+  color: #d30404;
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 21px;
+  margin: 5px 0 0 5px;
+  padding: 0%;
+  border: none;
 }
 
-.button button {
-    margin: 25px auto 0;
+.labels {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 23px;
+  color: #373867;
 }
-.errorInput{
-    color: red;
-    font-size: 10px;
-    margin: 0%;
-    padding: 0%;
-}
-
