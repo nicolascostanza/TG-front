@@ -8,15 +8,16 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 function AddTimeSheets(props) {
-  const [employeeId, setEmployeeId] = useState('');
-  const [description] = useState('');
-  const [project] = useState('');
-  const [date] = useState('');
-  const [hours] = useState('');
-  const [task, setTask] = useState([]);
-  const [approved] = useState(false);
-  const [role] = useState('');
-  const { showCreateModal, handleClose } = props;
+  // const [employeeId, setEmployeeId] = useState('');
+  // const [description] = useState('');
+  // const [project] = useState('');
+  // const [date] = useState('');
+  // const [hours] = useState('');
+  const [tasks, setTasks] = useState('');
+  // const [approved] = useState(false);
+  // const [role] = useState('');
+  const { showCreateModal, handleClose, allTasks } = props;
+  const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
   const schema = Joi.object({
     employeeId: Joi.string().required(),
@@ -24,7 +25,7 @@ function AddTimeSheets(props) {
     project: Joi.string().min(3).required(),
     date: Joi.date().required(),
     hours: Joi.number().min(1).required(),
-    task: Joi.array().required(),
+    // task: Joi.string().required(),
     approved: Joi.bool().required(),
     role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required()
   });
@@ -39,21 +40,26 @@ function AddTimeSheets(props) {
 
   console.log(errors);
 
+  const appendToSelectedTasks = (id) => {
+    const previousState = selectedTasks;
+    setSelectedTasks([...previousState, id]);
+    setTasks('');
+  };
+
+  const deleteFromSelectedTasks = (id) => {
+    setSelectedTasks(selectedTasks.filter((task) => task !== id));
+  };
+
   const addTimeSheets = async (timeSheet) => {
     dispatch(thunks.addTimesheets(timeSheet));
   };
-  const onSubmit = (e) => {
+  const onSubmit = (data, e) => {
     e.preventDefault();
     addTimeSheets({
-      employeeId,
-      description,
-      project,
-      date,
-      hours,
-      task: [task],
-      approved,
-      role
+      ...data,
+      task: selectedTasks
     });
+    console.log(data);
   };
   return (
     <section>
@@ -70,8 +76,8 @@ function AddTimeSheets(props) {
               {...register('employeeId', { required: true })}
               type="text"
               placeholder="Employee ID"
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
+              // value={employeeId}
+              // onChange={(e) => setEmployeeId(e.target.value)}
             />
             {errors.employeeId?.type === 'string.empty' && <p>{errors.employeeId.message}</p>}
           </div>
@@ -103,15 +109,55 @@ function AddTimeSheets(props) {
             {errors.hours?.type === 'number.min' && <p>{errors.hours.message}</p>}
           </div>
           <div>
-            <label htmlFor="task"> Task ID </label>
+            <label htmlFor="task"> Task </label>
             <input
-              {...register('task', { required: true })}
+              // {...register('task', { required: true })}
               type="text"
               placeholder="Task"
-              value={task && task[0] ? task[0]._id : ''}
-              onChange={(e) => setTask(e.target.value)}
+              value={tasks}
+              onChange={(e) => setTasks(e.target.value)}
             />
-            {errors.task?.type === 'array.base' && <p>{errors.task.message}</p>}
+            <div>
+              {tasks.length > 0
+                ? allTasks
+                    .filter(
+                      (task) =>
+                        task.taskName.match(new RegExp(tasks, 'i')) ||
+                        task.taskDescription.match(new RegExp(tasks, 'i'))
+                    )
+                    .map((task) => {
+                      return (
+                        <p
+                          key={task._id}
+                          onClick={() =>
+                            selectedTasks.find((item) => item === task._id)
+                              ? deleteFromSelectedTasks(task._id)
+                              : appendToSelectedTasks(task._id)
+                          }
+                          className={
+                            selectedTasks.find((item) => item === task._id)
+                              ? styles.selectedItem
+                              : styles.notSelectedItem
+                          }
+                        >
+                          {task.taskName}: {task.taskDescription}
+                        </p>
+                      );
+                    })
+                : selectedTasks.map((task) => {
+                    return (
+                      <p
+                        key={task}
+                        className={styles.chip}
+                        onClick={() => deleteFromSelectedTasks(task)}
+                      >
+                        {allTasks.find((item) => item._id === task).taskName}:{' '}
+                        {allTasks.find((item) => item._id === task).taskDescription}
+                      </p>
+                    );
+                  })}
+            </div>
+            {errors.task?.type === 'string.empty' && <p>{errors.task.message}</p>}
           </div>
           <div>
             <label htmlFor="approved"> Approved </label>

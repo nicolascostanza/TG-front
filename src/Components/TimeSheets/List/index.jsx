@@ -6,6 +6,7 @@ import EditTimeSheets from '../Edit';
 import Sidebar from '../../Shared/Sidebar';
 import * as thunks from '../../../redux/timesheets/thunks';
 import * as actions from '../../../redux/timesheets/actions';
+import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
 function TimeSheet() {
@@ -17,7 +18,9 @@ function TimeSheet() {
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   useEffect(() => {
     dispatch(thunks.getTimesheets());
+    dispatch(tasksThunks.getTasks());
   }, []);
+  const allTasks = useSelector((state) => state.tasks.list);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
@@ -56,8 +59,17 @@ function TimeSheet() {
   return (
     <div className={styles.container}>
       <Sidebar></Sidebar>
-      <EditTimeSheets showEditModal={showEditModal} handleClose={handleClose} editId={editId} />
-      <AddTimeSheets showCreateModal={showCreateModal} handleClose={handleClose}></AddTimeSheets>
+      <EditTimeSheets
+        showEditModal={showEditModal}
+        handleClose={handleClose}
+        editId={editId}
+        allTasks={allTasks}
+      />
+      <AddTimeSheets
+        showCreateModal={showCreateModal}
+        handleClose={handleClose}
+        allTasks={allTasks}
+      ></AddTimeSheets>
       <Table
         title="Timesheets"
         headers={[
