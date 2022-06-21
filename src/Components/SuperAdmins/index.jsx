@@ -68,7 +68,7 @@ function SuperAdmins() {
       lastName: valuesForm.lastName,
       email: valuesForm.email,
       password: valuesForm.password,
-      active: false
+      active: valuesForm.active === 'true' ? true : false
     });
   };
   // modals
@@ -104,6 +104,7 @@ function SuperAdmins() {
       password: data.password,
       active: Boolean(data.active)
     };
+    console.log(data);
     if (method === 'POST') {
       dispatch(thunks.addSuperadmin(superAdmin));
     } else if (method === 'PUT') {
@@ -208,7 +209,7 @@ function SuperAdmins() {
                 type="checkbox"
                 className={styles.inputsDivs}
                 {...register('active')}
-                checked={!formData}
+                // checked={!formData}
                 // onChange={setValue('active', getValues('active'))}
               />
             </div>
