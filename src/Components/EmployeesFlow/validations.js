@@ -28,7 +28,7 @@ export const employeeValidationSignUp = Joi.object({
     .message('Only letters and numbers'),
   gender: Joi.string().valid('Female', 'Male', 'Other').required(),
   address: Joi.string()
-    .required()
+    .required('its required')
     .min(5)
     .max(30)
     .regex(/^[a-zA-Z0-9\s,'-]*$/)

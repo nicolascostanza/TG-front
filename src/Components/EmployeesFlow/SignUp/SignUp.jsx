@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import Sidebar from '../../Shared/Sidebar';
+import Sidebar from 'Components/Shared/Sidebar';
 import styles from './signup.module.css';
-// import Button from '../../Shared/Button';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { employeeValidationSignUp } from './validations';
-import Modal from '../../Shared/Modal';
-import * as thunksEmployee from '../../../redux/employees/thunks';
+import { employeeValidationSignUp } from 'Components/EmployeesFlow/validations';
+import Modal from 'Components/Shared/Modal';
+import * as thunksEmployee from 'redux/employees/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
 function SignUp() {
   const message = useSelector((state) => state.employees.message);
-  // const error = useSelector((state) => state.employees.response);
   const dispatch = useDispatch();
   const [showModalMessage, setShowModalMessage] = useState(false);
   const handleCloseMessage = () => {
@@ -29,7 +27,6 @@ function SignUp() {
     resolver: joiResolver(employeeValidationSignUp)
   });
   const onSubmit = (data) => {
-    console.log(data);
     dispatch(thunksEmployee.addEmployee({ ...data, active: true }));
     setShowModalMessage(true);
   };
