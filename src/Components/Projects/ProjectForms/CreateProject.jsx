@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 import Form from 'Components/Shared/Form';
-import projectForm from './projectForm.module.css';
+import styles from './projectForm.module.css';
 import * as thunks from 'redux/projects/thunks';
 
 const CreateProject = (props) => {
@@ -144,8 +144,9 @@ const CreateProject = (props) => {
         name="name"
         type="text"
         placeholder="Project name"
+        className={errors.name ? styles.inputError : styles.input}
       />
-      {errors.name?.type ? <p className={projectForm.error}>{errors.name.message}</p> : null}
+      {errors.name?.type ? <p className={styles.error}>{errors.name.message}</p> : null}
 
       <label htmlFor="description">Description</label>
       <input
@@ -153,26 +154,39 @@ const CreateProject = (props) => {
         name="description"
         type="text"
         placeholder="Project description"
+        className={errors.description ? styles.inputError : styles.input}
       />
       {errors.description?.type ? (
-        <p className={projectForm.error}>{errors.description.message}</p>
+        <p className={styles.error}>{errors.description.message}</p>
       ) : null}
 
       <label htmlFor="clientName">Client Name</label>
-      <input {...register('clientName')} name="clientName" type="text" placeholder="Client name" />
-      {errors.clientName?.type ? (
-        <p className={projectForm.error}>{errors.clientName.message}</p>
-      ) : null}
+      <input
+        {...register('clientName')}
+        name="clientName"
+        type="text"
+        placeholder="Client name"
+        className={errors.clientName ? styles.inputError : styles.input}
+      />
+      {errors.clientName?.type ? <p className={styles.error}>{errors.clientName.message}</p> : null}
 
       <label htmlFor="startDate">Start Date</label>
-      <input {...register('startDate')} name="startDate" type="date" />
-      {errors.startDate?.type ? (
-        <p className={projectForm.error}>{errors.startDate.message}</p>
-      ) : null}
+      <input
+        {...register('startDate')}
+        name="startDate"
+        type="date"
+        className={errors.startDate ? styles.inputError : styles.input}
+      />
+      {errors.startDate?.type ? <p className={styles.error}>{errors.startDate.message}</p> : null}
 
       <label htmlFor="endDate">End Date</label>
-      <input {...register('endDate')} name="endDate" type="date" />
-      {errors.endDate?.type ? <p className={projectForm.error}>{errors.endDate.message}</p> : null}
+      <input
+        {...register('endDate')}
+        name="endDate"
+        type="date"
+        className={errors.endDate ? styles.inputError : styles.input}
+      />
+      {errors.endDate?.type ? <p className={styles.error}>{errors.endDate.message}</p> : null}
 
       <label htmlFor="projectManager">Project Manager</label>
       <input
@@ -180,9 +194,10 @@ const CreateProject = (props) => {
         name="projectManager"
         type="text"
         placeholder="Project manager"
+        className={errors.projectManager ? styles.inputError : styles.input}
       />
       {errors.projectManager?.type ? (
-        <p className={projectForm.error}>{errors.projectManager.message}</p>
+        <p className={styles.error}>{errors.projectManager.message}</p>
       ) : null}
 
       <label htmlFor="team">Team</label>
@@ -192,8 +207,9 @@ const CreateProject = (props) => {
         name="team"
         type="text"
         placeholder="Search an employee"
+        className={styles.input}
       />
-      <div className={projectForm.optionContainer}>
+      <div className={styles.optionContainer}>
         {project.team.length > 0
           ? allEmployees
               .filter(
@@ -212,8 +228,8 @@ const CreateProject = (props) => {
                     }
                     className={
                       selectedEmployees.find((emp) => emp === member._id)
-                        ? projectForm.selectedItem
-                        : projectForm.notSelectedItem
+                        ? styles.selectedItem
+                        : styles.notSelectedItem
                     }
                   >
                     {member.firstName}: {member.email}
@@ -224,7 +240,7 @@ const CreateProject = (props) => {
               return (
                 <p
                   key={member}
-                  className={projectForm.chip}
+                  className={styles.chip}
                   onClick={() => deleteFromSelectedEmployees(member)}
                 >
                   {allEmployees.find((emp) => emp._id === member).firstName} (
@@ -240,6 +256,7 @@ const CreateProject = (props) => {
         name="tasks"
         type="text"
         placeholder="Search a task"
+        className={styles.input}
       />
       {project.tasks.length > 0
         ? allTasks
@@ -259,8 +276,8 @@ const CreateProject = (props) => {
                   }
                   className={
                     selectedTasks.find((item) => item === task._id)
-                      ? projectForm.selectedItem
-                      : projectForm.notSelectedItem
+                      ? styles.selectedItem
+                      : styles.notSelectedItem
                   }
                 >
                   {task.taskName}: {task.taskDescription}
@@ -269,11 +286,7 @@ const CreateProject = (props) => {
             })
         : selectedTasks.map((task) => {
             return (
-              <p
-                key={task}
-                className={projectForm.chip}
-                onClick={() => deleteFromSelectedTasks(task)}
-              >
+              <p key={task} className={styles.chip} onClick={() => deleteFromSelectedTasks(task)}>
                 {allTasks.find((item) => item._id === task).taskName}:{' '}
                 {allTasks.find((item) => item._id === task).taskDescription}
               </p>

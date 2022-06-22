@@ -2,9 +2,28 @@
 	box-sizing: border-box;
 }
 
+.input {
+	border: 1px solid black;
+}
+
+.inputError{
+	border: 2px solid red;
+	color: red;
+}
+
+.inputError, .input {
+	padding: 6px;
+	border-radius: 6px;
+}
+
+.inputError::placeholder {
+	color: red;
+}
+
 .error {
 	color: red;
 	font-size: 12px;
+	margin: 0;
 }
 
 .notSelectedItem, .selectedItem {

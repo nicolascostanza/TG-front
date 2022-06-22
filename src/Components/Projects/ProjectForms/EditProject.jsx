@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 import Form from 'Components/Shared/Form';
-import projectForm from './projectForm.module.css';
+import styles from './projectForm.module.css';
 import * as thunks from 'redux/projects/thunks';
 
 const EditProject = (props) => {
@@ -167,20 +167,26 @@ const EditProject = (props) => {
       handleSubmit={handleSubmit(submitEditProject)}
       showModal={showModal}
       handleClose={handleClose}
-      className={projectForm.form}
+      className={styles.form}
     >
       <label htmlFor="name">Name</label>
-      <input {...register('name', { required: true })} type="text" placeholder="Project name" />
-      {errors.name?.type ? <p className={projectForm.error}>{errors.name.message}</p> : null}
+      <input
+        {...register('name', { required: true })}
+        type="text"
+        placeholder="Project name"
+        className={errors.name ? styles.inputError : styles.input}
+      />
+      {errors.name?.type ? <p className={styles.error}>{errors.name.message}</p> : null}
 
       <label htmlFor="description">Description</label>
       <input
         {...register('description', { required: true })}
         type="text"
         placeholder="Project description"
+        className={errors.description ? styles.inputError : styles.input}
       />
       {errors.description?.type ? (
-        <p className={projectForm.error}>{errors.description.message}</p>
+        <p className={styles.error}>{errors.description.message}</p>
       ) : null}
 
       <label htmlFor="clientName">Client Name</label>
@@ -188,29 +194,35 @@ const EditProject = (props) => {
         {...register('clientName', { required: true })}
         type="text"
         placeholder="Client name"
+        className={errors.clientName ? styles.inputError : styles.input}
       />
-      {errors.clientName?.type ? (
-        <p className={projectForm.error}>{errors.clientName.message}</p>
-      ) : null}
+      {errors.clientName?.type ? <p className={styles.error}>{errors.clientName.message}</p> : null}
 
       <label htmlFor="startDate">Start Date</label>
-      <input {...register('startDate', { required: true })} type="date" />
-      {errors.startDate?.type ? (
-        <p className={projectForm.error}>{errors.startDate.message}</p>
-      ) : null}
+      <input
+        {...register('startDate', { required: true })}
+        type="date"
+        className={errors.startDate ? styles.inputError : styles.input}
+      />
+      {errors.startDate?.type ? <p className={styles.error}>{errors.startDate.message}</p> : null}
 
       <label htmlFor="endDate">End Date</label>
-      <input {...register('endDate', { required: true })} type="date" />
-      {errors.endDate?.type ? <p className={projectForm.error}>{errors.endDate.message}</p> : null}
+      <input
+        {...register('endDate', { required: true })}
+        type="date"
+        className={errors.endDate ? styles.inputError : styles.input}
+      />
+      {errors.endDate?.type ? <p className={styles.error}>{errors.endDate.message}</p> : null}
 
       <label htmlFor="projectManager">Project Manager</label>
       <input
         {...register('projectManager', { required: true })}
         type="text"
         placeholder="Project manager"
+        className={errors.projectManager ? styles.inputError : styles.input}
       />
       {errors.projectManager?.type ? (
-        <p className={projectForm.error}>{errors.projectManager.message}</p>
+        <p className={styles.error}>{errors.projectManager.message}</p>
       ) : null}
 
       <label htmlFor="team">Team</label>
@@ -220,6 +232,7 @@ const EditProject = (props) => {
         name="team"
         type="text"
         placeholder="Search an employee"
+        className={styles.input}
       />
       {/* SHOW SELECTED TEAM MEMBERS */}
       {project.team.length > 0 // IF THE PROJECT INPUT HAVE SOME VALUE
@@ -241,8 +254,8 @@ const EditProject = (props) => {
                   }
                   className={
                     selectedEmployees.find((emp) => emp === member._id)
-                      ? projectForm.selectedItem
-                      : projectForm.notSelectedItem
+                      ? styles.selectedItem
+                      : styles.notSelectedItem
                   }
                 >
                   {member.firstName}: {member.email}
@@ -253,7 +266,7 @@ const EditProject = (props) => {
             return (
               <p
                 key={member}
-                className={projectForm.chip}
+                className={styles.chip}
                 onClick={() => deleteFromSelectedEmployees(member)}
               >
                 {allEmployees.find((emp) => emp._id === member).firstName} (
@@ -269,6 +282,7 @@ const EditProject = (props) => {
         name="tasks"
         type="text"
         placeholder="Search a task"
+        className={styles.input}
       />
       {/* SHOW SELECTED TASKS */}
       {project.tasks.length > 0
@@ -289,8 +303,8 @@ const EditProject = (props) => {
                   }
                   className={
                     selectedTasks.find((item) => item === task._id)
-                      ? projectForm.selectedItem
-                      : projectForm.notSelectedItem
+                      ? styles.selectedItem
+                      : styles.notSelectedItem
                   }
                 >
                   {task.taskName}: {task.taskDescription}
@@ -299,11 +313,7 @@ const EditProject = (props) => {
             })
         : selectedTasks.map((task) => {
             return (
-              <p
-                key={task}
-                className={projectForm.chip}
-                onClick={() => deleteFromSelectedTasks(task)}
-              >
+              <p key={task} className={styles.chip} onClick={() => deleteFromSelectedTasks(task)}>
                 {allTasks.find((item) => item._id === task).taskName}:{' '}
                 {allTasks.find((item) => item._id === task).taskDescription}
               </p>
