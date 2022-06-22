@@ -26,19 +26,49 @@ function SuperAdmins() {
   ];
   const dispatch = useDispatch();
   const schema = Joi.object({
-    firstName: Joi.string().min(3).max(50).required(),
-    lastName: Joi.string().min(3).max(50).required(),
+    firstName: Joi.string()
+      .min(3)
+      .max(50)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'First name must contain at least 3 characters',
+        'string.max': 'First name must contain less than 30 characters',
+        'string.pattern.base': 'First name is not valid',
+        'string.empty': 'This field is required'
+      }),
+    lastName: Joi.string()
+      .min(3)
+      .max(50)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'Last name must contain at least 3 characters',
+        'string.max': 'Last name must contain less than 30 characters',
+        'string.pattern.base': 'Last name is not valid',
+        'string.empty': 'This field is required'
+      }),
     email: Joi.string()
-      .email({ tlds: { allow: false } })
+      .min(3)
+      .max(50)
       .required()
       .lowercase()
       .regex(
         // eslint-disable-next-line no-useless-escape
         /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      ),
-    password: Joi.string()
-      .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/)
-      .required(),
+      )
+      .messages({
+        'string.min': 'Email must contain at least 3 characters',
+        'string.max': 'Email must contain less than 30 characters',
+        'string.pattern.base': 'Email must be valid',
+        'string.empty': 'This field is required'
+      }),
+    password: Joi.string().min(3).max(50).required().messages({
+      'string.min': 'Password must contain at least 3 characters',
+      'string.max': 'Password must contain less than 30 characters',
+      'string.pattern.base': 'Password must be valid',
+      'string.empty': 'This field is required'
+    }),
     active: Joi.boolean()
   });
 
@@ -50,7 +80,6 @@ function SuperAdmins() {
   const modalShowForm = useSelector((state) => state.superAdmins.showFormAddEdit);
   const showModalDelete = useSelector((state) => state.superAdmins.showModalDelete);
   const showModalMessage = useSelector((state) => state.superAdmins.showModalMessage);
-  // const [active, setActive] = useState(true);
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
 
@@ -104,7 +133,6 @@ function SuperAdmins() {
       password: data.password,
       active: Boolean(data.active)
     };
-    console.log(data);
     if (method === 'POST') {
       dispatch(thunks.addSuperadmin(superAdmin));
     } else if (method === 'PUT') {
@@ -117,16 +145,11 @@ function SuperAdmins() {
     register,
     handleSubmit,
     reset,
-    getValues,
-    // setValue,
     formState: { errors }
   } = useForm({
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-  const formData = getValues('active');
-  console.log(formData);
-  // console.log(errors);
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -158,22 +181,16 @@ function SuperAdmins() {
           <div className={styles.inputsForm}>
             <label htmlFor="firstName">First Name</label>
             <input {...register('firstName')} name="firstName" type="text" placeholder="John" />
-            {errors.firstName?.type === 'string.empty' && (
+            {errors.firstName?.type ? (
               <p className={styles.error}>{errors.firstName.message}</p>
-            )}
-            {errors.firstName?.type === 'string.min' && (
-              <p className={styles.error}>{errors.firstName.message}</p>
-            )}
+            ) : null}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="lastName">Last Name</label>
             <input {...register('lastName')} name="lastName" type="text" placeholder="Doe" />
-            {errors.lastName?.type === 'string.empty' && (
+            {errors.lastName?.type ? (
               <p className={styles.error}>{errors.lastName.message}</p>
-            )}
-            {errors.lastName?.type === 'string.min' && (
-              <p className={styles.error}>{errors.lastName.message}</p>
-            )}
+            ) : null}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="email">Email</label>
@@ -183,35 +200,21 @@ function SuperAdmins() {
               type="text"
               placeholder="trackgenix@radium.com"
             />
-            {errors.email?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.email.message}</p>
-            )}
-            {errors.email?.type === 'string.email' && (
-              <p className={styles.error}>{errors.email.message}</p>
-            )}
+            {errors.email?.type ? <p className={styles.error}>{errors.email.message}</p> : null}
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="password">Password</label>
             <input {...register('password')} type="password" />
-            {errors.password?.type === 'string.empty' && (
+            {errors.password?.type ? (
               <p className={styles.error}>{errors.password.message}</p>
-            )}
-            {errors.password?.type === 'string.pattern.base' && (
-              <p className={styles.error}>{errors.password.message}</p>
-            )}
+            ) : null}
           </div>
           <div className={styles.inputsForm}>
             <div>
               <label>Active</label>
             </div>
             <div>
-              <input
-                type="checkbox"
-                className={styles.inputsDivs}
-                {...register('active')}
-                // checked={!formData}
-                // onChange={setValue('active', getValues('active'))}
-              />
+              <input type="checkbox" className={styles.inputsDivs} {...register('active')} />
             </div>
           </div>
         </Form>
