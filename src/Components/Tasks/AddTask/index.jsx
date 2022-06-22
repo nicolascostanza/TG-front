@@ -14,13 +14,13 @@ const AddTask = (props) => {
       .alphanum()
       .required()
       .messages({ 'string.empty': 'This field is required' }),
-    taskName: Joi.string().min(1).max(50).required().messages({
-      'string.min': 'Name must contain 1 or more characters',
+    taskName: Joi.string().min(3).max(50).required().messages({
+      'string.min': 'Name must contain 3 or more characters',
       'string.max': 'Name must contain 50 or less characters',
       'string.empty': 'This field is required'
     }),
-    taskDescription: Joi.string().min(1).max(250).optional().messages({
-      'string.min': 'Name must contain 1 or more characters',
+    taskDescription: Joi.string().min(3).max(250).optional().messages({
+      'string.min': 'Name must contain 3 or more characters',
       'string.max': 'Name must contain 250 or less characters'
     }),
     startDate: Joi.date().required().messages({
@@ -50,8 +50,20 @@ const AddTask = (props) => {
   const deleteFromSelectedEmployees = (id) => {
     setSelectedEmployees(selectedEmployees.filter((emp) => emp !== id));
   };
+
+  const { allProjects } = props;
+  const [projects, setProjects] = useState('');
+  const [selectedProjects, setSelectedProjects] = useState([]);
+  const appendToSelectedProjects = (id) => {
+    const previousState = selectedProjects;
+    setSelectedProjects([...previousState, id]);
+    setProjects('');
+  };
+
+  const deleteFromSelectedProjects = (id) => {
+    setSelectedProjects(selectedProjects.filter((emp) => emp !== id));
+  };
   const dispatch = useDispatch();
-  console.log(errors);
 
   const addTask = async (task) => {
     dispatch(thunks.addTask(task));
@@ -60,9 +72,9 @@ const AddTask = (props) => {
   const onSubmit = (data) => {
     addTask({
       ...data,
-      assignedEmployee: selectedEmployees
+      assignedEmployee: selectedEmployees,
+      parentProject: selectedProjects
     });
-    console.log('data: ', data);
   };
   return (
     <Form
@@ -76,10 +88,55 @@ const AddTask = (props) => {
       <div className={styles.form}>
         <div>
           <label htmlFor="parentProject">Parent Project:</label>
-          <input type="text" placeholder="Parent Project ID" {...register('parentProject')} />
+          <input
+            value={projects}
+            type="text"
+            placeholder="Parent Project ID"
+            onChange={(e) => setProjects(e.target.value)}
+          />
           {errors.parentProject?.type === 'string.empty' && (
             <p className={styles.error}>{errors.parentProject.message}</p>
           )}
+          <div>
+            {projects.length > 0
+              ? allProjects
+                  .filter(
+                    (project) =>
+                      project.name.match(new RegExp(projects, 'i')) ||
+                      project.clientName.match(new RegExp(projects, 'i'))
+                  )
+                  .map((member) => {
+                    return (
+                      <p
+                        key={member._id}
+                        onClick={() =>
+                          selectedProjects.find((emp) => emp === member._id)
+                            ? deleteFromSelectedProjects(member._id)
+                            : appendToSelectedProjects(member._id)
+                        }
+                        className={
+                          selectedProjects.find((emp) => emp === member._id)
+                            ? styles.selectedItem
+                            : styles.notSelectedItem
+                        }
+                      >
+                        {member.name}: {member.clientName}
+                      </p>
+                    );
+                  })
+              : selectedProjects.map((member) => {
+                  return (
+                    <p
+                      key={member}
+                      className={styles.chip}
+                      onClick={() => deleteFromSelectedProjects(member)}
+                    >
+                      {allProjects.find((emp) => emp._id === member).name} (
+                      {allProjects.find((emp) => emp._id === member).clientName})
+                    </p>
+                  );
+                })}
+          </div>
         </div>
         <div>
           <label htmlFor="taskName">Task Name:</label>
@@ -158,7 +215,7 @@ const AddTask = (props) => {
         </div>
         <div>
           <label htmlFor="startDate">Start Date:</label>
-          <input type="text" placeholder="YYYY-MM-DD" {...register('startDate')} />
+          <input type="date" placeholder="YYYY-MM-DD" {...register('startDate')} />
           {errors.startDate?.type === 'string.empty' && (
             <p className={styles.error}>{errors.startDate.message}</p>
           )}
