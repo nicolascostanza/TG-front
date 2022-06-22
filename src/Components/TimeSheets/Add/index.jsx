@@ -8,14 +8,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 function AddTimeSheets(props) {
-  // const [employeeId, setEmployeeId] = useState('');
-  // const [description] = useState('');
-  // const [project] = useState('');
-  // const [date] = useState('');
-  // const [hours] = useState('');
   const [tasks, setTasks] = useState('');
-  // const [approved] = useState(false);
-  // const [role] = useState('');
   const { showCreateModal, handleClose, allTasks } = props;
   const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
@@ -76,8 +69,6 @@ function AddTimeSheets(props) {
               {...register('employeeId', { required: true })}
               type="text"
               placeholder="Employee ID"
-              // value={employeeId}
-              // onChange={(e) => setEmployeeId(e.target.value)}
             />
             {errors.employeeId?.type === 'string.empty' && <p>{errors.employeeId.message}</p>}
           </div>

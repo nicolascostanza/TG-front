@@ -19,10 +19,11 @@ function EditTimeSheets(props) {
           project: response.data.project,
           date: new Date(response.data.date).toISOString().split('T')[0] || '',
           hours: response.data.hours,
-          tasks: response.data.task.map((item) => item._id),
+          // tasks: response.data.task.map((item) => item._id),
           approved: response.data.approved,
           role: response.data.role
         });
+        setSelectedTasks(response.data.task.map((item) => item._id));
       });
   }, [props.editId]);
   const allTasks = useSelector((state) => state.tasks.list);
