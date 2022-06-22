@@ -8,17 +8,11 @@ import { useHistory } from 'react-router-dom';
 
 function Home() {
   const history = useHistory();
-  // const param = useParams();
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   useEffect(() => {
     dispatch(Timesheetsthunks.getTimesheets());
   }, []);
-  // console.log(timeSheets);
-  // const data = timeSheets.map((timesheet) => {
-  //   timesheet.employeeId._id === param.id;
-  // });
-  // console.log(data);
   return (
     <>
       <div className={styles.divEditProfile}>

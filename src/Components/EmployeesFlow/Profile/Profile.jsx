@@ -1,14 +1,13 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import styles from './profile.module.css';
+import { useHistory, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as thunksEmployee from 'redux/employees/thunks';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
+import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
-import { useHistory } from 'react-router-dom';
 
 function Profile() {
   const history = useHistory();
@@ -133,7 +132,6 @@ function Profile() {
             )}
           </div>
         </div>
-
         <div className={styles.row}>
           <label className={styles.label}>Gender</label>
           <div className={styles.secondColumn}>

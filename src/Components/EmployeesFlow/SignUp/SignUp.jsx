@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Sidebar from 'Components/Shared/Sidebar';
-import styles from './signup.module.css';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationSignUp } from 'Components/EmployeesFlow/validations';
-import Modal from 'Components/Shared/Modal';
 import * as thunksEmployee from 'redux/employees/thunks';
 import { useDispatch, useSelector } from 'react-redux';
+import Modal from 'Components/Shared/Modal';
+import Sidebar from 'Components/Shared/Sidebar';
+import styles from './signup.module.css';
 
 function SignUp() {
   const message = useSelector((state) => state.employees.message);
@@ -16,7 +16,6 @@ function SignUp() {
     setShowModalMessage(false);
     setShowModalMessage('');
   };
-
   const {
     handleSubmit,
     register,
