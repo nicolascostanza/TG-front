@@ -28,7 +28,7 @@ function SuperAdmins() {
   const schema = Joi.object({
     firstName: Joi.string()
       .min(3)
-      .max(50)
+      .max(30)
       .required()
       .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
       .messages({
@@ -39,7 +39,7 @@ function SuperAdmins() {
       }),
     lastName: Joi.string()
       .min(3)
-      .max(50)
+      .max(30)
       .required()
       .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
       .messages({
@@ -50,7 +50,7 @@ function SuperAdmins() {
       }),
     email: Joi.string()
       .min(3)
-      .max(50)
+      .max(30)
       .required()
       .lowercase()
       .regex(
@@ -63,12 +63,20 @@ function SuperAdmins() {
         'string.pattern.base': 'Email must be valid',
         'string.empty': 'This field is required'
       }),
-    password: Joi.string().min(3).max(50).required().messages({
-      'string.min': 'Password must contain at least 3 characters',
-      'string.max': 'Password must contain less than 30 characters',
-      'string.pattern.base': 'Password must be valid',
-      'string.empty': 'This field is required'
-    }),
+    password: Joi.string()
+      .min(8)
+      .max(30)
+      .required()
+      .regex(
+        // eslint-disable-next-line no-useless-escape
+        /^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$/
+      )
+      .messages({
+        'string.min': 'Password must contain at least 8 characters',
+        'string.max': 'Password must contain less than 30 characters',
+        'string.pattern.base': 'Password must contain letters and numbers',
+        'string.empty': 'This field is required'
+      }),
     active: Joi.boolean()
   });
 
@@ -204,7 +212,7 @@ function SuperAdmins() {
           </div>
           <div className={styles.inputsForm}>
             <label htmlFor="password">Password</label>
-            <input {...register('password')} type="password" />
+            <input {...register('password')} type="password" placeholder="password" />
             {errors.password?.type ? (
               <p className={styles.error}>{errors.password.message}</p>
             ) : null}
