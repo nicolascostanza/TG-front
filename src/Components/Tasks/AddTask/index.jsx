@@ -8,28 +8,27 @@ import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
 
-const schema = Joi.object({
-  parentProject: Joi.string()
-    .alphanum()
-    .required()
-    .messages({ 'string.empty': 'This field is required' }),
-  taskName: Joi.string().min(1).max(50).required().messages({
-    'string.min': 'Name must contain 1 or more characters',
-    'string.max': 'Name must contain 50 or less characters',
-    'string.empty': 'This field is required'
-  }),
-  taskDescription: Joi.string().min(1).max(250).optional().messages({
-    'string.min': 'Name must contain 1 or more characters',
-    'string.max': 'Name must contain 250 or less characters'
-  }),
-  startDate: Joi.date().required().messages({
-    'string.empty': 'This field is required',
-    'date.base': 'This must be a valid date'
-  }),
-  status: Joi.required().messages({ 'string.empty': 'This field is required' })
-});
-
 const AddTask = (props) => {
+  const schema = Joi.object({
+    parentProject: Joi.string()
+      .alphanum()
+      .required()
+      .messages({ 'string.empty': 'This field is required' }),
+    taskName: Joi.string().min(1).max(50).required().messages({
+      'string.min': 'Name must contain 1 or more characters',
+      'string.max': 'Name must contain 50 or less characters',
+      'string.empty': 'This field is required'
+    }),
+    taskDescription: Joi.string().min(1).max(250).optional().messages({
+      'string.min': 'Name must contain 1 or more characters',
+      'string.max': 'Name must contain 250 or less characters'
+    }),
+    startDate: Joi.date().required().messages({
+      'string.empty': 'This field is required',
+      'date.base': 'This must be a valid date'
+    }),
+    status: Joi.required().messages({ 'string.empty': 'This field is required' })
+  });
   const {
     handleSubmit,
     register,

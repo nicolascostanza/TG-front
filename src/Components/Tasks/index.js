@@ -6,45 +6,50 @@ import Form from 'Components/Shared/Form';
 import AddTask from './AddTask';
 import * as taskThunks from 'redux/tasks/thunks';
 import * as employeesThunks from 'redux/employees/thunks';
+import * as projectThunks from 'redux/projects/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
-// import Joi from 'joi';
-// import { joiResolver } from '@hookform/resolvers/joi';
-
-// const URL = `${process.env.REACT_APP_API_URL}/tasks`;
+import Joi from 'joi';
+import { joiResolver } from '@hookform/resolvers/joi';
 
 function Tasks() {
+  const schema = Joi.object({
+    parentProject: Joi.string()
+      .alphanum()
+      .required()
+      .messages({ 'string.empty': 'This field is required' }),
+    taskName: Joi.string().min(1).max(50).required().messages({
+      'string.min': 'Name must contain 1 or more characters',
+      'string.max': 'Name must contain 50 or less characters',
+      'string.empty': 'This field is required'
+    }),
+    taskDescription: Joi.string().min(1).max(250).optional().messages({
+      'string.min': 'Name must contain 1 or more characters',
+      'string.max': 'Name must contain 250 or less characters'
+    }),
+    startDate: Joi.date().required().messages({
+      'string.empty': 'This field is required',
+      'date.base': 'This must be a valid date'
+    }),
+    status: Joi.required().messages({ 'string.empty': 'This field is required' })
+  });
   const {
     handleSubmit,
-    register,
     reset,
+    register,
     formState: { errors }
   } = useForm({
-    mode: 'OnBlur'
-    //resolver: joiResolver(schema)
+    mode: 'OnBlur',
+    resolver: joiResolver(schema)
   });
-
-  const [employees, setEmployees] = useState('');
-  const [selectedEmployees, setSelectedEmployees] = useState([]);
-  const appendToSelectedEmployees = (id) => {
-    const previousState = selectedEmployees;
-    setSelectedEmployees([...previousState, id]);
-    setEmployees('');
-  };
-
-  const deleteFromSelectedEmployees = (id) => {
-    setSelectedEmployees(selectedEmployees.filter((emp) => emp !== id));
-  };
-
-  console.log(errors);
-
+  const URL = `${process.env.REACT_APP_API_URL}/tasks`;
   const [showModal, setShowModal] = useState(false);
-  // const [parentProject, setParentProject] = useState('');
-  // const [taskName, setTaskName] = useState('');
-  // const [taskDescription, setTaskDescription] = useState('');
-  // const [assignedEmployee, setAssignedEmployee] = useState([]);
-  // const [startDate, setStartDate] = useState('');
-  // const [status, setStatus] = useState('');
+  const [parentProject, setParentProject] = useState('');
+  const [taskName, setTaskName] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+  const [assignedEmployee, setAssignedEmployee] = useState([]);
+  const [startDate, setStartDate] = useState('');
+  const [status, setStatus] = useState('');
   const [editedId] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const openAddTask = () => {
@@ -73,65 +78,60 @@ function Tasks() {
   useEffect(() => {
     dispatch(taskThunks.getTasks());
     dispatch(employeesThunks.getEmployees());
+    dispatch(projectThunks.getProjects());
   }, []);
 
   const allEmployees = useSelector((state) => state.employees.list);
 
   const onEdit = (id) => {
     setShowModal(true);
-    console.log(id);
-    dispatch(
-      taskThunks.editTask({
-        // id: setEditedId(id),
-        // parentProject: data.parentProject,
-        // taskName: data.taskName,
-        // taskDescription: data.taskDescription,
-        // assignedEmployee: data.assignedEmployee,
-        // startDate: data.startDate,
-        // status: data.status
-      })
-    );
-    reset({
-      // parentProject: data.parentProject
-      // taskName: data.taskName,
-      // taskDescription: data.taskDescription,
-      // assignedEmployee: data.assignedEmployee,
-      // startDate: data.startDate,
-      // status: data.status
-      // fetch(`${URL}/${id}`)
-      //   .then((response) => response.json())
-      //   .then((response) => {
-      //     setEditedId(id);
-      //     setParentProject(response.data.parentProject._id);
-      //     setTaskName(response.data.taskName);
-      //     setTaskDescription(response.data.taskDescription);
-      //     setAssignedEmployee(response.data.assignedEmployee);
-      //     setStartDate(response.data.startDate);
-      //     setStatus(response.data.status);
-    });
-    console.log(register.parentProject);
+    fetch(`${URL}/${id}`)
+      .then((response) => response.json())
+      .then((response) => {
+        reset({
+          parentProject: response.data.parentProject?._id,
+          taskCreatorId: response.data.taskCreatorId,
+          taskName: response.data.taskName,
+          taskDescription: response.data.taskDescription,
+          assignedEmployee: response.data.assignedEmployee,
+          startDate: response.data.startDate,
+          status: response.data.status
+        });
+        console.log(response);
+      });
   };
 
-  const onSubmit = (data, e) => {
+  const [employees, setEmployees] = useState('');
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const appendToSelectedEmployees = (id) => {
+    const previousState = selectedEmployees;
+    setSelectedEmployees([...previousState, id]);
+    setEmployees('');
+  };
+
+  const deleteFromSelectedEmployees = (id) => {
+    setSelectedEmployees(selectedEmployees.filter((emp) => emp !== id));
+  };
+  const onSubmit = (e) => {
     e.preventDefault();
-    editTasks({
-      parentProject: data.parentProject,
-      taskName: data.taskName,
-      taskDescription: data.taskDescription,
-      assignedEmployee: data.assignedEmployee,
-      startDate: data.startDate,
-      status: data.status
+    editTask({
+      parentProject: parentProject,
+      taskName,
+      taskDescription,
+      assignedEmployee: assignedEmployee,
+      startDate,
+      status
     });
-    reset();
-    // setParentProject('');
-    // setTaskName('');
-    // setTaskDescription('');
-    // setAssignedEmployee([]);
-    // setStartDate('');
-    // setStatus('');
+
+    setParentProject('');
+    setTaskName('');
+    setTaskDescription('');
+    setAssignedEmployee([]);
+    setStartDate('');
+    setStatus('');
   };
 
-  const editTasks = async (task) => {
+  const editTask = async (task) => {
     dispatch(taskThunks.editTask(task, editedId));
     handleClose();
   };
