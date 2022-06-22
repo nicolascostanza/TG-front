@@ -4,38 +4,54 @@ import styles from '../Add/Form.module.css';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/timesheets/thunks';
 import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 
 function EditTimeSheets(props) {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
-        setEmployeeId(response.data.employeeId ? response.data.employeeId._id : '');
-        setDescription(response.data.description);
-        setProject(response.data.project);
-        setDate(new Date(response.data.date).toISOString().split('T')[0] || '');
-        setHours(response.data.hours);
-        setSelectedTasks(response.data.task.map((item) => item._id));
-        setApproved(response.data.approved);
-        setRole(response.data.role);
+        reset({
+          employeeId: response.data.employeeId ? response.data.employeeId._id : '',
+          description: response.data.description,
+          project: response.data.project,
+          date: new Date(response.data.date).toISOString().split('T')[0] || '',
+          hours: response.data.hours,
+          tasks: response.data.task.map((item) => item._id),
+          approved: response.data.approved,
+          role: response.data.role
+        });
       });
   }, [props.editId]);
   const allTasks = useSelector((state) => state.tasks.list);
-  const [employeeId, setEmployeeId] = useState({});
-  const [description, setDescription] = useState('');
-  const [project, setProject] = useState('');
-  const [date, setDate] = useState('');
-  const [hours, setHours] = useState('');
   const [tasks, setTasks] = useState('');
-  const [approved, setApproved] = useState(false);
-  const [role, setRole] = useState('');
   const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
   const { showEditModal, handleClose } = props;
 
-  // useEffect(() => {
-  //   setSelectedTasks([...tasks.map((task) => task._id)]);
-  // }, []);
+  const schema = Joi.object({
+    employeeId: Joi.string(),
+    description: Joi.string().min(3).max(80),
+    project: Joi.string().min(3),
+    date: Joi.date(),
+    hours: Joi.number().min(1),
+    // task: Joi.string().required(),
+    approved: Joi.bool(),
+    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL')
+  });
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
+
+  console.log(errors);
 
   const appendToSelectedTasks = (id) => {
     const previousState = selectedTasks;
@@ -50,20 +66,13 @@ function EditTimeSheets(props) {
   const editTimeSheets = async (newBody, id) => {
     dispatch(thunks.editTimesheet(newBody, id));
   };
-  const onSubmit = (e) => {
+  const onSubmit = (data, e) => {
     e.preventDefault();
 
     editTimeSheets(
       {
-        employeeId,
-        description,
-        project,
-        date: new Date(date).toISOString().split('T')[0] || '',
-        // date,
-        hours,
-        task: selectedTasks,
-        approved,
-        role
+        ...data,
+        task: selectedTasks
       },
       props.editId
     );
@@ -71,7 +80,11 @@ function EditTimeSheets(props) {
 
   return (
     <section>
-      <Form showModal={showEditModal} handleClose={handleClose} handleSubmit={onSubmit}>
+      <Form
+        showModal={showEditModal}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit(onSubmit)}
+      >
         <div className={styles.tittle}>
           <h2> Edit Time-Sheet </h2>
         </div>
@@ -79,47 +92,33 @@ function EditTimeSheets(props) {
           <div>
             <label> Employee ID </label>
             <input
+              {...register('employeeId', { required: true })}
               type="text"
               placeholder="employeeId"
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
             />
+            {errors.employeeId?.type === 'string.empty' && <p>{errors.employeeId.message}</p>}
           </div>
           <div>
             <label> Description </label>
             <input
+              {...register('description', { required: true })}
               type="text"
               placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
+            {errors.description?.type === 'string.empty' && <p>{errors.description.message}</p>}
+            {errors.description?.type === 'string.min' && <p>{errors.description.message}</p>}
           </div>
           <div>
             <label> Project </label>
-            <input
-              type="text"
-              placeholder="Project"
-              value={project}
-              onChange={(e) => setProject(e.target.value)}
-            />
+            <input {...register('project', { required: true })} type="text" placeholder="Project" />
           </div>
           <div>
             <label> Date </label>
-            <input
-              type="date"
-              placeholder="Date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
+            <input {...register('date', { required: true })} type="date" placeholder="Date" />
           </div>
           <div>
             <label> Hours </label>
-            <input
-              type="number"
-              placeholder="Hours"
-              value={hours}
-              onChange={(e) => setHours(e.target.value)}
-            />
+            <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
           </div>
           <div>
             <label> Tasks </label>
@@ -172,20 +171,11 @@ function EditTimeSheets(props) {
           </div>
           <div>
             <label> Approved </label>
-            <input
-              type="checkbox"
-              checked={approved}
-              onChange={(e) => setApproved(e.target.checked)}
-            />
+            <input {...register('approved', { required: true })} type="checkbox" />
           </div>
           <div>
             <label> Role </label>
-            <input
-              type="text"
-              placeholder="Role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            />
+            <input {...register('role', { required: true })} type="text" placeholder="Role" />
           </div>
         </div>
       </Form>

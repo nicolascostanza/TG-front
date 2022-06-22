@@ -111,7 +111,6 @@ function AddTimeSheets(props) {
           <div>
             <label htmlFor="task"> Task </label>
             <input
-              // {...register('task', { required: true })}
               type="text"
               placeholder="Task"
               value={tasks}
