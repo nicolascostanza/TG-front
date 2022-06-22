@@ -1,3 +1,9 @@
+body {
+  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
+
 h1 {
   text-align: center;
 }
@@ -15,8 +21,6 @@ h1 {
   width: 45%;
   padding-left: 60px;
   padding-right: 10px;
-  font-family: 'Roboto';
-  font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 100%;
@@ -55,19 +59,16 @@ h1 {
 .inputsProfile {
   width: 95%;
   border: none;
-  font-family: 'Roboto';
-  font-style: normal;
   font-weight: 400;
   font-size: 15px;
   line-height: 100%;
   color: #373867;
-  background-color: transparent;
+  background-color: white;
+  border: 1px solid black;
   cursor: pointer;
 }
 .errorInput {
   color: #d30404;
-  font-family: 'Roboto';
-  font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 21px;
@@ -75,9 +76,15 @@ h1 {
   padding: 0%;
   border: none;
 }
+.divButton{
+  display: flex;
+  justify-content: space-around;
+  width: 75%;
+  margin: 0 auto;
+}
 .redButton {
   background-color: red;
-  width: 30%;
+  width: 15%;
   margin: 15px 10%;
   color: #373867;
   height: 30px;
@@ -86,7 +93,7 @@ h1 {
   cursor: pointer;
 }
 .greenButton {
-  width: 30%;
+  width: 15%;
   margin: 15px 10%;
   height: 30px;
   background-color: #aace9b;
@@ -98,7 +105,7 @@ h1 {
 .buttonSubmit {
   cursor: pointer;
   height: 30px;
-  width: 90%;
+  width: 15%;
   margin: 15px auto;
   background-color: #aace9b !important;
   color: #373867;
@@ -114,7 +121,7 @@ h1 {
 }
 
 .goHome {
-  width: 30%;
+  width: 15%;
   height: 30px;
   margin: 15px 10%;
   background: rgb(171, 170, 170);
@@ -148,4 +155,4 @@ h1 {
   bottom: 0;
   -webkit-transition: all 0.35s;
   transition: all 0.35s;
-}
+};

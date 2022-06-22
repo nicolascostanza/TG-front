@@ -5,6 +5,7 @@ import * as Timesheetsthunks from 'redux/timesheets/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import Table from 'Components/Shared/Table';
 import { useHistory } from 'react-router-dom';
+import Sidebar from 'Components/Shared/Sidebar';
 
 function Home() {
   const history = useHistory();
@@ -15,6 +16,7 @@ function Home() {
   }, []);
   return (
     <>
+      <Sidebar />
       <div className={styles.divEditProfile}>
         <button
           onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}

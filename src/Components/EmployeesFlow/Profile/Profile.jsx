@@ -8,6 +8,7 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
 import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
+import Sidebar from 'Components/Shared/Sidebar';
 
 function Profile() {
   const history = useHistory();
@@ -62,8 +63,9 @@ function Profile() {
   };
   return (
     <>
+      <Sidebar />
       <h1>Welcome {employeeSelected[0]?.firstName}</h1>
-      <div>
+      <div className={styles.divButton}>
         <button
           className={update ? styles.greenButton : styles.redButton}
           onClick={(e) => {
