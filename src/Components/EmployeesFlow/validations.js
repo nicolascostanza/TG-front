@@ -10,7 +10,7 @@ export const employeeValidationSignUp = Joi.object({
     .messages({
       'string.min': 'First name must contain at least 3 characters',
       'string.max': 'First name must contain 40 characters or less',
-      'string.pattern.base': 'First name must contain only numbers',
+      'string.pattern.base': 'First name must contain only letters',
       'string.empty': 'This field is required'
     }),
   lastName: Joi.string()
@@ -22,7 +22,7 @@ export const employeeValidationSignUp = Joi.object({
     .messages({
       'string.min': 'Last name must contain at least 3 characters',
       'string.max': 'Last name must contain 40 characters or less',
-      'string.pattern.base': 'Last name must contain only numbers',
+      'string.pattern.base': 'Last name must contain only letters',
       'string.empty': 'This field is required'
     }),
   email: Joi.string()

@@ -70,6 +70,25 @@ select {
   overflow: hidden;
   display: inline-block;
 }
+.buttonOk {
+  width: 20%;
+  height: 30px;
+  margin-top: 25px;
+  background-color: #aace9b;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
+}
+.modal{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .buttonReset {
   width: 20%;
   margin: 15px 10%;
@@ -99,7 +118,7 @@ select {
   line-height: 23px;
   color: #373867;
 }
-.buttonContinue::after, .buttonReset::after {
+.buttonContinue::after, .buttonReset::after, .buttonOk::after {
   content: '';
   background: #181823;
   position: absolute;
@@ -113,7 +132,7 @@ select {
   -webkit-transition: all 0.35s;
   transition: all 0.35s;
 }
-.buttonContinue:hover::after, .buttonReset:hover::after{
+.buttonContinue:hover::after, .buttonReset:hover::after, .buttonOk:hover::after{
   left: 0;
   right: 0;
   top: 0;

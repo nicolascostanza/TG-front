@@ -7,8 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
 import styles from './signup.module.css';
+import { useHistory } from 'react-router-dom';
 
 function SignUp() {
+  const history = useHistory();
   const message = useSelector((state) => state.employees.message);
   const dispatch = useDispatch();
   const [showModalMessage, setShowModalMessage] = useState(false);
@@ -35,14 +37,25 @@ function SignUp() {
         <Sidebar />
       </section>
       <Modal showModal={showModalMessage} handleClose={handleCloseMessage}>
-        <p>{message}</p>
+        <div className={styles.modal}>
+          <p>{message}</p>
+          <button
+            onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}
+            className={styles.buttonOk}
+            value="OK"
+          >
+            OK
+          </button>
+        </div>
       </Modal>
       <section className={styles.form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1 className={styles.tittle}>REGISTER</h1>
           <div className={styles.formFlex}>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>First name</label>
+              <label htmlFor="First name" className={styles.labels}>
+                First name
+              </label>
               <input
                 type="text"
                 {...register('firstName')}
@@ -51,7 +64,9 @@ function SignUp() {
               {errors.firstName && <p className={styles.errorInput}>{errors.firstName?.message}</p>}
             </div>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>Last Name</label>
+              <label htmlFor="Last name" className={styles.labels}>
+                Last Name
+              </label>
               <input
                 type="text"
                 {...register('lastName')}
@@ -62,7 +77,9 @@ function SignUp() {
           </div>
           <div className={styles.formFlex}>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>Gender</label>
+              <label htmlFor="Gender" className={styles.labels}>
+                Gender
+              </label>
               <select {...register('gender')}>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
@@ -71,7 +88,9 @@ function SignUp() {
               {errors.gender && <p className={styles.errorInput}>{errors.gender?.message}</p>}
             </div>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>Address</label>
+              <label htmlFor="Address" className={styles.labels}>
+                Address
+              </label>
               <input
                 type="text"
                 {...register('address')}
@@ -82,24 +101,32 @@ function SignUp() {
           </div>
           <div className={styles.formFlex}>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>Date of Birthday</label>
+              <label htmlFor="Date of birth" className={styles.labels}>
+                Date of Birth
+              </label>
               <input type="date" {...register('dob')} error={appendErrors.dob?.message}></input>
               {errors.dob && <p className={styles.errorInput}>{errors.dob?.message}</p>}
             </div>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>Phone</label>
+              <label htmlFor="Phone" className={styles.labels}>
+                Phone
+              </label>
               <input type="text" {...register('phone')} error={appendErrors.phone?.message}></input>
               {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
             </div>
           </div>
           <div className={styles.formFlex}>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>Email</label>
+              <label htmlFor="Email" className={styles.labels}>
+                Email
+              </label>
               <input type="text" {...register('email')} error={appendErrors.email?.message}></input>
               {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
             </div>
             <div className={styles.inputContainer}>
-              <label className={styles.labels}>Password</label>
+              <label htmlFor="Password" className={styles.labels}>
+                Password
+              </label>
               <input
                 type="password"
                 {...register('password')}

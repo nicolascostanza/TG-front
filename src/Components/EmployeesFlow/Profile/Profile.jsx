@@ -91,7 +91,9 @@ function Profile() {
       </Modal>
       <form className={styles.form} onSubmit={handleSubmit(UpdateEmployee)}>
         <div className={styles.row}>
-          <label className={styles.label}>First Name</label>
+          <label htmlFor="First name" className={styles.label}>
+            First Name
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.firstName}</p>
@@ -114,7 +116,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Last Name</label>
+          <label htmlFor="Last name" className={styles.label}>
+            Last Name
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.lastName}</p>
@@ -135,7 +139,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Gender</label>
+          <label htmlFor="Gender" className={styles.label}>
+            Gender
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.gender}</p>
@@ -158,7 +164,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Address</label>
+          <label htmlFor="Address" className={styles.label}>
+            Address
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.address}</p>
@@ -179,7 +187,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Phone</label>
+          <label htmlFor="Phone" className={styles.label}>
+            Phone
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.phone}</p>
@@ -200,7 +210,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Date of Birthday</label>
+          <label htmlFor="Date of Birth" className={styles.label}>
+            Date of Birth
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{new Date(employeeSelected[0]?.dob).toString()}</p>
@@ -221,7 +233,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Email</label>
+          <label htmlFor="Email" className={styles.label}>
+            Email
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.email}</p>
@@ -242,7 +256,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Password</label>
+          <label htmlFor="Password" className={styles.label}>
+            Password
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.password}</p>
@@ -263,7 +279,9 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label className={styles.label}>Active</label>
+          <label htmlFor="Active" className={styles.label}>
+            Active
+          </label>
           <div className={styles.secondColumn}>
             {update ? (
               <p className={styles.text}>{employeeSelected[0]?.active}</p>
