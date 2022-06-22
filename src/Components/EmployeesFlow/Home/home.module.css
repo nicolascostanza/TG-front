@@ -14,20 +14,6 @@
   display: flex;
   justify-content: flex-end;
 }
-/* .buttonProfile {
-  width: 15%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 15px 10%;
-  height: 30px;
-  background-color: grey;
-  color: #FFF;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-} */
-
 .buttonProfile {
     display: flex;
     justify-content: center;

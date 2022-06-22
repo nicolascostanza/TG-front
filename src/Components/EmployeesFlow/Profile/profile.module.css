@@ -22,7 +22,6 @@ h1 {
   line-height: 100%;
   color: #373867;
 }
-
 .row {
   padding: 5px 0 10px 0;
   height: auto;
@@ -107,16 +106,6 @@ h1 {
   box-shadow: inset 0px -1px 0px #e0e0e0;
   border-radius: 5px;
 }
-/* .goHome {
-  width: 30%;
-  margin: 15px 10%;
-  height: 30px;
-  color: #FFF !important;
-  background: rgb(178, 172, 172);
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-} */
 .redButton:hover,
 .greenButton:hover,
 .buttonSubmit:hover {
