@@ -65,7 +65,8 @@ export const employeeValidationSignUp = Joi.object({
     .required('its required')
     .regex(/^[0-9\-+]{9,10}$/)
     .messages({
-      'string.pattern.base': 'Phone must contain only numbers',
+      'string.pattern.base':
+        'Phone must contain only numbers, and should contain between 9 and 10 characters',
       'string.empty': 'This field is required'
     }),
   active: Joi.boolean().sensitive()
