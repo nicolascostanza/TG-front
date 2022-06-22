@@ -1,10 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
-import Form from '../../Shared/Form';
-import Modal from '../../Shared/Modal';
-import * as thunks from '../../../redux/timesheets/thunks';
-import { useDispatch } from 'react-redux';
+import Form from 'Components/Shared/Form';
+import * as thunks from 'redux/timesheets/thunks';
+import { useDispatch, useSelector } from 'react-redux';
 
 function EditTimeSheets(props) {
   useEffect(() => {
@@ -16,27 +15,37 @@ function EditTimeSheets(props) {
         setProject(response.data.project);
         setDate(new Date(response.data.date).toISOString().split('T')[0] || '');
         setHours(response.data.hours);
-        setTask(response.data.task);
+        setSelectedTasks(response.data.task.map((item) => item._id));
         setApproved(response.data.approved);
         setRole(response.data.role);
       });
   }, [props.editId]);
+  const allTasks = useSelector((state) => state.tasks.list);
   const [employeeId, setEmployeeId] = useState({});
   const [description, setDescription] = useState('');
   const [project, setProject] = useState('');
   const [date, setDate] = useState('');
   const [hours, setHours] = useState('');
-  const [task, setTask] = useState([]);
+  const [tasks, setTasks] = useState('');
   const [approved, setApproved] = useState(false);
   const [role, setRole] = useState('');
-  const [showModalCorrect, setShowModalCorrect] = useState(false);
-  const [showModalIncorrect, setShowModalIncorrect] = useState(false);
+  const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
-  const handleCloseMessage = () => {
-    setShowModalCorrect(false);
-    setShowModalIncorrect(false);
-  };
   const { showEditModal, handleClose } = props;
+
+  // useEffect(() => {
+  //   setSelectedTasks([...tasks.map((task) => task._id)]);
+  // }, []);
+
+  const appendToSelectedTasks = (id) => {
+    const previousState = selectedTasks;
+    setSelectedTasks([...previousState, id]);
+    setTasks('');
+  };
+
+  const deleteFromSelectedTasks = (id) => {
+    setSelectedTasks(selectedTasks.filter((task) => task !== id));
+  };
 
   const editTimeSheets = async (newBody, id) => {
     dispatch(thunks.editTimesheet(newBody, id));
@@ -52,7 +61,7 @@ function EditTimeSheets(props) {
         date: new Date(date).toISOString().split('T')[0] || '',
         // date,
         hours,
-        task: [...task],
+        task: selectedTasks,
         approved,
         role
       },
@@ -113,13 +122,53 @@ function EditTimeSheets(props) {
             />
           </div>
           <div>
-            <label> Task ID </label>
+            <label> Tasks </label>
             <input
               type="text"
-              placeholder="Task ID"
-              value={task && task[0] ? task[0]._id : ''}
-              onChange={(e) => setTask(e.target.value)}
+              placeholder="Task"
+              value={tasks}
+              onChange={(e) => setTasks(e.target.value)}
             />
+            <div>
+              {tasks.length > 0
+                ? allTasks
+                    .filter(
+                      (task) =>
+                        task.taskName.match(new RegExp(tasks, 'i')) ||
+                        task.taskDescription.match(new RegExp(tasks, 'i'))
+                    )
+                    .map((task) => {
+                      return (
+                        <p
+                          key={task._id}
+                          onClick={() =>
+                            selectedTasks.find((item) => item === task._id)
+                              ? deleteFromSelectedTasks(task._id)
+                              : appendToSelectedTasks(task._id)
+                          }
+                          className={
+                            selectedTasks.find((item) => item === task._id)
+                              ? styles.selectedItem
+                              : styles.notSelectedItem
+                          }
+                        >
+                          {task.taskName}: {task.taskDescription}
+                        </p>
+                      );
+                    })
+                : selectedTasks.map((task) => {
+                    return (
+                      <p
+                        key={task}
+                        className={styles.chip}
+                        onClick={() => deleteFromSelectedTasks(task)}
+                      >
+                        {allTasks.find((item) => item._id === task).taskName}:{' '}
+                        {allTasks.find((item) => item._id === task).taskDescription}
+                      </p>
+                    );
+                  })}
+            </div>
           </div>
           <div>
             <label> Approved </label>
@@ -140,16 +189,6 @@ function EditTimeSheets(props) {
           </div>
         </div>
       </Form>
-      <Modal
-        showModal={showModalCorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The Time sheet has been updated successfully'}
-      ></Modal>
-      <Modal
-        showModal={showModalIncorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The was an error updating time sheet'}
-      ></Modal>
     </section>
   );
 }

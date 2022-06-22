@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react';
-import styles from '../List/list.module.css';
 import AddTimeSheets from '../Add';
-import Table from '../../Shared/Table';
+import Table from 'Components/Shared/Table';
 import EditTimeSheets from '../Edit';
-import Sidebar from '../../Shared/Sidebar';
-import * as thunks from '../../../redux/timesheets/thunks';
-import * as actions from '../../../redux/timesheets/actions';
+import Sidebar from 'Components/Shared/Sidebar';
+import * as thunks from 'redux/timesheets/thunks';
+import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -57,7 +56,7 @@ function TimeSheet() {
     };
   });
   return (
-    <div className={styles.container}>
+    <div className>
       <Sidebar></Sidebar>
       <EditTimeSheets
         showEditModal={showEditModal}

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import styles from './Form.module.css';
-import Form from '../../Shared/Form';
-import * as thunks from '../../../redux/timesheets/thunks';
+import Form from 'Components/Shared/Form';
+import * as thunks from 'redux/timesheets/thunks';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
