@@ -3,13 +3,13 @@ import Joi from 'joi';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
-import * as thunks from '../../redux/admins/thunks';
-import Button from '../Shared/Button';
-import Form from '../Shared/Form';
-import Loader from '../Shared/Loader';
-import Modal from '../Shared/Modal';
-import Sidebar from '../Shared/Sidebar';
-import Table from '../Shared/Table';
+import * as thunks from 'redux/admins/thunks';
+import Button from 'Components/Shared/Button';
+import Form from 'Components/Shared/Form';
+import Loader from 'Components/Shared/Loader';
+import Modal from 'Components/Shared/Modal';
+import Sidebar from 'Components/Shared/Sidebar';
+import Table from 'Components/Shared/Table';
 import styles from './admins.module.css';
 
 function Admins() {
