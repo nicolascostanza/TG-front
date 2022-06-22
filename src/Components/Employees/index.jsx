@@ -18,23 +18,57 @@ const schema = Joi.object({
   firstName: Joi.string()
     .min(3)
     .required()
-    .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+    .messages({
+      'string.min': 'Name must contain 3 or more characters',
+      'string.pattern.base': 'Name is not valid',
+      'string.empty': 'This field is required'
+    }),
   lastName: Joi.string()
     .min(3)
     .required()
-    .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/),
+    .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+    .messages({
+      'string.min': 'Name must contain 3 or more characters',
+      'string.pattern.base': 'Name is not valid',
+      'string.empty': 'This field is required'
+    }),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .min(7)
-    .required(),
-  gender: Joi.string().valid('Male', 'Female', 'Other'),
-  address: Joi.string().regex(/^[a-zA-Z0-9\s,'-]*$/),
-  dob: Joi.date().required(),
+    .required()
+    .messages({
+      'string.email': 'Invalid email',
+      'string.min': 'Email must contain 7 or more characters',
+      'string.empty': 'This field is required'
+    }),
+  gender: Joi.string()
+    .valid('Male', 'Female', 'Other')
+    .messages({ 'any.only': 'This field is required' }),
+  address: Joi.string()
+    .regex(/^[a-zA-Z0-9\s,'-]*$/)
+    .messages({
+      'string.empty': 'This field is required',
+      'string.pattern.base': 'Address is not valid'
+    }),
+  dob: Joi.date().required().messages({
+    'date.base': 'Date is not valid'
+  }),
   password: Joi.string()
     .min(8)
     .required()
-    .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/),
-  phone: Joi.string().regex(/^[0-9\-+]{9,10}$/),
+    .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/)
+    .messages({
+      'string.empty': 'This field is required',
+      'string.min': 'Password must contain 8 or more characters',
+      'string.pattern.base': 'Password must contain only letters and numbers'
+    }),
+  phone: Joi.string()
+    .regex(/^[0-9\-+]{9,10}$/)
+    .messages({
+      'string.empty': 'This field is required',
+      'string.pattern.base': 'Phone must contain between 9 and 10 characters'
+    }),
   active: Joi.boolean()
 });
 
@@ -51,7 +85,6 @@ function Employees() {
     'phone',
     'active'
   ];
-
   const [showAddEdit, setShowAddEdit] = useState(false);
   const [employeeIdToEdit, setEmployeeIdToEdit] = useState('');
   const [showModalAlert, setShowModalAlert] = useState(false);
@@ -64,11 +97,9 @@ function Employees() {
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees.list);
   const isFetchingEmployees = useSelector((state) => state.employees.isFetching);
-
   useEffect(() => {
     dispatch(thunks.getEmployees());
   }, []);
-
   const {
     handleSubmit,
     register,
@@ -128,6 +159,7 @@ function Employees() {
       active: employeeToEdit[0].active === 'true' ? true : false
     });
   };
+  console.log(errors);
 
   const resetFields = () => {
     reset({
