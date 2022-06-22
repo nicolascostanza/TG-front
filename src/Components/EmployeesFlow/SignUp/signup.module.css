@@ -57,49 +57,67 @@ select {
   justify-content: space-around;
 }
 .buttonContinue {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
   width: 20%;
-  height: auto;
-  background: #aace9b;
+  margin: 15px 10%;
+  height: 30px;
+  background-color: #aace9b;
+  color: white;
+  border: none;
   border-radius: 5px;
-  border: 1px solid #373867;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 23px;
-  text-align: center;
-  display: flex;
-  color: #373867;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
 }
 .buttonReset {
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
   width: 20%;
-  height: auto;
-  background: #ebebf0;
-  color: #373867;
+  margin: 15px 10%;
+  height: 30px;
+  background-color: lightgray;
+  color: #8A8A8A;
+  border: none;
   border-radius: 5px;
-  border: 1px solid #373867;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 23px;
-  text-align: center;
-  display: flex;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
 }
 .errorInput {
-  color: #d30404;
+  color: red;
   font-weight: 500;
-  font-size: 18px;
+  font-size: 13px;
   line-height: 21px;
   margin: 5px 0 0 5px;
   padding: 0%;
   border: none;
 }
 .labels {
-  font-weight: 500;
-  font-size: 20px;
+  font-weight: 400;
+  font-size: 18px;
   line-height: 23px;
   color: #373867;
 }
+.buttonContinue::after, .buttonReset::after {
+  content: '';
+  background: #181823;
+  position: absolute;
+  z-index: -1;
+  padding: 16px 20px;
+  display: block;
+  top: 0;
+  bottom: 0;
+  left: -100%;
+  right: 100%;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+}
+.buttonContinue:hover::after, .buttonReset:hover::after{
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  -webkit-transition: all 0.35s;
+  transition: all 0.35s;
+};

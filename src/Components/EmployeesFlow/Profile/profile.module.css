@@ -86,21 +86,29 @@ h1 {
   background-color: red;
   width: 15%;
   margin: 15px 10%;
-  color: #373867;
+  color: white;
   height: 30px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
 }
 .greenButton {
   width: 15%;
   margin: 15px 10%;
   height: 30px;
   background-color: #aace9b;
-  color: #373867;
+  color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
 }
 .buttonSubmit {
   cursor: pointer;
@@ -108,18 +116,16 @@ h1 {
   width: 15%;
   margin: 15px auto;
   background-color: #aace9b !important;
-  color: #373867;
+  color: white;
   border: solid 1px #e0e0e0;
   box-shadow: inset 0px -1px 0px #e0e0e0;
   border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  display: inline-block;
 }
-.redButton:hover,
-.greenButton:hover,
-.buttonSubmit:hover {
-  box-shadow: 0 2px 8px rgb(111, 112, 113);
-  transition: 0.2s ease;
-}
-
 .goHome {
   width: 15%;
   height: 30px;
@@ -134,7 +140,7 @@ h1 {
   overflow: hidden;
   display: inline-block;
 }
-.goHome::after {
+.goHome::after, .greenButton::after, .buttonSubmit::after, .redButton::after {
   content: '';
   background: #181823;
   position: absolute;
@@ -148,7 +154,7 @@ h1 {
   -webkit-transition: all 0.35s;
   transition: all 0.35s;
 }
-.goHome:hover::after {
+.goHome:hover::after,.greenButton:hover::after,.buttonSubmit:hover::after,.redButton:hover::after{
   left: 0;
   right: 0;
   top: 0;
