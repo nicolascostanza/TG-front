@@ -12,12 +12,19 @@
 }
 
 .inputError, .input {
+	margin: 4px 0;
 	padding: 6px;
 	border-radius: 6px;
 }
 
 .inputError::placeholder {
 	color: red;
+}
+
+.errorContainer, .optionContainer {
+	min-height: 8px;
+	width: 100%;
+	margin-bottom: 4px;
 }
 
 .error {

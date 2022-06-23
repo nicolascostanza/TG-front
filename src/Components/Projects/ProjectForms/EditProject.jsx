@@ -46,6 +46,7 @@ const EditProject = (props) => {
     name: Joi.string()
       .min(3)
       .max(30)
+      .trim()
       .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
       .messages({
         'string.min': 'Name must contain 3 or more characters',
@@ -57,6 +58,7 @@ const EditProject = (props) => {
     description: Joi.string()
       .min(3)
       .max(200)
+      .trim()
       .messages({
         'string.min': 'Description must contain 3 or more characters',
         'string.max': 'Name must contain 200 or less characters',
@@ -66,6 +68,7 @@ const EditProject = (props) => {
     clientName: Joi.string()
       .min(3)
       .max(30)
+      .trim()
       .messages({
         'string.min': 'Client name must contain 3 or more characters',
         'string.max': 'Client name must contain 30 or less characters',
@@ -73,19 +76,24 @@ const EditProject = (props) => {
       })
       .required(),
     startDate: Joi.date()
+      .min('01-01-2000')
       .messages({
+        'date.min': 'Start date must be after 01-01-2000',
         'date.base': 'Date is not valid',
         'date.empty': 'This field is required'
       })
       .required(),
     endDate: Joi.date()
       .greater(Joi.ref('startDate'))
+      .less('12-31-2099')
+      .allow('')
       .messages({
         'date.base': 'Date is not valid',
+        'date.less': 'End date must be before 12-31-2099',
         'date.greater': 'End date must be after the start date',
-        'date.empty': 'This field is required'
+        'any.ref': 'Start date is required'
       })
-      .required(),
+      .optional(),
     projectManager: Joi.string()
       .min(3)
       .max(30)
@@ -127,17 +135,26 @@ const EditProject = (props) => {
   };
 
   const submitEditProject = (data, e) => {
+    const { name, description, clientName, startDate, endDate, projectManager } = data;
     e.preventDefault();
-    const updatedBody = {
-      name: data.name,
-      description: data.description,
-      clientName: data.clientName,
-      startDate: data.startDate,
-      endDate: data.endDate,
-      projectManager: data.projectManager,
-      team: selectedEmployees,
-      tasks: selectedTasks
-    };
+    let updatedBody = {};
+    if (endDate.length < 10) {
+      updatedBody = {
+        name,
+        description,
+        clientName,
+        startDate,
+        projectManager,
+        team: selectedEmployees,
+        tasks: selectedTasks
+      };
+    } else {
+      updatedBody = {
+        ...data,
+        team: selectedEmployees,
+        tasks: selectedTasks
+      };
+    }
     dispatch(thunks.updateProject(updatedBody, id));
   };
 
@@ -176,7 +193,9 @@ const EditProject = (props) => {
         placeholder="Project name"
         className={errors.name ? styles.inputError : styles.input}
       />
-      {errors.name?.type ? <p className={styles.error}>{errors.name.message}</p> : null}
+      <div className={styles.errorContainer}>
+        {errors.name?.type ? <p className={styles.error}>{errors.name.message}</p> : null}
+      </div>
 
       <label htmlFor="description">Description</label>
       <input
@@ -185,9 +204,11 @@ const EditProject = (props) => {
         placeholder="Project description"
         className={errors.description ? styles.inputError : styles.input}
       />
-      {errors.description?.type ? (
-        <p className={styles.error}>{errors.description.message}</p>
-      ) : null}
+      <div className={styles.errorContainer}>
+        {errors.description?.type ? (
+          <p className={styles.error}>{errors.description.message}</p>
+        ) : null}
+      </div>
 
       <label htmlFor="clientName">Client Name</label>
       <input
@@ -196,7 +217,11 @@ const EditProject = (props) => {
         placeholder="Client name"
         className={errors.clientName ? styles.inputError : styles.input}
       />
-      {errors.clientName?.type ? <p className={styles.error}>{errors.clientName.message}</p> : null}
+      <div className={styles.errorContainer}>
+        {errors.clientName?.type ? (
+          <p className={styles.error}>{errors.clientName.message}</p>
+        ) : null}
+      </div>
 
       <label htmlFor="startDate">Start Date</label>
       <input
@@ -204,7 +229,9 @@ const EditProject = (props) => {
         type="date"
         className={errors.startDate ? styles.inputError : styles.input}
       />
-      {errors.startDate?.type ? <p className={styles.error}>{errors.startDate.message}</p> : null}
+      <div className={styles.errorContainer}>
+        {errors.startDate?.type ? <p className={styles.error}>{errors.startDate.message}</p> : null}
+      </div>
 
       <label htmlFor="endDate">End Date</label>
       <input
@@ -212,7 +239,9 @@ const EditProject = (props) => {
         type="date"
         className={errors.endDate ? styles.inputError : styles.input}
       />
-      {errors.endDate?.type ? <p className={styles.error}>{errors.endDate.message}</p> : null}
+      <div className={styles.errorContainer}>
+        {errors.endDate?.type ? <p className={styles.error}>{errors.endDate.message}</p> : null}
+      </div>
 
       <label htmlFor="projectManager">Project Manager</label>
       <input
@@ -221,9 +250,11 @@ const EditProject = (props) => {
         placeholder="Project manager"
         className={errors.projectManager ? styles.inputError : styles.input}
       />
-      {errors.projectManager?.type ? (
-        <p className={styles.error}>{errors.projectManager.message}</p>
-      ) : null}
+      <div className={styles.errorContainer}>
+        {errors.projectManager?.type ? (
+          <p className={styles.error}>{errors.projectManager.message}</p>
+        ) : null}
+      </div>
 
       <label htmlFor="team">Team</label>
       <input
