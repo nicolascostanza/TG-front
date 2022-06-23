@@ -51,8 +51,9 @@ const schema = Joi.object({
       'string.empty': 'This field is required',
       'string.pattern.base': 'Address is not valid'
     }),
-  dob: Joi.date().required().messages({
-    'date.base': 'Date is not valid'
+  dob: Joi.date().less('now').required().messages({
+    'date.base': 'Date is not valid',
+    'date.less': 'Invalid date'
   }),
   password: Joi.string()
     .min(8)
@@ -215,6 +216,7 @@ function Employees() {
       alert('Something unexpected happened');
     }
     resetFields();
+    console.log(errors);
   };
 
   return (
@@ -226,19 +228,31 @@ function Employees() {
       <Modal showModal={showModalAlert} handleClose={handleCloseAlert}>
         <h2>Are you sure you want to delete the employee?</h2>
         <div className={styles.buttonsDeleteModal}>
-          <Button onClick={deleteEmployee} width={'100%'} height={'25px'} fontSize={'15px'}>
+          <Button
+            className={styles.deleteModalButton}
+            onClick={deleteEmployee}
+            width={'100%'}
+            height={'25px'}
+            fontSize={'15px'}
+          >
             Accept
           </Button>
         </div>
         <div className={styles.buttonsDeleteModal}>
-          <Button onClick={handleCloseAlert} width={'100%'} height={'25px'} fontSize={'15px'}>
+          <Button
+            className={styles.deleteModalButton}
+            onClick={handleCloseAlert}
+            width={'100%'}
+            height={'25px'}
+            fontSize={'15px'}
+          >
             Cancel
           </Button>
         </div>
       </Modal>
       <Modal showModal={showModalMessage} handleClose={handleCloseMessage}>
         <h2>{tittleModal}</h2>
-        <p>{message}</p>
+        <p className={styles.modalText}>{message}</p>
       </Modal>
       <section>
         <Table
