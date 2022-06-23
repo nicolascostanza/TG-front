@@ -24,7 +24,7 @@ const Sidebar = ({ children }) => {
           <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
         <a>Home</a> {/*<Link to="/tasks">home</Link>*/}
-        <a onClick={() => history.push('/employees/signup')}>Sign-up</a>
+        <a onClick={() => history.push('/signup')}>Sign-up</a>
         <a>Log-in</a>
         <a>Contact</a>
       </section>

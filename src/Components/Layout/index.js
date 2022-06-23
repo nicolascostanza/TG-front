@@ -30,7 +30,7 @@ function Layout() {
             <Route exact path="/employees" component={Employees} />
             <Route exact path="/employees/home/:id" component={EmployeesHome} />
             <Route exact path="/employees/profile/:id" component={EmployeesProfile} />
-            <Route exact path="/employees/signup" component={EmployeesSignUp} />
+            <Route exact path="/signup" component={EmployeesSignUp} />
             <Route exact path="/projects" component={Projects} />
             <Route exact path="/time-sheets" component={TimeSheets} />
             <Route exact path="/time-sheets-add" component={AddTimeSheets} />
