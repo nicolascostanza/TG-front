@@ -46,9 +46,11 @@ const schema = Joi.object({
     .valid('Male', 'Female', 'Other')
     .messages({ 'any.only': 'This field is required' }),
   address: Joi.string()
-    .regex(/^[a-zA-Z0-9\s,'-]*$/)
+    .min(5)
+    .regex(/[a-zA-Z0-9]+\s[a-zA-Z0-9]/)
     .messages({
       'string.empty': 'This field is required',
+      'string.min': 'Addres must contain 5 or more characters',
       'string.pattern.base': 'Address is not valid'
     }),
   dob: Joi.date().less('now').required().messages({
