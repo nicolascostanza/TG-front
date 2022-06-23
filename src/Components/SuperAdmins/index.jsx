@@ -185,7 +185,6 @@ function SuperAdmins() {
           handleSubmit={handleSubmit(onSubmit)}
           handleClose={closeModals}
         >
-          {/* <Loader isLoading={isFetching} /> */}
           <div className={styles.inputsForm}>
             <label htmlFor="firstName">First Name</label>
             <input {...register('firstName')} name="firstName" type="text" placeholder="John" />
