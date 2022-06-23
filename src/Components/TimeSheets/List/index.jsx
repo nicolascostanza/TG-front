@@ -3,6 +3,7 @@ import AddTimeSheets from '../Add';
 import Table from 'Components/Shared/Table';
 import EditTimeSheets from '../Edit';
 import Sidebar from 'Components/Shared/Sidebar';
+import Loader from 'Components/Shared/Loader';
 import * as thunks from 'redux/timesheets/thunks';
 import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
@@ -36,9 +37,6 @@ function TimeSheet() {
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
-  if (isFetching) {
-    return <h2>Fetching</h2>;
-  }
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     return {
       ...timeSheet,
@@ -56,7 +54,8 @@ function TimeSheet() {
     };
   });
   return (
-    <div className>
+    <>
+      <Loader isLoading={isFetching} />
       <Sidebar></Sidebar>
       <EditTimeSheets
         showEditModal={showEditModal}
@@ -87,7 +86,7 @@ function TimeSheet() {
         onDelete={deleteTimeSheet}
         onAdd={openAddTimeSheet}
       />
-    </div>
+    </>
   );
 }
 export default TimeSheet;

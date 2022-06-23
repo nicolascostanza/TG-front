@@ -19,7 +19,6 @@ function EditTimeSheets(props) {
           project: response.data.project,
           date: new Date(response.data.date).toISOString().split('T')[0] || '',
           hours: response.data.hours,
-          // tasks: response.data.task.map((item) => item._id),
           approved: response.data.approved,
           role: response.data.role
         });
@@ -33,14 +32,25 @@ function EditTimeSheets(props) {
   const { showEditModal, handleClose } = props;
 
   const schema = Joi.object({
-    employeeId: Joi.string(),
-    description: Joi.string().min(3).max(80),
-    project: Joi.string().min(3),
-    date: Joi.date(),
-    hours: Joi.number().min(1),
-    // task: Joi.string().required(),
+    employeeId: Joi.string().messages({ 'string.empty': 'This field must be complete' }),
+    description: Joi.string().min(3).max(80).messages({
+      'string.empty': 'This field must be complete',
+      'string.min': 'This field must have at least 3 characters',
+      'string.max': 'This field can not contain more than 80 characters'
+    }),
+    project: Joi.string().min(3).messages({
+      'string.empty': 'This field must be complete',
+      'string.min': 'This field must have at least 3 characters'
+    }),
+    date: Joi.date().messages({ 'date.base': 'This field must be complete' }),
+    hours: Joi.number().min(1).messages({
+      'number.base': 'This field must be complete',
+      'number.min': 'This field must have at least 1 hour'
+    }),
     approved: Joi.bool(),
-    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL')
+    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').messages({
+      'any.only': 'This field must contain one of the following roles: DEV, QA, PM or TL'
+    })
   });
   const {
     register,
@@ -51,8 +61,6 @@ function EditTimeSheets(props) {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-
-  console.log(errors);
 
   const appendToSelectedTasks = (id) => {
     const previousState = selectedTasks;
@@ -97,7 +105,9 @@ function EditTimeSheets(props) {
               type="text"
               placeholder="employeeId"
             />
-            {errors.employeeId?.type === 'string.empty' && <p>{errors.employeeId.message}</p>}
+            {errors.employeeId?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.employeeId.message}</p>
+            )}
           </div>
           <div>
             <label> Description </label>
@@ -106,20 +116,42 @@ function EditTimeSheets(props) {
               type="text"
               placeholder="Description"
             />
-            {errors.description?.type === 'string.empty' && <p>{errors.description.message}</p>}
-            {errors.description?.type === 'string.min' && <p>{errors.description.message}</p>}
+            {errors.description?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
+            {errors.description?.type === 'string.min' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
+            {errors.description?.type === 'string.max' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
           </div>
           <div>
             <label> Project </label>
             <input {...register('project', { required: true })} type="text" placeholder="Project" />
+            {errors.project?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.project.message}</p>
+            )}
+            {errors.project?.type === 'string.min' && (
+              <p className={styles.error}>{errors.project.message}</p>
+            )}
           </div>
           <div>
             <label> Date </label>
             <input {...register('date', { required: true })} type="date" placeholder="Date" />
+            {errors.date?.type === 'date.base' && (
+              <p className={styles.error}>{errors.date.message}</p>
+            )}
           </div>
           <div>
             <label> Hours </label>
             <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
+            {errors.hours?.type === 'number.base' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
+            {errors.hours?.type === 'number.min' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
           </div>
           <div>
             <label> Tasks </label>
@@ -177,6 +209,9 @@ function EditTimeSheets(props) {
           <div>
             <label> Role </label>
             <input {...register('role', { required: true })} type="text" placeholder="Role" />
+            {errors.role?.type === 'any.only' && (
+              <p className={styles.error}>{errors.role.message}</p>
+            )}
           </div>
         </div>
       </Form>
