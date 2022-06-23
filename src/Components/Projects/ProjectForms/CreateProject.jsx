@@ -294,40 +294,42 @@ const CreateProject = (props) => {
         placeholder="Search a task"
         className={styles.input}
       />
-      {project.tasks.length > 0
-        ? allTasks
-            .filter(
-              (task) =>
-                task.taskName.match(new RegExp(project.tasks, 'i')) ||
-                task.taskDescription.match(new RegExp(project.tasks, 'i'))
-            )
-            .map((task) => {
+      <div className={styles.optionContainer}>
+        {project.tasks.length > 0
+          ? allTasks
+              .filter(
+                (task) =>
+                  task.taskName.match(new RegExp(project.tasks, 'i')) ||
+                  task.taskDescription.match(new RegExp(project.tasks, 'i'))
+              )
+              .map((task) => {
+                return (
+                  <p
+                    key={task._id}
+                    onClick={() =>
+                      selectedTasks.find((item) => item === task._id)
+                        ? deleteFromSelectedTasks(task._id)
+                        : appendToSelectedTasks(task._id)
+                    }
+                    className={
+                      selectedTasks.find((item) => item === task._id)
+                        ? styles.selectedItem
+                        : styles.notSelectedItem
+                    }
+                  >
+                    {task.taskName}: {task.taskDescription}
+                  </p>
+                );
+              })
+          : selectedTasks.map((task) => {
               return (
-                <p
-                  key={task._id}
-                  onClick={() =>
-                    selectedTasks.find((item) => item === task._id)
-                      ? deleteFromSelectedTasks(task._id)
-                      : appendToSelectedTasks(task._id)
-                  }
-                  className={
-                    selectedTasks.find((item) => item === task._id)
-                      ? styles.selectedItem
-                      : styles.notSelectedItem
-                  }
-                >
-                  {task.taskName}: {task.taskDescription}
+                <p key={task} className={styles.chip} onClick={() => deleteFromSelectedTasks(task)}>
+                  {allTasks.find((item) => item._id === task).taskName}:{' '}
+                  {allTasks.find((item) => item._id === task).taskDescription}
                 </p>
               );
-            })
-        : selectedTasks.map((task) => {
-            return (
-              <p key={task} className={styles.chip} onClick={() => deleteFromSelectedTasks(task)}>
-                {allTasks.find((item) => item._id === task).taskName}:{' '}
-                {allTasks.find((item) => item._id === task).taskDescription}
-              </p>
-            );
-          })}
+            })}
+      </div>
     </Form>
   );
 };

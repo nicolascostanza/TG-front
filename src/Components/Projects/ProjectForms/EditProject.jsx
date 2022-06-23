@@ -15,7 +15,7 @@ const EditProject = (props) => {
     description,
     clientName,
     startDate,
-    endDate,
+    endDate = '',
     projectManager,
     team,
     tasks
@@ -28,7 +28,7 @@ const EditProject = (props) => {
     description: description || '',
     clientName: clientName || '',
     startDate: new Date(startDate).toISOString().split('T')[0] || '',
-    endDate: new Date(endDate).toISOString().split('T')[0] || '',
+    endDate: endDate !== '' ? new Date(endDate).toISOString().split('T')[0] : '',
     projectManager: projectManager || '',
     team: '',
     tasks: ''
@@ -121,7 +121,7 @@ const EditProject = (props) => {
       description: description || '',
       clientName: clientName || '',
       startDate: new Date(startDate).toISOString().split('T')[0] || '',
-      endDate: new Date(endDate).toISOString().split('T')[0] || '',
+      endDate: endDate !== '' ? new Date(endDate).toISOString().split('T')[0] : '',
       projectManager: projectManager || ''
     }
   });
@@ -266,45 +266,47 @@ const EditProject = (props) => {
         className={styles.input}
       />
       {/* SHOW SELECTED TEAM MEMBERS */}
-      {project.team.length > 0 // IF THE PROJECT INPUT HAVE SOME VALUE
-        ? allEmployees // FILTER BY THE INPUT VALUE, ANY MATCH
-            .filter(
-              (employee) =>
-                employee.email.match(new RegExp(project.team, 'i')) ||
-                employee.firstName.match(new RegExp(project.team, 'i'))
-            ) // THE 'i' FLAG IS FOR CASE INSENSITIVE
-            .map((member) => {
+      <div className={styles.optionContainer}>
+        {project.team.length > 0 // IF THE PROJECT INPUT HAVE SOME VALUE
+          ? allEmployees // FILTER BY THE INPUT VALUE, ANY MATCH
+              .filter(
+                (employee) =>
+                  employee.email.match(new RegExp(project.team, 'i')) ||
+                  employee.firstName.match(new RegExp(project.team, 'i'))
+              ) // THE 'i' FLAG IS FOR CASE INSENSITIVE
+              .map((member) => {
+                return (
+                  <p
+                    key={member._id}
+                    // IF IT IS ALREADY ASIGNED, THEN UNASIGN IT
+                    onClick={() =>
+                      selectedEmployees.find((emp) => emp === member._id)
+                        ? deleteFromSelectedEmployees(member._id)
+                        : appendToSelectedEmployees(member._id)
+                    }
+                    className={
+                      selectedEmployees.find((emp) => emp === member._id)
+                        ? styles.selectedItem
+                        : styles.notSelectedItem
+                    }
+                  >
+                    {member.firstName}: {member.email}
+                  </p>
+                );
+              })
+          : selectedEmployees.map((member) => {
               return (
                 <p
-                  key={member._id}
-                  // IF IT IS ALREADY ASIGNED, THEN UNASIGN IT
-                  onClick={() =>
-                    selectedEmployees.find((emp) => emp === member._id)
-                      ? deleteFromSelectedEmployees(member._id)
-                      : appendToSelectedEmployees(member._id)
-                  }
-                  className={
-                    selectedEmployees.find((emp) => emp === member._id)
-                      ? styles.selectedItem
-                      : styles.notSelectedItem
-                  }
+                  key={member}
+                  className={styles.chip}
+                  onClick={() => deleteFromSelectedEmployees(member)}
                 >
-                  {member.firstName}: {member.email}
+                  {allEmployees.find((emp) => emp._id === member).firstName} (
+                  {allEmployees.find((emp) => emp._id === member).email})
                 </p>
               );
-            })
-        : selectedEmployees.map((member) => {
-            return (
-              <p
-                key={member}
-                className={styles.chip}
-                onClick={() => deleteFromSelectedEmployees(member)}
-              >
-                {allEmployees.find((emp) => emp._id === member).firstName} (
-                {allEmployees.find((emp) => emp._id === member).email})
-              </p>
-            );
-          })}
+            })}
+      </div>
 
       <label htmlFor="tasks">Tasks</label>
       <input
@@ -316,40 +318,42 @@ const EditProject = (props) => {
         className={styles.input}
       />
       {/* SHOW SELECTED TASKS */}
-      {project.tasks.length > 0
-        ? allTasks
-            .filter(
-              (task) =>
-                task.taskName.match(new RegExp(project.tasks, 'i')) ||
-                task.taskDescription.match(new RegExp(project.tasks, 'i'))
-            )
-            .map((task) => {
+      <div className={styles.optionContainer}>
+        {project.tasks.length > 0
+          ? allTasks
+              .filter(
+                (task) =>
+                  task.taskName.match(new RegExp(project.tasks, 'i')) ||
+                  task.taskDescription.match(new RegExp(project.tasks, 'i'))
+              )
+              .map((task) => {
+                return (
+                  <p
+                    key={task._id}
+                    onClick={() =>
+                      selectedTasks.find((item) => item === task._id)
+                        ? deleteFromSelectedTasks(task._id)
+                        : appendToSelectedTasks(task._id)
+                    }
+                    className={
+                      selectedTasks.find((item) => item === task._id)
+                        ? styles.selectedItem
+                        : styles.notSelectedItem
+                    }
+                  >
+                    {task.taskName}: {task.taskDescription}
+                  </p>
+                );
+              })
+          : selectedTasks.map((task) => {
               return (
-                <p
-                  key={task._id}
-                  onClick={() =>
-                    selectedTasks.find((item) => item === task._id)
-                      ? deleteFromSelectedTasks(task._id)
-                      : appendToSelectedTasks(task._id)
-                  }
-                  className={
-                    selectedTasks.find((item) => item === task._id)
-                      ? styles.selectedItem
-                      : styles.notSelectedItem
-                  }
-                >
-                  {task.taskName}: {task.taskDescription}
+                <p key={task} className={styles.chip} onClick={() => deleteFromSelectedTasks(task)}>
+                  {allTasks.find((item) => item._id === task).taskName}:{' '}
+                  {allTasks.find((item) => item._id === task).taskDescription}
                 </p>
               );
-            })
-        : selectedTasks.map((task) => {
-            return (
-              <p key={task} className={styles.chip} onClick={() => deleteFromSelectedTasks(task)}>
-                {allTasks.find((item) => item._id === task).taskName}:{' '}
-                {allTasks.find((item) => item._id === task).taskDescription}
-              </p>
-            );
-          })}
+            })}
+      </div>
     </Form>
   );
 };
