@@ -93,7 +93,7 @@ function Employees() {
   const [tittleModal, setTittleModal] = useState('');
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [method, setMethod] = useState('');
-  const message = useSelector((state) => state.employees.message);
+  let message = useSelector((state) => state.employees.message);
   const error = useSelector((state) => state.employees.response);
   const dispatch = useDispatch();
   const employees = useSelector((state) => state.employees.list);
@@ -115,9 +115,12 @@ function Employees() {
     setShowModalAlert(true);
     setDeleteId(id);
   };
-  const deleteEmployee = () => {
-    dispatch(thunks.deleteEmployee(deleteId));
+  const deleteEmployee = async () => {
+    // ACAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    setShowModalMessage(false);
     setShowModalAlert(false);
+    console.log(isFetchingEmployees);
+    await dispatch(thunks.deleteEmployee(deleteId));
     setTittleModal('DELETE');
     setShowModalMessage(true);
   };
@@ -180,11 +183,14 @@ function Employees() {
     setShowAddEdit(false);
     setMethod('');
     resetFields();
+    // setShowModalMessage('');
+    message = '';
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setShowModalMessage(false);
     if (method === 'POST') {
-      dispatch(thunks.addEmployee(data));
+      await dispatch(thunks.addEmployee(data));
       resetFields();
       if (!error) {
         setShowAddEdit(false);
@@ -193,7 +199,7 @@ function Employees() {
       }
       setShowModalMessage(true);
     } else if (method === 'PUT') {
-      dispatch(
+      await dispatch(
         thunks.editEmployee({
           _id: employeeIdToEdit,
           firstName: data.firstName,
