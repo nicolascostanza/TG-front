@@ -50,7 +50,7 @@ function Tasks() {
   // const [taskDescription, setTaskDescription] = useState('');
   // const [assignedEmployee, setAssignedEmployee] = useState([]);
   // const [startDate, setStartDate] = useState('');
-  // const [status, setStatus] = useState('');
+  // const [status, setStatus] = useState('')
   const [editedId, setEditedId] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const openAddTask = () => {
