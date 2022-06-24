@@ -6,7 +6,6 @@ import Form from 'Components/Shared/Form';
 import AddTask from './AddTask';
 import * as taskThunks from 'redux/tasks/thunks';
 import * as employeesThunks from 'redux/employees/thunks';
-// import * as projectThunks from 'redux/projects/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Joi from 'joi';
@@ -45,12 +44,6 @@ function Tasks() {
   });
   const URL = `${process.env.REACT_APP_API_URL}/tasks`;
   const [showModal, setShowModal] = useState(false);
-  // const [parentProject, setParentProject] = useState('');
-  // const [taskName, setTaskName] = useState('');
-  // const [taskDescription, setTaskDescription] = useState('');
-  // const [assignedEmployee, setAssignedEmployee] = useState([]);
-  // const [startDate, setStartDate] = useState('');
-  // const [status, setStatus] = useState('')
   const [editedId, setEditedId] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const openAddTask = () => {
@@ -79,7 +72,6 @@ function Tasks() {
   useEffect(() => {
     dispatch(taskThunks.getTasks());
     dispatch(employeesThunks.getEmployees());
-    // dispatch(projectThunks.getProjects());
   }, []);
 
   const allEmployees = useSelector((state) => state.employees.list);
@@ -90,12 +82,10 @@ function Tasks() {
     fetch(`${URL}/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        // console.log(data);
         const { parentProject, taskName, taskDescription, assignedEmployee, startDate, status } =
           data.data;
         const { _id } = parentProject;
         setSelectedEmployees(data.data.assignedEmployee.map((item) => item._id));
-        console.log(assignedEmployee);
         reset({
           parentProject: _id,
           taskName,
@@ -118,21 +108,12 @@ function Tasks() {
   const deleteFromSelectedEmployees = (id) => {
     setSelectedEmployees(selectedEmployees.filter((emp) => emp !== id));
   };
-  // const editTask = async (task) => {
-  //   dispatch(taskThunks.editTask(task, editedId));
-  //   handleClose();
-  // };
-  useEffect(() => {
-    console.log('Edit id: ', editedId);
-  }, [editedId]);
-  console.log(errors);
+  useEffect(() => {}, [editedId]);
   const onSubmit = (data, e) => {
     e.preventDefault();
-    // const { parentProject, taskName, taskDescription, startDate, status } = data;
     let editTasks = {};
-    console.log(data);
     editTasks = {
-      parentProject: data.parentProject?._id,
+      parentProject: data.parentProject,
       taskName: data.taskName,
       taskDescription: data.taskDescription,
       startDate: data.startDate,
@@ -140,13 +121,7 @@ function Tasks() {
       assignedEmployee: selectedEmployees
     };
     dispatch(taskThunks.editTask(editTasks, editedId));
-
-    // setParentProject('');
-    // setTaskName('');
-    // setTaskDescription('');
-    // setAssignedEmployee([]);
-    // setStartDate('');
-    // setStatus('');
+    handleClose();
   };
 
   const deleteTask = async (id) => {
@@ -233,7 +208,6 @@ function Tasks() {
               type="text"
               onChange={(e) => setEmployees(e.target.value)}
               placeholder="Assigned Employee ID"
-              // {...register('assignedEmployee')}
             />
             <div>
               {employees.length > 0
