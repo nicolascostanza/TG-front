@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Dropdown from '../Dropdown';
@@ -7,8 +7,17 @@ import Dropdown from '../Dropdown';
 function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
+  useEffect(() => {
+    const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
+    if (indexPage < 1) {
+      setIndexPage(1);
+    }
+    if (indexPage > maxIndexPage) {
+      setIndexPage(maxIndexPage);
+    }
+  }, [data]);
   const nextPage = () => {
-    if (data.length / 10 >= indexPage) {
+    if (data.length / 10 > indexPage) {
       setIndexPage(indexPage + 1);
     }
   };
@@ -34,7 +43,7 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
             <th>Delete</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
           {show.map((row) => {
             return (
               <tr className={styles.row} key={row._id}>
@@ -98,7 +107,13 @@ function Table({ title, headers, data, onEdit, onAdd, onDelete }) {
                     header === 'date' ||
                     header === 'dob'
                   ) {
-                    return <td>{new Date(row[header]).toISOString().split('T')[0]}</td>;
+                    return (
+                      <td>
+                        {row[header]?.length >= 10
+                          ? new Date(row[header]).toISOString().split('T')[0]
+                          : '-'}
+                      </td>
+                    );
                   } else {
                     return <td key={index}>{row[header]}</td>;
                   }
