@@ -49,7 +49,7 @@
 }
 
 .rutes > li > a:hover {
-  color: rgb(153, 151, 231);
+  color: #675DC9;
 }
 
 @media screen and (min-width: 750px) {

@@ -90,7 +90,7 @@ function Landing() {
               <img className={styles.imgMainSection} src={img5} alt="Reloj" />
             </div>
           </section>
-          <h2>Functionalities</h2>
+          <h2 className={styles.landingH2}>Functionalities</h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
@@ -147,7 +147,7 @@ function Landing() {
             </div>
           </section>
           <div className={styles.separator}></div>
-          <h2>Reasons why you need us</h2>
+          <h2 className={styles.landingH2}>Reasons why you need us</h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
@@ -207,7 +207,7 @@ function Landing() {
           </section>
           <div className={styles.separator}></div>
           <div>
-            <h2>Request information</h2>
+            <h2 id={styles['centeredText']}>Request information</h2>
             <form>
               <div className={styles.nameEmailForm}>
                 <input type="text" placeholder="Name" />
@@ -234,7 +234,7 @@ function Landing() {
           <section className={styles.listFooter}>
             <div>
               <h4>Products</h4>
-              <ol>
+              <ol className={styles.olItems}>
                 <li>Features</li>
                 <li>Downloads</li>
                 <li>Integrations</li>
