@@ -1,6 +1,10 @@
+body{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
+  Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
 .iconsHeader {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   list-style: none;
 }
 .iconsHeader > li {
@@ -53,7 +57,6 @@ textarea {
   height: 200px;
   border: 2px solid #373867;
   border-radius: 5px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 textarea::placeholder {
   color: #373867;
@@ -65,9 +68,10 @@ textarea::placeholder {
 }
 .buttonForm {
   margin-top: 20px;
-  background-color: #F59C9C;
+  margin-right: 95px;
+  background-color: #E27712;
   border: none;
-  color: #373867;
+  color: white;
   width: 128px;
   height: 34px;
   border-radius: 5px;
@@ -119,7 +123,6 @@ a:visited {
   justify-content: space-between;
 }
 .landingH2 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 40px;
   font-weight: 700;
   color: #373867;
@@ -143,7 +146,6 @@ h3 {
   padding: 10px;
 }
 .text {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 15px;
@@ -156,7 +158,6 @@ h3 {
   justify-content: center;
 }
 .tittle {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 700;
   font-size: 60px;
@@ -164,7 +165,6 @@ h3 {
   color: #373867;
 }
 .subtittle {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 24px;
@@ -173,7 +173,6 @@ h3 {
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
 }
 .textMainSection {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -181,7 +180,6 @@ h3 {
   color: #373867;
 }
 .buttonMore {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
@@ -204,7 +202,6 @@ h3 {
   background-color: #373867;
 }
 .group > div > div > h3 {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -242,11 +239,12 @@ h3 {
 }
 .listFooter {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: nowrap;
   padding: 0px 30px;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
-    Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.listFooter div ol {
+  margin-left: -25px;
 }
 .buttonsFooterDiv {
   display: flex;

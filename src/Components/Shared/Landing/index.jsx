@@ -262,36 +262,6 @@ function Landing() {
           </section>
           <div className={styles.buttonsFooterDiv}></div>
           <div className={styles.separator}></div>
-          <footer>
-            <div className={styles.divFooter}>
-              <a href={'https://www.facebook.com/radiumrocket'} target={'_blank'} rel="noreferrer">
-                <i className="fa-brands fa-facebook"></i>
-              </a>
-              <a href={'https://twitter.com/radiumrocket'} target={'_blank'} rel="noreferrer">
-                <i className="fa-brands fa-twitter"></i>
-              </a>
-              <a
-                href={'https://www.linkedin.com/company/radium-rocket'}
-                target={'_blank'}
-                rel="noreferrer"
-              >
-                <i className="fa-brands fa-linkedin"></i>
-              </a>
-              <a
-                href={'https://www.instagram.com/radium.rocket/'}
-                target={'_blank'}
-                rel="noreferrer"
-              >
-                <i className="fa-brands fa-instagram"></i>
-              </a>
-              <a href={'https://github.com/radiumrocketapps'} target={'_blank'} rel="noreferrer">
-                <i className="fa-brands fa-github"></i>
-              </a>
-            </div>
-            <div className={styles.titleFooter}>
-              <p>Trackgenix ®</p>
-            </div>
-          </footer>
         </main>
       </div>
     </>
