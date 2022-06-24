@@ -31,6 +31,7 @@ function Tasks() {
       'string.empty': 'This field is required',
       'date.base': 'This must be a valid date'
     }),
+    assignedEmployee: Joi.array(),
     status: Joi.required().messages({ 'string.empty': 'This field is required' })
   });
   const {
@@ -50,7 +51,7 @@ function Tasks() {
   // const [assignedEmployee, setAssignedEmployee] = useState([]);
   // const [startDate, setStartDate] = useState('');
   // const [status, setStatus] = useState('');
-  const [editedId] = useState('');
+  const [editedId, setEditedId] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const openAddTask = () => {
     setShowAddModal(true);
@@ -84,11 +85,12 @@ function Tasks() {
   const allEmployees = useSelector((state) => state.employees.list);
 
   const onEdit = (id) => {
+    setEditedId(id);
     setShowModal(true);
     fetch(`${URL}/${id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
+        // console.log(data);
         const { parentProject, taskName, taskDescription, assignedEmployee, startDate, status } =
           data.data;
         const { _id } = parentProject;
@@ -98,7 +100,7 @@ function Tasks() {
           parentProject: _id,
           taskName,
           taskDescription,
-          assignedEmployee: selectedEmployees[0],
+          assignedEmployee: [...assignedEmployee],
           startDate,
           status
         });
@@ -120,10 +122,14 @@ function Tasks() {
   //   dispatch(taskThunks.editTask(task, editedId));
   //   handleClose();
   // };
+  useEffect(() => {
+    console.log('Edit id: ', editedId);
+  }, [editedId]);
   console.log(errors);
   const onSubmit = (data, e) => {
-    let editTasks = {};
     e.preventDefault();
+    // const { parentProject, taskName, taskDescription, startDate, status } = data;
+    let editTasks = {};
     console.log(data);
     editTasks = {
       parentProject: data.parentProject?._id,
