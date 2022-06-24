@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Admins from '../Admins/index';
-import Employees from '../Employees/index';
+const Employees = lazy(() => import('Components/Employees'));
 const EmployeesHome = lazy(() => import('Components/EmployeesFlow/Home/Home'));
 const EmployeesProfile = lazy(() => import('Components/EmployeesFlow/Profile/Profile'));
 const EmployeesSignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignUp'));
