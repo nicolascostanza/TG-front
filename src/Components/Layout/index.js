@@ -8,7 +8,7 @@ const EmployeesSignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignU
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
-import Projects from '../Projects';
+const Projects = lazy(() => import('Components/Projects'));
 import SuperAdmins from '../SuperAdmins/index';
 import Tasks from '../Tasks/index';
 import TimeSheets from '../TimeSheets';

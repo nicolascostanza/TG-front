@@ -19,7 +19,11 @@ const Dropdown = ({
         </label>
       </div>
       <div>
-        <select className={style.select} style={{ width }} {...register(registerValue)}>
+        <select
+          className={style.select}
+          style={{ width }}
+          {...(register ? register(registerValue) : registerValue)}
+        >
           <option hidden>{placeholder}</option>
           {children}
         </select>
