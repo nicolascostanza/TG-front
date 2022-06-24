@@ -6,7 +6,7 @@ import Form from 'Components/Shared/Form';
 import AddTask from './AddTask';
 import * as taskThunks from 'redux/tasks/thunks';
 import * as employeesThunks from 'redux/employees/thunks';
-import * as projectThunks from 'redux/projects/thunks';
+// import * as projectThunks from 'redux/projects/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Joi from 'joi';
@@ -18,13 +18,13 @@ function Tasks() {
       .alphanum()
       .required()
       .messages({ 'string.empty': 'This field is required' }),
-    taskName: Joi.string().min(3).max(50).required().messages({
-      'string.min': 'Name must contain 3 or more characters',
+    taskName: Joi.string().min(1).max(50).required().messages({
+      'string.min': 'Name must contain 1 or more characters',
       'string.max': 'Name must contain 50 or less characters',
       'string.empty': 'This field is required'
     }),
-    taskDescription: Joi.string().min(3).max(250).optional().messages({
-      'string.min': 'Name must contain 3 or more characters',
+    taskDescription: Joi.string().min(1).max(250).optional().messages({
+      'string.min': 'Name must contain 1 or more characters',
       'string.max': 'Name must contain 250 or less characters'
     }),
     startDate: Joi.date().required().messages({
@@ -39,17 +39,17 @@ function Tasks() {
     register,
     formState: { errors }
   } = useForm({
-    mode: 'OnBlur',
+    mode: 'onBlur',
     resolver: joiResolver(schema)
   });
   const URL = `${process.env.REACT_APP_API_URL}/tasks`;
   const [showModal, setShowModal] = useState(false);
-  const [parentProject, setParentProject] = useState('');
-  const [taskName, setTaskName] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
-  const [assignedEmployee, setAssignedEmployee] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [status, setStatus] = useState('');
+  // const [parentProject, setParentProject] = useState('');
+  // const [taskName, setTaskName] = useState('');
+  // const [taskDescription, setTaskDescription] = useState('');
+  // const [assignedEmployee, setAssignedEmployee] = useState([]);
+  // const [startDate, setStartDate] = useState('');
+  // const [status, setStatus] = useState('');
   const [editedId] = useState('');
   const [showAddModal, setShowAddModal] = useState(false);
   const openAddTask = () => {
@@ -78,25 +78,29 @@ function Tasks() {
   useEffect(() => {
     dispatch(taskThunks.getTasks());
     dispatch(employeesThunks.getEmployees());
-    dispatch(projectThunks.getProjects());
+    // dispatch(projectThunks.getProjects());
   }, []);
 
   const allEmployees = useSelector((state) => state.employees.list);
-  const allProjects = useSelector((state) => state.projects.list);
 
   const onEdit = (id) => {
     setShowModal(true);
     fetch(`${URL}/${id}`)
       .then((response) => response.json())
-      .then((response) => {
+      .then((data) => {
+        console.log(data);
+        const { parentProject, taskName, taskDescription, assignedEmployee, startDate, status } =
+          data.data;
+        const { _id } = parentProject;
+        setSelectedEmployees(data.data.assignedEmployee.map((item) => item._id));
+        console.log(assignedEmployee);
         reset({
-          parentProject: response.data.parentProject?._id,
-          taskCreatorId: response.data.taskCreatorId,
-          taskName: response.data.taskName,
-          taskDescription: response.data.taskDescription,
-          assignedEmployee: response.data.assignedEmployee,
-          startDate: new Date(response.data.startDate).toISOString().split('T')[0] || '',
-          status: response.data.status
+          parentProject: _id,
+          taskName,
+          taskDescription,
+          assignedEmployee: selectedEmployees[0],
+          startDate,
+          status
         });
       });
   };
@@ -112,41 +116,31 @@ function Tasks() {
   const deleteFromSelectedEmployees = (id) => {
     setSelectedEmployees(selectedEmployees.filter((emp) => emp !== id));
   };
-
-  const [projects, setProjects] = useState('');
-  const [selectedProjects, setSelectedProjects] = useState([]);
-  const appendToSelectedProjects = (id) => {
-    const previousState = selectedProjects;
-    setSelectedProjects([...previousState, id]);
-    setProjects('');
-  };
-
-  const deleteFromSelectedProjects = (id) => {
-    setSelectedProjects(selectedProjects.filter((emp) => emp !== id));
-  };
-
-  const onSubmit = (e) => {
+  // const editTask = async (task) => {
+  //   dispatch(taskThunks.editTask(task, editedId));
+  //   handleClose();
+  // };
+  console.log(errors);
+  const onSubmit = (data, e) => {
+    let editTasks = {};
     e.preventDefault();
-    editTask({
-      parentProject: parentProject,
-      taskName,
-      taskDescription,
-      assignedEmployee: assignedEmployee,
-      startDate,
-      status
-    });
+    console.log(data);
+    editTasks = {
+      parentProject: data.parentProject?._id,
+      taskName: data.taskName,
+      taskDescription: data.taskDescription,
+      startDate: data.startDate,
+      status: data.status,
+      assignedEmployee: selectedEmployees
+    };
+    dispatch(taskThunks.editTask(editTasks, editedId));
 
-    setParentProject('');
-    setTaskName('');
-    setTaskDescription('');
-    setAssignedEmployee([]);
-    setStartDate('');
-    setStatus('');
-  };
-
-  const editTask = async (task) => {
-    dispatch(taskThunks.editTask(task, editedId));
-    handleClose();
+    // setParentProject('');
+    // setTaskName('');
+    // setTaskDescription('');
+    // setAssignedEmployee([]);
+    // setStartDate('');
+    // setStatus('');
   };
 
   const deleteTask = async (id) => {
@@ -158,7 +152,6 @@ function Tasks() {
   if (isFetching) {
     return <div>Fetching...</div>;
   }
-
   return (
     <section className={styles.container}>
       <section className={styles.sidebar}>
@@ -186,64 +179,23 @@ function Tasks() {
         handleClose={handleClose}
         handleSubmit={onSubmit}
         allEmployees={allEmployees}
-        allProjects={allProjects}
       />
-      <Form showModal={showModal} handleClose={handleClose} handleSubmit={handleSubmit(onSubmit)}>
+      <Form
+        showModal={showModal}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit(onSubmit)}
+        allEmployees={allEmployees}
+      >
         <div>
           <h2>Edit Task</h2>
         </div>
         <div className={styles.form}>
           <div>
             <label htmlFor="parentProject">Parent Project:</label>
-            <input
-              value={projects}
-              type="text"
-              placeholder="Parent Project ID"
-              onChange={(e) => setProjects(e.target.value)}
-            />
+            <input type="text" placeholder="Parent Project ID" {...register('parentProject')} />
             {errors.parentProject?.type === 'string.empty' && (
               <p className={styles.error}>{errors.parentProject.message}</p>
             )}
-          </div>
-          <div>
-            {projects.length > 0
-              ? allProjects
-                  .filter(
-                    (project) =>
-                      project.name.match(new RegExp(projects, 'i')) ||
-                      project.clientName.match(new RegExp(projects, 'i'))
-                  )
-                  .map((member) => {
-                    return (
-                      <p
-                        key={member._id}
-                        onClick={() =>
-                          selectedProjects.find((emp) => emp === member._id)
-                            ? deleteFromSelectedProjects(member._id)
-                            : appendToSelectedProjects(member._id)
-                        }
-                        className={
-                          selectedProjects.find((emp) => emp === member._id)
-                            ? styles.selectedItem
-                            : styles.notSelectedItem
-                        }
-                      >
-                        {member.name}: {member.clientName}
-                      </p>
-                    );
-                  })
-              : selectedProjects.map((member) => {
-                  return (
-                    <p
-                      key={member}
-                      className={styles.chip}
-                      onClick={() => deleteFromSelectedProjects(member)}
-                    >
-                      {allProjects.find((emp) => emp._id === member).name} (
-                      {allProjects.find((emp) => emp._id === member).clientName})
-                    </p>
-                  );
-                })}
           </div>
           <div>
             <label htmlFor="taskName">Task Name:</label>
@@ -275,6 +227,7 @@ function Tasks() {
               type="text"
               onChange={(e) => setEmployees(e.target.value)}
               placeholder="Assigned Employee ID"
+              // {...register('assignedEmployee')}
             />
             <div>
               {employees.length > 0
@@ -322,7 +275,7 @@ function Tasks() {
           </div>
           <div>
             <label htmlFor="startDate">Start Date:</label>
-            <input type="date" placeholder="YYYY-MM-DD" {...register('startDate')} />
+            <input type="text" placeholder="YYYY-MM-DD" {...register('startDate')} />
             {errors.startDate?.type === 'string.empty' && (
               <p className={styles.error}>{errors.startDate.message}</p>
             )}
@@ -332,7 +285,7 @@ function Tasks() {
           </div>
           <div className={styles.dropdown}>
             <label htmlFor="status">Status</label>
-            <select {...register('status')}>
+            <select {...register('status')} placeholder="Choose an option">
               <option value="Ready to deliver">Ready to deliver</option>
               <option value="Paused">Paused</option>
             </select>
@@ -345,5 +298,4 @@ function Tasks() {
     </section>
   );
 }
-
 export default Tasks;
