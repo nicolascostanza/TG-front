@@ -2,10 +2,18 @@
 	"compilerOptions": {
 		"baseUrl": "src",
 		"paths": {
-			"shared/*": ["./Components/Shared/*"],
-			"redux/*": ["src/redux/*"],
-			"components/*": ["src/Components/*"]
+			"shared/*": [
+				"./Components/Shared/*"
+			],
+			"redux/*": [
+				"src/redux/*"
+			],
+			"components/*": [
+				"src/Components/*"
+			]
 		}
 	},
-	"include": ["src"]
+	"include": [
+		"src"
+	]
 }
