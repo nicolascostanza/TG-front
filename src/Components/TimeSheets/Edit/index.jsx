@@ -97,10 +97,8 @@ function EditTimeSheets(props) {
         showModal={showEditModal}
         handleClose={handleClose}
         handleSubmit={handleSubmit(onSubmit)}
+        title="Edit Time Sheet"
       >
-        <div className={styles.tittle}>
-          <h2> Edit Time-Sheet </h2>
-        </div>
         <div className={styles.container}>
           <div>
             <label> Employee ID </label>
