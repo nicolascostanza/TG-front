@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import Joi from 'joi';
 import { joiResolver } from '@hookform/resolvers/joi';
+import Loader from 'Components/Shared/Loader';
 
 function Tasks() {
   const schema = Joi.object({
@@ -17,12 +18,12 @@ function Tasks() {
       .alphanum()
       .required()
       .messages({ 'string.empty': 'This field is required' }),
-    taskName: Joi.string().min(1).max(50).required().messages({
+    taskName: Joi.string().min(3).max(50).required().messages({
       'string.min': 'Name must contain 1 or more characters',
       'string.max': 'Name must contain 50 or less characters',
       'string.empty': 'This field is required'
     }),
-    taskDescription: Joi.string().min(1).max(250).optional().messages({
+    taskDescription: Joi.string().min(3).max(250).optional().messages({
       'string.min': 'Name must contain 1 or more characters',
       'string.max': 'Name must contain 250 or less characters'
     }),
@@ -130,9 +131,6 @@ function Tasks() {
       dispatch(taskThunks.deleteTask(id));
     }
   };
-  if (isFetching) {
-    return <div>Fetching...</div>;
-  }
   return (
     <section className={styles.container}>
       <section className={styles.sidebar}>
@@ -145,6 +143,7 @@ function Tasks() {
           </ul>
         </Sidebar>
       </section>
+      <Loader isLoading={isFetching} />
       <section className={styles.container}>
         <Table
           title={'Tasks'}
@@ -263,9 +262,15 @@ function Tasks() {
               <p className={styles.error}>{errors.startDate.message}</p>
             )}
           </div>
-          <div className={styles.dropdown}>
-            <label htmlFor="status">Status</label>
-            <select {...register('status')} placeholder="Choose an option">
+          <div className={styles.containerTask}>
+            <label htmlFor="status" className={styles.dropdownTitleTask}>
+              Status
+            </label>
+            <select
+              {...register('status')}
+              placeholder="Choose an option"
+              className={styles.selectTask}
+            >
               <option value="Ready to deliver">Ready to deliver</option>
               <option value="Paused">Paused</option>
             </select>

@@ -4,9 +4,10 @@ import Joi from 'joi';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/tasks/thunks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import Loader from 'Components/Shared/Loader';
 
 const AddTask = (props) => {
   const schema = Joi.object({
@@ -14,13 +15,13 @@ const AddTask = (props) => {
       .alphanum()
       .required()
       .messages({ 'string.empty': 'This field is required' }),
-    taskName: Joi.string().min(1).max(50).required().messages({
-      'string.min': 'Name must contain 1 or more characters',
+    taskName: Joi.string().min(3).max(50).required().messages({
+      'string.min': 'Name must contain 3 or more characters',
       'string.max': 'Name must contain 50 or less characters',
       'string.empty': 'This field is required'
     }),
-    taskDescription: Joi.string().min(1).max(250).optional().messages({
-      'string.min': 'Name must contain 1 or more characters',
+    taskDescription: Joi.string().min(3).max(250).optional().messages({
+      'string.min': 'Name must contain 3 or more characters',
       'string.max': 'Name must contain 250 or less characters'
     }),
     startDate: Joi.date().required().messages({
@@ -34,9 +35,10 @@ const AddTask = (props) => {
     register,
     formState: { errors }
   } = useForm({
-    mode: 'OnBlur',
+    mode: 'onBlur',
     resolver: joiResolver(schema)
   });
+  const isFetching = useSelector((state) => state.tasks.isFetching);
   const { allEmployees } = props;
   const [employees, setEmployees] = useState('');
   const [selectedEmployees, setSelectedEmployees] = useState([]);
@@ -65,6 +67,7 @@ const AddTask = (props) => {
       handleClose={props.handleClose}
       handleSubmit={handleSubmit(onSubmit)}
     >
+      <Loader isLoading={isFetching} />
       <div>
         <h2>Add New Task</h2>
       </div>
@@ -161,9 +164,11 @@ const AddTask = (props) => {
             <p className={styles.error}>{errors.startDate.message}</p>
           )}
         </div>
-        <div className={styles.dropdown}>
-          <label htmlFor="status">Status</label>
-          <select {...register('status')} placeholder="YYYY-MM-DD">
+        <div className={styles.containerTask}>
+          <label htmlFor="status" className={styles.dropdownTitleTask}>
+            Status
+          </label>
+          <select {...register('status')} className={styles.selectTask}>
             <option value="Ready to deliver">Ready to deliver</option>
             <option value="Paused">Paused</option>
           </select>
