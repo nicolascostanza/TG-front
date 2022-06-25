@@ -29,7 +29,7 @@ function Admins() {
       .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
       .messages({
         'string.min': 'First name must contain at least 3 characters',
-        'string.pattern.base': 'First name must contain letters and numbers',
+        'string.pattern.base': 'First name must contain only letters',
         'string.empty': 'This field is required'
       }),
     lastName: Joi.string()
@@ -38,7 +38,7 @@ function Admins() {
       .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
       .messages({
         'string.min': 'Last name must contain at least 3 characters',
-        'string.pattern.base': 'Last name must contain letters and numbers',
+        'string.pattern.base': 'Last name must contain only letters',
         'string.empty': 'This field is required'
       }),
     email: Joi.string()
@@ -123,7 +123,15 @@ function Admins() {
 
   const fillInputs = (id) => {
     const valu = admins.filter((admin) => admin._id === id);
-    reset(...valu);
+    const { firstName, lastName, email, password, active } = valu[0];
+
+    reset({
+      firstName,
+      lastName,
+      email,
+      password,
+      active
+    });
   };
 
   const addAdmin = async (admin) => {
@@ -149,6 +157,8 @@ function Admins() {
   };
 
   const onSubmit = (data) => {
+    console.log('data: ', data);
+    console.log('id: ', idEdit);
     if (method === 'POST') {
       addAdmin(data);
     } else if (method === 'PUT') {
@@ -173,9 +183,6 @@ function Admins() {
         <div className={styles.boxButtons}>
           <Button onClick={deleteAdmin} width={'75px'} height={'25px'} fontSize={'15px'}>
             Accept
-          </Button>
-          <Button onClick={() => reset()} width={'75px'} height={'25px'} fontSize={'15px'}>
-            Reset form
           </Button>
           <Button onClick={handleCloseAlert} width={'75px'} height={'25px'} fontSize={'15px'}>
             Cancel
