@@ -223,15 +223,16 @@ function Admins() {
             {errors.active?.message && <p>{errors.active?.message}</p>}
           </div>
           <Button
-            onClick={() =>
+            onClick={(e) => {
+              e.preventDefault();
               reset({
                 firstName: '',
                 lastName: '',
                 email: '',
                 password: '',
                 active: false
-              })
-            }
+              });
+            }}
             width={'75px'}
             height={'25px'}
             fontSize={'15px'}
