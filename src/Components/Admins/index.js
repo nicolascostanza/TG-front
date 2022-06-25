@@ -179,7 +179,6 @@ function Admins() {
         handleClose={handleCloseAlert}
         modalTitle={`Are you sure you want to delete the admin?`}
       >
-        <Loader isLoading={isFetching} />
         <div className={styles.boxButtons}>
           <Button onClick={deleteAdmin} width={'75px'} height={'25px'} fontSize={'15px'}>
             Accept
@@ -195,7 +194,6 @@ function Admins() {
         handleSubmit={handleSubmit(onSubmit)}
         title={method === 'POST' ? 'Create Admin' : 'Edit Admin'}
       >
-        <Loader isLoading={isFetching} />
         <div>
           <label htmlFor="firstName">Name</label>
           <input {...register('firstName')} name="firstName" type="text" />
