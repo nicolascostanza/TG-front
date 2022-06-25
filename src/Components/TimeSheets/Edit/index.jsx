@@ -42,7 +42,10 @@ function EditTimeSheets(props) {
       'string.empty': 'This field must be complete',
       'string.min': 'This field must have at least 3 characters'
     }),
-    date: Joi.date().messages({ 'date.base': 'This field must be complete' }),
+    date: Joi.date().less('now').messages({
+      'date.base': 'This field must be complete',
+      'date.less': 'Date is not invalid'
+    }),
     hours: Joi.number().min(1).max(24).messages({
       'number.base': 'This field must be complete',
       'number.min': 'This field must have at least 1 hour',
@@ -141,6 +144,9 @@ function EditTimeSheets(props) {
             <label> Date </label>
             <input {...register('date', { required: true })} type="date" placeholder="Date" />
             {errors.date?.type === 'date.base' && (
+              <p className={styles.error}>{errors.date.message}</p>
+            )}
+            {errors.date?.type === 'date.less' && (
               <p className={styles.error}>{errors.date.message}</p>
             )}
           </div>

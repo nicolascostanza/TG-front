@@ -23,7 +23,10 @@ function AddTimeSheets(props) {
       'string.empty': 'This field must be complete',
       'string.min': 'This field must have at least 3 characters'
     }),
-    date: Joi.date().required().messages({ 'date.base': 'This field must be complete' }),
+    date: Joi.date().less('now').required().messages({
+      'date.base': 'This field must be complete',
+      'date.less': 'Date is not valid'
+    }),
     hours: Joi.number().min(1).max(24).required().messages({
       'number.base': 'This field must be complete',
       'number.min': 'This field must have at least 1 hour',
@@ -42,7 +45,6 @@ function AddTimeSheets(props) {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-
   const appendToSelectedTasks = (id) => {
     const previousState = selectedTasks;
     setSelectedTasks([...previousState, id]);
@@ -114,6 +116,9 @@ function AddTimeSheets(props) {
             <label htmlFor="date"> Date </label>
             <input {...register('date', { required: true })} type="date" placeholder="YYYY-MM-DD" />
             {errors.date?.type === 'date.base' && (
+              <p className={styles.error}>{errors.date.message}</p>
+            )}
+            {errors.date?.type === 'date.less' && (
               <p className={styles.error}>{errors.date.message}</p>
             )}
           </div>
