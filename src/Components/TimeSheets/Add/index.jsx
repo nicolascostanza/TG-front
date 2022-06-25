@@ -27,7 +27,7 @@ function AddTimeSheets(props) {
     hours: Joi.number().min(1).max(24).required().messages({
       'number.base': 'This field must be complete',
       'number.min': 'This field must have at least 1 hour',
-      'number.max': 'This field must have less than 24 hours'
+      'number.max': 'This field can not have more than 24 hours'
     }),
     approved: Joi.bool().required(),
     role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required().messages({
