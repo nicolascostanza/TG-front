@@ -1,6 +1,5 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import React, { Suspense, lazy } from 'react';
 import Admins from '../Admins/index';
 const Employees = lazy(() => import('Components/Employees'));
 const EmployeesHome = lazy(() => import('Components/EmployeesFlow/Home/Home'));
@@ -15,7 +14,6 @@ import Tasks from '../Tasks/index';
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
 import Loader from 'Components/Shared/Loader';
 import styles from './layout.module.css';
-import Loader from 'Components/Shared/Loader';
 
 function Layout() {
   return (
@@ -28,15 +26,11 @@ function Layout() {
             <Route exact path="/admins" component={Admins} />
             <Route exact path="/super-admins" component={SuperAdmins} />
             <Route exact path="/employees" component={Employees} />
-            <Route exact path="/projects" component={Projects} />
-            <Route exact path="/time-sheets" component={TimeSheets} />
             <Route exact path="/employees/home/:id" component={EmployeesHome} />
             <Route exact path="/employees/profile/:id" component={EmployeesProfile} />
             <Route exact path="/signup" component={EmployeesSignUp} />
             <Route exact path="/projects" component={Projects} />
             <Route exact path="/time-sheets" component={TimeSheets} />
-            <Route exact path="/time-sheets-add" component={AddTimeSheets} />
-            <Route exact path="/time-sheets-edit" component={EditTimeSheets} />
             <Route exact path="/tasks" component={Tasks} />
           </Switch>
         </Suspense>
