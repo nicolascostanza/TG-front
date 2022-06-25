@@ -224,6 +224,22 @@ function Admins() {
             <input type="checkbox" name="active" {...register('active')} />
             {errors.active?.message && <p>{errors.active?.message}</p>}
           </div>
+          <Button
+            onClick={() =>
+              reset({
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+                active: false
+              })
+            }
+            width={'75px'}
+            height={'25px'}
+            fontSize={'15px'}
+          >
+            Reset
+          </Button>
         </div>
       </Form>
       <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={''} />
