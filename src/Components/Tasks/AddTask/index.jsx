@@ -1,112 +1,183 @@
 import React from 'react';
-import { useState } from 'react';
 import styles from './addTask.module.css';
-import Dropdown from '../../Shared/Dropdown';
-import Form from '../../Shared/Form';
-import * as thunks from '../../../redux/tasks/thunks';
-import { useDispatch } from 'react-redux';
+import Joi from 'joi';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Form from 'Components/Shared/Form';
+import * as thunks from 'redux/tasks/thunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { useState } from 'react';
+import Loader from 'Components/Shared/Loader';
 
 const AddTask = (props) => {
-  const [parentProject, setParentProject] = useState('');
-  const [taskName, setTaskName] = useState('');
-  const [taskDescription, setTaskDescription] = useState('');
-  const [assignedEmployee, setAssignedEmployee] = useState([]);
-  const [startDate, setStartDate] = useState('');
-  const [status, setStatus] = useState('');
+  const schema = Joi.object({
+    parentProject: Joi.string()
+      .alphanum()
+      .required()
+      .messages({ 'string.empty': 'This field is required' }),
+    taskName: Joi.string().min(3).max(50).required().messages({
+      'string.min': 'Name must contain 3 or more characters',
+      'string.max': 'Name must contain 50 or less characters',
+      'string.empty': 'This field is required'
+    }),
+    taskDescription: Joi.string().min(3).max(250).optional().messages({
+      'string.min': 'Name must contain 3 or more characters',
+      'string.max': 'Name must contain 250 or less characters'
+    }),
+    startDate: Joi.date().required().messages({
+      'string.empty': 'This field is required',
+      'date.base': 'This must be a valid date'
+    }),
+    status: Joi.required().messages({ 'string.empty': 'This field is required' })
+  });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
+  const isFetching = useSelector((state) => state.tasks.isFetching);
+  const { allEmployees } = props;
+  const [employees, setEmployees] = useState('');
+  const [selectedEmployees, setSelectedEmployees] = useState([]);
+  const appendToSelectedEmployees = (id) => {
+    const previousState = selectedEmployees;
+    setSelectedEmployees([...previousState, id]);
+    setEmployees('');
+  };
+  const deleteFromSelectedEmployees = (id) => {
+    setSelectedEmployees(selectedEmployees.filter((emp) => emp !== id));
+  };
   const dispatch = useDispatch();
-
   const addTask = async (task) => {
     dispatch(thunks.addTask(task));
     props.handleClose();
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
+  const onSubmit = (data) => {
     addTask({
-      parentProject,
-      taskName,
-      taskDescription,
-      assignedEmployee: [assignedEmployee],
-      startDate,
-      status
+      ...data,
+      assignedEmployee: selectedEmployees
     });
-    setParentProject('');
-    setTaskName('');
-    setTaskDescription('');
-    setAssignedEmployee([]);
-    setStartDate('');
-    setStatus('');
   };
-
-  const valueChange = (e) => {
-    return setStatus(e.target.value);
-  };
-
   return (
-    <Form showModal={props.showAddModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
+    <Form
+      showModal={props.showAddModal}
+      handleClose={props.handleClose}
+      handleSubmit={handleSubmit(onSubmit)}
+    >
+      <Loader isLoading={isFetching} />
       <div>
         <h2>Add New Task</h2>
       </div>
       <div className={styles.form}>
         <div>
-          <label>Parent Project:</label>
-          <input
-            type="text"
-            placeholder="Parent Project ID"
-            value={parentProject}
-            // onBlur={(e) => handleError(e.target.value)}
-            onChange={(e) => setParentProject(e.target.value)}
-          />
+          <label htmlFor="parentProject">Parent Project:</label>
+          <input type="text" placeholder="Parent Project ID" {...register('parentProject')} />
+          {errors.parentProject?.type === 'string.empty' && (
+            <p className={styles.error}>{errors.parentProject.message}</p>
+          )}
         </div>
         <div>
-          <label>Task Name:</label>
-          <input
-            type="text"
-            placeholder="Task Name"
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-          />
+          <label htmlFor="taskName">Task Name:</label>
+          <input type="text" placeholder="Task Name" {...register('taskName')} />
+          {errors.taskName?.type === 'string.empty' && (
+            <p className={styles.error}>{errors.taskName.message}</p>
+          )}
+          {errors.taskName?.type === 'string.min' && (
+            <p className={styles.error}>{errors.taskName.message}</p>
+          )}
+          {errors.taskName?.type === 'string.max' && (
+            <p className={styles.error}>{errors.taskName.message}</p>
+          )}
         </div>
         <div>
-          <label>Task Description:</label>
-          <input
-            type="text"
-            placeholder="Task description"
-            value={taskDescription}
-            onChange={(e) => setTaskDescription(e.target.value)}
-          />
+          <label htmlFor="taskDescription">Task Description:</label>
+          <input type="text" placeholder="Task description" {...register('taskDescription')} />
+          {errors.taskDescription?.type === 'string.min' && (
+            <p className={styles.error}>{errors.taskDescription.message}</p>
+          )}
+          {errors.taskDescription?.type === 'string.max' && (
+            <p className={styles.error}>{errors.taskDescription.message}</p>
+          )}
         </div>
         <div>
-          <label>Assigned Employee:</label>
+          <label htmlFor="assignedEmployee">Assigned Employee:</label>
           <input
+            value={employees}
             type="text"
+            onChange={(e) => setEmployees(e.target.value)}
             placeholder="Assigned Employee ID"
-            value={assignedEmployee}
-            onChange={(e) => setAssignedEmployee(e.target.value)}
           />
+          <div>
+            {employees.length > 0
+              ? allEmployees
+                  .filter(
+                    (employee) =>
+                      employee.email.match(new RegExp(employees, 'i')) ||
+                      employee.firstName.match(new RegExp(employees, 'i'))
+                  )
+                  .map((member) => {
+                    return (
+                      <p
+                        key={member._id}
+                        onClick={() =>
+                          selectedEmployees.find((emp) => emp === member._id)
+                            ? deleteFromSelectedEmployees(member._id)
+                            : appendToSelectedEmployees(member._id)
+                        }
+                        className={
+                          selectedEmployees.find((emp) => emp === member._id)
+                            ? styles.selectedItem
+                            : styles.notSelectedItem
+                        }
+                      >
+                        {member.firstName}: {member.email}
+                      </p>
+                    );
+                  })
+              : selectedEmployees.map((member) => {
+                  return (
+                    <p
+                      key={member}
+                      className={styles.chip}
+                      onClick={() => deleteFromSelectedEmployees(member)}
+                    >
+                      {allEmployees.find((emp) => emp._id === member).firstName} (
+                      {allEmployees.find((emp) => emp._id === member).email})
+                    </p>
+                  );
+                })}
+          </div>
+          {errors.assignedEmployee?.type === 'string.empty' && (
+            <p className={styles.error}>{errors.assignedEmployee.message}</p>
+          )}
         </div>
         <div>
-          <label>Start Date:</label>
-          <input
-            type="text"
-            placeholder="YYYY-MM-DD"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
+          <label htmlFor="startDate">Start Date:</label>
+          <input type="text" placeholder="YYYY-MM-DD" {...register('startDate')} />
+          {errors.startDate?.type === 'string.empty' && (
+            <p className={styles.error}>{errors.startDate.message}</p>
+          )}
+          {errors.startDate?.type === 'date.base' && (
+            <p className={styles.error}>{errors.startDate.message}</p>
+          )}
         </div>
-        <div className={styles.dropdown}>
-          <Dropdown
-            title="Status"
-            value={status}
-            onChange={valueChange}
-            placeholder="Choose an option"
-          >
+        <div className={styles.containerTask}>
+          <label htmlFor="status" className={styles.dropdownTitleTask}>
+            Status
+          </label>
+          <select {...register('status')} className={styles.selectTask}>
             <option value="Ready to deliver">Ready to deliver</option>
             <option value="Paused">Paused</option>
-          </Dropdown>
+          </select>
+          {errors.status?.type === 'string.empty' && (
+            <p className={styles.error}>{errors.status.message}</p>
+          )}
         </div>
       </div>
     </Form>
   );
 };
-
 export default AddTask;

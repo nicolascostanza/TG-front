@@ -121,7 +121,6 @@ function Employees() {
     // ACAAAAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     setShowModalMessage(false);
     setShowModalAlert(false);
-    console.log(isFetchingEmployees);
     await dispatch(thunks.deleteEmployee(deleteId));
     setTittleModal('DELETE');
     setShowModalMessage(true);
@@ -165,7 +164,6 @@ function Employees() {
       active: employeeToEdit[0].active === 'true' ? true : false
     });
   };
-  console.log(errors);
 
   const resetFields = () => {
     reset({
@@ -224,7 +222,6 @@ function Employees() {
       alert('Something unexpected happened');
     }
     resetFields();
-    console.log(errors);
   };
 
   return (

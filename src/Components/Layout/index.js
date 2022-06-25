@@ -10,7 +10,7 @@ import Header from '../Header/index';
 import Home from '../Home/index';
 const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
 const Projects = lazy(() => import('Components/Projects'));
-import Tasks from '../Tasks/index';
+const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
 import Loader from 'Components/Shared/Loader';
 import styles from './layout.module.css';
