@@ -3,7 +3,8 @@ import * as actions from './actions';
 export const getEmployees = () => {
   return (dispatch) => {
     dispatch(actions.getEmployeesPending());
-    return fetch(`${process.env.REACT_APP_API_URL}/employees`)
+    const token = localStorage.getItem('token');
+    return fetch(`${process.env.REACT_APP_API_URL}/employees`, { headers: { token } })
       .then((response) => response.json())
       .then((response) => {
         response.data.map((employee) => {
