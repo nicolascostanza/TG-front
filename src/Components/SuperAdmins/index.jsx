@@ -67,10 +67,7 @@ function SuperAdmins() {
       .min(8)
       .max(30)
       .required()
-      .regex(
-        // eslint-disable-next-line no-useless-escape
-        /^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$/
-      )
+      .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/)
       .messages({
         'string.min': 'Password must contain at least 8 characters',
         'string.max': 'Password must contain less than 30 characters',
@@ -94,7 +91,9 @@ function SuperAdmins() {
   useEffect(() => {
     dispatch(thunks.getSuperadmins());
     if (method !== 'PUT') {
-      reset({});
+      reset({
+        active: true
+      });
     }
   }, [method]);
   // functions for reset o complete inputs
