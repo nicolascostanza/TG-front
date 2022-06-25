@@ -24,9 +24,10 @@ function AddTimeSheets(props) {
       'string.min': 'This field must have at least 3 characters'
     }),
     date: Joi.date().required().messages({ 'date.base': 'This field must be complete' }),
-    hours: Joi.number().min(1).required().messages({
+    hours: Joi.number().min(1).max(24).required().messages({
       'number.base': 'This field must be complete',
-      'number.min': 'This field must have at least 1 hour'
+      'number.min': 'This field must have at least 1 hour',
+      'number.max': 'This field must have less than 24 hours'
     }),
     approved: Joi.bool().required(),
     role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required().messages({
@@ -123,6 +124,9 @@ function AddTimeSheets(props) {
               <p className={styles.error}>{errors.hours.message}</p>
             )}
             {errors.hours?.type === 'number.min' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
+            {errors.hours?.type === 'number.max' && (
               <p className={styles.error}>{errors.hours.message}</p>
             )}
           </div>
