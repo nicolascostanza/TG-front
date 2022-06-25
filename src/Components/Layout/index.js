@@ -11,9 +11,7 @@ import Home from '../Home/index';
 const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
 const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
-import TimeSheets from '../TimeSheets';
-import AddTimeSheets from '../TimeSheets/Add';
-import EditTimeSheets from '../TimeSheets/Edit';
+const TimeSheets = lazy(() => import('Components/TimeSheets'));
 import Loader from 'Components/Shared/Loader';
 import styles from './layout.module.css';
 
@@ -33,8 +31,6 @@ function Layout() {
             <Route exact path="/signup" component={EmployeesSignUp} />
             <Route exact path="/projects" component={Projects} />
             <Route exact path="/time-sheets" component={TimeSheets} />
-            <Route exact path="/time-sheets-add" component={AddTimeSheets} />
-            <Route exact path="/time-sheets-edit" component={EditTimeSheets} />
             <Route exact path="/tasks" component={Tasks} />
           </Switch>
         </Suspense>
