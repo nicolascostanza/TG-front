@@ -8,14 +8,14 @@ const EmployeesSignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignU
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
+const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
 const Projects = lazy(() => import('Components/Projects'));
-import SuperAdmins from '../SuperAdmins/index';
 import Tasks from '../Tasks/index';
 import TimeSheets from '../TimeSheets';
 import AddTimeSheets from '../TimeSheets/Add';
 import EditTimeSheets from '../TimeSheets/Edit';
-import styles from './layout.module.css';
 import Loader from 'Components/Shared/Loader';
+import styles from './layout.module.css';
 
 function Layout() {
   return (
