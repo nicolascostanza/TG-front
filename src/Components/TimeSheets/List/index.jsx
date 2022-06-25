@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import styles from '../List/list.module.css';
 import AddTimeSheets from '../Add';
-import Table from '../../Shared/Table';
+import Table from 'Components/Shared/Table';
 import EditTimeSheets from '../Edit';
-import Sidebar from '../../Shared/Sidebar';
-import * as thunks from '../../../redux/timesheets/thunks';
-import * as actions from '../../../redux/timesheets/actions';
+import Sidebar from 'Components/Shared/Sidebar';
+import Loader from 'Components/Shared/Loader';
+import * as thunks from 'redux/timesheets/thunks';
+import * as actions from 'redux/timesheets/actions';
+import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 
 function TimeSheet() {
@@ -17,7 +18,9 @@ function TimeSheet() {
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   useEffect(() => {
     dispatch(thunks.getTimesheets());
+    dispatch(tasksThunks.getTasks());
   }, []);
+  const allTasks = useSelector((state) => state.tasks.list);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
@@ -34,9 +37,6 @@ function TimeSheet() {
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
-  if (isFetching) {
-    return <h2>Fetching</h2>;
-  }
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     return {
       ...timeSheet,
@@ -54,10 +54,20 @@ function TimeSheet() {
     };
   });
   return (
-    <div className={styles.container}>
+    <>
+      <Loader isLoading={isFetching} />
       <Sidebar></Sidebar>
-      <EditTimeSheets showEditModal={showEditModal} handleClose={handleClose} editId={editId} />
-      <AddTimeSheets showCreateModal={showCreateModal} handleClose={handleClose}></AddTimeSheets>
+      <EditTimeSheets
+        showEditModal={showEditModal}
+        handleClose={handleClose}
+        editId={editId}
+        allTasks={allTasks}
+      />
+      <AddTimeSheets
+        showCreateModal={showCreateModal}
+        handleClose={handleClose}
+        allTasks={allTasks}
+      ></AddTimeSheets>
       <Table
         title="Timesheets"
         headers={[
@@ -76,7 +86,7 @@ function TimeSheet() {
         onDelete={deleteTimeSheet}
         onAdd={openAddTimeSheet}
       />
-    </div>
+    </>
   );
 }
 export default TimeSheet;
