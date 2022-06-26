@@ -25,7 +25,7 @@ export const authReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        authenticated: true
+        authenticated: action.payload
       };
     }
     case LOGIN_ERROR: {
@@ -44,8 +44,12 @@ export const authReducer = (state = initialState, action) => {
     case SET_AUTHENTICATION: {
       return {
         ...state,
-        authenticated: true
+        authenticated: action.payload,
+        isFetching: false
       };
+    }
+    default: {
+      return state;
     }
   }
 };

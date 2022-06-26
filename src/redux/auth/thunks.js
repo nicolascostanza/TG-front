@@ -1,5 +1,5 @@
 import * as actions from './actions';
-import firebase from '../../helper/firebase';
+import firebase from 'helper/firebase';
 
 export const login = (credentials) => {
   return (dispatch) => {
@@ -12,7 +12,7 @@ export const login = (credentials) => {
         const {
           claim: { role }
         } = await response.user.getIdTokenResult();
-        return dispatch(actions.logginSuccess({ role, token }));
+        return dispatch(actions.loginSuccess({ role, token }));
       })
       .catch((error) => {
         return dispatch(actions.loginError(error.toString()));

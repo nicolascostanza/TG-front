@@ -1,6 +1,6 @@
-export const getAdminsApi = async () => {
+export const getAdminsApi = async (token) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, { headers: token });
     const data = await response.json();
     return data;
   } catch (err) {
