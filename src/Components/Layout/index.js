@@ -1,10 +1,13 @@
+import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PrivateRoute from 'Components/Layout/PrivateRoute';
 import Admins from '../Admins/index';
 const Employees = lazy(() => import('Components/Employees'));
 const EmployeesHome = lazy(() => import('Components/EmployeesFlow/Home/Home'));
 const EmployeesProfile = lazy(() => import('Components/EmployeesFlow/Profile/Profile'));
-const EmployeesSignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignUp'));
+const SignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignUp'));
+const Login = lazy(() => import('Components/Login'));
+// const AuthRoutes = lazy(() => import('Components/auth'));
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -23,15 +26,37 @@ function Layout() {
         <Suspense fallback={<Loader />}>
           <Switch>
             <Route exact path="/" component={Home} />
-            <Route exact path="/admins" component={Admins} />
-            <Route exact path="/super-admins" component={SuperAdmins} />
-            <Route exact path="/employees" component={Employees} />
-            <Route exact path="/employees/home/:id" component={EmployeesHome} />
-            <Route exact path="/employees/profile/:id" component={EmployeesProfile} />
-            <Route exact path="/signup" component={EmployeesSignUp} />
-            <Route exact path="/projects" component={Projects} />
-            <Route exact path="/time-sheets" component={TimeSheets} />
-            <Route exact path="/tasks" component={Tasks} />
+            <Route exact path="/signup" component={SignUp} />
+            <Route exact path="/login" component={Login} />
+            <Redirect to="/login" />
+            <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
+            <PrivateRoute exact path="/super-admins" role="SUPERADMIN" component={SuperAdmins} />
+            <PrivateRoute
+              exact
+              path="/employees"
+              role={'EMPLOYEE' || 'ADMIN'}
+              component={Employees}
+            />
+            <PrivateRoute
+              exact
+              path="/employees/home/:id"
+              role="EMPLOYEE"
+              component={EmployeesHome}
+            />
+            <PrivateRoute
+              exact
+              path="/employees/profile/:id"
+              role="EMPLOYEE"
+              component={EmployeesProfile}
+            />
+            <PrivateRoute
+              exact
+              path="/projects"
+              role={'EMPLOYEE' || 'ADMIN' || 'PM'}
+              component={Projects}
+            />
+            <PrivateRoute exact path="/time-sheets" role="EMPLOYEE" component={TimeSheets} />
+            <PrivateRoute exact path="/tasks" role="EMPLOYEE" component={Tasks} />
           </Switch>
         </Suspense>
         <Footer />
