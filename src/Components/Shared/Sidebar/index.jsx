@@ -25,7 +25,7 @@ const Sidebar = ({ children }) => {
         </div>
         <a>Home</a> {/*<Link to="/tasks">home</Link>*/}
         <a onClick={() => history.push('/signup')}>Sign-up</a>
-        <a>Log-in</a>
+        <a onClick={() => history.push('/login')}>Log-in</a>
         <a>Contact</a>
       </section>
       <section className={styles.container}>{children}</section>
