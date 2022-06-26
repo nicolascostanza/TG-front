@@ -192,7 +192,7 @@ function Tasks() {
           </div>
           <div>
             <label htmlFor="taskDescription">Task Description:</label>
-            <input type="text" placeholder="Task description" {...register('taskDescription')} />
+            <input type="text" placeholder="Task  description" {...register('taskDescription')} />
             {errors.taskDescription?.type === 'string.min' && (
               <p className={styles.error}>{errors.taskDescription.message}</p>
             )}
