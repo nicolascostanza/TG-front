@@ -1,12 +1,11 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
-import styles from '../Add/Form.module.css';
-import Form from 'Components/Shared/Form';
-import * as thunks from 'redux/timesheets/thunks';
-import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
+import Form from 'Components/Shared/Form';
 import Joi from 'joi';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import * as thunks from 'redux/timesheets/thunks';
+import styles from '../Add/Form.module.css';
 
 function EditTimeSheets(props) {
   useEffect(() => {
@@ -150,7 +149,7 @@ function EditTimeSheets(props) {
           </div>
           <div>
             <label> Hours </label>
-            <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
+            <input {...register('hours', { required: true })} type="text" placeholder="Hours" />
             {errors.hours?.type === 'number.base' && (
               <p className={styles.error}>{errors.hours.message}</p>
             )}

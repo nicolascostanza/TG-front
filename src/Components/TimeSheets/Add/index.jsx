@@ -1,11 +1,11 @@
-import { useState } from 'react';
-import styles from './Form.module.css';
-import Form from 'Components/Shared/Form';
-import * as thunks from 'redux/timesheets/thunks';
-import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
+import Form from 'Components/Shared/Form';
 import Joi from 'joi';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import * as thunks from 'redux/timesheets/thunks';
+import styles from './Form.module.css';
 
 function AddTimeSheets(props) {
   const [tasks, setTasks] = useState('');
@@ -71,7 +71,7 @@ function AddTimeSheets(props) {
         handleSubmit={handleSubmit(onSubmit)}
         showModal={showCreateModal}
         handleClose={handleClose}
-        title="Add Time Sheet"
+        title="Create Time Sheet"
       >
         <div className={styles.container}>
           <div>
@@ -124,7 +124,7 @@ function AddTimeSheets(props) {
           </div>
           <div>
             <label htmlFor="hours"> Hours </label>
-            <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
+            <input {...register('hours', { required: true })} type="text" placeholder="Hours" />
             {errors.hours?.type === 'number.base' && (
               <p className={styles.error}>{errors.hours.message}</p>
             )}

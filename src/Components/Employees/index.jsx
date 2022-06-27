@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import Sidebar from 'Components/Shared/Sidebar';
-import Table from 'Components/Shared/Table';
+import { joiResolver } from '@hookform/resolvers/joi';
 import styles from 'Components/Employees/employees.module.css';
-import Modal from 'Components/Shared/Modal';
+import Button from 'Components/Shared/Button';
 import Dropdown from 'Components/Shared/Dropdown';
 import Form from 'Components/Shared/Form';
-import Button from 'Components/Shared/Button';
-import * as thunks from 'redux/employees/thunks';
-import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import Joi from 'joi';
-import { joiResolver } from '@hookform/resolvers/joi';
 import Loader from 'Components/Shared/Loader';
+import Modal from 'Components/Shared/Modal';
+import Sidebar from 'Components/Shared/Sidebar';
+import Table from 'Components/Shared/Table';
+import Joi from 'joi';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import * as thunks from 'redux/employees/thunks';
 // import Input from 'Components/Shared/Input';
 
 const schema = Joi.object({
@@ -137,7 +137,7 @@ function Employees() {
   const formEmployee = () => {
     resetFields();
     setMethod('POST');
-    setTittleModal('Add new Employee');
+    setTittleModal('Create Employee');
     setShowAddEdit(true);
   };
 
@@ -345,8 +345,8 @@ function Employees() {
             error={errors.address?.message}
           /> */}
           <div>
-            <label htmlFor="Date of birth">Dob</label>
-            <input type="date" {...register('dob')} />
+            <label htmlFor="dob">Date of birth</label>
+            <input type="date" {...register('dob')} name="dob" />
             {errors.dob && <p className={styles.error}>{errors.dob.message}</p>}
           </div>
           {/* <Input
@@ -372,7 +372,7 @@ function Employees() {
           /> */}
           <div>
             <label htmlFor="Phone">Phone</label>
-            <input type="number" {...register('phone')} />
+            <input type="text" {...register('phone')} />
             {errors.phone && <p className={styles.error}>{errors.phone.message}</p>}
           </div>
           {/* <Input

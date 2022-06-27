@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import Joi from 'joi';
 import Form from 'Components/Shared/Form';
-import styles from './projectForm.module.css';
+import Joi from 'joi';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
 import * as thunks from 'redux/projects/thunks';
+import styles from './projectForm.module.css';
 
 const EditProject = (props) => {
   const { showModal, handleClose } = props;
@@ -180,7 +180,7 @@ const EditProject = (props) => {
 
   return (
     <Form
-      title="Edit projects"
+      title="Edit project"
       handleSubmit={handleSubmit(submitEditProject)}
       showModal={showModal}
       handleClose={handleClose}
