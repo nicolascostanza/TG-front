@@ -50,7 +50,7 @@ const Login = () => {
     resolver: joiResolver(employeeValidationLogIn)
   });
   const onSubmit = (data) => {
-    dispatch(thunksAuth({ ...data, active: true }));
+    dispatch(thunksAuth.login(data));
     setShowModalMessage(true);
   };
   return (

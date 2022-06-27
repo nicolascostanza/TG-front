@@ -10,7 +10,7 @@ export const login = (credentials) => {
       .then(async (response) => {
         const token = await response.user.getIdToken();
         const {
-          claim: { role }
+          claims: { role }
         } = await response.user.getIdTokenResult();
         return dispatch(actions.loginSuccess({ role, token }));
       })
