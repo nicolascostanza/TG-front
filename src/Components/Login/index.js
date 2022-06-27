@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationLogIn } from 'Components/EmployeesFlow/validations';
-import * as thunksAuth from 'redux/employees/thunks';
+import * as thunksAuth from 'redux/auth/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
@@ -50,7 +50,7 @@ const Login = () => {
     resolver: joiResolver(employeeValidationLogIn)
   });
   const onSubmit = (data) => {
-    dispatch(thunksAuth.addEmployee({ ...data, active: true }));
+    dispatch(thunksAuth({ ...data, active: true }));
     setShowModalMessage(true);
   };
   return (
