@@ -7,14 +7,14 @@ const EmployeesHome = lazy(() => import('Components/EmployeesFlow/Home/Home'));
 const EmployeesProfile = lazy(() => import('Components/EmployeesFlow/Profile/Profile'));
 const SignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignUp'));
 const Login = lazy(() => import('Components/Login'));
-// const AuthRoutes = lazy(() => import('Components/auth'));
-import Footer from '../Footer/index';
-import Header from '../Header/index';
-import Home from '../Home/index';
 const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
 const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
+// const AuthRoutes = lazy(() => import('Components/auth'));
+import Footer from '../Footer/index';
+import Header from '../Header/index';
+import Home from '../Home/index';
 import Loader from 'Components/Shared/Loader';
 import styles from './layout.module.css';
 
@@ -28,7 +28,6 @@ function Layout() {
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
-            <Redirect to="/login" />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
             <PrivateRoute exact path="/super-admins" role="SUPERADMIN" component={SuperAdmins} />
             <PrivateRoute
@@ -57,6 +56,7 @@ function Layout() {
             />
             <PrivateRoute exact path="/time-sheets" role="EMPLOYEE" component={TimeSheets} />
             <PrivateRoute exact path="/tasks" role="EMPLOYEE" component={Tasks} />
+            <Redirect to="/login" />
           </Switch>
         </Suspense>
         <Footer />
