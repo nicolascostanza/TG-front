@@ -50,7 +50,6 @@ function Profile() {
     resolver: joiResolver(employeeValidationUpdate)
   });
   const UpdateEmployee = (data) => {
-    console.log(data);
     const employee = { ...data, _id: param.id };
     dispatch(thunksEmployee.editEmployee(employee));
     if (!response) {

@@ -6,13 +6,11 @@ import * as thunksAdmins from 'redux/admins/thunks';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { schema } from 'Components/AdminFlow/validations';
-//import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
 import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
 
 function Profile() {
-  //const history = useHistory();
   const param = useParams();
   const dispatch = useDispatch();
   const [update, setUpdate] = useState(true);
@@ -46,8 +44,6 @@ function Profile() {
     resolver: joiResolver(schema)
   });
   const UpdateAdmin = (data) => {
-    console.log(data);
-    // const admin = { ...data, _id: param.id };
     dispatch(thunksAdmins.updateAdmin(data, param.id));
     if (!response) {
       setUpdate(!update);
@@ -193,7 +189,6 @@ function Profile() {
                   placeholder={adminSelected[0]?.active}
                   error={appendErrors.active?.message}
                 ></input>
-                {/* {errors.active && <p className={styles.errorInput}>{errors.active?.message}</p>} */}
               </>
             )}
           </div>

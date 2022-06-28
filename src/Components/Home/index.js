@@ -7,7 +7,6 @@ import { useHistory } from 'react-router-dom';
 function Home() {
   const history = useHistory();
   const role = useSelector((state) => state.auth.authenticated?.role);
-  console.log(role);
   if (role === 'EMPLOYEE') {
     return (
       <section className={styles.container}>
