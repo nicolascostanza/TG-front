@@ -61,11 +61,7 @@ const Login = () => {
       <Modal showModal={showModalMessage} handleClose={handleCloseMessage}>
         <div className={styles.modal}>
           <p>{message}</p>
-          <button
-            onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}
-            className={styles.buttonOk}
-            value="OK"
-          >
+          <button onClick={() => history.push('/')} className={styles.buttonOk} value="OK">
             OK
           </button>
         </div>

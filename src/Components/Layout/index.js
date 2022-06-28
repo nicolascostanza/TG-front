@@ -29,11 +29,16 @@ function Layout() {
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
-            <PrivateRoute exact path="/super-admins" role="SUPERADMIN" component={SuperAdmins} />
+            <PrivateRoute
+              exact
+              path="/super-admins"
+              role={['SUPERADMIN']}
+              component={SuperAdmins}
+            />
             <PrivateRoute
               exact
               path="/employees"
-              role={'EMPLOYEE' || 'ADMIN'}
+              role={['EMPLOYEE', 'ADMIN', 'PM']}
               component={Employees}
             />
             <PrivateRoute
@@ -51,11 +56,21 @@ function Layout() {
             <PrivateRoute
               exact
               path="/projects"
-              role={'EMPLOYEE' || 'ADMIN' || 'PM'}
+              role={['EMPLOYEE', 'ADMIN', 'PM']}
               component={Projects}
             />
-            <PrivateRoute exact path="/time-sheets" role="EMPLOYEE" component={TimeSheets} />
-            <PrivateRoute exact path="/tasks" role="EMPLOYEE" component={Tasks} />
+            <PrivateRoute
+              exact
+              path="/time-sheets"
+              role={['EMPLOYEE', 'ADMIN', 'PM']}
+              component={TimeSheets}
+            />
+            <PrivateRoute
+              exact
+              path="/tasks"
+              role={['EMPLOYEE', 'ADMIN', 'PM']}
+              component={Tasks}
+            />
             <Redirect to="/login" />
           </Switch>
         </Suspense>
