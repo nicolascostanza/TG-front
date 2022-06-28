@@ -1,5 +1,6 @@
 import styles from './home.module.css';
 import Sidebar from '../Shared/Sidebar';
+import Button from '../Shared/Button/Button';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -11,28 +12,28 @@ function Home() {
     return (
       <section className={styles.container}>
         <Sidebar></Sidebar>
-        <h2>Home</h2>
-        <button
+        <Button
+          width={'175px'}
+          height={'40px'}
           onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}
-          className={styles.buttonOk}
           value="employee profile"
         >
           Employee profile
-        </button>
+        </Button>
       </section>
     );
   } else if (role === 'ADMIN') {
     return (
       <section className={styles.container}>
         <Sidebar></Sidebar>
-        <h2>Home</h2>
-        <button
-          onClick={() => history.push('/admin/profile/62bb2dbe576424de7c76bff5')}
-          className={styles.buttonOk}
+        <Button
+          width={'130px'}
+          height={'40px'}
+          onClick={() => history.push('/admins/profile/62bb2dbe576424de7c76bff5')}
           value="admin profile"
         >
           Admin profile
-        </button>
+        </Button>
       </section>
     );
   } else {

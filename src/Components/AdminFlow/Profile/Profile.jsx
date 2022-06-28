@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as thunksAdmins from 'redux/admins/thunks';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
+import { schema } from 'Components/AdminFlow/validations';
+//import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
 import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
@@ -42,11 +43,12 @@ function Profile() {
     reset
   } = useForm({
     mode: 'onBlur',
-    resolver: joiResolver(employeeValidationUpdate)
+    resolver: joiResolver(schema)
   });
   const UpdateAdmin = (data) => {
-    const admin = { ...data, _id: param.id };
-    dispatch(thunksAdmins.updateAdmin(admin));
+    console.log(data);
+    // const admin = { ...data, _id: param.id };
+    dispatch(thunksAdmins.updateAdmin(data, param.id));
     if (!response) {
       setUpdate(!update);
     }
@@ -179,7 +181,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{adminSelected[0]?.active}</p>
+              <p className={styles.text}>{adminSelected[0]?.active ? 'Yes' : 'No'}</p>
             ) : (
               <>
                 <input
@@ -191,7 +193,7 @@ function Profile() {
                   placeholder={adminSelected[0]?.active}
                   error={appendErrors.active?.message}
                 ></input>
-                {errors.active && <p className={styles.errorInput}>{errors.dob?.message}</p>}
+                {/* {errors.active && <p className={styles.errorInput}>{errors.active?.message}</p>} */}
               </>
             )}
           </div>
