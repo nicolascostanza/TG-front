@@ -28,7 +28,6 @@ function Layout() {
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
-            <Redirect to="/login" />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
             <PrivateRoute exact path="/super-admins" role="SUPERADMIN" component={SuperAdmins} />
             <PrivateRoute
@@ -57,6 +56,7 @@ function Layout() {
             />
             <PrivateRoute exact path="/time-sheets" role="EMPLOYEE" component={TimeSheets} />
             <PrivateRoute exact path="/tasks" role="EMPLOYEE" component={Tasks} />
+            <Redirect to="/login" />
           </Switch>
         </Suspense>
         <Footer />
