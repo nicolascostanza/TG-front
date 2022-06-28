@@ -9,10 +9,6 @@
 	font-size: 12px;
 }
 
-* {
-	box-sizing: border-box;
-}
-
 .notSelectedItem, .selectedItem {
 	overflow: hidden;
 	white-space: nowrap;

@@ -1,8 +1,51 @@
+:root {
+  --primary-color: #373867;
+  --secondary-color: #ea3354;
+  --primary-text-color: #000000;
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --row-text-primary: #000000;
+  --row-text-hover: #ffffff;
+  --text-secondary: #444444;
+  --routes-hover: #9997e7;
+  --nav-background: #ededed;
+  --footer-background: #d4d4d4;
+  --row-even-background: #e0e4e9;
+  --row-odd-background: #f0f4f9;
+  --row-hover-background: #7e8795;
+  --error: red;
+}
+
+[data-theme='dark'] {
+  --primary-color: #373867;
+  --secondary-color: #ea3354;
+  --primary-text-color: #000000;
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --row-text-primary: #000000;
+  --row-text-hover: #ffffff;
+  --text-secondary: #444444;
+  --routes-hover: #9997e7;
+  --nav-background: #ededed;
+  --footer-background: #d4d4d4;
+  --row-even-background: #e0e4e9;
+  --row-odd-background: #f0f4f9;
+  --row-hover-background: #7e8795;
+  --error: red;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
-  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #373867;

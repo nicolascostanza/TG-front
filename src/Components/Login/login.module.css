@@ -26,14 +26,14 @@ body {
     font-weight: bold;
     font-size: 55px;
     line-height: 64px;
-    color: #373867;
+    color: var(--primary-color);
     text-align: center;
   }
   .form input:not(.checkbox),
   select {
     display: block;
     padding: 6px;
-    border: 1px solid #373867;
+    border: 1px solid var(--primary-color);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 5px;
     resize: none;
@@ -104,7 +104,7 @@ body {
     display: inline-block;
   }
   .errorInput {
-    color: red;
+    color: var(--error);
     font-weight: 500;
     font-size: 13px;
     line-height: 21px;
@@ -116,7 +116,7 @@ body {
     font-weight: 400;
     font-size: 18px;
     line-height: 23px;
-    color: #373867;
+    color: var(--primary-color);
   }
   .buttonContinue::after, .buttonReset::after, .buttonOk::after {
     content: '';
