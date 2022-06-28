@@ -11,7 +11,6 @@ const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
 const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
-// const AuthRoutes = lazy(() => import('Components/auth'));
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
