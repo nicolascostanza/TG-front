@@ -9,28 +9,6 @@ import Sidebar from 'Components/Shared/Sidebar';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
 
-// const Login = ({ history }) => {
-//   const HandleLogin = useCallback(
-//     async (event) => {
-//       event.preventDefault();
-//       const { email, password } = event.target.elements;
-//       try {
-//         await app.auth().signInWithEmailandPassword(email.value, password.value);
-//         history.push('/');
-//       } catch (error) {
-//         alert(error);
-//       }
-//     },
-//     [history]
-//   );
-
-//   const { currentUser } = useContext(AuthContext);
-
-//   if (currentUser) {
-//     return <Redirect to="/" />;
-//   }
-// };
-
 const Login = () => {
   const history = useHistory();
   const message = useSelector((state) => state.employees.message);

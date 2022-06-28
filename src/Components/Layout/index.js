@@ -2,12 +2,12 @@ import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-d
 import React, { Suspense, lazy } from 'react';
 import PrivateRoute from 'Components/Layout/PrivateRoute';
 import Admins from '../Admins/index';
+const AdminsProfile = lazy(() => import('Components/AdminFlow/Profile/Profile'));
 const Employees = lazy(() => import('Components/Employees'));
 const EmployeesHome = lazy(() => import('Components/EmployeesFlow/Home/Home'));
 const EmployeesProfile = lazy(() => import('Components/EmployeesFlow/Profile/Profile'));
 const SignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignUp'));
 const Login = lazy(() => import('Components/Login'));
-// const AuthRoutes = lazy(() => import('Components/auth'));
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -31,6 +31,12 @@ function Layout() {
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
             <PrivateRoute
               exact
+              path="/admins/profile/:id"
+              role={'ADMIN'}
+              component={AdminsProfile}
+            />
+            <PrivateRoute
+              exact
               path="/super-admins"
               role={['SUPERADMIN']}
               component={SuperAdmins}
@@ -50,7 +56,7 @@ function Layout() {
             <PrivateRoute
               exact
               path="/employees/profile/:id"
-              role="EMPLOYEE"
+              role={['EMPLOYEE', 'ADMIN', 'PM']}
               component={EmployeesProfile}
             />
             <PrivateRoute
