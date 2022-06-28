@@ -1,7 +1,13 @@
-import styles from './header.module.css';
+import { useDispatch } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import * as actions from '../../redux/auth/actions';
+import styles from './header.module.css';
 
 function Header() {
+  const dispatch = useDispatch();
+  const logOut = () => {
+    dispatch(actions.setAuthentication(false));
+  };
   return (
     <header>
       <nav className={styles.navbar}>
@@ -26,6 +32,11 @@ function Header() {
           </li>
           <li>
             <Link to="/tasks">tasks</Link>
+          </li>
+          <li>
+            <Link onClick={logOut} to="/">
+              Log Out
+            </Link>
           </li>
         </ul>
         <div className={styles.appName}>
