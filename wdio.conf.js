@@ -1,3 +1,4 @@
+const allure = require('allure-commandline').default;
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 exports.config = {
