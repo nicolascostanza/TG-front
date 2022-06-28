@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '../Sidebar/sidebar.module.css';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import ThemeToggle from 'Components/Shared/ThemeToggle';
 
 const Sidebar = ({ children }) => {
   const history = useHistory();
@@ -19,7 +18,6 @@ const Sidebar = ({ children }) => {
   }
   return (
     <div className={styles.Sidebar}>
-      <ThemeToggle />
       <section className={styles.container}>
         <div className={styles.sidebarTitle}>
           <p>Menu</p>

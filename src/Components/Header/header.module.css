@@ -4,8 +4,8 @@
   justify-content: center;
   align-items: center;
   height: 160px;
-  background-color: var(--nav-background);
-  color: var(--primary-color);
+  background-color: #EDEDED;
+  color:#373867;
 }
 
 .appName {
@@ -18,7 +18,7 @@
 .appName h1{
   margin-bottom: 0;
   font-size: 2.5em;
-  border-bottom: 1px solid var(--primary-color);
+  border-bottom: 1px solid #373867;
 }
 
 .appName h2{
@@ -43,12 +43,12 @@
   font-weight: 400;
   text-decoration: none;
   text-transform: capitalize;
-  color: var(--primary-color);
+  color: #373867;
   transition: transform 2s;
 }
 
 .rutes > li > a:hover {
-  color: var(--routes-hover);
+  color: rgb(153, 151, 231);
 }
 
 @media screen and (min-width: 750px) {

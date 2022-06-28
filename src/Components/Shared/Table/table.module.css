@@ -25,11 +25,11 @@ td{
 }
 
 thead{
-    background-color: var(--secondary-color);
+    background-color: #ea3354;
     height: 50px;
     border-radius: 10px;
     max-width: 1200px;
-    color: var(--text-on-secondary);
+    color: white;
     text-transform: uppercase;
 }
 
@@ -50,18 +50,18 @@ thead{
 }
 
 .tbody > :nth-child(even) {
-	background-color: var(--row-even-background);
+	background-color: #e0e4e9;
 	transition: .2s;
 }
 
 .tbody > :nth-child(odd) {
-	background-color: var(--row-odd-background);
+	background-color: #f0f4f9;
 	transition: .2s;
 }
 
 .tbody > :hover {
-	background-color: var(--row-hover-background);
-    color: var(--row-text-hover);
+	background-color:#7e8795;
+    color: #E4EAF3;
     cursor: pointer;
 }
 
