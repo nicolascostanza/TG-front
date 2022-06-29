@@ -4,7 +4,7 @@ describe('Landing page test', () => {
   beforeAll('Open browser', async () => {
     await LandingPage.open();
   });
-  it('Social Media buttons', async () => {
+  it('Header buttons', async () => {
     await LandingPage.headerChecker();
   });
 });
