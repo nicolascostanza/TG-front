@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationLogIn } from 'Components/EmployeesFlow/validations';
@@ -10,7 +10,8 @@ import { useHistory } from 'react-router-dom';
 
 const Login = () => {
   const history = useHistory();
-  const role = useSelector((state) => state.auth.authenticated);
+  const role = useSelector((state) => state.auth.authenticated?.role);
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -21,13 +22,23 @@ const Login = () => {
     resolver: joiResolver(employeeValidationLogIn)
   });
 
+  // Should redirect after current user is auth and loaded
+  useEffect(() => {
+    if (role === 'EMPLOYEE' && currentUser?._id) {
+      history.push(`/employees/profile/${currentUser._id}`);
+    }
+    if (role === 'ADMIN') {
+      history.push('/admins');
+    }
+    if (role === 'SUPERADMIN') {
+      history.push('/superadmins');
+    }
+  }, [role, currentUser?._id]);
+
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));
   };
 
-  if (role) {
-    history.push('/');
-  }
   return (
     <section className={styles.container}>
       <section>
