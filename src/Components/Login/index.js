@@ -7,11 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import Sidebar from 'Components/Shared/Sidebar';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
+import Loader from 'Components/Shared/Loader';
 
 const Login = () => {
   const history = useHistory();
   const role = useSelector((state) => state.auth.authenticated?.role);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
+  const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
+  const isFetchingAuth = useSelector((state) => state.auth.isFetching);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -41,6 +44,7 @@ const Login = () => {
 
   return (
     <section className={styles.container}>
+      <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
         <Sidebar />
       </section>

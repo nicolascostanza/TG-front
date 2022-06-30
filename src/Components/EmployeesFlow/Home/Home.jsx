@@ -10,6 +10,7 @@ import Sidebar from 'Components/Shared/Sidebar';
 function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
   const timeSheets = useSelector((state) => state.timesheet.list);
   useEffect(() => {
     dispatch(Timesheetsthunks.getTimesheets());
@@ -19,7 +20,7 @@ function Home() {
       <Sidebar />
       <div className={styles.divEditProfile}>
         <button
-          onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}
+          onClick={() => history.push(`/employees/profile/${currentUser._id}`)}
           className={styles.buttonProfile}
         >
           EDIT PROFILE
