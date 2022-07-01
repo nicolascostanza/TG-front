@@ -1,8 +1,7 @@
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
-import { store } from 'redux/store';
+import store from 'redux/store';
 import { setAuthentication } from 'redux/auth/actions';
-import { initializeApp } from 'firebase/app';
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,
@@ -13,7 +12,7 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID
 };
 
-const firebaseApp = initializeApp(firebaseConfig);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 export const tokenListener = () => {
   firebase.auth().onIdTokenChanged(async (user) => {
@@ -22,7 +21,11 @@ export const tokenListener = () => {
       const {
         claims: { role }
       } = await user.getIdTokenResult();
+      localStorage.setItem('token', token);
       store.dispatch(setAuthentication({ token, role }));
+    } else {
+      localStorage.removeItem('token');
+      store.dispatch(setAuthentication());
     }
   });
 };

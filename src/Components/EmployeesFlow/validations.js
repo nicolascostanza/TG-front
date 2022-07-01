@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const employeeValidationSignUp = Joi.object({
   firstName: Joi.string()
-    .required('its required')
+    .required()
     .min(3)
     .max(40)
     .lowercase()
@@ -14,7 +14,7 @@ export const employeeValidationSignUp = Joi.object({
       'string.empty': 'This field is required'
     }),
   lastName: Joi.string()
-    .required('its required')
+    .required()
     .min(3)
     .max(40)
     .lowercase()
@@ -131,4 +131,26 @@ export const employeeValidationUpdate = Joi.object({
       'string.empty': 'This field is required'
     }),
   active: Joi.boolean().sensitive()
+});
+
+export const employeeValidationLogIn = Joi.object({
+  email: Joi.string()
+    .required('This field is required')
+    .min(2)
+    .regex(/^\w+([.-]?\w+)@\w+([.-]?\w+)(.\w{2,3})+$/)
+    .lowercase()
+    .messages({
+      'string.min': 'Email must contain at least 2 characters',
+      'string.pattern.base': 'Invalid email format',
+      'string.empty': 'This field is required'
+    }),
+  password: Joi.string()
+    .required('This field is required')
+    .min(8)
+    .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/)
+    .messages({
+      'string.min': 'Password must contain at least 8 characters',
+      'string.pattern.base': 'Password must contain letters and numbers',
+      'string.empty': 'This field is required'
+    })
 });
