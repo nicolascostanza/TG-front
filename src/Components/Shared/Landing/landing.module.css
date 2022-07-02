@@ -1,4 +1,4 @@
-body{
+body, .messageForm > textarea{
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
   Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
@@ -21,7 +21,7 @@ nav {
   width: 100%;
   margin: 0 auto;
   background-color: #fff;
-  z-index: 400;
+  z-index: 100;
 }
 .nameEmailForm {
   display: flex;
@@ -30,13 +30,13 @@ nav {
   padding-bottom: 20px;
 }
 .nameEmailForm > input {
-  width: 40%;
+  padding-left: 10px;
+  min-width: 40%;
   border: 2px solid #373867;
   border-radius: 5px;
   height: 32px;
 }
 .nameEmailForm > input::placeholder {
-  padding-left: 10px;
   color: #373867;
 }
 .selectLanding {
@@ -52,13 +52,16 @@ nav {
   width: 90%;
   margin: 0 auto;
 }
-textarea {
+.messageForm > textarea {
+  font-size: 1em;
+  font-weight: 400;
+  padding: 10px;
   width: 100%;
   height: 200px;
   border: 2px solid #373867;
   border-radius: 5px;
 }
-textarea::placeholder {
+.messageForm > textarea::placeholder {
   color: #373867;
 }
 .buttonsForm {
@@ -69,7 +72,7 @@ textarea::placeholder {
 .buttonForm {
   margin-top: 20px;
   margin-right: 95px;
-  background-color: #E27712;
+  background-color: #F13312;
   border: none;
   color: white;
   width: 128px;
@@ -84,12 +87,7 @@ textarea::placeholder {
 nav > ul:last-child {
   padding-right: 50px;
 }
-.sidebar {
-  z-index: 500;
-}
-.sidebarMain {
-  display: flex;
-}
+
 .firstSection {
   width: 100%;
   display: flex;
@@ -129,7 +127,7 @@ a:visited {
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   text-align: left;
 }
-h3 {
+.groupTitle {
   width: auto;
   display: flex;
 }
@@ -201,7 +199,7 @@ h3 {
   color:#fff;
   background-color: #373867;
 }
-.group > div > div > h3 {
+.group > div > div > .groupTitle {
   font-style: normal;
   font-weight: 400;
   font-size: 20px;
@@ -280,10 +278,12 @@ textarea {
   min-width: 150px;
   max-height: 150px;
 }
-form input {
+.contactForm input {
   width: 380px;
 }
-textarea {
+
+.messageForm > textarea {
+  border-radius: 5px;
   align-self: center;
 }
 .nameAndEmail {
@@ -364,6 +364,13 @@ textarea {
     align-self: center;
     margin-bottom: 20px;
   }
+  .valuesContainer {
+    max-width: 250px;
+    margin:auto
+  }
+  .valuesContainer > ol {
+    padding-left: 60px;
+  }
 }
 
 @media only screen and (max-width: 480px) {
@@ -371,6 +378,7 @@ textarea {
     width: 100%;
   }
   .buttonForm{
+    margin: 20px 5%;
     width: 100%;
   }
   #descriptionImage{

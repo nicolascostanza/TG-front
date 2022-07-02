@@ -48,7 +48,7 @@
     font-size: 18px;
     font-weight: bold;
     text-align: left;
-    margin-bottom: 0;
+    margin-bottom: 12px;
 }
 
 .Sidebar a:hover {
@@ -83,10 +83,11 @@
 
 .sideButton {
     position:fixed;
-    left: 10px;
-    top: 20px;
+    left: 30px;
+    top: 30px;
     border: none;
     color: black;
+    z-index: 200;
 }
 
 .sideButton i{
