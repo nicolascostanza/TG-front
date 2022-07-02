@@ -5,8 +5,13 @@
   justify-content: center;
   align-items: center;
 }
-
-.FaIcon {
-  padding: 5px;
-  color: red;
+.error {
+	color: red;
+	font-size: 12px;
+}
+.buttonsDeleteModal{
+  margin: 13px 0;
+}
+.modalText{
+  text-align: center;
 }

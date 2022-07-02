@@ -1,64 +1,113 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Button from 'Components/Shared/Button';
+import Form from 'Components/Shared/Form';
+import Loader from 'Components/Shared/Loader';
+import Modal from 'Components/Shared/Modal';
+import Sidebar from 'Components/Shared/Sidebar';
+import Table from 'Components/Shared/Table';
+import Joi from 'joi';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import * as thunks from 'redux/admins/thunks';
 import styles from './admins.module.css';
-import Table from '../Shared/Table';
-import Modal from '../Shared/Modal';
-import Button from '../Shared/Button/Button';
-import Form from '../Shared/Form';
-import Sidebar from '../Shared/Sidebar';
 
 function Admins() {
-  const [admins, setAdmins] = useState([]);
-  const [data, setData] = useState('');
   const [showModalMessage, setShowModalMessage] = useState(false);
   const [showModalAlert, setShowModalAlert] = useState(false);
   const [showModalAdd, setShowModalAdd] = useState(false);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [active, setActive] = useState(false);
   const [method, setMethod] = useState(false);
   const [deleteId, setDeleteId] = useState('');
   const [idEdit, setId] = useState('');
-
+  const dispatch = useDispatch();
+  const admins = useSelector((state) => state.admins.list);
+  const isFetching = useSelector((state) => state.admins.isFetching);
+  const schema = Joi.object({
+    firstName: Joi.string()
+      .min(3)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'First name must contain at least 3 characters',
+        'string.pattern.base': 'First name must contain only letters',
+        'string.empty': 'This field is required'
+      }),
+    lastName: Joi.string()
+      .min(3)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'Last name must contain at least 3 characters',
+        'string.pattern.base': 'Last name must contain only letters',
+        'string.empty': 'This field is required'
+      }),
+    email: Joi.string()
+      .email({ tlds: { allow: false } })
+      .min(7)
+      .required()
+      .messages({
+        'string.min': 'Email must contain at least 7 characters',
+        'string.email': 'Invalid email format',
+        'string.empty': 'This field is required'
+      }),
+    password: Joi.string()
+      .min(8)
+      .required()
+      .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/)
+      .messages({
+        'string.min': 'Password must contain at least 8 characters',
+        'string.pattern.base': 'Password must contain letters and numbers',
+        'string.empty': 'This field is required'
+      }),
+    active: Joi.boolean().required()
+  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
   useEffect(() => {
-    requestList();
+    dispatch(thunks.getAdmins());
+    if (method !== 'PUT') {
+      reset({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        active: false
+      });
+    }
   }, [method]);
 
-  const requestList = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/admins`)
-      .then((data) => data.json())
-      .then((data) => {
-        data.data.map((admin) => {
-          admin.active = admin.active ? 'true' : 'false';
-        });
-        setAdmins(data.data);
-      });
-    console.log(admins);
-  };
+  const formattedAdmins = admins?.map((admin) => {
+    return {
+      _id: admin._id,
+      firstName: admin.firstName,
+      lastName: admin.lastName,
+      email: admin.email,
+      password: admin.password,
+      active: admin.active ? 'true' : 'false'
+    };
+  });
 
   const onDelete = (id) => {
     setShowModalAlert(true);
     setDeleteId(id);
   };
 
-  const deleteAdmin = async () => {
+  const deleteAdmin = () => {
     setShowModalAlert(false);
-    await fetch(`${process.env.REACT_APP_API_URL}/admins/${deleteId}`, {
-      method: 'DELETE'
-    })
-      .then((data) => data.json())
-      .then((data) => {
-        setData(data);
-        setAdmins(admins.filter((admin) => admin._id !== deleteId));
-        setShowModalMessage(true);
-      });
-    console.log(data);
+    dispatch(thunks.deleteAdmin(deleteId));
   };
+
   const handleCloseAlert = () => {
     setShowModalAlert(false);
   };
+
   const handleCloseMessage = () => {
     setShowModalMessage(false);
   };
@@ -66,101 +115,75 @@ function Admins() {
   const handleCloseAdd = () => {
     setShowModalAdd(false);
   };
+
   const onAdd = () => {
     setMethod('POST');
     setShowModalAdd(true);
   };
 
-  const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setActive(false);
-  };
-  const addAdmin = async (admin) => {
-    resetFields();
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(admin)
+  const fillInputs = (id) => {
+    const valu = admins.filter((admin) => admin._id === id);
+    const { firstName, lastName, email, password, active } = valu[0];
+
+    reset({
+      firstName,
+      lastName,
+      email,
+      password,
+      active
     });
-    const data = await res.json();
-    if (res.status === 201) {
-      setAdmins([...admins, data]);
-      setMethod('');
-      setShowModalAdd(false);
-      setData(data);
-      setShowModalMessage(true);
-    } else {
-      setData(data);
-      setShowModalMessage(true);
-    }
   };
+
+  const addAdmin = async (admin) => {
+    dispatch(thunks.addAdmin(admin));
+    setMethod('');
+    setShowModalAdd(false);
+  };
+
   const onEdit = async (id) => {
     setMethod('PUT');
     setShowModalAdd(true);
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`)
-      .then((response) => response.json())
-      .then((response) => {
-        setFirstName(response.data.firstName);
-        setLastName(response.data.lastName);
-        setEmail(response.data.email);
-        setPassword(response.data.password);
-        setActive(response.data.active);
-      });
+    fillInputs(id);
     setId(id);
   };
 
-  const editAdmin = async (admin) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/admins/${idEdit}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(admin)
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      setMethod('');
-      handleCloseAdd(false);
-      resetFields();
-      setData(data);
-      setShowModalMessage(true);
-    } else {
-      alert(data.message);
+  const editAdmin = (body) => {
+    dispatch(thunks.updateAdmin(body, idEdit));
+    if (isFetching) {
+      return <h2>Fetching</h2>;
     }
+    setMethod('');
+    handleCloseAdd(false);
   };
-  const onSubmit = (e) => {
-    e.preventDefault();
+
+  const onSubmit = (data) => {
+    console.log('data: ', data);
+    console.log('id: ', idEdit);
     if (method === 'POST') {
-      addAdmin({ firstName, lastName, email, password, active });
-      resetFields();
+      addAdmin(data);
     } else if (method === 'PUT') {
-      editAdmin({ firstName, lastName, email, password, active });
+      editAdmin(data);
     } else {
       alert('Something unexpected happened');
     }
   };
 
-  console.log(firstName, lastName, email, password, active, method);
   return (
     <section className={styles.container}>
       <div>
         <Sidebar></Sidebar>
       </div>
+      <Loader isLoading={isFetching} />
       <Modal
         showModal={showModalAlert}
         handleClose={handleCloseAlert}
         modalTitle={`Are you sure you want to delete the admin?`}
       >
         <div className={styles.boxButtons}>
-          <Button onClick={deleteAdmin} width={'50px'} height={'25px'} fontSize={'15px'}>
+          <Button onClick={deleteAdmin} width={'75px'} height={'25px'} fontSize={'15px'}>
             Accept
           </Button>
-          <Button onClick={handleCloseAlert} width={'50px'} height={'25px'} fontSize={'15px'}>
+          <Button onClick={handleCloseAlert} width={'75px'} height={'25px'} fontSize={'15px'}>
             Cancel
           </Button>
         </div>
@@ -168,61 +191,61 @@ function Admins() {
       <Form
         showModal={showModalAdd}
         handleClose={handleCloseAdd}
-        handleSubmit={onSubmit}
+        handleSubmit={handleSubmit(onSubmit)}
         title={method === 'POST' ? 'Create Admin' : 'Edit Admin'}
       >
         <div>
-          <label>Name</label>
-          <input
-            type="text"
-            value={firstName}
-            required
-            onChange={(e) => setFirstName(e.target.value)}
-          />
+          <label htmlFor="firstName">Name</label>
+          <input {...register('firstName')} name="firstName" type="text" />
+          {errors.firstName?.message && <p>{errors.firstName?.message}</p>}
         </div>
         <div>
-          <label>Last Name</label>
-          <input
-            type="text"
-            value={lastName}
-            required
-            onChange={(e) => setLastName(e.target.value)}
-          />
+          <label htmlFor="lastName">Last Name</label>
+          <input {...register('lastName')} name="lastName" type="text" />
+          {errors.lastName?.message && <p>{errors.lastName?.message}</p>}
         </div>
         <div>
-          <label>Email</label>
-          <input type="text" value={email} required onChange={(e) => setEmail(e.target.value)} />
+          <label htmlFor="email">Email</label>
+          <input {...register('email')} name="email" type="email" />
+          {errors.email?.message && <p>{errors.email?.message}</p>}
         </div>
         <div>
-          <label>Password</label>
-          <input
-            type="password"
-            value={password}
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <label htmlFor="password">Password</label>
+          <input {...register('password')} name="password" type="password" />
+          {errors.password?.message && <p>{errors.password?.message}</p>}
         </div>
         <div>
           <div>
-            <label>Active</label>
+            <label htmlFor="active">Active</label>
           </div>
           <div>
-            <input
-              type="checkbox"
-              checked={active}
-              value={active}
-              onChange={(e) => setActive(e.currentTarget.checked)}
-            />
+            <input type="checkbox" name="active" {...register('active')} />
+            {errors.active?.message && <p>{errors.active?.message}</p>}
           </div>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              reset({
+                firstName: '',
+                lastName: '',
+                email: '',
+                password: '',
+                active: false
+              });
+            }}
+            width={'75px'}
+            height={'25px'}
+            fontSize={'15px'}
+          >
+            Reset
+          </Button>
         </div>
       </Form>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={''}>
-        {data.message}
-      </Modal>
+      <Modal showModal={showModalMessage} handleClose={handleCloseMessage} modalTitle={''} />
       <Table
         title={'Admins'}
         headers={['_id', 'firstName', 'lastName', 'email', 'password', 'active']}
-        data={admins}
+        data={formattedAdmins}
         onDelete={onDelete}
         onAdd={onAdd}
         onEdit={onEdit}

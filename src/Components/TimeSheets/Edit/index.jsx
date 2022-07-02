@@ -1,178 +1,228 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
-import Form from '../../Shared/Form';
-import Modal from '../../Shared/Modal';
+import Form from 'Components/Shared/Form';
+import * as thunks from 'redux/timesheets/thunks';
+import { useDispatch, useSelector } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 
 function EditTimeSheets(props) {
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
-        setEmployeeId(response.data.employeeId._id);
-        setDescription(response.data.description);
-        setProject(response.data.project);
-        setDate(new Date(response.data.date).toISOString().split('T')[0] || '');
-        setHours(response.data.hours);
-        setTask(response.data.task);
-        setApproved(response.data.approved);
-        setRole(response.data.role);
+        reset({
+          employeeId: response.data.employeeId ? response.data.employeeId._id : '',
+          description: response.data.description,
+          project: response.data.project,
+          date: new Date(response.data.date).toISOString().split('T')[0] || '',
+          hours: response.data.hours,
+          approved: response.data.approved,
+          role: response.data.role
+        });
+        setSelectedTasks(response.data.task.map((item) => item._id));
       });
   }, [props.editId]);
-  const [employeeId, setEmployeeId] = useState({});
-  const [description, setDescription] = useState('');
-  const [project, setProject] = useState('');
-  const [date, setDate] = useState('');
-  const [hours, setHours] = useState('');
-  const [task, setTask] = useState([]);
-  const [approved, setApproved] = useState(false);
-  const [role, setRole] = useState('');
-  const [showModalCorrect, setShowModalCorrect] = useState(false);
-  const [showModalIncorrect, setShowModalIncorrect] = useState(false);
-  const [data, setData] = useState('');
-  const handleCloseMessage = () => {
-    setShowModalCorrect(false);
-    setShowModalIncorrect(false);
+  const allTasks = useSelector((state) => state.tasks.list);
+  const [tasks, setTasks] = useState('');
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  const dispatch = useDispatch();
+  const { showEditModal, handleClose } = props;
+
+  const schema = Joi.object({
+    employeeId: Joi.string().messages({ 'string.empty': 'This field must be complete' }),
+    description: Joi.string().min(3).max(80).messages({
+      'string.empty': 'This field must be complete',
+      'string.min': 'This field must have at least 3 characters',
+      'string.max': 'This field can not contain more than 80 characters'
+    }),
+    project: Joi.string().min(3).messages({
+      'string.empty': 'This field must be complete',
+      'string.min': 'This field must have at least 3 characters'
+    }),
+    date: Joi.date().less('now').messages({
+      'date.base': 'This field must be complete',
+      'date.less': 'Date is not invalid'
+    }),
+    hours: Joi.number().min(1).max(24).messages({
+      'number.base': 'This field must be complete',
+      'number.min': 'This field must have at least 1 hour',
+      'number.max': 'This field can not have more than 24 hours'
+    }),
+    approved: Joi.bool(),
+    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').messages({
+      'any.only': 'This field must contain one of the following roles: DEV, QA, PM or TL'
+    })
+  });
+  const {
+    register,
+    reset,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
+
+  const appendToSelectedTasks = (id) => {
+    const previousState = selectedTasks;
+    setSelectedTasks([...previousState, id]);
+    setTasks('');
   };
 
-  const editTimeSheets = async (timeSheets) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(timeSheets)
-    });
-    const data = await res.json();
-    if (res.status === 200) {
-      setShowModalCorrect(true);
-      setData(data);
-      clearFields();
-    } else if (res.status === 400) {
-      setShowModalIncorrect(true);
-      console.log(data);
-    }
+  const deleteFromSelectedTasks = (id) => {
+    setSelectedTasks(selectedTasks.filter((task) => task !== id));
   };
-  const onSubmit = (e) => {
+
+  const editTimeSheets = async (newBody, id) => {
+    dispatch(thunks.editTimesheet(newBody, id));
+  };
+  const onSubmit = (data, e) => {
     e.preventDefault();
 
-    editTimeSheets({
-      employeeId,
-      description,
-      project,
-      date: new Date(date).toISOString().split('T')[0] || '',
-      // date,
-      hours,
-      task: [...task],
-      approved,
-      role
-    });
+    editTimeSheets(
+      {
+        ...data,
+        task: selectedTasks
+      },
+      props.editId
+    );
   };
 
-  const clearFields = () => {
-    setEmployeeId('');
-    setDescription('');
-    setProject('');
-    setDate('');
-    setHours('');
-    setTask([]);
-    setApproved(false);
-    setRole('');
-  };
   return (
     <section>
-      <Form showModal={props.showModal} handleClose={props.handleClose} handleSubmit={onSubmit}>
-        <div className={styles.tittle}>
-          <h2> Edit Time-Sheet </h2>
-        </div>
+      <Form
+        showModal={showEditModal}
+        handleClose={handleClose}
+        handleSubmit={handleSubmit(onSubmit)}
+        title="Edit Time Sheet"
+      >
         <div className={styles.container}>
           <div>
             <label> Employee ID </label>
             <input
+              {...register('employeeId', { required: true })}
               type="text"
               placeholder="employeeId"
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
             />
+            {errors.employeeId?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.employeeId.message}</p>
+            )}
           </div>
           <div>
             <label> Description </label>
             <input
+              {...register('description', { required: true })}
               type="text"
               placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
+            {errors.description?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
+            {errors.description?.type === 'string.min' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
+            {errors.description?.type === 'string.max' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
           </div>
           <div>
             <label> Project </label>
-            <input
-              type="text"
-              placeholder="Project"
-              value={project}
-              onChange={(e) => setProject(e.target.value)}
-            />
+            <input {...register('project', { required: true })} type="text" placeholder="Project" />
+            {errors.project?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.project.message}</p>
+            )}
+            {errors.project?.type === 'string.min' && (
+              <p className={styles.error}>{errors.project.message}</p>
+            )}
           </div>
           <div>
             <label> Date </label>
-            <input
-              type="date"
-              placeholder="Date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
+            <input {...register('date', { required: true })} type="date" placeholder="Date" />
+            {errors.date?.type === 'date.base' && (
+              <p className={styles.error}>{errors.date.message}</p>
+            )}
+            {errors.date?.type === 'date.less' && (
+              <p className={styles.error}>{errors.date.message}</p>
+            )}
           </div>
           <div>
             <label> Hours </label>
-            <input
-              type="number"
-              placeholder="Hours"
-              value={hours}
-              onChange={(e) => setHours(e.target.value)}
-            />
+            <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
+            {errors.hours?.type === 'number.base' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
+            {errors.hours?.type === 'number.min' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
+            {errors.hours?.type === 'number.max' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
           </div>
           <div>
-            <label> Task ID </label>
+            <label> Tasks </label>
             <input
               type="text"
-              placeholder="Task ID"
-              value={task && task[0] ? task[0]._id : ''}
-              onChange={(e) => setTask(e.target.value)}
+              placeholder="Task"
+              value={tasks}
+              onChange={(e) => setTasks(e.target.value)}
             />
+            <div>
+              {tasks.length > 0
+                ? allTasks
+                    .filter(
+                      (task) =>
+                        task.taskName.match(new RegExp(tasks, 'i')) ||
+                        task.taskDescription.match(new RegExp(tasks, 'i'))
+                    )
+                    .map((task) => {
+                      return (
+                        <p
+                          key={task._id}
+                          onClick={() =>
+                            selectedTasks.find((item) => item === task._id)
+                              ? deleteFromSelectedTasks(task._id)
+                              : appendToSelectedTasks(task._id)
+                          }
+                          className={
+                            selectedTasks.find((item) => item === task._id)
+                              ? styles.selectedItem
+                              : styles.notSelectedItem
+                          }
+                        >
+                          {task.taskName}: {task.taskDescription}
+                        </p>
+                      );
+                    })
+                : selectedTasks.map((task) => {
+                    return (
+                      <p
+                        key={task}
+                        className={styles.chip}
+                        onClick={() => deleteFromSelectedTasks(task)}
+                      >
+                        {allTasks.find((item) => item._id === task).taskName}:{' '}
+                        {allTasks.find((item) => item._id === task).taskDescription}
+                      </p>
+                    );
+                  })}
+            </div>
           </div>
           <div>
             <label> Approved </label>
-            <input
-              type="checkbox"
-              checked={approved}
-              onChange={(e) => setApproved(e.target.checked)}
-            />
+            <input {...register('approved', { required: true })} type="checkbox" />
           </div>
           <div>
             <label> Role </label>
-            <input
-              type="text"
-              placeholder="Role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            />
+            <input {...register('role', { required: true })} type="text" placeholder="Role" />
+            {errors.role?.type === 'any.only' && (
+              <p className={styles.error}>{errors.role.message}</p>
+            )}
           </div>
         </div>
       </Form>
-      <Modal
-        showModal={showModalCorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The Time sheet has been updated successfully'}
-      >
-        {data.message}
-      </Modal>
-      <Modal
-        showModal={showModalIncorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The was an error updating time sheet'}
-      >
-        {data.message}
-      </Modal>
     </section>
   );
 }

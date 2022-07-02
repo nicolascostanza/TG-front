@@ -1,172 +1,202 @@
-import React from 'react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import styles from './Form.module.css';
-import Form from '../../Shared/Form';
-import Modal from '../../Shared/Modal';
+import Form from 'Components/Shared/Form';
+import * as thunks from 'redux/timesheets/thunks';
+import { useDispatch } from 'react-redux';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
 
 function AddTimeSheets(props) {
-  const [timeSheets, saveTimeSheets] = useState([]);
-  useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`)
-      .then((response) => response.json())
-      .then((response) => {
-        saveTimeSheets(response.data);
-      });
-  }, []);
-  const [employeeId, setEmployeeId] = useState('');
-  const [description, setDescription] = useState('');
-  const [project, setProject] = useState('');
-  const [date, setDate] = useState('');
-  const [hours, setHours] = useState('');
-  const [task, setTask] = useState([]);
-  const [approved, setApproved] = useState(false);
-  const [role, setRole] = useState('');
-  const [showModalCorrect, setShowModalCorrect] = useState(false);
-  const [showModalIncorrect, setShowModalIncorrect] = useState(false);
-  const [data, setData] = useState('');
-  const handleCloseMessage = () => {
-    setShowModalCorrect(false);
-    setShowModalIncorrect(false);
+  const [tasks, setTasks] = useState('');
+  const { showCreateModal, handleClose, allTasks } = props;
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  const dispatch = useDispatch();
+  const schema = Joi.object({
+    employeeId: Joi.string().required().messages({ 'string.empty': 'This field must be complete' }),
+    description: Joi.string().min(3).max(80).messages({
+      'string.empty': 'This field must be complete',
+      'string.min': 'This field must have at least 3 characters',
+      'string.max': 'This field can not contain more than 80 characters'
+    }),
+    project: Joi.string().min(3).required().messages({
+      'string.empty': 'This field must be complete',
+      'string.min': 'This field must have at least 3 characters'
+    }),
+    date: Joi.date().less('now').required().messages({
+      'date.base': 'This field must be complete',
+      'date.less': 'Date is not valid'
+    }),
+    hours: Joi.number().min(1).max(24).required().messages({
+      'number.base': 'This field must be complete',
+      'number.min': 'This field must have at least 1 hour',
+      'number.max': 'This field can not have more than 24 hours'
+    }),
+    approved: Joi.bool().required(),
+    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required().messages({
+      'any.only': 'This field must contain one of the following roles: DEV, QA, PM or TL'
+    })
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
+  const appendToSelectedTasks = (id) => {
+    const previousState = selectedTasks;
+    setSelectedTasks([...previousState, id]);
+    setTasks('');
   };
-  const addTimeSheets = async (timeSheet) => {
-    const res = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/`, {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(timeSheet)
-    });
-    const data = await res.json();
 
-    if (res.status === 201) {
-      saveTimeSheets([...timeSheets, data.data]);
-      setShowModalCorrect(true);
-      setData(data);
-      clearFields();
-    } else if (res.status === 400) {
-      setShowModalIncorrect(true);
-      setData(data);
-    }
+  const deleteFromSelectedTasks = (id) => {
+    setSelectedTasks(selectedTasks.filter((task) => task !== id));
   };
-  const onSubmit = (e) => {
+
+  const addTimeSheets = async (timeSheet) => {
+    dispatch(thunks.addTimesheets(timeSheet));
+  };
+  const onSubmit = (data, e) => {
     e.preventDefault();
     addTimeSheets({
-      employeeId,
-      description,
-      project,
-      date,
-      hours,
-      task: [task],
-      approved,
-      role
+      ...data,
+      task: selectedTasks
     });
-  };
-  const clearFields = () => {
-    setEmployeeId('');
-    setDescription('');
-    setProject('');
-    setDate('');
-    setHours('');
-    setTask([]);
-    setApproved(false);
-    setRole('');
   };
   return (
     <section>
       <Form
-        handleSubmit={onSubmit}
-        showModal={props.showModal}
-        handleClose={props.handleClose}
+        handleSubmit={handleSubmit(onSubmit)}
+        showModal={showCreateModal}
+        handleClose={handleClose}
         title="Add Time Sheet"
       >
         <div className={styles.container}>
           <div>
-            <label> Employee ID </label>
+            <label htmlFor="employeeId"> Employee ID </label>
             <input
+              {...register('employeeId', { required: true })}
               type="text"
               placeholder="Employee ID"
-              value={employeeId}
-              onChange={(e) => setEmployeeId(e.target.value)}
             />
+            {errors.employeeId?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.employeeId.message}</p>
+            )}
           </div>
           <div>
-            <label> Description </label>
+            <label htmlFor="description"> Description </label>
             <input
+              {...register('description', { required: true })}
               type="text"
               placeholder="Description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
             />
+            {errors.description?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
+            {errors.description?.type === 'string.min' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
+            {errors.description?.type === 'string.max' && (
+              <p className={styles.error}>{errors.description.message}</p>
+            )}
           </div>
           <div>
-            <label> Project </label>
-            <input
-              type="text"
-              placeholder="Project"
-              value={project}
-              onChange={(e) => setProject(e.target.value)}
-            />
+            <label htmlFor="project"> Project </label>
+            <input {...register('project', { required: true })} type="text" placeholder="Project" />
+            {errors.project?.type === 'string.empty' && (
+              <p className={styles.error}>{errors.project.message}</p>
+            )}
+            {errors.project?.type === 'string.min' && (
+              <p className={styles.error}>{errors.project.message}</p>
+            )}
           </div>
           <div>
-            <label> Date </label>
-            <input
-              type="date"
-              placeholder="YYYY-MM-DD"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-            />
+            <label htmlFor="date"> Date </label>
+            <input {...register('date', { required: true })} type="date" placeholder="YYYY-MM-DD" />
+            {errors.date?.type === 'date.base' && (
+              <p className={styles.error}>{errors.date.message}</p>
+            )}
+            {errors.date?.type === 'date.less' && (
+              <p className={styles.error}>{errors.date.message}</p>
+            )}
           </div>
           <div>
-            <label> Hours </label>
-            <input
-              type="number"
-              placeholder="Hours"
-              value={hours}
-              onChange={(e) => setHours(e.target.value)}
-            />
+            <label htmlFor="hours"> Hours </label>
+            <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
+            {errors.hours?.type === 'number.base' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
+            {errors.hours?.type === 'number.min' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
+            {errors.hours?.type === 'number.max' && (
+              <p className={styles.error}>{errors.hours.message}</p>
+            )}
           </div>
           <div>
-            <label> Task ID </label>
+            <label htmlFor="task"> Task </label>
             <input
               type="text"
               placeholder="Task"
-              value={task && task[0] ? task[0]._id : ''}
-              onChange={(e) => setTask(e.target.value)}
+              value={tasks}
+              onChange={(e) => setTasks(e.target.value)}
             />
+            <div>
+              {tasks.length > 0
+                ? allTasks
+                    .filter(
+                      (task) =>
+                        task.taskName.match(new RegExp(tasks, 'i')) ||
+                        task.taskDescription.match(new RegExp(tasks, 'i'))
+                    )
+                    .map((task) => {
+                      return (
+                        <p
+                          key={task._id}
+                          onClick={() =>
+                            selectedTasks.find((item) => item === task._id)
+                              ? deleteFromSelectedTasks(task._id)
+                              : appendToSelectedTasks(task._id)
+                          }
+                          className={
+                            selectedTasks.find((item) => item === task._id)
+                              ? styles.selectedItem
+                              : styles.notSelectedItem
+                          }
+                        >
+                          {task.taskName}: {task.taskDescription}
+                        </p>
+                      );
+                    })
+                : selectedTasks.map((task) => {
+                    return (
+                      <p
+                        key={task}
+                        className={styles.chip}
+                        onClick={() => deleteFromSelectedTasks(task)}
+                      >
+                        {allTasks.find((item) => item._id === task).taskName}:{' '}
+                        {allTasks.find((item) => item._id === task).taskDescription}
+                      </p>
+                    );
+                  })}
+            </div>
           </div>
           <div>
-            <label> Approved </label>
-            <input
-              type="checkbox"
-              checked={approved}
-              onChange={(e) => setApproved(e.target.checked)}
-            />
+            <label htmlFor="approved"> Approved </label>
+            <input {...register('approved', { required: true })} type="checkbox" />
           </div>
           <div>
-            <label> Role </label>
-            <input
-              type="text"
-              placeholder="Role"
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-            />
+            <label htmlFor="role"> Role </label>
+            <input {...register('role', { required: true })} type="text" placeholder="Role" />
+            {errors.role?.type === 'any.only' && (
+              <p className={styles.error}>{errors.role.message}</p>
+            )}
           </div>
         </div>
       </Form>
-      <Modal
-        showModal={showModalCorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The Time sheet has been created successfully'}
-      >
-        {data.message}
-      </Modal>
-      <Modal
-        showModal={showModalIncorrect}
-        handleClose={handleCloseMessage}
-        modalTitle={'The was an error creating time sheet'}
-      >
-        {data.message}
-      </Modal>
     </section>
   );
 }

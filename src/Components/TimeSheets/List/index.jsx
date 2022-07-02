@@ -1,69 +1,73 @@
 import { useEffect, useState } from 'react';
-import styles from '../List/list.module.css';
 import AddTimeSheets from '../Add';
-import Table from '../../Shared/Table';
+import Table from 'Components/Shared/Table';
 import EditTimeSheets from '../Edit';
-import Sidebar from '../../Shared/Sidebar';
+import Sidebar from 'Components/Shared/Sidebar';
+import Loader from 'Components/Shared/Loader';
+import * as thunks from 'redux/timesheets/thunks';
+import * as actions from 'redux/timesheets/actions';
+import * as tasksThunks from 'redux/tasks/thunks';
+import { useDispatch, useSelector } from 'react-redux';
 
 function TimeSheet() {
-  const [showEditModal, setShowEditModal] = useState(false);
-  const openEditTimeSheet = (id) => {
-    setEditId(id);
-    setShowEditModal(true);
-  };
-  const [timeSheets, setTimeSheets] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const openAddTimeSheet = () => {
-    setShowModal(true);
-  };
+  const dispatch = useDispatch();
+  const timeSheets = useSelector((state) => state.timesheet.list);
+  const isFetching = useSelector((state) => state.timesheet.isFetching);
   const [editId, setEditId] = useState('');
-  const handleClose = () => {
-    setShowModal(false);
-    setShowEditModal(false);
-  };
+  const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
+  const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/time-sheets`)
-      .then((response) => response.json())
-      .then((response) => {
-        setTimeSheets(response.data);
-      })
-      .catch((err) => console.err(err));
+    dispatch(thunks.getTimesheets());
+    dispatch(tasksThunks.getTasks());
   }, []);
+  const allTasks = useSelector((state) => state.tasks.list);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
-      fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${id}`, {
-        method: 'DELETE'
-      })
-        .then((response) => {
-          response.json();
-        })
-        .then((json) => {
-          if (json.status) {
-            alert('Succesfully deleted');
-          }
-        });
-      setTimeSheets(timeSheets.filter((timeSheet) => timeSheet._id !== id));
+      dispatch(thunks.deleteTimesheets(id));
     }
+  };
+  const openAddTimeSheet = () => {
+    dispatch(actions.showCreateModal());
+  };
+  const openEditTimeSheet = (id) => {
+    setEditId(id);
+    dispatch(actions.showEditModal());
+  };
+  const handleClose = () => {
+    dispatch(actions.closeModals());
   };
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     return {
+      ...timeSheet,
       _id: timeSheet._id,
       employeeId: timeSheet.employeeId._id,
       description: timeSheet.description,
       project: timeSheet.project,
-      date: new Date(timeSheet.date).toDateString(),
-      task_name: timeSheet.task.map((task) => task.taskName).join(' - ') || '-',
+      date: timeSheet.date ? new Date(timeSheet.date).toDateString() : '',
+      task_name: timeSheet.task.length
+        ? timeSheet.task.map((task) => task.taskName).join(' - ')
+        : '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
       role: timeSheet.role
     };
   });
   return (
-    <div className={styles.container}>
+    <>
+      <Loader isLoading={isFetching} />
       <Sidebar></Sidebar>
-      <EditTimeSheets showModal={showEditModal} handleClose={handleClose} editId={editId} />
-      <AddTimeSheets showModal={showModal} handleClose={handleClose}></AddTimeSheets>
+      <EditTimeSheets
+        showEditModal={showEditModal}
+        handleClose={handleClose}
+        editId={editId}
+        allTasks={allTasks}
+      />
+      <AddTimeSheets
+        showCreateModal={showCreateModal}
+        handleClose={handleClose}
+        allTasks={allTasks}
+      ></AddTimeSheets>
       <Table
         title="Timesheets"
         headers={[
@@ -82,7 +86,7 @@ function TimeSheet() {
         onDelete={deleteTimeSheet}
         onAdd={openAddTimeSheet}
       />
-    </div>
+    </>
   );
 }
 export default TimeSheet;

@@ -1,14 +1,17 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from '../Shared/Button/Button';
-import Form from '../Shared/Form';
-import Modal from '../Shared/Modal';
-import Sidebar from '../Shared/Sidebar';
-import Table from '../Shared/Table';
-import Loader from '../Shared/Loader/index.jsx';
-import styles from './super-admins.module.css';
-import * as thunks from '../../redux/superadmins/thunks';
-import * as actions from '../../redux/superadmins/actions';
+import { useForm } from 'react-hook-form';
+import { joiResolver } from '@hookform/resolvers/joi';
+import Joi from 'joi';
+import Button from 'Components/Shared/Button';
+import Form from 'Components/Shared/Form';
+import Modal from 'Components/Shared/Modal';
+import Sidebar from 'Components/Shared/Sidebar';
+import Table from 'Components/Shared/Table';
+import Loader from 'Components/Shared/Loader/index.jsx';
+import styles from 'Components/SuperAdmins/super-admins.module.css';
+import * as thunks from 'redux/superadmins/thunks';
+import * as actions from 'redux/superadmins/actions';
 
 function SuperAdmins() {
   const headers = [
@@ -22,6 +25,58 @@ function SuperAdmins() {
     'updatedAt'
   ];
   const dispatch = useDispatch();
+  const schema = Joi.object({
+    firstName: Joi.string()
+      .min(3)
+      .max(30)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'First name must contain at least 3 characters',
+        'string.max': 'First name must contain less than 30 characters',
+        'string.pattern.base': 'First name is not valid',
+        'string.empty': 'This field is required'
+      }),
+    lastName: Joi.string()
+      .min(3)
+      .max(30)
+      .required()
+      .regex(/^([ \u00c0-\u01ffa-zA-Z'-])+$/)
+      .messages({
+        'string.min': 'Last name must contain at least 3 characters',
+        'string.max': 'Last name must contain less than 30 characters',
+        'string.pattern.base': 'Last name is not valid',
+        'string.empty': 'This field is required'
+      }),
+    email: Joi.string()
+      .min(3)
+      .max(30)
+      .required()
+      .lowercase()
+      .regex(
+        // eslint-disable-next-line no-useless-escape
+        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )
+      .messages({
+        'string.min': 'Email must contain at least 3 characters',
+        'string.max': 'Email must contain less than 30 characters',
+        'string.pattern.base': 'Email must be valid',
+        'string.empty': 'This field is required'
+      }),
+    password: Joi.string()
+      .min(8)
+      .max(30)
+      .required()
+      .regex(/(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,25})$/)
+      .messages({
+        'string.min': 'Password must contain at least 8 characters',
+        'string.max': 'Password must contain less than 30 characters',
+        'string.pattern.base': 'Password must contain letters and numbers',
+        'string.empty': 'This field is required'
+      }),
+    active: Joi.boolean()
+  });
+
   const superAdminsList = useSelector((state) => state.superAdmins.list);
   const message = useSelector((state) => state.superAdmins.message);
   const response = useSelector((state) => state.superAdmins.response);
@@ -30,31 +85,27 @@ function SuperAdmins() {
   const modalShowForm = useSelector((state) => state.superAdmins.showFormAddEdit);
   const showModalDelete = useSelector((state) => state.superAdmins.showModalDelete);
   const showModalMessage = useSelector((state) => state.superAdmins.showModalMessage);
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [active, setActive] = useState(true);
   const [ids, setId] = useState('');
   const [deleteId, setDeleteId] = useState('');
+
   useEffect(() => {
     dispatch(thunks.getSuperadmins());
-  }, []);
+    if (method !== 'PUT') {
+      reset({
+        active: true
+      });
+    }
+  }, [method]);
   // functions for reset o complete inputs
-  const resetFields = () => {
-    setFirstName('');
-    setLastName('');
-    setEmail('');
-    setPassword('');
-    setActive(true);
-  };
   const fillForm = (id) => {
-    const valuesForm = superAdminsList.filter((superadmin) => superadmin._id === id);
-    setFirstName(valuesForm[0].firstName);
-    setLastName(valuesForm[0].lastName);
-    setEmail(valuesForm[0].email);
-    setPassword(valuesForm[0].password);
-    setActive(valuesForm[0].active === 'true' ? true : false);
+    const valuesForm = superAdminsList.find((superadmin) => superadmin._id === id);
+    reset({
+      firstName: valuesForm.firstName,
+      lastName: valuesForm.lastName,
+      email: valuesForm.email,
+      password: valuesForm.password,
+      active: valuesForm.active === 'true' ? true : false
+    });
   };
   // modals
   const closeModals = () => {
@@ -65,7 +116,7 @@ function SuperAdmins() {
   };
   const onAdd = () => {
     dispatch(actions.showFormAddEdit('POST'));
-    resetFields();
+    reset({});
   };
   const onEdit = async (id) => {
     dispatch(actions.showFormAddEdit('PUT'));
@@ -80,14 +131,14 @@ function SuperAdmins() {
   const deleteAdmin = async () => {
     dispatch(thunks.deleteSuperadmin(deleteId));
   };
-  const onSubmit = (e) => {
+  const onSubmit = (data, e) => {
     e.preventDefault();
     const superAdmin = {
-      firstName,
-      lastName,
-      email,
-      password,
-      active
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      active: Boolean(data.active)
     };
     if (method === 'POST') {
       dispatch(thunks.addSuperadmin(superAdmin));
@@ -97,6 +148,15 @@ function SuperAdmins() {
       alert('Something unexpected happened');
     }
   };
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors }
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(schema)
+  });
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -119,60 +179,48 @@ function SuperAdmins() {
           </div>
         </Modal>
         <Form
-          handleSubmit={onSubmit}
-          showModal={modalShowForm}
-          handleClose={closeModals}
           title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}
+          showModal={modalShowForm}
+          handleSubmit={handleSubmit(onSubmit)}
+          handleClose={closeModals}
         >
-          <Loader isLoading={isFetching} />
           <div className={styles.inputsForm}>
-            <label>Name</label>
-            <input
-              className={styles.inputsDivs}
-              type="text"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
+            <label htmlFor="firstName">First Name</label>
+            <input {...register('firstName')} name="firstName" type="text" placeholder="John" />
+            {errors.firstName?.type ? (
+              <p className={styles.error}>{errors.firstName.message}</p>
+            ) : null}
           </div>
           <div className={styles.inputsForm}>
-            <label>LastName</label>
-            <input
-              className={styles.inputsDivs}
-              type="text"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
+            <label htmlFor="lastName">Last Name</label>
+            <input {...register('lastName')} name="lastName" type="text" placeholder="Doe" />
+            {errors.lastName?.type ? (
+              <p className={styles.error}>{errors.lastName.message}</p>
+            ) : null}
           </div>
           <div className={styles.inputsForm}>
-            <label>Email</label>
+            <label htmlFor="email">Email</label>
             <input
-              className={styles.inputsDivs}
+              {...register('email')}
+              name="email"
               type="text"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="trackgenix@radium.com"
             />
+            {errors.email?.type ? <p className={styles.error}>{errors.email.message}</p> : null}
           </div>
           <div className={styles.inputsForm}>
-            <label>Password</label>
-            <input
-              className={styles.inputsDivs}
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <label htmlFor="password">Password</label>
+            <input {...register('password')} type="password" placeholder="password" />
+            {errors.password?.type ? (
+              <p className={styles.error}>{errors.password.message}</p>
+            ) : null}
           </div>
           <div className={styles.inputsForm}>
             <div>
               <label>Active</label>
             </div>
             <div>
-              <input
-                className={styles.inputsDivs}
-                type="checkbox"
-                checked={active}
-                value={active}
-                onChange={(e) => setActive(e.currentTarget.checked)}
-              />
+              <input type="checkbox" className={styles.inputsDivs} {...register('active')} />
             </div>
           </div>
         </Form>

@@ -1,8 +1,10 @@
 import React from 'react';
 import styles from '../Sidebar/sidebar.module.css';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const Sidebar = ({ children }) => {
+  const history = useHistory();
   const [isOpen, setIsOpen] = useState(false);
   const handleClose = () => {
     setIsOpen(false);
@@ -22,8 +24,8 @@ const Sidebar = ({ children }) => {
           <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
         <a>Home</a> {/*<Link to="/tasks">home</Link>*/}
-        <a>Sign-up</a>
-        <a>Log-in</a>
+        <a onClick={() => history.push('/signup')}>Sign-up</a>
+        <a onClick={() => history.push('/login')}>Log-in</a>
         <a>Contact</a>
       </section>
       <section className={styles.container}>{children}</section>
