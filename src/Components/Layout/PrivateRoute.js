@@ -13,7 +13,7 @@ const PrivateRoute = ({ component: RouteComponent, ...props }) => {
       {...props}
       render={(routeProps) => {
         <Loader isLoading={isFetching} />;
-        if (role === props.role) {
+        if (props.role.includes(role)) {
           return <RouteComponent {...routeProps} />;
         }
         if (role && !error) {
