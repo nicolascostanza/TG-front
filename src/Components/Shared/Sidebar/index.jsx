@@ -12,7 +12,7 @@ const Sidebar = ({ children }) => {
   if (!isOpen) {
     return (
       <button className={styles.sideButton} onClick={() => setIsOpen(true)}>
-        <i className="fa-solid fa-play"></i>
+        <i className="fa-solid fa-bars"></i>
       </button>
     );
   }

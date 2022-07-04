@@ -1,5 +1,6 @@
 import styles from './home.module.css';
 import Sidebar from '../Shared/Sidebar';
+import Landing from '../Shared/Landing';
 import Button from '../Shared/Button/Button';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -7,6 +8,9 @@ import { useHistory } from 'react-router-dom';
 function Home() {
   const history = useHistory();
   const role = useSelector((state) => state.auth.authenticated?.role);
+  if (!role) {
+    return <Landing />;
+  }
   if (role === 'EMPLOYEE') {
     return (
       <section className={styles.container}>
