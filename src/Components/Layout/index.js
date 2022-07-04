@@ -8,13 +8,13 @@ const EmployeesHome = lazy(() => import('Components/EmployeesFlow/Home/Home'));
 const EmployeesProfile = lazy(() => import('Components/EmployeesFlow/Profile/Profile'));
 const SignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignUp'));
 const Login = lazy(() => import('Components/Login'));
-import Footer from '../Footer/index';
-import Header from '../Header/index';
-import Home from '../Home/index';
 const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
 const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
+import Footer from '../Footer/index';
+import Header from '../Header/index';
+import Home from '../Home/index';
 import Loader from 'Components/Shared/Loader';
 import styles from './layout.module.css';
 

@@ -3,14 +3,15 @@ import styles from './home.module.css';
 import { useEffect } from 'react';
 import * as Timesheetsthunks from 'redux/timesheets/thunks';
 import { useDispatch, useSelector } from 'react-redux';
-import Table from 'Components/Shared/Table';
+// import Table from 'Components/Shared/Table';
+import TimeSheets from 'Components/TimeSheets';
 import { useHistory } from 'react-router-dom';
 import Sidebar from 'Components/Shared/Sidebar';
 
 function Home() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const timeSheets = useSelector((state) => state.timesheet.list);
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
   useEffect(() => {
     dispatch(Timesheetsthunks.getTimesheets());
   }, []);
@@ -19,28 +20,14 @@ function Home() {
       <Sidebar />
       <div className={styles.divEditProfile}>
         <button
-          onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}
+          onClick={() => history.push(`/employees/profile/${currentUser._id}`)}
           className={styles.buttonProfile}
         >
           EDIT PROFILE
         </button>
       </div>
       <div className={styles.table}>
-        <Table
-          title="Timesheets"
-          headers={[
-            '_id',
-            'employeeId',
-            'description',
-            'project',
-            'date',
-            'task_name',
-            'hours',
-            'approved',
-            'role'
-          ]}
-          data={timeSheets}
-        />
+        <TimeSheets />
       </div>
     </>
   );

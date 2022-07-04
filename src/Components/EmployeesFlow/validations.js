@@ -2,7 +2,7 @@ import Joi from 'joi';
 
 export const employeeValidationSignUp = Joi.object({
   firstName: Joi.string()
-    .required('its required')
+    .required()
     .min(3)
     .max(40)
     .lowercase()
@@ -14,7 +14,7 @@ export const employeeValidationSignUp = Joi.object({
       'string.empty': 'This field is required'
     }),
   lastName: Joi.string()
-    .required('its required')
+    .required()
     .min(3)
     .max(40)
     .lowercase()
