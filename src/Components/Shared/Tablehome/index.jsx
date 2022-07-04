@@ -3,7 +3,18 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 
-function Tablehome({ title, headers, keys, data, role, onEdit, onAdd, onDelete, openRow }) {
+function Tablehome({
+  title,
+  headers,
+  keys,
+  data,
+  role,
+  onEdit,
+  onAdd,
+  onDelete,
+  switcher,
+  selectedProject
+}) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
@@ -15,6 +26,12 @@ function Tablehome({ title, headers, keys, data, role, onEdit, onAdd, onDelete, 
       setIndexPage(maxIndexPage);
     }
   }, [data]);
+  const openRow = (role, id) => {
+    selectedProject(id);
+    if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
+      switcher();
+    }
+  };
   console.log(keys);
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
@@ -42,50 +59,54 @@ function Tablehome({ title, headers, keys, data, role, onEdit, onAdd, onDelete, 
               return <th key={index}>{header}</th>;
             })}
             {role === `SUPERADMIN` ? <th>Status</th> : null}
-            {role === `ADMIN` ? <th>Edit</th> : null}
-            {role === `ADMIN` || role === `SUPERADMIN` ? <th>Delete</th> : null}
+            {role === `ADMIN` || role === `SUPERADMIN` ? (
+              <>
+                <th>Edit</th>
+                <th>Delete</th>
+              </>
+            ) : null}
           </tr>
         </thead>
         <tbody className={styles.tbody}>
           {show.map((row) => {
             return (
-              <tr className={styles.row} key={row._id} onClick={() => openRow()}>
+              <tr className={styles.row} key={row._id}>
                 {keys.map((key, index) => {
-                  if (Array.isArray(row[key])) {
-                    <h5>aca van las opciones del objetos o arrays</h5>;
-                  } else {
-                    return <td key={index}>{row[key]}</td>;
-                  }
+                  return (
+                    <td key={index} onClick={() => openRow(role, row._id)}>
+                      {row[key]}
+                    </td>
+                  );
                 })}
                 {role === `SUPERADMIN` ? (
                   <td>
                     <button>boolean Is active</button>
                   </td>
                 ) : null}
-                {role === `ADMIN` ? (
-                  <td>
-                    <Button
-                      className={styles.buttonsRows}
-                      width={'50px'}
-                      height={'25px'}
-                      fontSize={'13px'}
-                      onClick={() => onEdit(row._id)}
-                    >
-                      <i className="fa-solid fa-pencil"></i>
-                    </Button>
-                  </td>
-                ) : null}
                 {role === `ADMIN` || role === `SUPERADMIN` ? (
-                  <td>
-                    <Button
-                      onClick={() => onDelete(row._id)}
-                      width={'50px'}
-                      height={'25px'}
-                      fontSize={'13px'}
-                    >
-                      <i className="fa-solid fa-xmark"></i>
-                    </Button>
-                  </td>
+                  <>
+                    <td>
+                      <Button
+                        className={styles.buttonsRows}
+                        width={'50px'}
+                        height={'25px'}
+                        fontSize={'13px'}
+                        onClick={() => onEdit(row._id)}
+                      >
+                        <i className="fa-solid fa-pencil"></i>
+                      </Button>
+                    </td>
+                    <td>
+                      <Button
+                        onClick={() => onDelete(row._id)}
+                        width={'50px'}
+                        height={'25px'}
+                        fontSize={'13px'}
+                      >
+                        <i className="fa-solid fa-xmark"></i>
+                      </Button>
+                    </td>
+                  </>
                 ) : null}
               </tr>
             );
