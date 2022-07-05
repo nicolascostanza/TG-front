@@ -11,11 +11,11 @@ function Tablehome({
   keys,
   data,
   role,
-  onEdit,
-  onAdd,
+  // onEdit,
   onDelete,
   switcher,
-  selectedProject
+  selectedProject,
+  openModal
 }) {
   console.log(data);
   const [indexPage, setIndexPage] = useState(1);
@@ -49,7 +49,7 @@ function Tablehome({
     <div className={styles.container}>
       <h2>{title}</h2>
       {role === `ADMIN` || role === `SUPERADMIN` ? (
-        <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
+        <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => openModal('POST')}>
           <i className="fa-solid fa-plus"></i>
           ADD
         </Button>
@@ -119,7 +119,10 @@ function Tablehome({
                         width={'50px'}
                         height={'25px'}
                         fontSize={'13px'}
-                        onClick={() => onEdit(row._id)}
+                        onClick={() => {
+                          openModal('PUT', row._id);
+                          // onEdit(row._id);
+                        }}
                       >
                         <i className="fa-solid fa-pencil"></i>
                       </Button>

@@ -4,16 +4,19 @@ import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 
 // BORRAR EL OPENTIMESHEET NO SIRVE MAS
-function Tableproject({ title, keys, dataTeam, dataTasks, roleUser, onAdd, onDelete, switcher }) {
+function Tableproject({ title, dataTeam, dataTasks, roleUser, onAdd, onDelete, switcher }) {
   const [filterProject, setFilterProject] = useState(true);
   const [indexPage, setIndexPage] = useState(1);
-  let data;
   let headers;
+  let keys;
+  let data;
   if (filterProject) {
     headers = ['ID', 'Name', 'Last Name', 'Role', 'Rate'];
+    keys = ['employeeId', 'role', 'rate'];
     data = dataTeam;
   } else {
     headers = ['ID', 'Task Name', 'Description'];
+    keys = ['_id', 'taskName', 'taskDescription'];
     data = dataTasks;
   }
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
