@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as thunksEmployee from 'redux/employees/thunks';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -12,33 +12,26 @@ import Sidebar from 'Components/Shared/Sidebar';
 
 function Profile() {
   const history = useHistory();
-  const param = useParams();
   const dispatch = useDispatch();
   const [update, setUpdate] = useState(true);
   const [showModalMessage, setShowModalMessage] = useState(false);
-  const employees = useSelector((state) => state.employees.list);
-  const employeeSelected = employees.filter((employee) => employee._id === param.id);
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
   const message = useSelector((state) => state.employees.message);
   const response = useSelector((state) => state.employees.error);
+  const { _id, firstName, lastName, email, password, gender, address, phone, dob, active } =
+    currentUser;
   useEffect(() => {
-    dispatch(thunksEmployee.getEmployees());
-    fetch(`${process.env.REACT_APP_API_URL}/employees/${param.id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const { firstName, lastName, email, password, gender, address, phone, dob, active } =
-          data.data;
-        reset({
-          firstName,
-          lastName,
-          email,
-          password,
-          gender,
-          address,
-          phone,
-          dob: new Date(dob).toISOString().split('T')[0],
-          active
-        });
-      });
+    reset({
+      firstName,
+      lastName,
+      email,
+      password,
+      gender,
+      address,
+      phone,
+      dob: new Date(dob).toISOString().split('T')[0],
+      active
+    });
   }, []);
   const {
     handleSubmit,
@@ -47,10 +40,11 @@ function Profile() {
     reset
   } = useForm({
     mode: 'onBlur',
+    defaultValues: { firstName, lastName, email, password, gender, address, phone, dob, active },
     resolver: joiResolver(employeeValidationUpdate)
   });
   const UpdateEmployee = (data) => {
-    const employee = { ...data, _id: param.id };
+    const employee = { ...data, _id };
     dispatch(thunksEmployee.editEmployee(employee));
     if (!response) {
       setUpdate(!update);
@@ -64,7 +58,7 @@ function Profile() {
   return (
     <>
       <Sidebar />
-      <h1>Welcome {employeeSelected[0]?.firstName}</h1>
+      <h1>Welcome {firstName}</h1>
       <div className={styles.divButton}>
         <button
           className={update ? styles.greenButton : styles.redButton}
@@ -96,7 +90,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.firstName}</p>
+              <p className={styles.text}>{firstName}</p>
             ) : (
               <>
                 <input
@@ -105,7 +99,7 @@ function Profile() {
                   name="firstName"
                   {...register('firstName')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.firstName}
+                  placeholder={firstName}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.firstName && (
@@ -121,7 +115,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.lastName}</p>
+              <p className={styles.text}>{lastName}</p>
             ) : (
               <>
                 <input
@@ -130,7 +124,7 @@ function Profile() {
                   name="lastName"
                   {...register('lastName')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.lastName}
+                  placeholder={lastName}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
@@ -144,7 +138,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.gender}</p>
+              <p className={styles.text}>{gender}</p>
             ) : (
               <>
                 <select className={styles.inputsProfile} {...register('gender')}>
@@ -169,7 +163,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.address}</p>
+              <p className={styles.text}>{address}</p>
             ) : (
               <>
                 <input
@@ -178,7 +172,7 @@ function Profile() {
                   name="address"
                   {...register('address')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.address}
+                  placeholder={address}
                   error={appendErrors.address?.message}
                 ></input>
                 {errors.address && <p className={styles.errorInput}>{errors.address?.message}</p>}
@@ -192,7 +186,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.phone}</p>
+              <p className={styles.text}>{phone}</p>
             ) : (
               <>
                 <input
@@ -201,7 +195,7 @@ function Profile() {
                   name="phone"
                   {...register('phone')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.phone}
+                  placeholder={phone}
                   error={appendErrors.phone?.message}
                 ></input>
                 {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
@@ -215,7 +209,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{new Date(employeeSelected[0]?.dob).toString()}</p>
+              <p className={styles.text}>{new Date(dob).toISOString().split('T')[0]}</p>
             ) : (
               <>
                 <input
@@ -224,7 +218,7 @@ function Profile() {
                   name="dob"
                   {...register('dob')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.dob}
+                  placeholder={dob}
                   error={appendErrors.dob?.message}
                 ></input>
                 {errors.dob && <p className={styles.errorInput}>{errors.dob?.message}</p>}
@@ -238,7 +232,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.email}</p>
+              <p className={styles.text}>{email}</p>
             ) : (
               <>
                 <input
@@ -247,7 +241,7 @@ function Profile() {
                   name="email"
                   {...register('email')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.email}
+                  placeholder={email}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
@@ -261,7 +255,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.password}</p>
+              <p className={styles.text}>**************</p>
             ) : (
               <>
                 <input
@@ -270,7 +264,7 @@ function Profile() {
                   name="password"
                   {...register('password')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.password}
+                  placeholder={password}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
@@ -280,11 +274,11 @@ function Profile() {
         </div>
         <div className={styles.row}>
           <label htmlFor="Active" className={styles.label}>
-            Active
+            Status
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{employeeSelected[0]?.active}</p>
+              <p className={styles.text}>{active ? 'Active' : 'Inactive'}</p>
             ) : (
               <>
                 <input
@@ -293,7 +287,7 @@ function Profile() {
                   name="active"
                   {...register('active')}
                   disabled={update}
-                  placeholder={employeeSelected[0]?.active}
+                  placeholder={active}
                   error={appendErrors.active?.message}
                 ></input>
                 {errors.active && <p className={styles.errorInput}>{errors.dob?.message}</p>}

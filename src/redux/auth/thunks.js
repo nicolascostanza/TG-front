@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import { getCurrentUserByEmail } from 'redux/currentUser/thunks';
 import firebase from 'helper/firebase';
 
 export const login = (credentials) => {
@@ -10,8 +11,9 @@ export const login = (credentials) => {
       .then(async (response) => {
         const token = await response.user.getIdToken();
         const {
-          claim: { role }
+          claims: { role }
         } = await response.user.getIdTokenResult();
+        dispatch(getCurrentUserByEmail(credentials.email));
         return dispatch(actions.loginSuccess({ role, token }));
       })
       .catch((error) => {
