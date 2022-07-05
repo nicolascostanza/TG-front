@@ -3,7 +3,8 @@ import Sidebar from '../Shared/Sidebar';
 import Tablehome from 'Components/Shared/Tablehome';
 import Loader from 'Components/Shared/Loader';
 import Modal from 'Components/Shared/Modal';
-import Form from 'Components/Shared/Form';
+import Button from 'Components/Shared/Button';
+//import Form from 'Components/Shared/Form';
 // import Button from 'Components/Shared/Button';
 import { useState, useEffect } from 'react';
 import Tableproject from 'Components/Shared/Tableproject';
@@ -26,7 +27,7 @@ function Home() {
   let headers = [];
   let keys = [];
   let title = '';
-  const role = 'ADMIN';
+  const role = 'SUPERADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
   useEffect(() => {
     // if para el home, else para el open project
@@ -134,29 +135,39 @@ function Home() {
         <h2>Home</h2>
         <Loader isLoading={isLoading} />
         {role === 'SUPERADMIN' ? (
-          <Form
-            title={'ADD ADMIN'}
-            showModal={showModal}
-            handleClose={handleModal}
-            handleSubmit={handleSubmit(onSubmit)}
-          >
-            <div>
-              <label htmlFor="email">Email</label>
-              <input type="email" placeholder="Email" />
-            </div>
-            <div>
-              <label htmlFor="password">Password</label>
-              <input type="password" placeholder="Password" />
-            </div>
-            <div>
-              <label htmlFor="is active">Is Active</label>
-              <input type="checkbox" placeholder="Is Active" />
-            </div>
-          </Form>
+          <Modal showModal={showModal} handleClose={handleModal} modalTitle={'ADD ADMIN'}>
+            <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
+              <div>
+                <label htmlFor="email">Email</label>
+                <input
+                  type="text"
+                  placeholder="Name"
+                  {...register('email')}
+                  error={appendErrors.email?.message}
+                />
+              </div>
+              <div>
+                <label htmlFor="password">Password</label>
+                <input type="password" placeholder="Password" />
+              </div>
+              <div className={styles.checkbox}>
+                <label htmlFor="active">Active</label>
+                <input type="checkbox" />
+              </div>
+              <div className={styles.buttonsContainer}>
+                {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+                  {method === 'POST' ? 'CREATE' : 'EDIT'}
+                </button> */}
+                <Button width={'75px'} height={'30px'} onClick={onSubmit}>
+                  {method === 'POST' ? 'CREATE' : 'EDIT'}
+                </Button>
+              </div>
+            </form>
+          </Modal>
         ) : (
           <Modal showModal={showModal} handleClose={handleModal}>
             <h2>{method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}</h2>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label htmlFor="name">Name</label>
                 <input
@@ -183,9 +194,12 @@ function Home() {
             <input type="text" placeholder="Team" />
           </div> */}
               <div className={styles.buttonsContainer}>
-                <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+                {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
-                </button>
+                </button> */}
+                <Button width={'75px'} height={'30px'} onClick={onSubmit}>
+                  {method === 'POST' ? 'CREATE' : 'EDIT'}
+                </Button>
               </div>
             </form>
           </Modal>
