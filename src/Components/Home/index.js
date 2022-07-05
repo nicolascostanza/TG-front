@@ -4,9 +4,7 @@ import Tablehome from 'Components/Shared/Tablehome';
 import { useState, useEffect } from 'react';
 import Tableproject from 'Components/Shared/Tableproject';
 
-// HACER HEADERS PARA SUPERADMINS APARTE
-// CAMBIAR EL HEADERS CON EL NUEVO SCHEMA DE PROJECTS
-// ARREGLAR EL TABLEPROJECTS PARA Q TENGA 2 TABS, POR TASKS Y POR EMPLOYEES
+// ARREGLAR EL TABLEPROJECTS PARA Q TENGA 2 TABS, POR TASKS Y POR EMPLOYEES (TRABAJAR LA DATA EN LA TABLA POR PROJECTS)
 // PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
 // AGREGAR FUNCIONES ONADD, ONEDIT, ONDELETE
 // VER CONEXION CON TIMESHEETS
@@ -14,17 +12,10 @@ function Home() {
   const [screen, setScreen] = useState(false);
   const [data, setData] = useState([]);
   const [idProject, setIdProject] = useState('');
-  const headersProject = [
-    'name',
-    'description',
-    'clientName',
-    'startDate',
-    'endDate',
-    'projectManager'
-    // 'updatedAt'
-  ];
+  let headers = [];
+  let keys = [];
   let title = '';
-  const role = 'ADMIN';
+  const role = 'SUPERADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
   useEffect(() => {
     // if para el home, else para el open project
@@ -49,6 +40,7 @@ function Home() {
       fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}`)
         .then((response) => response.json())
         .then((data) => {
+          title = data.data.name;
           setData([
             {
               name: data.data.name,
@@ -65,18 +57,28 @@ function Home() {
         });
     }
   }, [screen]);
+
+  if (role === 'SUPERADMIN') {
+    headers = ['Email', 'Password', 'Is Active ?'];
+    keys = ['email', 'password', 'active'];
+  } else {
+    headers = ['Name', 'Description', 'Client Name', 'Start Date', 'End Date', 'Team', 'Tasks'];
+    keys = ['name', 'description', 'clientName', 'startDate', 'endDate', 'team', 'tasks'];
+  }
+
   const switcher = () => {
     setScreen(!screen);
   };
   if (screen) {
     return (
       <>
+        <Sidebar></Sidebar>
         <Tableproject
           switcher={switcher}
           title={title}
           role={role}
-          headers={headersProject}
-          keys={headersProject}
+          headers={headers}
+          keys={keys}
           data={data}
         />
       </>
@@ -90,8 +92,8 @@ function Home() {
           switcher={switcher}
           title={title}
           role={role}
-          headers={headersProject}
-          keys={headersProject}
+          headers={headers}
+          keys={keys}
           data={data}
           selectedProject={setIdProject}
         />

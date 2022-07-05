@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 
+// BORRAR EL OPENTIMESHEET NO SIRVE MAS
 function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switcher }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
@@ -15,7 +16,6 @@ function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switc
       setIndexPage(maxIndexPage);
     }
   }, [data]);
-  console.log(keys);
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
       setIndexPage(indexPage + 1);
@@ -29,26 +29,38 @@ function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switc
   const assignPm = () => {
     console.log('asigno el pm');
   };
+  const addTask = () => {
+    console.log('aca agrego la tasks si es employee o admin');
+  };
   const openTimesheet = () => {
     console.log('abro la timesheet');
+  };
+  const tabForEmployees = () => {
+    console.log('aca trabajo el mapeo por employess');
+  };
+  const tabForTasks = () => {
+    console.log('aca trabajo el mapeo por tasks');
   };
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      <Button onClick={() => switcher()}>BACK</Button>
       {role === `ADMIN` ? (
         <Button width={'80px'} height={'40px'} onClick={() => assignPm()}>
           Asignar PM
         </Button>
       ) : null}
       {role === `ADMIN` || role === `PM` ? (
-        <Button width={'80px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
-          <i className="fa-solid fa-plus"></i>
-          ADD
-        </Button>
+        <>
+          <Button width={'80px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
+            <i className="fa-solid fa-plus"></i>
+            ADD
+          </Button>
+          <button onClick={() => addTask()}>Add Tasks</button>
+        </>
       ) : null}
-      <button>Employees</button>
-      <button>Tasks</button>
+      <Button onClick={() => switcher()}>BACK</Button>
+      <button onClick={() => tabForEmployees()}>Employees</button>
+      <button onClick={() => tabForTasks()}>Tasks</button>
       <table className={styles.table}>
         <thead>
           <tr>

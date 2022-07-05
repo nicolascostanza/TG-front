@@ -59,7 +59,6 @@ function Tablehome({
             {headers.map((header, index) => {
               return <th key={index}>{header}</th>;
             })}
-            {role === `SUPERADMIN` ? <th>Status</th> : null}
             {role === `ADMIN` || role === `SUPERADMIN` ? (
               <>
                 <th>Edit</th>
@@ -73,17 +72,19 @@ function Tablehome({
             return (
               <tr className={styles.row} key={row._id}>
                 {keys.map((key, index) => {
+                  if (key === 'active') {
+                    return (
+                      <td>
+                        <button>{row[key]}boolean</button>
+                      </td>
+                    );
+                  }
                   return (
                     <td key={index} onClick={() => openRow(role, row._id)}>
                       {row[key]}
                     </td>
                   );
                 })}
-                {role === `SUPERADMIN` ? (
-                  <td>
-                    <button>boolean Is active</button>
-                  </td>
-                ) : null}
                 {role === `ADMIN` || role === `SUPERADMIN` ? (
                   <>
                     <td>
