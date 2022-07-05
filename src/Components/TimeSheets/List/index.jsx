@@ -8,8 +8,10 @@ import * as thunks from 'redux/timesheets/thunks';
 import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
+import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 
 function TimeSheet() {
+  let role = 'PM';
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
@@ -38,11 +40,12 @@ function TimeSheet() {
     dispatch(actions.closeModals());
   };
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
+    // console.log(timeSheet);
     return {
       ...timeSheet,
       _id: timeSheet._id,
-      employeeId: timeSheet.employeeId._id,
-      description: timeSheet.description,
+      // employeeId: (timeSheet.employeeId.firstName, timeSheet.employeeId.lastName),
+      employeeId: timeSheet.employeeId.firstName.concat(' ', timeSheet.employeeId.lastName),
       project: timeSheet.project,
       date: timeSheet.date ? new Date(timeSheet.date).toDateString() : '',
       task_name: timeSheet.task.length
@@ -68,24 +71,29 @@ function TimeSheet() {
         handleClose={handleClose}
         allTasks={allTasks}
       ></AddTimeSheets>
-      <Table
-        title="Timesheets"
-        headers={[
-          '_id',
-          'employeeId',
-          'description',
-          'project',
-          'date',
-          'task_name',
-          'hours',
-          'approved',
-          'role'
-        ]}
-        data={formattedTimeSheets}
-        onEdit={openEditTimeSheet}
-        onDelete={deleteTimeSheet}
-        onAdd={openAddTimeSheet}
-      />
+      {role === 'PM' ? (
+        <Table
+          title="Timesheets"
+          headers={['employeeId', 'project', 'date', 'task_name', 'hours', 'approved', 'role']}
+          data={formattedTimeSheets}
+          onEdit={openEditTimeSheet}
+          onDelete={deleteTimeSheet}
+          onAdd={openAddTimeSheet}
+        />
+      ) : (
+        <EmployeeTimesheetTable
+          title={'EMPLOYEE'}
+          headers={['Name', 'Project', 'Date', 'Task', 'Hours', 'Approved', 'Role']}
+          // keys={['employeeId', 'project', 'date', 'task_name', 'hours', 'approved', 'role']}
+          data={formattedTimeSheets}
+          // role={}
+          // onEdit={}
+          // onAdd={}
+          // onDelete={}
+          // switcher={}
+          // selectedProject={}
+        />
+      )}
     </>
   );
 }
