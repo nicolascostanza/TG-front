@@ -42,11 +42,13 @@ function Header() {
           <li>
             <Link to="/tasks">tasks</Link>
           </li>
-          <li>
-            <Link onClick={logOut} to="/">
-              Log Out
-            </Link>
-          </li>
+          {role ? (
+            <li>
+              <Link onClick={logOut} to="/">
+                Log Out
+              </Link>
+            </li>
+          ) : null}
         </ul>
         <div className={styles.appName}>
           <h1>TrackGENIX</h1>
