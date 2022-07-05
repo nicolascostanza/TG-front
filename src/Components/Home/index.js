@@ -1,74 +1,83 @@
 import styles from './home.module.css';
 import Sidebar from '../Shared/Sidebar';
-import Tablehome from '../Shared/Tablehome';
+import Tablehome from 'Components/Shared/Tablehome';
 import { useState, useEffect } from 'react';
-// import { useSelector } from 'react-redux';
-// import Loader from 'Components/Shared/Loader/index.jsx';
-// import * as thunks from 'redux/projects/thunks';
+import Tableproject from 'Components/Shared/Tableproject';
 
+// HACER HEADERS PARA SUPERADMINS APARTE
+// CAMBIAR EL HEADERS CON EL NUEVO SCHEMA DE PROJECTS
+// ARREGLAR EL TABLEPROJECTS PARA Q TENGA 2 TABS, POR TASKS Y POR EMPLOYEES
+// PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
+// VER CONEXION CON TIMESHEETS
 function Home() {
-  // const dispatch = useDispatch();
-  // const rolessss = useSelector((state) => state.auth.authenticated?.role);
-  // console.log(rolessss);
-  const headers = [
-    'firstName',
-    'lastName',
-    'email',
-    'password',
-    'active',
-    'createdAt',
-    'updatedAt'
+  const [screen, setScreen] = useState(false);
+  const [data, setData] = useState([]);
+  const [idProject, setIdProject] = useState('');
+  const headersProject = [
+    'name',
+    'description',
+    'clientName',
+    'startDate',
+    'endDate',
+    'projectManager'
+    // 'updatedAt'
   ];
   let title = '';
   const role = 'ADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
-  const [screen, setScreen] = useState(false);
-  const [idProject, setIdProject] = useState('');
-  const [prueba, setPrueba] = useState([]);
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL}/super-admins`)
-      .then((response) => response.json())
-      .then((data) => setPrueba(data.data));
-    // fetch(`${process.env.REACT_APP_API_URL}/projects`)
-    //   .then((response) => response.json())
-    //   .then((data) => setPrueba(data.data));
-  }, []);
-  // PARA LAS FUNCIONES DE LA TABLA
-  // switch (role) {
-  //   case 'SUPERADMIN':
-  //     console.log('SUPERADMIN');
-  //     break;
-  //   case 'ADMIN':
-  //     console.log('ADMIN');
-  //     break;
-  //   case 'PM':
-  //     console.log('PM');
-  //     break;
-  //   case 'EMPLOYEE':
-  //     console.log('EMPLOYEE');
-  //     break;
-  //   default:
-  //     console.log('No tengo mascota');
-  //     break;
-  // }
-  console.log(idProject);
+    // if para el home, else para el open project
+    if (idProject === '') {
+      // aca despues hago un switch con la peticion nueva de projects asociados al employee
+      if (role === 'SUPERADMIN') {
+        fetch(`${process.env.REACT_APP_API_URL}/admins`)
+          .then((response) => response.json())
+          .then((data) => setData(data.data));
+      }
+      if (role === 'ADMIN') {
+        fetch(`${process.env.REACT_APP_API_URL}/projects`)
+          .then((response) => response.json())
+          .then((data) => setData(data.data));
+      }
+      if (role === 'PM' || role === 'EMPLOYEE') {
+        fetch(`${process.env.REACT_APP_API_URL}/projects`)
+          .then((response) => response.json())
+          .then((data) => setData(data.data));
+      }
+    } else {
+      fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setData([
+            {
+              name: data.data.name,
+              description: data.data.description,
+              clientName: data.data.clientName,
+              startDate: data.data.startDate,
+              endDate: data.data.endDate,
+              team: data.data.team,
+              tasks: data.data.tasks,
+              isDeleted: data.data.isDeleted
+            }
+          ]);
+          setIdProject('');
+        });
+    }
+  }, [screen]);
   const switcher = () => {
     setScreen(!screen);
   };
   if (screen) {
     return (
       <>
-        <h1>TABLA DEL PROJECTO</h1>
-        <Tablehome
+        <Tableproject
           switcher={switcher}
           title={title}
           role={role}
-          headers={headers}
-          keys={headers}
-          data={prueba}
-          goback={true}
+          headers={headersProject}
+          keys={headersProject}
+          data={data}
         />
-        <button onClick={() => switcher()}>GO BACK</button>
       </>
     );
   } else {
@@ -80,9 +89,9 @@ function Home() {
           switcher={switcher}
           title={title}
           role={role}
-          headers={headers}
-          keys={headers}
-          data={prueba}
+          headers={headersProject}
+          keys={headersProject}
+          data={data}
           selectedProject={setIdProject}
         />
       </section>

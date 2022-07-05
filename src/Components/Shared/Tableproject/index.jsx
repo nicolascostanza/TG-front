@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 
-function Tableproject({ title, headers, keys, data, role, onAdd, onDelete }) {
+function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switcher }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
@@ -35,14 +35,20 @@ function Tableproject({ title, headers, keys, data, role, onAdd, onDelete }) {
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      <Button>BACK</Button>
-      {role === `ADMIN` ? <Button onClick={() => assignPm()}>Asignar PM</Button> : null}
+      <Button onClick={() => switcher()}>BACK</Button>
+      {role === `ADMIN` ? (
+        <Button width={'80px'} height={'40px'} onClick={() => assignPm()}>
+          Asignar PM
+        </Button>
+      ) : null}
       {role === `ADMIN` || role === `PM` ? (
-        <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
+        <Button width={'80px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
           <i className="fa-solid fa-plus"></i>
           ADD
         </Button>
       ) : null}
+      <button>Employees</button>
+      <button>Tasks</button>
       <table className={styles.table}>
         <thead>
           <tr>

@@ -32,7 +32,6 @@ function Tablehome({
       switcher();
     }
   };
-  console.log(keys);
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
       setIndexPage(indexPage + 1);
@@ -51,7 +50,9 @@ function Tablehome({
           <i className="fa-solid fa-plus"></i>
           ADD
         </Button>
-      ) : null}
+      ) : (
+        <></>
+      )}
       <table className={styles.table}>
         <thead>
           <tr>
