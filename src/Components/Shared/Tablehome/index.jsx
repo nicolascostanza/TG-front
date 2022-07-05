@@ -2,7 +2,9 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
+import Dropdown from '../Dropdown/Dropdown';
 
+// ver el employeeid.name pq no popula bien
 function Tablehome({
   title,
   headers,
@@ -15,6 +17,7 @@ function Tablehome({
   switcher,
   selectedProject
 }) {
+  console.log(data);
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
@@ -76,6 +79,29 @@ function Tablehome({
                     return (
                       <td>
                         <button>{row[key]}boolean</button>
+                      </td>
+                    );
+                  }
+                  if (key === 'tasks') {
+                    return (
+                      <Dropdown width={'150px'} placeholder="Tasks">
+                        {row[key].map((element) => {
+                          return <option key={Math.random()}>{element.taskName}</option>;
+                        })}
+                        ;
+                      </Dropdown>
+                    );
+                  }
+                  if (key === 'team') {
+                    return (
+                      <td>
+                        <Dropdown width={'150px'} placeholder={'Team'}>
+                          {/* aca iria .employeeId.firstName */}
+                          {row[key].map((element) => {
+                            return <option key={Math.random()}>{element.role}</option>;
+                          })}
+                          ;
+                        </Dropdown>
                       </td>
                     );
                   }

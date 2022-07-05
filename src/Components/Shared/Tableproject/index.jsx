@@ -4,8 +4,18 @@ import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 
 // BORRAR EL OPENTIMESHEET NO SIRVE MAS
-function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switcher }) {
+function Tableproject({ title, keys, dataTeam, dataTasks, roleUser, onAdd, onDelete, switcher }) {
+  const [filterProject, setFilterProject] = useState(true);
   const [indexPage, setIndexPage] = useState(1);
+  let data;
+  let headers;
+  if (filterProject) {
+    headers = ['ID', 'Name', 'Last Name', 'Role', 'Rate'];
+    data = dataTeam;
+  } else {
+    headers = ['ID', 'Task Name', 'Description'];
+    data = dataTasks;
+  }
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
@@ -26,30 +36,24 @@ function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switc
       setIndexPage(indexPage - 1);
     }
   };
+  const changeFilter = () => {
+    setFilterProject(!filterProject);
+  };
   const assignPm = () => {
     console.log('asigno el pm');
   };
   const addTask = () => {
     console.log('aca agrego la tasks si es employee o admin');
   };
-  const openTimesheet = () => {
-    console.log('abro la timesheet');
-  };
-  const tabForEmployees = () => {
-    console.log('aca trabajo el mapeo por employess');
-  };
-  const tabForTasks = () => {
-    console.log('aca trabajo el mapeo por tasks');
-  };
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      {role === `ADMIN` ? (
+      {roleUser === `ADMIN` ? (
         <Button width={'80px'} height={'40px'} onClick={() => assignPm()}>
           Asignar PM
         </Button>
       ) : null}
-      {role === `ADMIN` || role === `PM` ? (
+      {roleUser === `ADMIN` || roleUser === `PM` ? (
         <>
           <Button width={'80px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
             <i className="fa-solid fa-plus"></i>
@@ -59,19 +63,22 @@ function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switc
         </>
       ) : null}
       <Button onClick={() => switcher()}>BACK</Button>
-      <button onClick={() => tabForEmployees()}>Employees</button>
-      <button onClick={() => tabForTasks()}>Tasks</button>
+      <button onClick={() => changeFilter()}>Employees</button>
+      <button onClick={() => changeFilter()}>Tasks</button>
       <table className={styles.table}>
         <thead>
           <tr>
             {headers.map((header, index) => {
-              return <th key={index}>{header}</th>;
+              if (header === 'Rate') {
+                if (roleUser === 'ADMIN' || roleUser === 'PM') {
+                  return <th key={index}>{header}</th>;
+                }
+              } else {
+                return <th key={index}>{header}</th>;
+              }
             })}
-            {role === `ADMIN` || role === `PM` ? (
+            {roleUser === `ADMIN` || roleUser === `PM` ? (
               <>
-                <th>Rate</th>
-                <th>Result</th>
-                <th>Timesheet</th>
                 <th>Delete</th>
               </>
             ) : null}
@@ -82,26 +89,31 @@ function Tableproject({ title, headers, keys, data, role, onAdd, onDelete, switc
             return (
               <tr className={styles.row} key={row._id}>
                 {keys.map((key, index) => {
-                  if (keys === 'rate') {
-                    if (role === `ADMIN` || role === `PM`) {
-                      return <td key={index}>{row[key]}</td>;
-                    }
-                  } else if (keys === 'roll') {
-                    if (role === `ADMIN` || role === `PM`) {
-                      // hago dropdown con las opciones para cambiarlo
+                  if (key === 'employeeId') {
+                    return (
+                      <>
+                        <td key={index}>{row.employeeId?._id ? row.employeeId?._id : '-'}</td>
+                        <td key={index}>
+                          {row.employeeId?.firstName ? row.employeeId?.firstName : '-'}
+                        </td>
+                        <td key={index}>
+                          {row.employeeId?.lastName ? row.employeeId?.lastName : '-'}
+                        </td>
+                      </>
+                    );
+                  } else if (key === 'rate') {
+                    if (roleUser === `ADMIN` || roleUser === `PM`) {
                       return <td key={index}>{row[key]}</td>;
                     } else {
-                      return <td key={index}>{row[key]}</td>;
+                      return null;
                     }
                   } else {
                     return <td key={index}>{row[key]}</td>;
                   }
                 })}
-                {role === `ADMIN` || role === `PM` ? (
+                {roleUser === `ADMIN` || roleUser === `PM` ? (
                   <>
                     {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
-                    <td>rejected/aprovve</td>
-                    <td onClick={() => openTimesheet()}>Timesheet Icon</td>
                     <td>
                       <Button
                         onClick={() => onDelete(row._id)}
