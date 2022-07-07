@@ -8,20 +8,28 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 function AddTimeSheets(props) {
-  const [tasks, setTasks] = useState('');
-  const { showCreateModal, handleClose, allTasks } = props;
-  const [selectedTasks, setSelectedTasks] = useState([]);
+  // const [tasks, setTasks] = useState('');
+  // const { showCreateModal, handleClose, allTasks } = props;
+  const { showCreateModal, handleClose } = props;
+  // const [selectedTasks, setSelectedTasks] = useState([]);
+  const [selectedTasks, setSelectedTasks] = useState('');
   const dispatch = useDispatch();
   const schema = Joi.object({
-    employeeId: Joi.string().required().messages({ 'string.empty': 'This field must be complete' }),
-    description: Joi.string().min(3).max(80).messages({
+    employeeId: Joi.string().alphanum().length(24).required().messages({
       'string.empty': 'This field must be complete',
-      'string.min': 'This field must have at least 3 characters',
-      'string.max': 'This field can not contain more than 80 characters'
+      'string.length': 'Employee ID must be 24 characters long',
+      'string.alphanum': 'Employee ID must only contain alpha-numeric characters'
     }),
-    project: Joi.string().min(3).required().messages({
+    // BORRAR DESCRIPTION
+    // description: Joi.string().min(3).max(80).messages({
+    //   'string.empty': 'This field must be complete',
+    //   'string.min': 'This field must have at least 3 characters',
+    //   'string.max': 'This field can not contain more than 80 characters'
+    // }),
+    projectId: Joi.string().alphanum().length(24).required().messages({
       'string.empty': 'This field must be complete',
-      'string.min': 'This field must have at least 3 characters'
+      'string.length': 'Employee ID must be 24 characters long',
+      'string.alphanum': 'Employee ID must only contain alpha-numeric characters'
     }),
     date: Joi.date().less('now').required().messages({
       'date.base': 'This field must be complete',
@@ -32,10 +40,11 @@ function AddTimeSheets(props) {
       'number.min': 'This field must have at least 1 hour',
       'number.max': 'This field can not have more than 24 hours'
     }),
-    approved: Joi.bool().required(),
-    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required().messages({
-      'any.only': 'This field must contain one of the following roles: DEV, QA, PM or TL'
-    })
+    approved: Joi.bool().optional()
+    // BORRAR ROLE
+    // role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required().messages({
+    //   'any.only': 'This field must contain one of the following roles: DEV, QA, PM or TL'
+    // })
   });
   const {
     register,
@@ -45,15 +54,16 @@ function AddTimeSheets(props) {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-  const appendToSelectedTasks = (id) => {
-    const previousState = selectedTasks;
-    setSelectedTasks([...previousState, id]);
-    setTasks('');
-  };
+  // const appendToSelectedTasks = (id) => {
+  //   const previousState = selectedTasks;
+  //   setSelectedTasks([...previousState, id]);
+  //   setTasks('');
+  // };
 
-  const deleteFromSelectedTasks = (id) => {
-    setSelectedTasks(selectedTasks.filter((task) => task !== id));
-  };
+  // const deleteFromSelectedTasks = (id) => {
+  //   setSelectedTasks(selectedTasks.filter((task) => task !== id));
+  // };
+  console.log(errors);
 
   const addTimeSheets = async (timeSheet) => {
     dispatch(thunks.addTimesheets(timeSheet));
@@ -62,9 +72,11 @@ function AddTimeSheets(props) {
     e.preventDefault();
     addTimeSheets({
       ...data,
-      task: selectedTasks
+      taskId: selectedTasks
+      // taskId: '62a8a48ae4163d7c08335e66'
     });
   };
+  // console.log(tasks);
   return (
     <section>
       <Form
@@ -85,7 +97,7 @@ function AddTimeSheets(props) {
               <p className={styles.error}>{errors.employeeId.message}</p>
             )}
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="description"> Description </label>
             <input
               {...register('description', { required: true })}
@@ -101,10 +113,14 @@ function AddTimeSheets(props) {
             {errors.description?.type === 'string.max' && (
               <p className={styles.error}>{errors.description.message}</p>
             )}
-          </div>
+          </div> */}
           <div>
-            <label htmlFor="project"> Project </label>
-            <input {...register('project', { required: true })} type="text" placeholder="Project" />
+            <label htmlFor="projectId"> Project ID</label>
+            <input
+              {...register('projectId', { required: true })}
+              type="text"
+              placeholder="Project ID"
+            />
             {errors.project?.type === 'string.empty' && (
               <p className={styles.error}>{errors.project.message}</p>
             )}
@@ -136,14 +152,15 @@ function AddTimeSheets(props) {
             )}
           </div>
           <div>
-            <label htmlFor="task"> Task </label>
+            <label htmlFor="taskId">Task</label>
             <input
               type="text"
-              placeholder="Task"
-              value={tasks}
+              placeholder="Task ID"
+              value={tasks.name}
               onChange={(e) => setTasks(e.target.value)}
+              // eslint-disable-next-line react/jsx-no-duplicate-props
             />
-            <div>
+            {/* <div>
               {tasks.length > 0
                 ? allTasks
                     .filter(
@@ -182,19 +199,19 @@ function AddTimeSheets(props) {
                       </p>
                     );
                   })}
-            </div>
+            </div> */}
           </div>
           <div>
             <label htmlFor="approved"> Approved </label>
             <input {...register('approved', { required: true })} type="checkbox" />
           </div>
-          <div>
+          {/* <div>
             <label htmlFor="role"> Role </label>
             <input {...register('role', { required: true })} type="text" placeholder="Role" />
             {errors.role?.type === 'any.only' && (
               <p className={styles.error}>{errors.role.message}</p>
             )}
-          </div>
+          </div> */}
         </div>
       </Form>
     </section>

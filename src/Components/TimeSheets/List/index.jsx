@@ -40,20 +40,21 @@ function TimeSheet() {
     dispatch(actions.closeModals());
   };
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
-    // console.log(timeSheet);
+    // console.log(timeSheet.task.length);
     return {
       ...timeSheet,
       _id: timeSheet._id,
       // employeeId: (timeSheet.employeeId.firstName, timeSheet.employeeId.lastName),
       employeeId: timeSheet.employeeId.firstName.concat(' ', timeSheet.employeeId.lastName),
-      project: timeSheet.project,
+      projectId: timeSheet.project,
       date: timeSheet.date ? new Date(timeSheet.date).toDateString() : '',
-      task_name: timeSheet.task.length
-        ? timeSheet.task.map((task) => task.taskName).join(' - ')
-        : '-',
+      // task_name: timeSheet.task.length
+      //   ? timeSheet.task.map((task) => task.taskName).join(' - ')
+      //   : '-',projectIdhours
+      task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
       hours: timeSheet.hours,
-      approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
-      role: timeSheet.role
+      approved: timeSheet.approved ? 'Approved' : 'Disapoproved'
+      // role: timeSheet.role
     };
   });
   return (
@@ -74,7 +75,8 @@ function TimeSheet() {
       {role === 'PM' ? (
         <Table
           title="Timesheets"
-          headers={['employeeId', 'project', 'date', 'task_name', 'hours', 'approved', 'role']}
+          headers={['employeeId', 'projectId', 'date', 'task_name', 'hours', 'approved']}
+          // headers={['employeeId', 'projectId', 'date', 'task_name', 'approved']}
           data={formattedTimeSheets}
           onEdit={openEditTimeSheet}
           onDelete={deleteTimeSheet}
