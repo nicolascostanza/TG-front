@@ -1,7 +1,7 @@
-class TimesheetPage {
+class HomeEmployeePage {
   //-----------------------------------Getters--------------------------------------------
   //-----------------------------------Setters--------------------------------------------
   //-----------------------------------Methods--------------------------------------------
-};
+}
 
-module.exports = new TimesheetPage();
+module.exports = new HomeEmployeePage();
