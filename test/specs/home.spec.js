@@ -1,71 +1,88 @@
-const HomePage = require('../pageobjects/home.page');
+const LandingPage = require('../pageobjects/landing.page');
 
 describe('Home page testing', () => {
   beforeAll('Open browser', () => {
     browser.url('https://alfonso-trackgenix-app.vercel.app/');
   });
 
-  describe('Header elements test', () => {
-    it('Checking if header logo is present', async () => {
-      await HomePage.open();
-      await expect(HomePage.headerCompanyName).toBeDisplayed();
+  describe('Main section elements test', () => {
+    it('Checking header elements', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.headerUl).toBeExisting();
+      await expect(LandingPage.headerFbLink).toBeClickable();
+      await expect(LandingPage.headerTwLink).toBeClickable();
+      await expect(LandingPage.headerLinkedinLink).toBeClickable();
+      await expect(LandingPage.headerInstagramLink).toBeClickable();
+      await expect(LandingPage.headerGithubLink).toBeClickable();
     });
 
-    it('Checking if header menu exist', async () => {
-      await HomePage.open();
-      await expect(HomePage.homeLink).toBeExisting();
-      await expect(HomePage.adminLink).toBeExisting();
-      await expect(HomePage.superAdminLink).toBeExisting();
-      await expect(HomePage.employeesLink).toBeExisting();
-      await expect(HomePage.projectsLink).toBeExisting();
-      await expect(HomePage.timesheetsLink).toBeExisting();
-      await expect(HomePage.tasksLink).toBeExisting();
+    it('Checking if main section is present', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.landingTitle).toBeDisplayed();
+      await expect(LandingPage.landingSubtitle).toBeDisplayed();
+      await expect(LandingPage.landingTextMainSection).toBeDisplayed();
+    });
+
+    it('Checking if learn more button is clickable', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.moreBtn).toBeClickable();
+    });
+
+    it('Checking if other sections are present', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.sectionsTitles).toBeDisplayed();
+      await expect(LandingPage.sectionsTexts).toBeDisplayed();
+      await expect(LandingPage.sectionsSeparator).toBeDisplayed();
+    });
+
+    it('Checking if form is present', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.inputName).toBeDisplayed();
+      await expect(LandingPage.inputEmail).toBeDisplayed();
+      await expect(LandingPage.selectCategory).toBeDisplayed();
+      await expect(LandingPage.inputMessage).toBeDisplayed();
+      await expect(LandingPage.submitMsgBtn).toBeClickable();
     });
   });
 
   describe('Main container elements test', () => {
-    it('Checking if menu bar is clickeable', async () => {
-      await HomePage.open();
-      await expect(HomePage.menuButton).toBeClickable();
-    });
-
-    it('Checking if main container title is present', async () => {
-      await HomePage.open();
-      await expect(HomePage.homeTitle).toBeExisting();
+    it('Checking if menu bar is clickable', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.menuButton).toBeClickable();
     });
   });
 
   describe('Footer elements test', () => {
-    it('Checking if social media links are clickeable', async () => {
-      await HomePage.open();
-      await expect(HomePage.facebookLink).toBeClickable();
-      await expect(HomePage.twitterLink).toBeClickable();
-      await expect(HomePage.linkedinLink).toBeClickable();
-      await expect(HomePage.instagramLink).toBeClickable();
-      await expect(HomePage.githubLink).toBeClickable();
+    it('Checking if social media links are clickable', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.facebookLink).toBeClickable();
+      await expect(LandingPage.twitterLink).toBeClickable();
+      await expect(LandingPage.linkedinLink).toBeClickable();
+      await expect(LandingPage.instagramLink).toBeClickable();
+      await expect(LandingPage.githubLink).toBeClickable();
     });
 
     it('Checking if footer copyright is present', async () => {
-      await HomePage.open();
-      await expect(HomePage.footerCopyright).toBeExisting();
+      await LandingPage.open();
+      await expect(LandingPage.footerCopyright).toBeExisting();
     });
   });
 
   describe('Sidebar elements test', () => {
     it('Checking if social bar title is present', async () => {
-      await HomePage.open();
-      await HomePage.menuButton.click();
-      await expect(HomePage.titleSidebar).toBeExisting();
+      await LandingPage.open();
+      await LandingPage.menuButton.click();
+      await expect(LandingPage.titleSidebar).toBeExisting();
     });
 
     it('Checking if sidebar elements exist', async () => {
-      await HomePage.open();
-      await HomePage.menuButton.click();
-      await expect(HomePage.homeLinkSidebar).toBeExisting();
-      await expect(HomePage.signupLinkSidebar).toBeExisting();
-      await expect(HomePage.loginLinkSidebar).toBeExisting();
-      await expect(HomePage.contactLinkSidebar).toBeExisting();
-      await expect(HomePage.closeButtonSidebar).toBeExisting();
+      await LandingPage.open();
+      await LandingPage.menuButton.click();
+      await expect(LandingPage.homeLinkSidebar).toBeExisting();
+      await expect(LandingPage.signupLinkSidebar).toBeExisting();
+      await expect(LandingPage.loginLinkSidebar).toBeExisting();
+      await expect(LandingPage.contactLinkSidebar).toBeExisting();
+      await expect(LandingPage.secondSectionSidebar).toBeExisting();
     });
   });
 });

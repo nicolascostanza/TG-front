@@ -23,6 +23,7 @@ class SignUpPage {
   get continueButton() { return $('.signup_buttonContinue__hlqTE') }
 
   get errorField() { return $('.signup_errorInput__5C7Py') }
+  get userCreatedModal() { return $('.signup_modal__G7iuD') }
 
   open() {
     return browser.url('https://alfonso-trackgenix-app.vercel.app/signup');

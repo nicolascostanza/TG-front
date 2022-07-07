@@ -26,9 +26,9 @@ describe('Sign Up Page Testing', () => {
     });
   });
 
-  describe('Testing Register page inputs', () => {
-    it('Testing inputs have value ', async () => {
-      await SignUpPage.open();
+  // describe('Testing Register page inputs', () => {
+  //   it('Testing inputs have value ', async () => {
+  //     await SignUpPage.open();
       // await expect(SignUpPage.firstNameInput).toHaveAttr('name');
 
       // await expect(SignUpPage.firstNameLabel).toHaveValue();
@@ -44,8 +44,28 @@ describe('Sign Up Page Testing', () => {
 
   describe('Testing Register page error field', () => {
     it('Testing if error field exists', async () => {
-      await SignUpPage.login('Florencia','Eusebi','Female','Monumento 123','','3415480857','tutest@gmail.com','allatestean123');
-      await expect(SignUpPage.errorField).toHaveText(');
+      await SignUpPage.login('','Eusebi','Female','Monumento 123','02/02/1991','3415480857','tutest@gmail.com','allatestean123');
+      await expect(SignUpPage.errorField).toHaveText('This field is required');
+    });
+  });
+
+  describe('Testing Register page buttons', () => {
+    it('Testing if reset button is clickable', async () => {
+      await HomePage.open();
+      await HomePage.menuButton.click();
+      await HomePage.signupLinkSidebar.click();
+      await SignUpPage.open();
+      await expect(SignUpPage.resetButton).toBeClickable();
+    });
+
+    it('Testing if continue button is clickable', async () => {
+      await HomePage.open();
+      await HomePage.menuButton.click();
+      await HomePage.signupLinkSidebar.click();
+      await SignUpPage.open();
+      await SignUpPage.login('Florencia','Eusebi','Female','Monumento 123','02/02/1991','3415480857','tutest@gmail.com','allatestean123');
+      await expect(SignUpPage.continueButton).toBeClickable();
+      await expect(SignUpPage.userCreatedModal).toExist();
     });
   });
 });
