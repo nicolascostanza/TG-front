@@ -8,11 +8,11 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 function AddTimeSheets(props) {
-  // const [tasks, setTasks] = useState('');
-  // const { showCreateModal, handleClose, allTasks } = props;
-  const { showCreateModal, handleClose } = props;
-  // const [selectedTasks, setSelectedTasks] = useState([]);
-  const [selectedTasks, setSelectedTasks] = useState('');
+  const [tasks, setTasks] = useState('');
+  const { showCreateModal, handleClose, allTasks } = props;
+  // const { showCreateModal, handleClose } = props;
+  const [selectedTasks, setSelectedTasks] = useState([]);
+  // const [selectedTasks, setSelectedTasks] = useState('');
   const dispatch = useDispatch();
   const schema = Joi.object({
     employeeId: Joi.string().alphanum().length(24).required().messages({
@@ -54,15 +54,15 @@ function AddTimeSheets(props) {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-  // const appendToSelectedTasks = (id) => {
-  //   const previousState = selectedTasks;
-  //   setSelectedTasks([...previousState, id]);
-  //   setTasks('');
-  // };
+  const appendToSelectedTasks = (id) => {
+    const previousState = selectedTasks;
+    setSelectedTasks([...previousState, id]);
+    setTasks('');
+  };
 
-  // const deleteFromSelectedTasks = (id) => {
-  //   setSelectedTasks(selectedTasks.filter((task) => task !== id));
-  // };
+  const deleteFromSelectedTasks = (id) => {
+    setSelectedTasks(selectedTasks.filter((task) => task !== id));
+  };
   console.log(errors);
 
   const addTimeSheets = async (timeSheet) => {
@@ -160,7 +160,7 @@ function AddTimeSheets(props) {
               onChange={(e) => setTasks(e.target.value)}
               // eslint-disable-next-line react/jsx-no-duplicate-props
             />
-            {/* <div>
+            <div>
               {tasks.length > 0
                 ? allTasks
                     .filter(
@@ -199,7 +199,7 @@ function AddTimeSheets(props) {
                       </p>
                     );
                   })}
-            </div> */}
+            </div>
           </div>
           <div>
             <label htmlFor="approved"> Approved </label>
