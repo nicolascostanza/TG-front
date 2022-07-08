@@ -43,5 +43,5 @@ class LandingPage {
     return browser.url('https://alfonso-trackgenix-app.vercel.app/');
   }
 }
-module.exports = new LandingPage()
+module.exports = new LandingPage();
 /* eslint-enable */

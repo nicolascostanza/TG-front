@@ -1,42 +1,28 @@
+class LoginPage {
+/* eslint-disable */
+  get emailInput () { return $('.login_formFlex__UbsE0 > div:nth-child(1) > input[type=text]') }
+  get passwordInput () { return $('.login_formFlex__UbsE0 > div:nth-child(2) > input[type=password]') }
+  get continueBtn () { return $('.login_buttonsContainer__tswFM') }
+  get errorContainer() { return $('.login_errorInput__gUgZZ') }
 
+  get headerLogo() { return $('.header_appName__ZCFAq') }
+  get headerHome() { return $('#root > div > header > nav > ul > li:nth-child(1) > a') }
+  get headerAdmin() { return $('#root > div > header > nav > ul > li:nth-child(2) > a') }
+  get headerSuperAdmin() { return $('#root > div > header > nav > ul > li:nth-child(3) > a') }
+  get headerEmployees() { return $('#root > div > header > nav > ul > li:nth-child(4) > a') }
+  get headerProjects() { return $('#root > div > header > nav > ul > li:nth-child(5) > a') }
+  get headerTimesheets() { return $('#root > div > header > nav > ul > li:nth-child(6) > a') }
+  get headerTasks() { return $('#root > div > header > nav > ul > li:nth-child(7) > a') }
 
-const Page = require('./page');
+  async login (username, password) {
+    await this.emailInput.setValue(username);
+    await this.passwordInput.setValue(password);
+    await this.continueBtn.click();
+  }
 
-/**
- * sub page containing specific selectors and methods for a specific page
- */
-class LoginPage extends Page {
-    /**
-     * define selectors using getter methods
-     */
-    get inputUsername () {
-        return $('#username');
-    }
-
-    get inputPassword () {
-        return $('#password');
-    }
-
-    get btnSubmit () {
-        return $('button[type="submit"]');
-    }
-
-    /**
-     * a method to encapsule automation code to interact with the page
-     * e.g. to login using username and password
-     */
-    async login (username, password) {
-        await this.inputUsername.setValue(username);
-        await this.inputPassword.setValue(password);
-        await this.btnSubmit.click();
-    }
-
-    /**
-     * overwrite specific options to adapt it to page object
-     */
-    open () {
-        return super.open('login');
-    }
+  open() {
+  return browser.url('https://alfonso-trackgenix-app.vercel.app/login');
 }
-
+}
 module.exports = new LoginPage();
+/* eslint-enable */

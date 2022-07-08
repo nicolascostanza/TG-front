@@ -22,8 +22,12 @@ exports.config = {
   //
   // eslint-disable-next-line prettier/prettier
   specs: [
-    ["./test/specs/home.spec.js"],
-    ["./test/specs/signup.spec.js"]
+    // eslint-disable-next-line prettier/prettier
+    ["./test/specs/landing.spec.js"],
+    // eslint-disable-next-line prettier/prettier
+    // ["./test/specs/signup.spec.js"],
+    // eslint-disable-next-line prettier/prettier
+    ["./test/specs/login.spec.js"]
   ],
   // Patterns to exclude.
   exclude: [
