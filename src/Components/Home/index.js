@@ -25,11 +25,6 @@ import {
 // PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
 // AGREGAR FUNCIONES ONADD, ONEDIT, ONDELETE
 // VER CONEXION CON TIMESHEETS
-<<<<<<< HEAD
-
-=======
-// VER Q LAS VALIDACIONES ESTAN BIEN
->>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
 function Home() {
   const [screen, setScreen] = useState(false);
   const [data] = useState([]);
@@ -43,12 +38,8 @@ function Home() {
   let keys = [];
   let validator;
   let title = '';
-<<<<<<< HEAD
 
   const role = 'SUPERADMIN';
-=======
-  const role = 'ADMIN';
->>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
 
   useEffect(() => {
@@ -122,15 +113,9 @@ function Home() {
   //     alert('Something unexpected happened');
   //   }
   // };
-<<<<<<< HEAD
 
   const onSubmit = (e, data) => {
     console.log('data', data);
-=======
-  // console.log(errors);
-  const onSubmit = (data) => {
-    console.log('data:', data);
->>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
     // if (role === 'SUPERADMIN') {
     //   if (method === 'POST') {
     //     // metodo post
@@ -241,47 +226,30 @@ function Home() {
                   {...register('description')}
                   error={appendErrors.description?.message}
                 />
-<<<<<<< HEAD
-=======
                 {errors.description && (
                   <p className={styles.errorInput}>{errors.description?.message}</p>
                 )}
->>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
               </div>
               <div>
                 <label htmlFor="client">Client</label>
                 <input
                   type="text"
-<<<<<<< HEAD
-                  placeholder="Client Name"
-                  {...register('clientName')}
-                  error={appendErrors.clientName?.message}
-                />
-=======
                   placeholder="Client"
                   {...register('client')}
                   error={appendErrors.client?.message}
                 />
                 {errors.client && <p className={styles.errorInput}>{errors.client?.message}</p>}
->>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
               </div>
               <div>
                 <label htmlFor="start date">Start Date</label>
                 <input
                   type="date"
-<<<<<<< HEAD
-                  placeholder="Start Date"
-                  {...register('startDate')}
-                  error={appendErrors.startDate?.message}
-                />
-=======
                   {...register('startDate')}
                   error={appendErrors.startDate?.message}
                 />
                 {errors.startDate && (
                   <p className={styles.errorInput}>{errors.startDate?.message}</p>
                 )}
->>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
               </div>
               {/* <div>
             <label htmlFor="team">Team</label>
