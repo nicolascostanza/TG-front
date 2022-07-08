@@ -14,13 +14,22 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
-import { validationsForms } from 'Components/Home/validations';
+import {
+  validationsFormProjectCreate,
+  validationsFormProjectEdit,
+  validationsFormSuperadminCreate,
+  validationsFormSuperadminEdit
+} from 'Components/Home/validations';
 
 // ARREGLAR EL TABLEPROJECTS PARA Q TENGA 2 TABS, POR TASKS Y POR EMPLOYEES (TRABAJAR LA DATA EN LA TABLA POR PROJECTS)
 // PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
 // AGREGAR FUNCIONES ONADD, ONEDIT, ONDELETE
 // VER CONEXION CON TIMESHEETS
+<<<<<<< HEAD
 
+=======
+// VER Q LAS VALIDACIONES ESTAN BIEN
+>>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
 function Home() {
   const [screen, setScreen] = useState(false);
   const [data] = useState([]);
@@ -32,9 +41,14 @@ function Home() {
   let isLoading = useSelector((state) => state.projects.isFetching);
   let headers = [];
   let keys = [];
+  let validator;
   let title = '';
+<<<<<<< HEAD
 
   const role = 'SUPERADMIN';
+=======
+  const role = 'ADMIN';
+>>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
 
   useEffect(() => {
@@ -55,17 +69,27 @@ function Home() {
   if (role === 'SUPERADMIN') {
     headers = ['Email', 'Password', 'Is Active ?'];
     keys = ['email', 'password', 'active'];
+    if (method === 'POST') {
+      validator = validationsFormSuperadminCreate;
+    } else {
+      validator = validationsFormSuperadminEdit;
+    }
   } else {
     headers = ['Name', 'Description', 'Client Name', 'Start Date', 'End Date', 'Tasks', 'Team'];
     keys = ['name', 'description', 'clientName', 'startDate', 'endDate', 'tasks', 'team'];
+    if (method === 'POST') {
+      validator = validationsFormProjectCreate;
+    } else {
+      validator = validationsFormProjectEdit;
+    }
   }
   const {
     handleSubmit,
-    register
-    // formState: { errors }
+    register,
+    formState: { errors }
   } = useForm({
     mode: 'onBlur',
-    resolver: joiResolver(validationsForms)
+    resolver: joiResolver(validator)
   });
 
   // funciones para crud
@@ -98,9 +122,15 @@ function Home() {
   //     alert('Something unexpected happened');
   //   }
   // };
+<<<<<<< HEAD
 
   const onSubmit = (e, data) => {
     console.log('data', data);
+=======
+  // console.log(errors);
+  const onSubmit = (data) => {
+    console.log('data:', data);
+>>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
     // if (role === 'SUPERADMIN') {
     //   if (method === 'POST') {
     //     // metodo post
@@ -110,7 +140,6 @@ function Home() {
     // } else {
     //   if (method === 'POST') {
     //     // metodo post
-
     //   } else {
     //     // metodo put
     //   }
@@ -142,38 +171,57 @@ function Home() {
         <h2>Home</h2>
         <Loader isLoading={isLoading} />
         {role === 'SUPERADMIN' ? (
-          <Modal showModal={showModal} handleClose={handleModal} modalTitle={'ADD ADMIN'}>
+          <Modal
+            showModal={showModal}
+            handleClose={handleModal}
+            modalTitle={method === 'POST' ? 'ADD ADMIN' : 'EDIT ADMIN'}
+          >
             <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label htmlFor="email">Email</label>
                 <input
-                  type="text"
-                  placeholder="Name"
+                  type="email"
+                  placeholder="example@gmail.com"
                   {...register('email')}
                   error={appendErrors.email?.message}
                 />
+                {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
               </div>
               <div>
                 <label htmlFor="password">Password</label>
-                <input type="password" placeholder="Password" />
+                <input
+                  type="password"
+                  placeholder="password"
+                  {...register('password')}
+                  error={appendErrors.password?.message}
+                />
+                {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
               </div>
               <div className={styles.checkbox}>
                 <label htmlFor="active">Active</label>
-                <input type="checkbox" />
+                <input
+                  className={styles.inputsProfile}
+                  type="checkbox"
+                  name="active"
+                  {...register('active')}
+                />
               </div>
               <div className={styles.buttonsContainer}>
                 {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </button> */}
-                <Button width={'75px'} height={'30px'} onClick={onSubmit}>
+                <Button width={'75px'} height={'30px'} type="submit" value="CONTINUE">
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </Button>
               </div>
             </form>
           </Modal>
         ) : (
-          <Modal showModal={showModal} handleClose={handleModal}>
-            <h2>{method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}</h2>
+          <Modal
+            showModal={showModal}
+            handleClose={handleModal}
+            modalTitle={method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}
+          >
             <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label htmlFor="name">Name</label>
@@ -183,6 +231,7 @@ function Home() {
                   {...register('name')}
                   error={appendErrors.name?.message}
                 />
+                {errors.name && <p className={styles.errorInput}>{errors.name?.message}</p>}
               </div>
               <div>
                 <label htmlFor="description">Description</label>
@@ -192,24 +241,47 @@ function Home() {
                   {...register('description')}
                   error={appendErrors.description?.message}
                 />
+<<<<<<< HEAD
+=======
+                {errors.description && (
+                  <p className={styles.errorInput}>{errors.description?.message}</p>
+                )}
+>>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
               </div>
               <div>
                 <label htmlFor="client">Client</label>
                 <input
                   type="text"
+<<<<<<< HEAD
                   placeholder="Client Name"
                   {...register('clientName')}
                   error={appendErrors.clientName?.message}
                 />
+=======
+                  placeholder="Client"
+                  {...register('client')}
+                  error={appendErrors.client?.message}
+                />
+                {errors.client && <p className={styles.errorInput}>{errors.client?.message}</p>}
+>>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
               </div>
               <div>
                 <label htmlFor="start date">Start Date</label>
                 <input
                   type="date"
+<<<<<<< HEAD
                   placeholder="Start Date"
                   {...register('startDate')}
                   error={appendErrors.startDate?.message}
                 />
+=======
+                  {...register('startDate')}
+                  error={appendErrors.startDate?.message}
+                />
+                {errors.startDate && (
+                  <p className={styles.errorInput}>{errors.startDate?.message}</p>
+                )}
+>>>>>>> 31454ae9d01c1ed8c1fc149555ad8b0a32c321c5
               </div>
               {/* <div>
             <label htmlFor="team">Team</label>
@@ -219,7 +291,7 @@ function Home() {
                 {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </button> */}
-                <Button width={'75px'} height={'30px'} onClick={onSubmit}>
+                <Button width={'75px'} height={'30px'} type="submit" value="CONTINUE">
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </Button>
               </div>
