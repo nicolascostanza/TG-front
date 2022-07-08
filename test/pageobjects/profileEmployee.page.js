@@ -54,7 +54,6 @@ class ProfileEmployeePage {
   get activeInput() {
     return $('[name="active"]');
   }
-  //-----------------------------------Methods--------------------------------------------
 }
 
 module.exports = new ProfileEmployeePage();
