@@ -18,7 +18,7 @@ export const validationsFormProjectCreate = Joi.object({
     'string.min': 'Description must contain at least 3 characters',
     'string.max': 'Description must contain 200 characters or less'
   }),
-  client: Joi.string().min(3).max(30).required('This field is required').messages({
+  clientName: Joi.string().min(3).max(30).required('This field is required').messages({
     'string.min': 'Client name must contain 3 or more characters',
     'string.max': 'Client name must contain 30 or less characters',
     'string.empty': 'This field is required'
@@ -44,7 +44,7 @@ export const validationsFormProjectEdit = Joi.object({
     'string.min': 'Description must contain at least 3 characters',
     'string.max': 'Description must contain 200 characters or less'
   }),
-  client: Joi.string().min(3).max(30).messages({
+  clientName: Joi.string().min(3).max(30).messages({
     'string.min': 'Client name must contain 3 or more characters',
     'string.max': 'Client name must contain 30 or less characters',
     'string.empty': 'This field is required'

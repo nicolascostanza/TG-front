@@ -14,10 +14,9 @@ function Tablehome({
   // onEdit,
   onDelete,
   switcher,
-  selectedProject,
+  selected,
   openModal
 }) {
-  console.log(data);
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
@@ -29,8 +28,10 @@ function Tablehome({
       setIndexPage(maxIndexPage);
     }
   }, [data]);
+  data.filter((data) => data.isDeleted === false);
+  console.log(data);
   const openRow = (role, id) => {
-    selectedProject(id);
+    selected(id);
     if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
       switcher();
     }

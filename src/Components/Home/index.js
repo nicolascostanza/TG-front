@@ -7,6 +7,7 @@ import Button from 'Components/Shared/Button';
 //import Form from 'Components/Shared/Form';
 // import Button from 'Components/Shared/Button';
 import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import Tableproject from 'Components/Shared/Tableproject';
 import { useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -17,19 +18,25 @@ import {
   validationsFormSuperadminCreate,
   validationsFormSuperadminEdit
 } from 'Components/Home/validations';
+import * as thunksProjects from '../../redux/projects/thunks';
+import * as thunksAdmins from '../../redux/admins/thunks';
 
-// ARREGLAR EL TABLEPROJECTS PARA Q TENGA 2 TABS, POR TASKS Y POR EMPLOYEES (TRABAJAR LA DATA EN LA TABLA POR PROJECTS)
+// NO SE ACTUALIZA EL REDUX AUTOMATICO, ANDA TODO MENOS EL ADD PROJECT
+// AGREGAR DELETE CON ISDELETED
 // PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
-// AGREGAR FUNCIONES ONADD, ONEDIT, ONDELETE
 // VER CONEXION CON TIMESHEETS
 // VER Q LAS VALIDACIONES ESTAN BIEN
 function Home() {
   const [screen, setScreen] = useState(false);
-  const [data, setData] = useState([]);
-  const [idProject, setIdProject] = useState('');
+  const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [method, setMethod] = useState('');
+  const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
+  let projectsError = useSelector((state) => state.projects.error);
+  let adminsError = useSelector((state) => state.admins.error);
+  let projectsList = useSelector((state) => state.projects.list);
+  let adminsList = useSelector((state) => state.admins.list);
   let headers = [];
   let keys = [];
   let validator;
@@ -38,22 +45,16 @@ function Home() {
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
   useEffect(() => {
     // if para el home, else para el open project
-    if (idProject === '') {
+    if (id === '') {
       // aca despues hago un switch con la peticion nueva de projects asociados al employee
       if (role === 'SUPERADMIN') {
-        fetch(`${process.env.REACT_APP_API_URL}/admins`)
-          .then((response) => response.json())
-          .then((data) => setData(data.data));
+        dispatch(thunksAdmins.getAdmins());
       }
       if (role === 'ADMIN') {
-        fetch(`${process.env.REACT_APP_API_URL}/projects`)
-          .then((response) => response.json())
-          .then((data) => setData(data.data));
+        dispatch(thunksProjects.getProjects());
       }
       if (role === 'PM' || role === 'EMPLOYEE') {
-        fetch(`${process.env.REACT_APP_API_URL}/projects`)
-          .then((response) => response.json())
-          .then((data) => setData(data.data));
+        dispatch(thunksProjects.getProjects());
       }
     }
   }, [screen]);
@@ -83,52 +84,54 @@ function Home() {
     mode: 'onBlur',
     resolver: joiResolver(validator)
   });
-  // funciones para crud
   const switcher = () => {
     setScreen(!screen);
   };
   const handleModal = (request, id) => {
-    setIdProject(id);
+    setId(id);
     setShowModal(!showModal);
     setMethod(request);
   };
-  // console.log('id: ', idProject);
-  // const onSubmit = (data, e) => {
-  //   e.preventDefault();
-  //   const superAdmin = {
-  //     firstName: data.firstName,
-  //     lastName: data.lastName,
-  //     email: data.email,
-  //     password: data.password,
-  //     active: Boolean(data.active)
-  //   };
-  //   if (method === 'POST') {
-  //     dispatch(thunks.addSuperadmin(superAdmin));
-  //   } else if (method === 'PUT') {
-  //     dispatch(thunks.editSuperadmins(superAdmin, ids));
-  //   } else {
-  //     alert('Something unexpected happened');
-  //   }
-  // };
-  // console.log(errors);
+  const onDelete = (id) => {
+    const isDeleted = { isDeleted: true };
+    dispatch(thunksProjects.updateProject(isDeleted, id));
+  };
   const onSubmit = (data) => {
     console.log('data:', data);
-    // if (role === 'SUPERADMIN') {
-    //   if (method === 'POST') {
-    //     // metodo post
-    //   } else {
-    //     // metodo put
-    //   }
-    // } else {
-    //   if (method === 'POST') {
-    //     // metodo post
-    //   } else {
-    //     // metodo put
-    //   }
-    // }
+    if (role === 'SUPERADMIN') {
+      if (method === 'POST') {
+        dispatch(thunksAdmins.addAdmin(data));
+      } else if (method === 'PUT') {
+        dispatch(thunksAdmins.updateAdmin(data, id));
+        setMethod('');
+      } else {
+        // cambio isdeleted a true
+        dispatch(thunksAdmins.updateAdmin(id));
+      }
+      if (!adminsError) {
+        setShowModal(false);
+        setMethod('');
+      }
+    } else {
+      if (method === 'POST') {
+        dispatch(thunksProjects.addNewProject(data));
+        setMethod('');
+      } else if (method === 'PUT') {
+        dispatch(thunksProjects.updateProject(data, id));
+        setMethod('');
+      } else {
+        // cambio isdeleted a true
+        dispatch(thunksProjects.updateProject(data, id));
+        setMethod('');
+      }
+      if (!projectsError) {
+        setShowModal(false);
+        setMethod('');
+      }
+    }
   };
   if (screen) {
-    const info = data.filter((data) => data._id === idProject);
+    const info = projectsList.filter((project) => project._id === id);
     const dataTeam = info[0].team;
     const dataTasks = info[0].tasks;
     return (
@@ -136,7 +139,7 @@ function Home() {
         <Sidebar></Sidebar>
         <Loader isLoading={isLoading} />
         <Tableproject
-          idProject={idProject}
+          idProject={id}
           switcher={switcher}
           title={title}
           roleUser={role}
@@ -188,9 +191,6 @@ function Home() {
                 />
               </div>
               <div className={styles.buttonsContainer}>
-                {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
-                  {method === 'POST' ? 'CREATE' : 'EDIT'}
-                </button> */}
                 <Button width={'75px'} height={'30px'} type="submit" value="CONTINUE">
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </Button>
@@ -231,10 +231,12 @@ function Home() {
                 <input
                   type="text"
                   placeholder="Client"
-                  {...register('client')}
-                  error={appendErrors.client?.message}
+                  {...register('clientName')}
+                  error={appendErrors.clientName?.message}
                 />
-                {errors.client && <p className={styles.errorInput}>{errors.client?.message}</p>}
+                {errors.clientName && (
+                  <p className={styles.errorInput}>{errors.clientName?.message}</p>
+                )}
               </div>
               <div>
                 <label htmlFor="start date">Start Date</label>
@@ -247,14 +249,7 @@ function Home() {
                   <p className={styles.errorInput}>{errors.startDate?.message}</p>
                 )}
               </div>
-              {/* <div>
-            <label htmlFor="team">Team</label>
-            <input type="text" placeholder="Team" />
-          </div> */}
               <div className={styles.buttonsContainer}>
-                {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
-                  {method === 'POST' ? 'CREATE' : 'EDIT'}
-                </button> */}
                 <Button width={'75px'} height={'30px'} type="submit" value="CONTINUE">
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </Button>
@@ -269,8 +264,9 @@ function Home() {
           role={role}
           headers={headers}
           keys={keys}
-          data={data}
-          selectedProject={setIdProject}
+          data={role === 'SUPERADMIN' ? adminsList : projectsList}
+          selected={setId}
+          onDelete={onDelete}
         />
       </section>
     );
