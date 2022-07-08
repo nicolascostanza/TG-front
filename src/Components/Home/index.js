@@ -1,14 +1,17 @@
 import styles from './home.module.css';
 import Sidebar from '../Shared/Sidebar';
-import Tablehome from 'Components/Shared/Tablehome';
 import Loader from 'Components/Shared/Loader';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-//import Form from 'Components/Shared/Form';
-// import Button from 'Components/Shared/Button';
-import { useState, useEffect } from 'react';
+import Tablehome from 'Components/Shared/Tablehome';
 import Tableproject from 'Components/Shared/Tableproject';
-import { useSelector } from 'react-redux';
+//import * as actions from 'redux/projects/actions';
+import * as projectsThunks from 'redux/projects/thunks';
+import * as thunks from 'redux/admins/thunks';
+//import Form from 'Components/Shared/Form';
+
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { validationsForms } from 'Components/Home/validations';
@@ -17,40 +20,38 @@ import { validationsForms } from 'Components/Home/validations';
 // PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
 // AGREGAR FUNCIONES ONADD, ONEDIT, ONDELETE
 // VER CONEXION CON TIMESHEETS
+
 function Home() {
   const [screen, setScreen] = useState(false);
-  const [data, setData] = useState([]);
+  const [data] = useState([]);
   const [idProject, setIdProject] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [method, setMethod] = useState('');
+  const dispatch = useDispatch();
+
   let isLoading = useSelector((state) => state.projects.isFetching);
   let headers = [];
   let keys = [];
   let title = '';
+
   const role = 'SUPERADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
+
   useEffect(() => {
     // if para el home, else para el open project
     if (idProject === '') {
       // aca despues hago un switch con la peticion nueva de projects asociados al employee
       if (role === 'SUPERADMIN') {
-        fetch(`${process.env.REACT_APP_API_URL}/admins`)
-          .then((response) => response.json())
-          .then((data) => setData(data.data));
+        dispatch(thunks.getAdmins());
       }
-      if (role === 'ADMIN') {
-        fetch(`${process.env.REACT_APP_API_URL}/projects`)
-          .then((response) => response.json())
-          .then((data) => setData(data.data));
-      }
-      if (role === 'PM' || role === 'EMPLOYEE') {
-        fetch(`${process.env.REACT_APP_API_URL}/projects`)
-          .then((response) => response.json())
-          .then((data) => setData(data.data));
+      if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
+        dispatch(projectsThunks.getProjects());
       }
     }
   }, [screen]);
+
   // headers and keys
+
   if (role === 'SUPERADMIN') {
     headers = ['Email', 'Password', 'Is Active ?'];
     keys = ['email', 'password', 'active'];
@@ -66,15 +67,19 @@ function Home() {
     mode: 'onBlur',
     resolver: joiResolver(validationsForms)
   });
+
   // funciones para crud
+
   const switcher = () => {
     setScreen(!screen);
   };
+
   const handleModal = (request, id) => {
     setIdProject(id);
     setShowModal(!showModal);
     setMethod(request);
   };
+
   // console.log('id: ', idProject);
   // const onSubmit = (data, e) => {
   //   e.preventDefault();
@@ -93,6 +98,7 @@ function Home() {
   //     alert('Something unexpected happened');
   //   }
   // };
+
   const onSubmit = (e, data) => {
     console.log('data', data);
     // if (role === 'SUPERADMIN') {
@@ -110,6 +116,7 @@ function Home() {
     //   }
     // }
   };
+
   if (screen) {
     const info = data.filter((data) => data._id === idProject);
     const dataTeam = info[0].team;
@@ -173,21 +180,36 @@ function Home() {
                 <input
                   type="text"
                   placeholder="Name"
-                  {...register('firstName')}
-                  error={appendErrors.firstName?.message}
+                  {...register('name')}
+                  error={appendErrors.name?.message}
                 />
               </div>
               <div>
                 <label htmlFor="description">Description</label>
-                <input type="text" placeholder="Description" />
+                <input
+                  type="text"
+                  placeholder="Description"
+                  {...register('description')}
+                  error={appendErrors.description?.message}
+                />
               </div>
               <div>
                 <label htmlFor="client">Client</label>
-                <input type="text" placeholder="Client" />
+                <input
+                  type="text"
+                  placeholder="Client Name"
+                  {...register('clientName')}
+                  error={appendErrors.clientName?.message}
+                />
               </div>
               <div>
                 <label htmlFor="start date">Start Date</label>
-                <input type="date" placeholder="Start Date" />
+                <input
+                  type="date"
+                  placeholder="Start Date"
+                  {...register('startDate')}
+                  error={appendErrors.startDate?.message}
+                />
               </div>
               {/* <div>
             <label htmlFor="team">Team</label>
