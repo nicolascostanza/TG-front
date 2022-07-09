@@ -45,24 +45,24 @@ function EmployeeTimesheetTable({
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      {role === `ADMIN` || role === `SUPERADMIN` ? (
-        <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
-          <i className="fa-solid fa-plus"></i>
-          ADD
-        </Button>
-      ) : (
-        <></>
-      )}
+      {/* {role === `ADMIN` || role === `SUPERADMIN` ? ( */}
+      <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
+        <i className="fa-solid fa-plus"></i>
+        ADD
+      </Button>
+      {/* // ) : (
+      //   <></>
+      // )} */}
       <table className={styles.table}>
         <thead>
           <tr>
             {headers.map((header, index) => {
               return <th key={index}>{header}</th>;
             })}
-            {role === `ADMIN` || role === `SUPERADMIN` ? (
+            {/* REVISAR */}
+            {role === `PM` ? (
               <>
-                <th>Edit</th>
-                <th>Delete</th>
+                <th>Approve</th>
               </>
             ) : null}
           </tr>
@@ -85,31 +85,40 @@ function EmployeeTimesheetTable({
                     </td>
                   );
                 })}
-                {role === `ADMIN` || role === `SUPERADMIN` ? (
-                  <>
-                    <td>
-                      <Button
-                        className={styles.buttonsRows}
-                        width={'50px'}
-                        height={'25px'}
-                        fontSize={'13px'}
-                        onClick={() => onEdit(row._id)}
-                      >
-                        <i className="fa-solid fa-pencil"></i>
-                      </Button>
-                    </td>
-                    <td>
-                      <Button
-                        onClick={() => onDelete(row._id)}
-                        width={'50px'}
-                        height={'25px'}
-                        fontSize={'13px'}
-                      >
-                        <i className="fa-solid fa-xmark"></i>
-                      </Button>
-                    </td>
-                  </>
-                ) : null}
+                {/* {role === `ADMIN` || role === `SUPERADMIN` ? ( */}
+                {/* {role === `PM` ? ( */}
+                <>
+                  <td>
+                    <Button
+                      className={styles.buttonsRows}
+                      width={'50px'}
+                      height={'25px'}
+                      fontSize={'13px'}
+                      onClick={() => onEdit(row._id)}
+                    >
+                      <i className="fa-solid fa-pencil"></i>
+                    </Button>
+                  </td>
+                  <td>
+                    <Button
+                      onClick={() => onDelete(row._id)}
+                      width={'50px'}
+                      height={'25px'}
+                      fontSize={'13px'}
+                    >
+                      <i className="fa-solid fa-xmark"></i>
+                    </Button>
+                  </td>
+                  <td>
+                    {role === 'PM' ? (
+                      <label className={styles.switch}>
+                        <input type="checkbox" />
+                        <span className={styles.slider} />
+                      </label>
+                    ) : null}
+                  </td>
+                </>
+                {/* ) : null} */}
               </tr>
             );
           })}

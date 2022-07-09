@@ -55,8 +55,9 @@ function AddTimeSheets(props) {
     resolver: joiResolver(schema)
   });
   const appendToSelectedTasks = (id) => {
-    const previousState = selectedTasks;
-    setSelectedTasks([...previousState, id]);
+    // const previousState = selectedTasks;
+    // setSelectedTasks([...previousState, id]);
+    setSelectedTasks(id);
     setTasks('');
   };
 
@@ -72,9 +73,12 @@ function AddTimeSheets(props) {
     e.preventDefault();
     addTimeSheets({
       ...data,
-      taskId: selectedTasks
+      taskId: selectedTasks,
+      approved: false
       // taskId: '62a8a48ae4163d7c08335e66'
     });
+    console.log(data);
+    console.log('tasls ', tasks);
   };
   // console.log(tasks);
   return (

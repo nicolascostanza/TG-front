@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import AddTimeSheets from '../Add';
-import Table from 'Components/Shared/Table';
+// import Table from 'Components/Shared/Table';
 import EditTimeSheets from '../Edit';
 import Sidebar from 'Components/Shared/Sidebar';
 import Loader from 'Components/Shared/Loader';
@@ -11,13 +11,20 @@ import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 
 function TimeSheet() {
-  let role = 'PM';
+  // Esto de aca es el filtro por rol, como no hay un pm
+  // const role = useSelector((state) => state.auth.authenticated?.role);
+  // role && console.log('role: ', role);
+  // let role = 'PM';
+  let role = 'EMPLOYEE';
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
   const [editId, setEditId] = useState('');
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
+
+  // const [selectedEmployees, setSelectedEmployees] = useState([]);
+
   useEffect(() => {
     dispatch(thunks.getTimesheets());
     dispatch(tasksThunks.getTasks());
@@ -39,6 +46,8 @@ function TimeSheet() {
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
+  // const formattedTimeSheets = timeSheets.map((timeSheet) => {
+  console.log('esttt', timeSheets);
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     // console.log(timeSheet.task.length);
     return {
@@ -51,16 +60,18 @@ function TimeSheet() {
       // task_name: timeSheet.task.length
       //   ? timeSheet.task.map((task) => task.taskName).join(' - ')
       //   : '-',projectIdhours
-      task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
+      // task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
+      task_name: timeSheet.task,
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved'
       // role: timeSheet.role
     };
   });
+
   return (
     <>
       <Loader isLoading={isFetching} />
-      <Sidebar></Sidebar>
+      <Sidebar />
       <EditTimeSheets
         showEditModal={showEditModal}
         handleClose={handleClose}
@@ -72,7 +83,8 @@ function TimeSheet() {
         handleClose={handleClose}
         allTasks={allTasks}
       ></AddTimeSheets>
-      {role === 'PM' ? (
+      {/* <button onClick={setShowAddTaskModal(true)}>Add task</button> */}
+      {/* {role === 'PM' ? (
         <Table
           title="Timesheets"
           headers={['employeeId', 'projectId', 'date', 'task_name', 'hours', 'approved']}
@@ -82,20 +94,21 @@ function TimeSheet() {
           onDelete={deleteTimeSheet}
           onAdd={openAddTimeSheet}
         />
-      ) : (
-        <EmployeeTimesheetTable
-          title={'EMPLOYEE'}
-          headers={['Name', 'Project', 'Date', 'Task', 'Hours', 'Approved', 'Role']}
-          // keys={['employeeId', 'project', 'date', 'task_name', 'hours', 'approved', 'role']}
-          data={formattedTimeSheets}
-          // role={}
-          // onEdit={}
-          // onAdd={}
-          // onDelete={}
-          // switcher={}
-          // selectedProject={}
-        />
-      )}
+      ) : ( */}
+      <EmployeeTimesheetTable
+        title={role}
+        // headers={['Name', 'Project', 'Date', 'Task', 'Hours', 'Approved', 'Role']}
+        headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
+        keys={['employeeId', 'projectId', 'date', 'task_name', 'hours', 'approved']}
+        data={formattedTimeSheets}
+        role={role}
+        onEdit={openEditTimeSheet}
+        onAdd={openAddTimeSheet}
+        onDelete={deleteTimeSheet}
+        // switcher={}
+        // selectedProject={}
+      />
+      {/* )} */}
     </>
   );
 }
