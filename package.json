@@ -22,6 +22,7 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "pretest": "rimraf allure-results && rimraf allure-report && rimraf test-screenshots && rimraf wdio-logs",
     "test": "npx wdio run ./wdio.conf.js --spec",
     "allure-report": "allure generate --clean allure-results && allure open",
     "start": "react-scripts start",
