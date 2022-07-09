@@ -1,4 +1,5 @@
-const allure = require('allure-commandline').default;
+/* eslint-disable prettier/prettier */
+//const allure = require('@wdio/allure-reporter').default;
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 exports.config = {
@@ -23,7 +24,7 @@ exports.config = {
   // then the current working directory is where your `package.json` resides, so `wdio`
   // will be called from there.
   //
-  specs: ['./test/specs/**/*.js'],
+  specs: ['./test/specs/home.spec.js'],
   // Patterns to exclude.
   exclude: [
     // 'path/to/excluded/files'
@@ -148,6 +149,7 @@ exports.config = {
     // The Jasmine framework allows interception of each assertion in order to log the state of the application
     // or website depending on the result. For example, it is pretty handy to take a screenshot every time
     // an assertion fails.
+    // eslint-disable-next-line no-unused-vars
     expectationResultHandler: function (passed, assertion) {
       // do something
     }
@@ -247,8 +249,10 @@ exports.config = {
    * @param {Boolean} result.passed    true if test has passed, otherwise false
    * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
    */
+  /*
   onComplete: function () {
     const reportError = new Error('Could not generate Allure report');
+    // eslint-disable-next-line no-undef
     const generation = allure(['generate', 'allure-results', '--clean']);
     return new Promise((resolve, reject) => {
       const generationTimeout = setTimeout(() => reject(reportError), 5000);
@@ -265,12 +269,13 @@ exports.config = {
       });
     });
   },
+  // eslint-disable-next-line no-unused-vars
   afterTest: async function (test, context, { error, result, duration, passed, retries }) {
     if (error) {
       await browser.takeScreenshot();
     }
   }
-
+  */
   /**
    * Hook that gets executed after the suite has ended
    * @param {Object} suite suite details

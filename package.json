@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^5.15.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "allure-commandline": "^2.18.1",
     "dotenv": "^16.0.1",
     "joi": "^17.6.0",
     "react": "^17.0.2",
@@ -21,6 +22,8 @@
     "web-vitals": "^1.1.2"
   },
   "scripts": {
+    "test": "npx wdio run ./wdio.conf.js --spec",
+    "allure-report": "allure generate --clean allure-results && allure open",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint .",
@@ -66,7 +69,7 @@
     "eslint-plugin-promise": "^5.1.1",
     "eslint-plugin-react": "^7.27.1",
     "eslint-plugin-wdio": "^7.19.4",
-    "husky": "^7.0.0",
+    "husky": "^8.0.0",
     "lint-staged": "^12.1.2",
     "prettier": "^2.4.1",
     "wdio-chromedriver-service": "^7.3.2",
