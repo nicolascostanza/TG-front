@@ -2,7 +2,7 @@ class LoginPage {
 /* eslint-disable */
   get emailInput () { return $('.login_formFlex__UbsE0 > div:nth-child(1) > input[type=text]') }
   get passwordInput () { return $('.login_formFlex__UbsE0 > div:nth-child(2) > input[type=password]') }
-  get continueBtn () { return $('.login_buttonsContainer__tswFM') }
+  get continueBtn () { return $('.login_buttonContinue__EGjlD') }
   get errorContainer() { return $('.login_errorInput__gUgZZ') }
 
   get headerLogo() { return $('.header_appName__ZCFAq') }
