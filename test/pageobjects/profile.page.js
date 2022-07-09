@@ -7,7 +7,7 @@ class ProfilePage {
   get profileRow() { return $('.profile_row__41l36') }
   get profileLabel() { return $('.profile_label__8O3Es') }
   get profileText() { return $('.profile_text__n7Fuj') }
-
+  
   open() {
     return browser.url('https://alfonso-trackgenix-app.vercel.app/');
   }

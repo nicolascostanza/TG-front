@@ -9,7 +9,7 @@ class LoginPage {
   get headerHome() { return $('#root > div > header > nav > ul > li:nth-child(1) > a') }
   get headerAdmin() { return $('#root > div > header > nav > ul > li:nth-child(2) > a') }
   get headerSuperAdmin() { return $('#root > div > header > nav > ul > li:nth-child(3) > a') }
-  get headerEmployees() { return $('#root > div > header > nav > ul > li:nth-child(4) > a') }
+  get headerEmployees() { return $('.header_rutes__-JsnG > li:nth-child(4) > a:nth-child(1)') }
   get headerProjects() { return $('#root > div > header > nav > ul > li:nth-child(5) > a') }
   get headerTimesheets() { return $('#root > div > header > nav > ul > li:nth-child(6) > a') }
   get headerTasks() { return $('#root > div > header > nav > ul > li:nth-child(7) > a') }
