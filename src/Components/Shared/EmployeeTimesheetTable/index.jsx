@@ -13,7 +13,8 @@ function EmployeeTimesheetTable({
   onAdd,
   onDelete,
   switcher,
-  selectedProject
+  selectedTimesheet,
+  onApprove
 }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
@@ -27,7 +28,7 @@ function EmployeeTimesheetTable({
     }
   }, [data]);
   const openRow = (role, id) => {
-    selectedProject(id);
+    selectedTimesheet(id);
     if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
       switcher();
     }
@@ -60,11 +61,11 @@ function EmployeeTimesheetTable({
               return <th key={index}>{header}</th>;
             })}
             {/* REVISAR */}
-            {role === `PM` ? (
+            {role === `PM` && (
               <>
                 <th>Approve</th>
               </>
-            ) : null}
+            )}
           </tr>
         </thead>
         <tbody className={styles.tbody}>
@@ -110,15 +111,22 @@ function EmployeeTimesheetTable({
                     </Button>
                   </td>
                   <td>
-                    {role === 'PM' ? (
+                    {/* AGREGAR LOGICA AL SLIDER */}
+                    {role === 'PM' && (
                       <label className={styles.switch}>
-                        <input type="checkbox" />
+                        <input
+                          type="checkbox"
+                          id="approved"
+                          name="approved"
+                          value="approved"
+                          // onChange={onApprove(row._id)}
+                          onChange={() => onApprove(row._id)}
+                        />
                         <span className={styles.slider} />
                       </label>
-                    ) : null}
+                    )}
                   </td>
                 </>
-                {/* ) : null} */}
               </tr>
             );
           })}

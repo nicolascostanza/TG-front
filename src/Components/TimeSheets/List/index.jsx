@@ -14,8 +14,8 @@ function TimeSheet() {
   // Esto de aca es el filtro por rol, como no hay un pm
   // const role = useSelector((state) => state.auth.authenticated?.role);
   // role && console.log('role: ', role);
-  // let role = 'PM';
-  let role = 'EMPLOYEE';
+  let role = 'PM';
+  // let role = 'EMPLOYEE';
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
@@ -49,24 +49,31 @@ function TimeSheet() {
   // const formattedTimeSheets = timeSheets.map((timeSheet) => {
   console.log('esttt', timeSheets);
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
-    // console.log(timeSheet.task.length);
+    console.log('timeSheet.task ', timeSheet.task);
     return {
-      ...timeSheet,
+      // ...timeSheet,
       _id: timeSheet._id,
-      // employeeId: (timeSheet.employeeId.firstName, timeSheet.employeeId.lastName),
-      employeeId: timeSheet.employeeId.firstName.concat(' ', timeSheet.employeeId.lastName),
+      employeeId: (timeSheet.employeeId.firstName, timeSheet.employeeId.lastName),
+      // employeeId: timeSheet.employeeId.firstName.concat(' ', timeSheet.employeeId.lastName),
       projectId: timeSheet.project,
-      date: timeSheet.date ? new Date(timeSheet.date).toDateString() : '',
+      date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
       // task_name: timeSheet.task.length
       //   ? timeSheet.task.map((task) => task.taskName).join(' - ')
-      //   : '-',projectIdhours
-      // task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
-      task_name: timeSheet.task,
+      //   : '-',
+      task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
+      // task_name: timeSheet.task.length > 0 ? timeSheet.task[0].taskName : '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved'
       // role: timeSheet.role
     };
   });
+  const approveTimesheet = (id) => {
+    console.log('slider ', id);
+    console.log('sliderrrr ', timeSheets.id);
+    // dispatch(thunks.editTimesheet(newBody, id));
+    // setEditId(id);
+    // console.log(editId);
+  };
 
   return (
     <>
@@ -105,8 +112,9 @@ function TimeSheet() {
         onEdit={openEditTimeSheet}
         onAdd={openAddTimeSheet}
         onDelete={deleteTimeSheet}
+        onApprove={approveTimesheet}
         // switcher={}
-        // selectedProject={}
+        // selectedTimesheet={}
       />
       {/* )} */}
     </>

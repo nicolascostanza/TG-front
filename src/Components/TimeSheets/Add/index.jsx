@@ -9,9 +9,9 @@ import Joi from 'joi';
 
 function AddTimeSheets(props) {
   const [tasks, setTasks] = useState('');
-  const { showCreateModal, handleClose, allTasks } = props;
-  // const { showCreateModal, handleClose } = props;
-  const [selectedTasks, setSelectedTasks] = useState([]);
+  // const { showCreateModal, handleClose, allTasks } = props;
+  const { showCreateModal, handleClose } = props;
+  // const [selectedTasks, setSelectedTasks] = useState([]);
   // const [selectedTasks, setSelectedTasks] = useState('');
   const dispatch = useDispatch();
   const schema = Joi.object({
@@ -40,11 +40,12 @@ function AddTimeSheets(props) {
       'number.min': 'This field must have at least 1 hour',
       'number.max': 'This field can not have more than 24 hours'
     }),
-    approved: Joi.bool().optional()
+    approved: Joi.bool().optional(),
     // BORRAR ROLE
     // role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required().messages({
     //   'any.only': 'This field must contain one of the following roles: DEV, QA, PM or TL'
     // })
+    taskId: Joi.string()
   });
   const {
     register,
@@ -54,16 +55,16 @@ function AddTimeSheets(props) {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-  const appendToSelectedTasks = (id) => {
-    // const previousState = selectedTasks;
-    // setSelectedTasks([...previousState, id]);
-    setSelectedTasks(id);
-    setTasks('');
-  };
+  // const appendToSelectedTasks = (id) => {
+  //   // const previousState = selectedTasks;
+  //   // setSelectedTasks([...previousState, id]);
+  //   setSelectedTasks(id);
+  //   setTasks('');
+  // };
 
-  const deleteFromSelectedTasks = (id) => {
-    setSelectedTasks(selectedTasks.filter((task) => task !== id));
-  };
+  // const deleteFromSelectedTasks = (id) => {
+  //   setSelectedTasks(selectedTasks.filter((task) => task !== id));
+  // };
   console.log(errors);
 
   const addTimeSheets = async (timeSheet) => {
@@ -73,7 +74,8 @@ function AddTimeSheets(props) {
     e.preventDefault();
     addTimeSheets({
       ...data,
-      taskId: selectedTasks,
+      // taskId: selectedTasks,
+      // taskId,
       approved: false
       // taskId: '62a8a48ae4163d7c08335e66'
     });
@@ -91,7 +93,7 @@ function AddTimeSheets(props) {
       >
         <div className={styles.container}>
           <div>
-            <label htmlFor="employeeId"> Employee ID </label>
+            <label htmlFor="employeeId">Employee ID</label>
             <input
               {...register('employeeId', { required: true })}
               type="text"
@@ -119,7 +121,7 @@ function AddTimeSheets(props) {
             )}
           </div> */}
           <div>
-            <label htmlFor="projectId"> Project ID</label>
+            <label htmlFor="projectId">Project ID</label>
             <input
               {...register('projectId', { required: true })}
               type="text"
@@ -133,7 +135,7 @@ function AddTimeSheets(props) {
             )}
           </div>
           <div>
-            <label htmlFor="date"> Date </label>
+            <label htmlFor="date">Date</label>
             <input {...register('date', { required: true })} type="date" placeholder="YYYY-MM-DD" />
             {errors.date?.type === 'date.base' && (
               <p className={styles.error}>{errors.date.message}</p>
@@ -143,7 +145,7 @@ function AddTimeSheets(props) {
             )}
           </div>
           <div>
-            <label htmlFor="hours"> Hours </label>
+            <label htmlFor="hours">Hours</label>
             <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
             {errors.hours?.type === 'number.base' && (
               <p className={styles.error}>{errors.hours.message}</p>
@@ -158,13 +160,14 @@ function AddTimeSheets(props) {
           <div>
             <label htmlFor="taskId">Task</label>
             <input
+              {...register('taskId', { required: true })}
               type="text"
               placeholder="Task ID"
               value={tasks.name}
               onChange={(e) => setTasks(e.target.value)}
               // eslint-disable-next-line react/jsx-no-duplicate-props
             />
-            <div>
+            {/* <div>
               {tasks.length > 0
                 ? allTasks
                     .filter(
@@ -203,10 +206,10 @@ function AddTimeSheets(props) {
                       </p>
                     );
                   })}
-            </div>
+            </div> */}
           </div>
           <div>
-            <label htmlFor="approved"> Approved </label>
+            <label htmlFor="approved">Approved</label>
             <input {...register('approved', { required: true })} type="checkbox" />
           </div>
           {/* <div>
