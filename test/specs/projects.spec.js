@@ -3,7 +3,7 @@ const ProjectsPage = require('../pageobjects/projects.page');
 
 describe('Projects page testing', () => {
   beforeAll('Open browser', () => {
-    browser.url('https://alfonso-trackgenix-app.vercel.app/login');
+    browser.url('https://alfonso-trackgenix-app.vercel.app/projects');
   });
 
   describe('Elements in Projects Page to be displayed', () => {
