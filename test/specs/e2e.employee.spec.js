@@ -30,5 +30,9 @@ describe('Employees e2e for trackGENIX app test', () => {
       await EmployeePage.employeeFirstNameInput.setValue('Agustina')
       await EmployeePage.employeeUpdateBtn.click()
     })
+    it('Logout', async () => {
+      await EmployeePage.LogOutNavBarLink.click()
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/')
+    })
   })
 })
