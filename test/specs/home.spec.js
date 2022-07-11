@@ -32,15 +32,15 @@ describe('TrackGENIX app landing page test', () => {
     })  
     it('Verifying Home page link to exist', async () => {
       await HomePage.homeLink.click()
-      await expect(browser.url).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/home')
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/')
     })
     it('Verifying Sign-up page link to exist', async () => {
       await HomePage.signUpLink.click()
-      await expect(browser.url).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/signup')
+      await expect(browser).toHaveUrlContaining('signup')
     })
     it('Verifying Log-in page link to exist', async () => {
       await HomePage.logInLink.click()
-      await expect(browser.url).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/login')
+      await expect(browser).toHaveUrlContaining('login')
     })
     it('Verifying close button', async () => {
       await expect(HomePage.sbCloseBtn).toBeClickable()

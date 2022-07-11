@@ -1,9 +1,9 @@
+const HomePage = require('../pageobjects/home.page')
 const LoginPage = require('../pageobjects/login.page');
-const SecurePage = require('../pageobjects/secure.page');
 
-describe('My Login application', () => {
+describe('Login page of trackGENIX app test', () => {
   it('should login with valid credentials', async () => {
-    await LoginPage.open();
+    await browser.url();
 
     await LoginPage.login('tomsmith', 'SuperSecretPassword!');
     await expect(SecurePage.flashAlert).toBeExisting();
