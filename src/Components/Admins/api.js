@@ -49,7 +49,7 @@ export const updateAdminApi = async (body, id) => {
 export const deleteAdminApi = async (id) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
-      method: 'DELETE'
+      method: 'PATCH'
     });
     const data = await response.json();
     if (!data.error) {

@@ -17,19 +17,19 @@ import {
   validationsFormProjectEdit,
   validationsFormSuperadminCreate,
   validationsFormSuperadminEdit
+  // validationsFormAddEmployee
 } from 'Components/Home/validations';
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
-// NO SE ACTUALIZA EL REDUX AUTOMATICO, ANDA TODO MENOS EL ADD PROJECT
-// AGREGAR DELETE CON ISDELETED
+// HACER Q APAREZCAN LOS DATOS AL REVEZ
 // PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
-// VER CONEXION CON TIMESHEETS
-// VER Q LAS VALIDACIONES ESTAN BIEN
+// VER VALIDACIONES POR ADD EMPLOYEE
 function Home() {
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [method, setMethod] = useState('');
   const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
@@ -76,6 +76,7 @@ function Home() {
       validator = validationsFormProjectEdit;
     }
   }
+
   const {
     handleSubmit,
     register,
@@ -93,11 +94,21 @@ function Home() {
     setMethod(request);
   };
   const onDelete = (id) => {
-    const isDeleted = { isDeleted: true };
-    dispatch(thunksProjects.updateProject(isDeleted, id));
+    const resp = confirm('Borrar ?');
+    if (role === 'SUPERADMIN') {
+      if (resp) {
+        dispatch(thunksAdmins.deleteAdmin(id));
+        setMethod('');
+      }
+    } else {
+      if (resp) {
+        dispatch(thunksProjects.deleteProject(id));
+        setMethod('');
+      }
+    }
   };
+  console.log(errors);
   const onSubmit = (data) => {
-    console.log('data:', data);
     if (role === 'SUPERADMIN') {
       if (method === 'POST') {
         dispatch(thunksAdmins.addAdmin(data));
@@ -106,7 +117,7 @@ function Home() {
         setMethod('');
       } else {
         // cambio isdeleted a true
-        dispatch(thunksAdmins.updateAdmin(id));
+        dispatch(thunksAdmins.deleteAdmin(id));
       }
       if (!adminsError) {
         setShowModal(false);
@@ -121,7 +132,7 @@ function Home() {
         setMethod('');
       } else {
         // cambio isdeleted a true
-        dispatch(thunksProjects.updateProject(data, id));
+        dispatch(thunksProjects.deleteProject(id));
         setMethod('');
       }
       if (!projectsError) {
@@ -138,8 +149,63 @@ function Home() {
       <>
         <Sidebar></Sidebar>
         <Loader isLoading={isLoading} />
+        <Modal
+          showModal={showModalEmployee}
+          handleClose={() => setShowModalEmployee(false)}
+          modalTitle={'ADD EMPLOYEE'}
+        >
+          <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label htmlFor="employee id">Employee Id</label>
+              <input
+                type="text"
+                placeholder="Employee Id"
+                {...register('employeeId')}
+                error={appendErrors.employeeId?.message}
+              />
+              {errors.employeeId && (
+                <p className={styles.errorInput}>{errors.employeeId?.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="role">Role</label>
+              <input
+                type="text"
+                placeholder="Dev"
+                {...register('role')}
+                error={appendErrors.role?.message}
+              />
+              {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="Rate">Rate</label>
+              <input
+                type="number"
+                placeholder="500"
+                {...register('rate')}
+                error={appendErrors.rate?.message}
+              />
+              {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
+            </div>
+            <div className={styles.checkbox}>
+              <label htmlFor="isPm">Is PM ?</label>
+              <input
+                className={styles.inputsProfile}
+                type="checkbox"
+                name="isPm"
+                {...register('isPm')}
+              />
+            </div>
+            <div className={styles.buttonsContainer}>
+              <Button width={'75px'} height={'30px'} type="submit" value="GO">
+                ADD EMPLOYEE
+              </Button>
+            </div>
+          </form>
+        </Modal>
         <Tableproject
           idProject={id}
+          openModal={() => setShowModalEmployee(true)}
           switcher={switcher}
           title={title}
           roleUser={role}

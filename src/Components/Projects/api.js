@@ -45,7 +45,7 @@ export const updateProjectApi = async (body, id) => {
 export const deleteProjectApi = async (id) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
-      method: 'delete'
+      method: 'PATCH'
     });
     const data = await response.json();
     alert(data.message);
