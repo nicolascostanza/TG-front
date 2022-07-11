@@ -55,5 +55,4 @@ describe('Login page testing', () => {
       );
     });
   });
-
 });
