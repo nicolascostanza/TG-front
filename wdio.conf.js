@@ -23,21 +23,23 @@ exports.config = {
   // eslint-disable-next-line prettier/prettier
   specs: [
     // eslint-disable-next-line prettier/prettier
-    // ["./test/specs/landing.spec.js"],
+    ["./test/specs/landing.spec.js"],
     // eslint-disable-next-line prettier/prettier
-    // ["./test/specs/signup.spec.js"],
+    ["./test/specs/signup.spec.js"],
     // eslint-disable-next-line prettier/prettier
-    // ["./test/specs/login.spec.js"],
+    ["./test/specs/login.spec.js"],
     // eslint-disable-next-line prettier/prettier
-    // ["./test/specs/profile.spec.js"],
+    ["./test/specs/profile.spec.js"],
     // eslint-disable-next-line prettier/prettier
-    // ["./test/specs/employees.spec.js"],
+    ["./test/specs/employees.spec.js"],
     // eslint-disable-next-line prettier/prettier
-    // ["./test/specs/projects.spec.js"],
+    ["./test/specs/projects.spec.js"],
     // eslint-disable-next-line prettier/prettier
-    // ["./test/specs/timesheets.spec.js"],
+    ["./test/specs/timesheets.spec.js"],
     // eslint-disable-next-line prettier/prettier
-    ["./test/specs/tasks.spec.js"]
+    ["./test/specs/tasks.spec.js"],
+    // eslint-disable-next-line prettier/prettier
+    ["./test/specs/logout.spec.js"]
   ],
   // Patterns to exclude.
   exclude: [
