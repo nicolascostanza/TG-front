@@ -61,7 +61,7 @@ export const editTimesheetApi = async (newBody, id) => {
 
 export const getEmployeeTimesheetApi = async (id) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${id}`);
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/employee?id=${id}`);
     const data = await response.json();
     return data;
   } catch (err) {

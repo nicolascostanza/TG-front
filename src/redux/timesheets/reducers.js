@@ -98,8 +98,6 @@ export const timesheetReducer = (state = initialState, action) => {
         showCreateModal: false,
         showEditModal: false
       };
-    default:
-      return state;
     // EMPLOYEE TIMESHEET
     case types.GET_EMPLOYEE_TIMSHEET_PENDING:
       return {
@@ -118,5 +116,7 @@ export const timesheetReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
+    default:
+      return state;
   }
 };

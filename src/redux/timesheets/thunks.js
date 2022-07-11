@@ -65,10 +65,10 @@ export const editTimesheet = (newBody, id) => {
   };
 };
 
-export const getEmployeeTimesheets = () => {
+export const getEmployeeTimesheets = (id) => {
   return (dispatch) => {
     dispatch(actions.getEmployeTimesheetPending());
-    getEmployeeTimesheetApi()
+    getEmployeeTimesheetApi(id)
       .then((response) => {
         dispatch(actions.getEmployeeTimesheetFulfilled(response.data));
       })

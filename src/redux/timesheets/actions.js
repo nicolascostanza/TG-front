@@ -37,11 +37,7 @@ export const addTimeSheetFailed = (error) => ({
 // // UPDATE
 export const updateTimeSheetFulfilled = (timesheet) => ({
   type: types.UPDATE_TIMESHEET_FULFILLED,
-  payload: {
-    ...timesheet,
-    employeeId: { _id: timesheet.employeeId },
-    task: { _id: timesheet.task }
-  }
+  payload: timesheet
 });
 
 export const updateTimeSheetPending = () => ({

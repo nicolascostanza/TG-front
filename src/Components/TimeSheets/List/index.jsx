@@ -11,7 +11,9 @@ import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 
 function TimeSheet() {
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  let role = 'PM';
+  let role = useSelector((state) => state.auth.authenticated.role);
+  // let role = 'PM';
+  // let role = 'EMPLOYEE';
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
@@ -20,7 +22,11 @@ function TimeSheet() {
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
 
   useEffect(() => {
-    dispatch(thunks.getTimesheets());
+    if (role === 'PM') {
+      dispatch(thunks.getTimesheets());
+    } else {
+      dispatch(thunks.getEmployeeTimesheets(currentUser._id));
+    }
     dispatch(tasksThunks.getTasks());
   }, [timeSheets.length]);
   const allTasks = useSelector((state) => state.tasks.list);
@@ -44,7 +50,7 @@ function TimeSheet() {
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
     return {
       _id: timeSheet._id,
-      employeeId: (timeSheet.employeeId.firstName, timeSheet.employeeId.lastName),
+      employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
       projectId: timeSheet.projectId.name,
       date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
       taskId: timeSheet.taskId?.taskName,
