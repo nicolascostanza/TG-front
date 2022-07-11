@@ -28,7 +28,7 @@ function TimeSheet() {
   useEffect(() => {
     dispatch(thunks.getTimesheets());
     dispatch(tasksThunks.getTasks());
-  }, []);
+  }, [timeSheets.length]);
   const allTasks = useSelector((state) => state.tasks.list);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
@@ -56,7 +56,7 @@ function TimeSheet() {
       _id: timeSheet._id,
       employeeId: (timeSheet.employeeId.firstName, timeSheet.employeeId.lastName),
       // employeeId: timeSheet.employeeId.firstName.concat(' ', timeSheet.employeeId.lastName),
-      projectId: timeSheet.project,
+      projectId: timeSheet.projectId.name,
       date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
       // task_name: timeSheet.task.length
       //   ? timeSheet.task.map((task) => task.taskName).join(' - ')

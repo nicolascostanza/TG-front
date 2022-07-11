@@ -3,7 +3,8 @@ import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/timesheets/thunks';
-import { useDispatch, useSelector } from 'react-redux';
+// import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
@@ -13,21 +14,25 @@ function EditTimeSheets(props) {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
+        console.log('response ', response);
+        console.log('proshectid ', response.data.projectId._id);
         reset({
           employeeId: response.data.employeeId ? response.data.employeeId._id : '',
-          description: response.data.description,
-          project: response.data.project,
+          // description: response.data.description,
+          projectId: response.data.projectId._id,
           date: new Date(response.data.date).toISOString().split('T')[0] || '',
           hours: response.data.hours,
           approved: response.data.approved,
-          role: response.data.role
+          // role: response.data.role
+          taskId: response.data.taskId._id
         });
-        setSelectedTasks(response.data.task.map((item) => item._id));
+        // setSelectedTasks(response.data.task.map((item) => item._id));
+        // setSelectedTasks(response.data.taskId._id);
       });
   }, [props.editId]);
-  const allTasks = useSelector((state) => state.tasks.list);
+  // const allTasks = useSelector((state) => state.tasks.list);
   const [tasks, setTasks] = useState('');
-  const [selectedTasks, setSelectedTasks] = useState([]);
+  // const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
   const { showEditModal, handleClose } = props;
 
@@ -51,6 +56,7 @@ function EditTimeSheets(props) {
       'number.min': 'This field must have at least 1 hour',
       'number.max': 'This field can not have more than 24 hours'
     }),
+    taskId: Joi.string(),
     approved: Joi.bool().optional()
   });
   const {
@@ -63,15 +69,15 @@ function EditTimeSheets(props) {
     resolver: joiResolver(schema)
   });
 
-  const appendToSelectedTasks = (id) => {
-    const previousState = selectedTasks;
-    setSelectedTasks([...previousState, id]);
-    setTasks('');
-  };
+  // const appendToSelectedTasks = (id) => {
+  //   const previousState = selectedTasks;
+  //   setSelectedTasks([...previousState, id]);
+  //   setTasks('');
+  // };
 
-  const deleteFromSelectedTasks = (id) => {
-    setSelectedTasks(selectedTasks.filter((task) => task !== id));
-  };
+  // const deleteFromSelectedTasks = (id) => {
+  //   setSelectedTasks(selectedTasks.filter((task) => task !== id));
+  // };
 
   const editTimeSheets = async (newBody, id) => {
     dispatch(thunks.editTimesheet(newBody, id));
@@ -81,8 +87,8 @@ function EditTimeSheets(props) {
 
     editTimeSheets(
       {
-        ...data,
-        task: selectedTasks
+        ...data
+        // task: selectedTasks
       },
       props.editId
     );
@@ -128,7 +134,11 @@ function EditTimeSheets(props) {
           </div> */}
           <div>
             <label>Project ID</label>
-            <input {...register('project', { required: true })} type="text" placeholder="Project" />
+            <input
+              {...register('projectId', { required: true })}
+              type="text"
+              placeholder="Project"
+            />
             {errors.project?.type === 'string.empty' && (
               <p className={styles.error}>{errors.project.message}</p>
             )}
@@ -165,9 +175,10 @@ function EditTimeSheets(props) {
               type="text"
               placeholder="Task"
               value={tasks}
+              {...register('taskId', { required: true })}
               onChange={(e) => setTasks(e.target.value)}
             />
-            <div>
+            {/* <div>
               {tasks.length > 0
                 ? allTasks
                     .filter(
@@ -206,7 +217,7 @@ function EditTimeSheets(props) {
                       </p>
                     );
                   })}
-            </div>
+            </div> */}
           </div>
           <div>
             <label> Approved </label>
