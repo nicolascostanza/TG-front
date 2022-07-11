@@ -32,6 +32,7 @@ function TimeSheet() {
   const allTasks = useSelector((state) => state.tasks.list);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
+    console.log(id);
     if (resp) {
       dispatch(thunks.deleteTimesheets(id));
     }
@@ -60,16 +61,18 @@ function TimeSheet() {
       // task_name: timeSheet.task.length
       //   ? timeSheet.task.map((task) => task.taskName).join(' - ')
       //   : '-',
-      task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
+      // task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
+      taskId: timeSheet.taskId?.taskName,
       // task_name: timeSheet.task.length > 0 ? timeSheet.task[0].taskName : '-',
       hours: timeSheet.hours,
-      approved: timeSheet.approved ? 'Approved' : 'Disapoproved'
+      approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
+      isDeleted: false
       // role: timeSheet.role
     };
   });
   const approveTimesheet = (id) => {
     console.log('slider ', id);
-    console.log('sliderrrr ', timeSheets.id);
+    console.log('sliderrrr ', timeSheets);
     // dispatch(thunks.editTimesheet(newBody, id));
     // setEditId(id);
     // console.log(editId);
@@ -106,7 +109,7 @@ function TimeSheet() {
         title={role}
         // headers={['Name', 'Project', 'Date', 'Task', 'Hours', 'Approved', 'Role']}
         headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
-        keys={['employeeId', 'projectId', 'date', 'task_name', 'hours', 'approved']}
+        keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'approved']}
         data={formattedTimeSheets}
         role={role}
         onEdit={openEditTimeSheet}

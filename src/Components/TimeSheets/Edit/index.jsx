@@ -87,7 +87,7 @@ function EditTimeSheets(props) {
       props.editId
     );
   };
-
+  console.log(errors);
   return (
     <section>
       <Form

@@ -71,6 +71,7 @@ function EmployeeTimesheetTable({
         <tbody className={styles.tbody}>
           {show.map((row) => {
             return (
+              // { row.isDeleted ? null : (
               <tr className={styles.row} key={row._id}>
                 {keys.map((key, index) => {
                   if (key === 'active') {
@@ -128,6 +129,7 @@ function EmployeeTimesheetTable({
                   </td>
                 </>
               </tr>
+              // )}
             );
           })}
         </tbody>

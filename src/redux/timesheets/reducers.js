@@ -81,6 +81,7 @@ export const timesheetReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
+    // MODALS
     case types.SHOW_CREATE_MODAL:
       return {
         ...state,
