@@ -26,9 +26,9 @@ exports.config = {
   //
   specs: [
   //  './test/specs/home.spec.js',
-    './test/specs/login.spec.js',
+  //  './test/specs/login.spec.js',
   //  './test/specs/signup.spec.js',
-  //  './test/specs/employees.spec.js',
+    './test/specs/e2e.employee.spec.js',
   ],
   // Patterns to exclude.
   exclude: [
