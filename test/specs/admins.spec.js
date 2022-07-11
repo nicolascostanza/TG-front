@@ -95,8 +95,6 @@ describe('Admins page testing', () => {
     it('Delete an admin', async () => {
       await LoginPage.open();
       await LoginPage.login('adminkpo@admin.com', 'qwer1234');
-      await AdminsPage.btnNext.click();
-      await AdminsPage.btnNext.click();
       await AdminsPage.btnDelete.click();
       await expect(AdminsPage.modalDelete).toBeDisplayed();
       await expect(AdminsPage.modalBtnCancel).toExist();
@@ -104,6 +102,40 @@ describe('Admins page testing', () => {
       await expect(AdminsPage.modalBtnAccept).toExist();
       await expect(AdminsPage.modalBtnAccept).toBeClickable();
       await AdminsPage.modalBtnAccept.click();
+    });
+  });
+
+  describe('Redirection and edit admin profile', () => {
+    it('Redirection test', async () => {
+      await LoginPage.open();
+      await LoginPage.login('adminkpo@admin.com', 'qwer1234');
+      await AdminsPage.homeNavBtn.click();
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/');
+      await expect(AdminsPage.adminProfileBtn).toExist();
+      await expect(AdminsPage.adminProfileBtn).toBeClickable();
+      await AdminsPage.adminProfileBtn.click();
+      // eslint-disable-next-line prettier/prettier
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/admins/profile/62bb2dbe576424de7c76bff5');
+      await expect(AdminsPage.adminProfileTable).toExist();
+      await expect(AdminsPage.adminProfileEditBtn).toExist();
+      await expect(AdminsPage.adminProfileEditBtn).toBeClickable();
+      await AdminsPage.adminProfileEditBtn.click();
+    });
+    it('Edit admin profile test', async () => {
+      await LoginPage.open();
+      await LoginPage.login('adminkpo@admin.com', 'qwer1234');
+      await AdminsPage.homeNavBtn.click();
+      await AdminsPage.adminProfileBtn.click();
+      await AdminsPage.adminProfileEditBtn.click();
+      await expect(AdminsPage.adminProfileCancelBtn).toExist();
+      await expect(AdminsPage.adminProfileCancelBtn).toBeClickable();
+      await expect(AdminsPage.profileInputFirstName).toExist();
+      await expect(AdminsPage.profileInputLastName).toExist();
+      await expect(AdminsPage.profileInputEmail).toExist();
+      await expect(AdminsPage.profileInputPassword).toExist();
+      await expect(AdminsPage.profileActiveCheckbox).toExist();
+      await AdminsPage.profileInputFirstName.setValue('Rosalia');
+      await AdminsPage.adminProfileUpdateBtn.click();
     });
   });
 });

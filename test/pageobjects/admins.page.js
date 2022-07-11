@@ -1,6 +1,19 @@
 class AdminsPage {
   /* eslint-disable */
     //Getters
+    get homeNavBtn () {return $('.header_rutes__-JsnG > li:nth-child(1) > a:nth-child(1)')};
+    get adminProfileBtn () {return $('.Button_Button__72Faw')};
+    get adminProfileTable () {return $('.profile_form__J0E0W')};
+    get adminProfileEditBtn () {return $('.profile_greenButton__aMxMh')};
+    get adminProfileCancelBtn () {return $('.profile_redButton__8jsef')};
+    get adminProfileUpdateBtn () {return $('.profile_buttonSubmit__c3a3J')};
+    get profileInputFirstName () {return $('div.profile_row__lVWUT:nth-child(1) > div:nth-child(2) > input:nth-child(1)')};
+    get profileInputLastName () {return $('div.profile_row__lVWUT:nth-child(2) > div:nth-child(2) > input:nth-child(1)')};
+    get profileInputEmail () {return $('div.profile_row__lVWUT:nth-child(3) > div:nth-child(2) > input:nth-child(1)')};
+    get profileInputPassword () {return $('div.profile_row__lVWUT:nth-child(4) > div:nth-child(2) > input:nth-child(1)')};
+    get profileActiveCheckbox () {return $('div.profile_row__lVWUT:nth-child(5) > div:nth-child(2) > input:nth-child(1)')};
+    get modalEditProfile () {return $('.modal_modalContainer__Sdomi')};
+
     get h2Admins () {return $('.table_container__TD1ls > h2:nth-child(1)')};
     get btnAdd () {return $('.Button_Button__72Faw')};
     get completeTable () {return $('.table_table__LagT9')};
@@ -36,6 +49,12 @@ class AdminsPage {
     get modalDelete () {return $('.modal_modalContainer__Sdomi')};
     get modalBtnAccept () {return $('.admins_boxButtons__Kokps > button:nth-child(1)')};
     get modalBtnCancel () {return $('.admins_boxButtons__Kokps > button:nth-child(2)')};
+
+    get employeesNavBtn () {return $('.header_rutes__-JsnG > li:nth-child(4) > a:nth-child(1)')};
+    get employeesTable () {return $('.table_table__LagT9')};
+
+    get projectsNavBtn () {return $('.header_rutes__-JsnG > li:nth-child(5) > a:nth-child(1)')};
+    get projectsTable () {return $('.table_table__LagT9')};
 
     //Setters
     async setName(name) {
