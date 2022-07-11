@@ -100,5 +100,23 @@ export const timesheetReducer = (state = initialState, action) => {
       };
     default:
       return state;
+    // EMPLOYEE TIMESHEET
+    case types.GET_EMPLOYEE_TIMSHEET_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.GET_EMPLOYEE_TIMSHEET_FULFILLED:
+      return {
+        ...state,
+        list: action.payload,
+        isFetching: false
+      };
+    case types.GET_EMPLOYEE_TIMSHEET_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
   }
 };

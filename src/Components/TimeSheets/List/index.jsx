@@ -14,8 +14,10 @@ function TimeSheet() {
   // Esto de aca es el filtro por rol, como no hay un pm
   // const role = useSelector((state) => state.auth.authenticated?.role);
   // role && console.log('role: ', role);
-  let role = 'PM';
-  // let role = 'EMPLOYEE';
+  // let role = 'PM';
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
+  // console.log('currentUserId ', currentUserId);
+  let role = 'EMPLOYEE';
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
@@ -47,6 +49,9 @@ function TimeSheet() {
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
+  // const getEmployeeTimesheets = () => {
+  //   dispatch(thunks.getEmployeeTimesheets(currentUserId));
+  // };
   // const formattedTimeSheets = timeSheets.map((timeSheet) => {
   console.log('esttt', timeSheets);
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
@@ -92,6 +97,8 @@ function TimeSheet() {
         showCreateModal={showCreateModal}
         handleClose={handleClose}
         allTasks={allTasks}
+        role={role}
+        currentUser={currentUser}
       ></AddTimeSheets>
       {/* <button onClick={setShowAddTaskModal(true)}>Add task</button> */}
       {/* {role === 'PM' ? (

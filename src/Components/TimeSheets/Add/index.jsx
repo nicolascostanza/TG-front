@@ -50,6 +50,7 @@ function AddTimeSheets(props) {
   const {
     register,
     handleSubmit,
+    // reset,
     formState: { errors }
   } = useForm({
     mode: 'onBlur',
@@ -208,10 +209,12 @@ function AddTimeSheets(props) {
                   })}
             </div> */}
           </div>
-          <div>
-            <label htmlFor="approved">Approved</label>
-            <input {...register('approved', { required: true })} type="checkbox" />
-          </div>
+          {props.role === 'PM' && (
+            <div>
+              <label htmlFor="approved">Approved</label>
+              <input {...register('approved', { required: true })} type="checkbox" />
+            </div>
+          )}
           {/* <div>
             <label htmlFor="role"> Role </label>
             <input {...register('role', { required: true })} type="text" placeholder="Role" />

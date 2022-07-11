@@ -78,3 +78,17 @@ export const showEditModal = () => ({
 export const closeModals = () => ({
   type: types.CLOSE_MODALS
 });
+// GET EMPLOYEE TIMESHEET
+export const getEmployeeTimesheetFulfilled = (timesheet) => ({
+  type: types.GET_EMPLOYEE_TIMSHEET_FULFILLED,
+  payload: timesheet
+});
+
+export const getEmployeTimesheetPending = () => ({
+  type: types.GET_EMPLOYEE_TIMSHEET_PENDING
+});
+
+export const getEmployeTimesheetFailed = (error) => ({
+  type: types.GET_EMPLOYEE_TIMSHEET_FAILED,
+  payload: error
+});
