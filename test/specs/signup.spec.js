@@ -20,9 +20,15 @@ describe('REGISTER page test', () => {
     })
     describe('Checking REGISTER form', () => {
         it('Sending valid data, should display a modal with an employee created message', async () => {
-            await SignUpPage.register('Karen','Soto','2','Coco 1234','20/11/1995','3417120979','prueba1@gmail.com','asdf1234')
+            await SignUpPage.register('Karen','Soto','Coco 1234','20/11/1995','3417120979','prueba2@gmail.com','asdf1234')
             await SignUpPage.continueBtn.click()
             await expect(SignUpPage.employeeCreatedMsg).toBePresent()
+        })
+        it('Sending empty data, should display an error message below each empty input', async () => {
+            await browser.url('https://alfonso-trackgenix-app.vercel.app/signup')
+            await SignUpPage.register('','','','','','','')
+            await SignUpPage.continueBtn.click()
+            await expect(SignUpPage.allErrorFields).toBeDisplayed()
         })
     })
 })

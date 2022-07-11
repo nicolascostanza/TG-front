@@ -1,11 +1,13 @@
 class LoginPage {
   ///// GETTERS /////
-  get inputEmail() { return $('#root > div > section > section.login_form__AeUm\+ > form > div.login_formFlex__UbsE0 > div:nth-child(1) > input[type=text]') }
-  get inputPassword() { return $('#root > div > section > section.login_form__AeUm\+ > form > div.login_formFlex__UbsE0 > div:nth-child(2) > input[type=password]') }
-  get continueBtn() { return $('#root > div > section > section.login_form__AeUm\+ > form > div.login_buttonsContainer__tswFM > button') }
-  get emailError() { return $('#root > div > section > section.login_form__AeUm\+ > form > div.login_formFlex__UbsE0 > div:nth-child(1) > p') }
-  get passwordError() { return $('#root > div > section > section.login_form__AeUm\+ > form > div.login_formFlex__UbsE0 > div:nth-child(2) > p') }
-  ///// SETTERS ////
+  get inputEmail() { return $('[name="email"]') }
+  get inputPassword() { return $('[name="password"]') }
+  get continueBtn() { return $('.login_buttonContinue__EGjlD') }
+  get errorEmailCont() { return $('#root > div > section > section.login_form__AeUm\+ > form > div.login_formFlex__UbsE0 > div:nth-child(1) > p') }
+  get errorPasswordCont() { return $('#root > div > section > section.login_form__AeUm\+ > form > div.login_formFlex__UbsE0 > div:nth-child(2) > p') }
+  get logoutBtn() {return $('.header_rutes__-JsnG > li:nth-child(8) > a:nth-child(1)')};  
+  
+  ///// SETTERS /////
   async login(email, password) {
     await this.inputEmail.setValue(email);
     await this.inputPassword.setValue(password);
