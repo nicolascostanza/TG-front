@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import AddTimeSheets from '../Add';
-// import Table from 'Components/Shared/Table';
 import EditTimeSheets from '../Edit';
 import Sidebar from 'Components/Shared/Sidebar';
 import Loader from 'Components/Shared/Loader';
@@ -11,21 +10,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 
 function TimeSheet() {
-  // Esto de aca es el filtro por rol, como no hay un pm
-  // const role = useSelector((state) => state.auth.authenticated?.role);
-  // role && console.log('role: ', role);
-  // let role = 'PM';
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  // console.log('currentUserId ', currentUserId);
-  let role = 'EMPLOYEE';
+  let role = 'PM';
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
   const [editId, setEditId] = useState('');
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
-
-  // const [selectedEmployees, setSelectedEmployees] = useState([]);
 
   useEffect(() => {
     dispatch(thunks.getTimesheets());
@@ -49,30 +41,16 @@ function TimeSheet() {
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
-  // const getEmployeeTimesheets = () => {
-  //   dispatch(thunks.getEmployeeTimesheets(currentUserId));
-  // };
-  // const formattedTimeSheets = timeSheets.map((timeSheet) => {
-  console.log('esttt', timeSheets);
   const formattedTimeSheets = timeSheets.map((timeSheet) => {
-    console.log('timeSheet.task ', timeSheet.task);
     return {
-      // ...timeSheet,
       _id: timeSheet._id,
       employeeId: (timeSheet.employeeId.firstName, timeSheet.employeeId.lastName),
-      // employeeId: timeSheet.employeeId.firstName.concat(' ', timeSheet.employeeId.lastName),
       projectId: timeSheet.projectId.name,
       date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
-      // task_name: timeSheet.task.length
-      //   ? timeSheet.task.map((task) => task.taskName).join(' - ')
-      //   : '-',
-      // task_name: timeSheet.task ? timeSheet.task.map((task) => task.taskName).join(' - ') : '-',
       taskId: timeSheet.taskId?.taskName,
-      // task_name: timeSheet.task.length > 0 ? timeSheet.task[0].taskName : '-',
       hours: timeSheet.hours,
       approved: timeSheet.approved ? 'Approved' : 'Disapoproved',
       isDeleted: false
-      // role: timeSheet.role
     };
   });
   const approveTimesheet = (id) => {
@@ -92,6 +70,8 @@ function TimeSheet() {
         handleClose={handleClose}
         editId={editId}
         allTasks={allTasks}
+        role={role}
+        currentUser={currentUser}
       />
       <AddTimeSheets
         showCreateModal={showCreateModal}
@@ -100,21 +80,8 @@ function TimeSheet() {
         role={role}
         currentUser={currentUser}
       ></AddTimeSheets>
-      {/* <button onClick={setShowAddTaskModal(true)}>Add task</button> */}
-      {/* {role === 'PM' ? (
-        <Table
-          title="Timesheets"
-          headers={['employeeId', 'projectId', 'date', 'task_name', 'hours', 'approved']}
-          // headers={['employeeId', 'projectId', 'date', 'task_name', 'approved']}
-          data={formattedTimeSheets}
-          onEdit={openEditTimeSheet}
-          onDelete={deleteTimeSheet}
-          onAdd={openAddTimeSheet}
-        />
-      ) : ( */}
       <EmployeeTimesheetTable
         title={role}
-        // headers={['Name', 'Project', 'Date', 'Task', 'Hours', 'Approved', 'Role']}
         headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
         keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'approved']}
         data={formattedTimeSheets}
@@ -123,10 +90,7 @@ function TimeSheet() {
         onAdd={openAddTimeSheet}
         onDelete={deleteTimeSheet}
         onApprove={approveTimesheet}
-        // switcher={}
-        // selectedTimesheet={}
       />
-      {/* )} */}
     </>
   );
 }

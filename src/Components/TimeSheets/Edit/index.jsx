@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/timesheets/thunks';
-// import { useDispatch, useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -18,21 +17,15 @@ function EditTimeSheets(props) {
         console.log('proshectid ', response.data.projectId._id);
         reset({
           employeeId: response.data.employeeId ? response.data.employeeId._id : '',
-          // description: response.data.description,
           projectId: response.data.projectId._id,
           date: new Date(response.data.date).toISOString().split('T')[0] || '',
           hours: response.data.hours,
           approved: response.data.approved,
-          // role: response.data.role
           taskId: response.data.taskId._id
         });
-        // setSelectedTasks(response.data.task.map((item) => item._id));
-        // setSelectedTasks(response.data.taskId._id);
       });
   }, [props.editId]);
-  // const allTasks = useSelector((state) => state.tasks.list);
   const [tasks, setTasks] = useState('');
-  // const [selectedTasks, setSelectedTasks] = useState([]);
   const dispatch = useDispatch();
   const { showEditModal, handleClose } = props;
 
@@ -69,16 +62,6 @@ function EditTimeSheets(props) {
     resolver: joiResolver(schema)
   });
 
-  // const appendToSelectedTasks = (id) => {
-  //   const previousState = selectedTasks;
-  //   setSelectedTasks([...previousState, id]);
-  //   setTasks('');
-  // };
-
-  // const deleteFromSelectedTasks = (id) => {
-  //   setSelectedTasks(selectedTasks.filter((task) => task !== id));
-  // };
-
   const editTimeSheets = async (newBody, id) => {
     dispatch(thunks.editTimesheet(newBody, id));
   };
@@ -88,7 +71,6 @@ function EditTimeSheets(props) {
     editTimeSheets(
       {
         ...data
-        // task: selectedTasks
       },
       props.editId
     );
@@ -103,35 +85,19 @@ function EditTimeSheets(props) {
         title="Edit Time Sheet"
       >
         <div className={styles.container}>
-          <div>
-            {/* ESTO TIENE QUE COMPLETARSE SOLO CON EL ID DEL EMPLEADO LOGEADO */}
-            <label>Employee ID</label>
-            <input
-              {...register('employeeId', { required: true })}
-              type="text"
-              placeholder="employeeId"
-            />
-            {errors.employeeId?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.employeeId.message}</p>
-            )}
-          </div>
-          {/* <div>
-            <label> Description </label>
-            <input
-              {...register('description', { required: true })}
-              type="text"
-              placeholder="Description"
-            />
-            {errors.description?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.description.message}</p>
-            )}
-            {errors.description?.type === 'string.min' && (
-              <p className={styles.error}>{errors.description.message}</p>
-            )}
-            {errors.description?.type === 'string.max' && (
-              <p className={styles.error}>{errors.description.message}</p>
-            )}
-          </div> */}
+          {props.role === 'PM' && (
+            <div>
+              <label>Employee ID</label>
+              <input
+                {...register('employeeId', { required: true })}
+                type="text"
+                placeholder="employeeId"
+              />
+              {errors.employeeId?.type === 'string.empty' && (
+                <p className={styles.error}>{errors.employeeId.message}</p>
+              )}
+            </div>
+          )}
           <div>
             <label>Project ID</label>
             <input
@@ -178,58 +144,13 @@ function EditTimeSheets(props) {
               {...register('taskId', { required: true })}
               onChange={(e) => setTasks(e.target.value)}
             />
-            {/* <div>
-              {tasks.length > 0
-                ? allTasks
-                    .filter(
-                      (task) =>
-                        task.taskName.match(new RegExp(tasks, 'i')) ||
-                        task.taskDescription.match(new RegExp(tasks, 'i'))
-                    )
-                    .map((task) => {
-                      return (
-                        <p
-                          key={task._id}
-                          onClick={() =>
-                            selectedTasks.find((item) => item === task._id)
-                              ? deleteFromSelectedTasks(task._id)
-                              : appendToSelectedTasks(task._id)
-                          }
-                          className={
-                            selectedTasks.find((item) => item === task._id)
-                              ? styles.selectedItem
-                              : styles.notSelectedItem
-                          }
-                        >
-                          {task.taskName}: {task.taskDescription}
-                        </p>
-                      );
-                    })
-                : selectedTasks.map((task) => {
-                    return (
-                      <p
-                        key={task}
-                        className={styles.chip}
-                        onClick={() => deleteFromSelectedTasks(task)}
-                      >
-                        {allTasks.find((item) => item._id === task).taskName}:{' '}
-                        {allTasks.find((item) => item._id === task).taskDescription}
-                      </p>
-                    );
-                  })}
-            </div> */}
           </div>
-          <div>
-            <label> Approved </label>
-            <input {...register('approved', { required: true })} type="checkbox" />
-          </div>
-          {/* <div>
-            <label> Role </label>
-            <input {...register('role', { required: true })} type="text" placeholder="Role" />
-            {errors.role?.type === 'any.only' && (
-              <p className={styles.error}>{errors.role.message}</p>
-            )}
-          </div> */}
+          {props.role === 'PM' && (
+            <div>
+              <label htmlFor="approved">Approved</label>
+              <input {...register('approved', { required: true })} type="checkbox" />
+            </div>
+          )}
         </div>
       </Form>
     </section>

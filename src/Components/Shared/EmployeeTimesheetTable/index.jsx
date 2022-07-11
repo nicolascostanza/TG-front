@@ -46,21 +46,16 @@ function EmployeeTimesheetTable({
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      {/* {role === `ADMIN` || role === `SUPERADMIN` ? ( */}
       <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
         <i className="fa-solid fa-plus"></i>
         ADD
       </Button>
-      {/* // ) : (
-      //   <></>
-      // )} */}
       <table className={styles.table}>
         <thead>
           <tr>
             {headers.map((header, index) => {
               return <th key={index}>{header}</th>;
             })}
-            {/* REVISAR */}
             {role === `PM` && (
               <>
                 <th>Approve</th>
@@ -71,7 +66,6 @@ function EmployeeTimesheetTable({
         <tbody className={styles.tbody}>
           {show.map((row) => {
             return (
-              // { row.isDeleted ? null : (
               <tr className={styles.row} key={row._id}>
                 {keys.map((key, index) => {
                   if (key === 'active') {
@@ -87,8 +81,6 @@ function EmployeeTimesheetTable({
                     </td>
                   );
                 })}
-                {/* {role === `ADMIN` || role === `SUPERADMIN` ? ( */}
-                {/* {role === `PM` ? ( */}
                 <>
                   <td>
                     <Button
@@ -120,7 +112,6 @@ function EmployeeTimesheetTable({
                           id="approved"
                           name="approved"
                           value="approved"
-                          // onChange={onApprove(row._id)}
                           onChange={() => onApprove(row._id)}
                         />
                         <span className={styles.slider} />
