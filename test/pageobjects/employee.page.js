@@ -22,8 +22,6 @@ class EmployeePage {
     get employeePasswordInput() { return $('div.profile_row__41l36:nth-child(8) > div:nth-child(2) > input:nth-child(1)') }
     get employeeStatusCheckbox() { return $('div.profile_row__41l36:nth-child(9) > div:nth-child(2) > input:nth-child(1)') }
     
-    get homeNavBarLink() { return $('#root > div > header > nav > ul > li:nth-child(1) > a') }
-    get LogOutNavBarLink() { return $('#root > div > header > nav > ul > li:nth-child(8) > a') }
 }
 
 module.exports = new EmployeePage();

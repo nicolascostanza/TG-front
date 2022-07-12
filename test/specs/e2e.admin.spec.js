@@ -2,33 +2,56 @@ const HomePage = require('../pageobjects/home.page')
 const HeaderPage = require('../pageobjects/header.page')
 const LoginPage = require('../pageobjects/login.page')
 const AdminsPage = require('../pageobjects/admin.page')
+const adminPage = require('../pageobjects/admin.page')
 
 describe('Admins e2e for trackGENIX app test', () => {
-	describe('Elements and redirections testing', () => {
+  beforeAll('Open browser and admin login with valid credentials', () => {
+    browser.url('https://alfonso-trackgenix-app.vercel.app/')
+    HomePage.sidebarBtn.click()
+    HomePage.logInLink.click()
+    LoginPage.login('adminkpo@admin.com', 'qwer1234')
+  })
+	describe('Elements display and redirections testing on ADMIN TABLE LIST page', () => {
+		it('Checking redirection to ADMIN TABLE LIST', async () => {
+			await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/admins')
+		})
+		it('Checking display of title on ADMIN TABLE LIST', async () => {
+			await expect(AdminsPage.adminTableTitle).toHaveText('Admins')
+		})
+		it('Checking display of CRUD buttons on ADMIN TABLE LIST', async () => {
+			await expect(AdminsPage.adminTableAddBtn).toBeClickable()
+			await expect(AdminsPage.adminTableEditBtn).toBeClickable()
+			await expect(AdminsPage.adminTableDeleteBtn).toBeClickable()
+		})
+		it('Checking display of previous/next page buttons on ADMIN TABLE LIST', async () => {
+			await expect(AdminsPage.adminTablePrevBtn).toBeClickable()
+			await expect(AdminsPage.adminTableNextBtn).toBeClickable()
+		})
+		it('Checking table list on ADMIN TABLE LIST', async () => {
+			await expect(AdminsPage.adminTableList).toBeDisplayed()
+		})
+	})
+	describe('CRUD functionalities on ADMIN TABLE LIST testing', () => {
+		it('Checking ADD button on ADMIN TABLE LIST', async () => {
+			await AdminsPage.adminTableAddBtn.click()
+			await expect(AdminsPage.adminCreateModalTitle).toHaveText('Create Admin')
+			await AdminsPage.adminCreateModalCloseBtn.click()
+		})
+	})
+	describe('Elements display and redirections testing on ADMIN PROFILE page', () => {
 		it('Checking redirection to ADMIN PROFILE home', async () => {
-			await browser.url('https://alfonso-trackgenix-app.vercel.app/login')
-			await LoginPage.login('adminkpo@admin.com', 'qwer1234')
 			await HeaderPage.navHomeLink.click()
 			await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/')
 		})
-		it('Checking ADMIN PROFILE button', async () => {
-		await browser.url('https://alfonso-trackgenix-app.vercel.app/login')
-		await LoginPage.login('adminkpo@admin.com', 'qwer1234')
-		await expect(AdminsPage.adminProfileBtn).toBeClickable()
+		it('Checking ADMIN PROFILE button on ADMIN PROFILE home', async () => {
+			await expect(AdminsPage.adminProfileBtn).toBeClickable()
 		})
 		it('Checking ADMIN PROFILE button redirection to admin table list', async () => {
-		await browser.url('https://alfonso-trackgenix-app.vercel.app/login')
-		await LoginPage.login('adminkpo@admin.com', 'qwer1234')
-		await AdminsPage.adminProfileBtn.click()
-		await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/admins/profile/62bb2dbe576424de7c76bff5')
+			await AdminsPage.adminProfileBtn.click()
+			await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/admins/profile/62bb2dbe576424de7c76bff5')
 		})
-	  it('Checking Admin table list page elements', async () => {
-		await expect(EmployeePage.employeeTable).toExist()
-		await expect(EmployeePage.employeeEditBtn).toBeClickable()
-		await expect(EmployeePage.employeeGoHomeBtn).toBeClickable()
-   })
-   it('Checking Welcome title', async () => {
-		await expect(EmployeePage.employeeWelcomeTitle).toHaveTextContaining('Welcome')
-   })
+		it('Checking Welcome title on ADMIN PROFILE page', async () => {
+			await expect(AdminsPage.adminWelcomeTitle).toHaveTextContaining('Welcome')
+		})
 	})
 })
