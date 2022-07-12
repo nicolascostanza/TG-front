@@ -1,5 +1,6 @@
 const HomePage = require('../pageobjects/home.page')
-const LoginPage = require('../pageobjects/login.page.js')
+const HeaderPage = require('../pageobjects/header.page')
+const LoginPage = require('../pageobjects/login.page')
 const EmployeePage = require('../pageobjects/employee.page')
 
 describe('Employees e2e for trackGENIX app test', () => {
