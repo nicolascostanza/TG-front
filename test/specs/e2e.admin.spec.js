@@ -2,15 +2,15 @@ const HomePage = require('../pageobjects/home.page')
 const HeaderPage = require('../pageobjects/header.page')
 const LoginPage = require('../pageobjects/login.page')
 const AdminsPage = require('../pageobjects/admin.page')
-const adminPage = require('../pageobjects/admin.page')
 
 describe('Admins e2e for trackGENIX app test', () => {
-  beforeAll('Open browser and admin login with valid credentials', () => {
+	beforeAll('Open browser and admin login with valid credentials', () => {
     browser.url('https://alfonso-trackgenix-app.vercel.app/')
     HomePage.sidebarBtn.click()
     HomePage.logInLink.click()
     LoginPage.login('adminkpo@admin.com', 'qwer1234')
-  })
+		browser.debug()
+	})
 	describe('Elements display and redirections testing on ADMIN TABLE LIST page', () => {
 		it('Checking redirection to ADMIN TABLE LIST', async () => {
 			await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/admins')
