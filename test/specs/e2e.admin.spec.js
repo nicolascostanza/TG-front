@@ -9,7 +9,7 @@ describe('Admins e2e for trackGENIX app test', () => {
     HomePage.sidebarBtn.click()
     HomePage.logInLink.click()
     LoginPage.login('adminkpo@admin.com', 'qwer1234')
-		browser.debug()
+		browser.debug(10000)
 	})
 	describe('Elements display and redirections testing on ADMIN TABLE LIST page', () => {
 		it('Checking redirection to ADMIN TABLE LIST', async () => {
@@ -18,7 +18,7 @@ describe('Admins e2e for trackGENIX app test', () => {
 		it('Checking display of title on ADMIN TABLE LIST', async () => {
 			await expect(AdminsPage.adminTableTitle).toHaveText('Admins')
 		})
-		it('Checking display of CRUD buttons on ADMIN TABLE LIST', async () => {
+		it('Checking display of ADD/EDIT/DELETE buttons on ADMIN TABLE LIST', async () => {
 			await expect(AdminsPage.adminTableAddBtn).toBeClickable()
 			await expect(AdminsPage.adminTableEditBtn).toBeClickable()
 			await expect(AdminsPage.adminTableDeleteBtn).toBeClickable()
@@ -27,15 +27,44 @@ describe('Admins e2e for trackGENIX app test', () => {
 			await expect(AdminsPage.adminTablePrevBtn).toBeClickable()
 			await expect(AdminsPage.adminTableNextBtn).toBeClickable()
 		})
-		it('Checking table list on ADMIN TABLE LIST', async () => {
+		it('Checking table list display on ADMIN TABLE LIST', async () => {
 			await expect(AdminsPage.adminTableList).toBeDisplayed()
 		})
 	})
-	describe('CRUD functionalities on ADMIN TABLE LIST testing', () => {
-		it('Checking ADD button on ADMIN TABLE LIST', async () => {
-			await AdminsPage.adminTableAddBtn.click()
-			await expect(AdminsPage.adminCreateModalTitle).toHaveText('Create Admin')
-			await AdminsPage.adminCreateModalCloseBtn.click()
+	describe('ADD/EDIT/DELETE functionalities on ADMIN TABLE LIST testing', () => {
+		describe('CREATE functionality testing', () => {
+			it('Checking CREATE form modal title on ADMIN TABLE LIST to be displayed', async () => {
+				await AdminsPage.adminTableAddBtn.click()
+				await expect(AdminsPage.adminModalTitle).toHaveText('Create Admin')
+			})
+			it('Checking RESET button on CREATE form modal on ADMIN TABLE LIST to be displayed', async () => {
+				await expect(AdminsPage.adminModalResetBtn).toBeClickable()
+			})
+			it('Checking SUBMIT button on CREATE form modal on ADMIN TABLE LIST to be displayed', async () => {
+				await expect(AdminsPage.adminModalSubmitBtn).toBeClickable()
+			})
+			it('Checking CLOSE button on CREATE form modal on ADMIN TABLE LIST to be displayed', async () => {
+				await expect(AdminsPage.adminModalCloseBtn).toBeClickable()
+			})
+			it('Checking CREATE functionality', async () => {
+				await AdminsPage.createAdmin('Karen','Soto','test1234@gmail.com','mypassword1',true)
+				await AdminsPage.adminModalSubmitBtn.click()
+				await expect(browser).toHaveUrlContaining('admins')
+			})
+		})
+		describe('EDIT functionality testing', () => {
+			it('Checking EDIT form modal title on ADMIN TABLE LIST to be displayed', async () => {
+				await browser.refresh()
+				await browser.url('https://alfonso-trackgenix-app.vercel.app/login')
+				await LoginPage.login('adminkpo@admin.com', 'qwer1234')
+				await AdminsPage.adminTableEditBtn.click()
+				await expect(AdminsPage.adminModalTitle).toHaveText('Edit Admin')
+			})
+			it('Checking EDIT functionality', async () => {
+				await AdminsPage.adminModalStatusCheckbox.click()
+				await AdminsPage.adminModalSubmitBtn.click()
+				await expect(browser).toHaveUrlContaining('admins')
+			})
 		})
 	})
 	describe('Elements display and redirections testing on ADMIN PROFILE page', () => {
