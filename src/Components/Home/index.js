@@ -43,7 +43,11 @@ function Home() {
   let title = '';
   const role = 'ADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
+
   useEffect(() => {
+    dispatch(thunksAdmins.getAdmins());
+    dispatch(thunksProjects.getProjects());
+    dispatch(thunksProjects.getProjects());
     // if para el home, else para el open project
     if (id === '') {
       // aca despues hago un switch con la peticion nueva de projects asociados al employee
@@ -58,6 +62,7 @@ function Home() {
       }
     }
   }, [screen]);
+
   // headers and keys
   if (role === 'SUPERADMIN') {
     headers = ['Email', 'Password', 'Is Active ?'];
@@ -108,6 +113,7 @@ function Home() {
     }
   };
   console.log(errors);
+
   const onSubmit = (data) => {
     if (role === 'SUPERADMIN') {
       if (method === 'POST') {

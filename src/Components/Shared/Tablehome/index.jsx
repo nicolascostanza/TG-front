@@ -72,10 +72,10 @@ function Tablehome({
           </tr>
         </thead>
         <tbody className={styles.tbody}>
-          {show.map((row) => {
+          {show?.map((row) => {
             return (
               <tr className={styles.row} key={row._id}>
-                {keys.map((key, index) => {
+                {keys?.map((key, index) => {
                   if (key === 'active') {
                     return (
                       <td>
@@ -98,7 +98,7 @@ function Tablehome({
                       <td>
                         <Dropdown width={'150px'} placeholder={'Team'}>
                           {/* aca iria .employeeId.firstName */}
-                          {row[key].map((element) => {
+                          {row[key]?.map((element) => {
                             return <option key={Math.random()}>{element.role}</option>;
                           })}
                           ;

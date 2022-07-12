@@ -26,6 +26,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
   let headers;
   let keys;
   let data;
+
   if (filterProject) {
     headers = ['ID', 'Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
@@ -35,9 +36,11 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
     keys = ['_id', 'taskName', 'taskDescription'];
     data = dataTasks;
   }
-  const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
+
+  const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
+
   useEffect(() => {
-    const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
+    const maxIndexPage = data?.length > 10 ? Math.floor((data?.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
       setIndexPage(1);
     }
@@ -45,25 +48,30 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
       setIndexPage(maxIndexPage);
     }
   }, [data]);
+
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
       setIndexPage(indexPage + 1);
     }
   };
+
   const previousPage = () => {
     if (indexPage > 1) {
       setIndexPage(indexPage - 1);
     }
   };
+
   const changeFilter = () => {
     setFilterProject(!filterProject);
   };
+
   const assignPm = () => {
     console.log('asigno el pm');
   };
   // const addTask = () => {
   //   console.log('aca agrego la tasks si es employee o admin');
   // };
+
   const {
     handleSubmit,
     register,
@@ -72,6 +80,9 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
     mode: 'onBlur',
     resolver: joiResolver(tab === 'employees' ? validationsFormAddEmployee : validationsFormAddTask)
   });
+
+  console.log(errors);
+
   const onSubmit = (data) => {
     if (tab === 'employees') {
       const selectedProject = projectsList.filter((project) => project._id === idProject);
@@ -83,6 +94,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
       console.log('data tasks: ', data);
     }
   };
+
   // const handleInputChanges = (e) => {
   //   const { name, value } = e.target;
   //   setTask({
@@ -98,48 +110,50 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
   //   setAssignedEmployees([...previousState, id]);
   //   setTask({ ...task, assignedEmployee: '' });
   // };
+
   return (
     <div className={styles.container}>
-      <Modal
-        showModal={showModalTask}
-        handleClose={() => setShowModalTask(false)}
-        modalTitle={'ADD TASK'}
-      >
-        <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label htmlFor="Task Name">Task Name</label>
-            <input
-              type="text"
-              placeholder="Task Name"
-              {...register('taskName')}
-              error={appendErrors.taskName?.message}
-            />
-            {errors.taskName && <p className={styles.errorInput}>{errors.taskName?.message}</p>}
-          </div>
-          <div>
-            <label htmlFor="Task Description">Task Description</label>
-            <input
-              type="text"
-              placeholder="Description"
-              {...register('taskDescription')}
-              error={appendErrors.taskDescription?.message}
-            />
-            {errors.taskDescription && (
-              <p className={styles.errorInput}>{errors.taskDescription?.message}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="Assigned Employee">Assigned Employee</label>
-            <input
-              // value={assignedEmployee}
-              // onChange={handleInputChanges}
-              name="employees"
-              type="text"
-              placeholder="Search an employee"
-              className={styles.input}
-            />
-          </div>
-          {/* <input
+      {showModalTask ? (
+        <Modal
+          showModal={showModalTask}
+          handleClose={() => setShowModalTask(false)}
+          modalTitle={'ADD TASK'}
+        >
+          <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label htmlFor="Task Name">Task Name</label>
+              <input
+                type="text"
+                placeholder="Task Name"
+                {...register('taskName')}
+                error={appendErrors.taskName?.message}
+              />
+              {errors.taskName && <p className={styles.errorInput}>{errors.taskName?.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="Task Description">Task Description</label>
+              <input
+                type="text"
+                placeholder="Description"
+                {...register('taskDescription')}
+                error={appendErrors.taskDescription?.message}
+              />
+              {errors.taskDescription && (
+                <p className={styles.errorInput}>{errors.taskDescription?.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="Assigned Employee">Assigned Employee</label>
+              <input
+                // value={assignedEmployee}
+                // onChange={handleInputChanges}
+                name="employees"
+                type="text"
+                placeholder="Search an employee"
+                className={styles.input}
+              />
+            </div>
+            {/* <input
               value={assignedEmployee}
               onChange={handleInputChanges}
               name="employees"
@@ -188,70 +202,75 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
                   })}
             </div>
           </div> */}
-          <div>
-            <label htmlFor="Status">Status</label>
-            <input type="text" placeholder="Status" />
-          </div>
-          <div className={styles.buttonsContainer}>
-            <Button width={'75px'} height={'30px'} type="submit" value="task">
-              ADD TASK
-            </Button>
-          </div>
-        </form>
-      </Modal>
+            <div>
+              <label htmlFor="Status">Status</label>
+              <input type="text" placeholder="Status" />
+            </div>
+            <div className={styles.buttonsContainer}>
+              <Button width={'75px'} height={'30px'} type="submit" value="task">
+                ADD TASK
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      ) : null}
       {/* modal add employee */}
-      <Modal
-        showModal={showModalEmployee}
-        handleClose={() => setShowModalEmployee(false)}
-        modalTitle={'ADD EMPLOYEE'}
-      >
-        <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label htmlFor="employee id">Employee Id</label>
-            <input
-              type="text"
-              placeholder="Employee Id"
-              {...register('employeeId')}
-              error={appendErrors.employeeId?.message}
-            />
-            {errors.employeeId && <p className={styles.errorInput}>{errors.employeeId?.message}</p>}
-          </div>
-          <div>
-            <label htmlFor="role">Role</label>
-            <input
-              type="text"
-              placeholder="DEV"
-              {...register('role')}
-              error={appendErrors.role?.message}
-            />
-            {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>}
-          </div>
-          <div>
-            <label htmlFor="Rate">Rate</label>
-            <input
-              type="number"
-              placeholder="500"
-              {...register('rate')}
-              error={appendErrors.rate?.message}
-            />
-            {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
-          </div>
-          <div className={styles.checkbox}>
-            <label htmlFor="isPm">Is PM ?</label>
-            <input
-              className={styles.inputsProfile}
-              type="checkbox"
-              name="isPm"
-              {...register('isPm')}
-            />
-          </div>
-          <div className={styles.buttonsContainer}>
-            <Button width={'75px'} height={'30px'} type="submit" value="GO">
-              ADD EMPLOYEE
-            </Button>
-          </div>
-        </form>
-      </Modal>
+      {showModalEmployee ? (
+        <Modal
+          showModal={showModalEmployee}
+          handleClose={() => setShowModalEmployee(false)}
+          modalTitle={'ADD EMPLOYEE'}
+        >
+          <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label htmlFor="employee id">Employee Id</label>
+              <input
+                type="text"
+                placeholder="Employee Id"
+                {...register('employeeId')}
+                error={appendErrors.employeeId?.message}
+              />
+              {errors.employeeId && (
+                <p className={styles.errorInput}>{errors.employeeId?.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="role">Role</label>
+              <input
+                type="text"
+                placeholder="DEV"
+                {...register('role')}
+                error={appendErrors.role?.message}
+              />
+              {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="Rate">Rate</label>
+              <input
+                type="number"
+                placeholder="500"
+                {...register('rate')}
+                error={appendErrors.rate?.message}
+              />
+              {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
+            </div>
+            <div className={styles.checkbox}>
+              <label htmlFor="isPm">Is PM ?</label>
+              <input
+                className={styles.inputsProfile}
+                type="checkbox"
+                name="isPm"
+                {...register('isPm')}
+              />
+            </div>
+            <div className={styles.buttonsContainer}>
+              <Button width={'75px'} height={'30px'} type="submit" value="GO">
+                ADD EMPLOYEE
+              </Button>
+            </div>
+          </form>
+        </Modal>
+      ) : null}
       <h2>{title}</h2>
       {roleUser === `ADMIN` ? (
         <Button width={'80px'} height={'40px'} onClick={() => assignPm()}>
@@ -315,7 +334,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
           </tr>
         </thead>
         <tbody className={styles.tbody}>
-          {show.map((row) => {
+          {show?.map((row) => {
             return (
               <tr className={styles.row} key={row._id}>
                 {keys.map((key, index) => {
@@ -397,7 +416,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
             width={'50px'}
             height={'40px'}
             fontSize={'15px'}
-            disabled={indexPage >= data.length / 10}
+            disabled={indexPage >= data?.length / 10}
             onClick={() => nextPage()}
           >
             <i className="fa-solid fa-angle-right"></i>
