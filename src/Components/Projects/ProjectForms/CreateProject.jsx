@@ -235,7 +235,6 @@ const CreateProject = (props) => {
           <p className={styles.error}>{errors.projectManager.message}</p>
         ) : null}
       </div>
-
       <label htmlFor="team">Team</label>
       <input
         value={project.team}

@@ -92,6 +92,36 @@ export const projectsReducer = (state = initialState, action) => {
         ...state,
         editModalShow: true
       };
+    // ADD EMPLOYEE TO PROJECT
+    case types.ADD_EMPLOYEE_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.ADD_EMPLOYEE_TO_PROJECT:
+      return {
+        ...state,
+        list: [...state.list, action.payload]
+      };
+    case types.ADD_EMPLOYEE_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // ADD TASK TO PROJECT
+    case types.ADD_TASK_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.ADD_TASK_TO_PROJECT:
+      return {
+        ...state,
+        list: [...state.list, action.payload]
+      };
+    case types.ADD_TASK_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
     default:
       return state;
   }

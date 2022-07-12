@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { validationsFormAddEmployee, validationsFormAddTask } from 'Components/Home/validations';
 import * as thunksProjects from 'redux/projects/thunks';
+import * as thunksTasks from 'redux/tasks/thunks';
 
 // BORRAR EL OPENTIMESHEET NO SIRVE MAS
 function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher, idProject }) {
@@ -16,12 +17,13 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
   const [indexPage, setIndexPage] = useState(1);
   const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [showModalTask, setShowModalTask] = useState(false);
+  const [showModalPM, setShowModalPM] = useState(false);
   // const [assignedEmployee, setAssignedEmployees] = useState([]);
   // const [task, setTask] = useState({});
   const dispatch = useDispatch();
   // const allEmployees = useSelector((state) => state.employees.list);
   // let isLoading = useSelector((state) => state.projects.isFetching);
-  let projectsList = useSelector((state) => state.projects.list);
+  // let projectsList = useSelector((state) => state.projects.list);
   // let projectsError = useSelector((state) => state.projects.error);
   let headers;
   let keys;
@@ -67,6 +69,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
 
   const assignPm = () => {
     console.log('asigno el pm');
+    setShowModalPM(true);
   };
   // const addTask = () => {
   //   console.log('aca agrego la tasks si es employee o admin');
@@ -85,22 +88,35 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
 
   const onSubmit = (data) => {
     if (tab === 'employees') {
-      const selectedProject = projectsList.filter((project) => project._id === idProject);
-      selectedProject[0].team.push(data);
-      console.log('para enviar: ', selectedProject[0]);
-      console.log('employee en cero:', selectedProject[0].team[0].employeeId);
-      dispatch(thunksProjects.updateProject(selectedProject[0], idProject));
+      // const selectedProject = projectsList.filter((project) => project._id === idProject);
+      // selectedProject[0].team.push(data);
+      // console.log('para enviar: ', selectedProject[0]);
+      // console.log('employee en cero:', selectedProject[0].team[0].employeeId);
+      // dispatch(thunksProjects.updateProject(selectedProject[0], idProject));
+      console.log('data de employee para agregar: ', data);
+      console.log('y el id del proyecto deberia ser:', idProject);
+      dispatch(thunksProjects.addEmployeeToProject(data, idProject));
     } else {
       console.log('data tasks: ', data);
+      let taskToAdd = JSON.stringify({
+        parentProject: idProject,
+        taskName: data.taskName,
+        taskDescription: data.taskDescription,
+        assignedEmployee: data.assignedEmployee,
+        startDate: data.startDate,
+        status: data.status
+      });
+      dispatch(thunksTasks.addTask(taskToAdd));
     }
   };
 
   // const handleInputChanges = (e) => {
   //   const { name, value } = e.target;
-  //   setTask({
+  //   setAssignedEmployees({
   //     ...assignedEmployee,
   //     [name]: value
   //   });
+  //   console.log('data team:', dataTeam);
   // };
   // const deleteFromSelectedEmployees = (id) => {
   //   setAssignedEmployees(assignedEmployee.filter((emp) => emp !== id));
@@ -108,7 +124,6 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
   // const appendToSelectedEmployees = (id) => {
   //   const previousState = assignedEmployee;
   //   setAssignedEmployees([...previousState, id]);
-  //   setTask({ ...task, assignedEmployee: '' });
   // };
 
   return (
@@ -147,64 +162,74 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
               <input
                 // value={assignedEmployee}
                 // onChange={handleInputChanges}
-                name="employees"
+                name="assignedEmployees"
                 type="text"
-                placeholder="Search an employee"
-                className={styles.input}
+                // placeholder="Search an employee"
+                {...register('assignedEmployee')}
+                error={appendErrors.assignedEmployee?.message}
               />
-            </div>
-            {/* <input
-              value={assignedEmployee}
-              onChange={handleInputChanges}
-              name="employees"
-              type="text"
-              placeholder="Search an employee"
-              className={styles.input}
-            />
-            <div className={styles.optionContainer}>
-              {assignedEmployee.length > 0
-                ? dataTeam
-                    .filter(
-                      (employee) =>
-                        employee.firstName.match(new RegExp(assignedEmployee, 'i')) ||
-                        employee.lastName.match(new RegExp(assignedEmployee, 'i'))
-                    )
-                    .map((member) => {
+              {errors.assignedEmployee && (
+                <p className={styles.errorInput}>{errors.assignedEmployee?.message}</p>
+              )}
+              {/* <div className={styles.optionContainer}>
+                {assignedEmployee.length > 0
+                  ? dataTeam
+                      .filter(
+                        (employee) =>
+                          employee.employeeId.firstName.match(new RegExp(assignedEmployee, 'i')) ||
+                          employee.employeeId.lastName.match(new RegExp(assignedEmployee, 'i'))
+                      )
+                      .map((member) => {
+                        return (
+                          <p
+                            key={member._id}
+                            onClick={() =>
+                              assignedEmployee.find((emp) => emp === member._id)
+                                ? deleteFromSelectedEmployees(member._id)
+                                : appendToSelectedEmployees(member._id)
+                            }
+                            className={
+                              assignedEmployee.find((emp) => emp === member._id)
+                                ? styles.selectedItem
+                                : styles.notSelectedItem
+                            }
+                          >
+                            {member.firstName}: {member.email}
+                          </p>
+                        );
+                      })
+                  : assignedEmployee.map((member) => {
                       return (
                         <p
-                          key={member._id}
-                          onClick={() =>
-                            assignedEmployee.find((emp) => emp === member._id)
-                              ? deleteFromSelectedEmployees(member._id)
-                              : appendToSelectedEmployees(member._id)
-                          }
-                          className={
-                            assignedEmployee.find((emp) => emp === member._id)
-                              ? styles.selectedItem
-                              : styles.notSelectedItem
-                          }
+                          key={member}
+                          className={styles.chip}
+                          onClick={() => deleteFromSelectedEmployees(member)}
                         >
-                          {member.firstName}: {member.email}
+                          {dataTeam.find((emp) => emp._id === member).firstName} (
+                          {dataTeam.find((emp) => emp._id === member).lastName})
                         </p>
                       );
-                    })
-                : assignedEmployee.map((member) => {
-                    return (
-                      <p
-                        key={member}
-                        className={styles.chip}
-                        onClick={() => deleteFromSelectedEmployees(member)}
-                      >
-                        {allEmployees.find((emp) => emp._id === member).firstName} (
-                        {allEmployees.find((emp) => emp._id === member).email})
-                      </p>
-                    );
-                  })}
+                    })}
+              </div> */}
             </div>
-          </div> */}
+            <div>
+              <label htmlFor="Start date">Start Date</label>
+              <input
+                type="date"
+                {...register('startDate')}
+                error={appendErrors.startDate?.message}
+              />
+              {errors.status && <p className={styles.errorInput}>{errors.startDate?.message}</p>}
+            </div>
             <div>
               <label htmlFor="Status">Status</label>
-              <input type="text" placeholder="Status" />
+              <input
+                type="text"
+                placeholder="Status"
+                {...register('status')}
+                error={appendErrors.status?.message}
+              />
+              {errors.status && <p className={styles.errorInput}>{errors.status?.message}</p>}
             </div>
             <div className={styles.buttonsContainer}>
               <Button width={'75px'} height={'30px'} type="submit" value="task">
@@ -254,7 +279,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
               />
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
-            <div className={styles.checkbox}>
+            {/* <div className={styles.checkbox}>
               <label htmlFor="isPm">Is PM ?</label>
               <input
                 className={styles.inputsProfile}
@@ -262,7 +287,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
                 name="isPm"
                 {...register('isPm')}
               />
-            </div>
+            </div> */}
             <div className={styles.buttonsContainer}>
               <Button width={'75px'} height={'30px'} type="submit" value="GO">
                 ADD EMPLOYEE
@@ -272,6 +297,16 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
         </Modal>
       ) : null}
       <h2>{title}</h2>
+      <Modal
+        showModal={showModalPM}
+        handleClose={() => setShowModalPM(false)}
+        modalTitle={'SET PM '}
+      >
+        <h3>Employees:</h3>
+        {dataTeam.map((emp) => (
+          <li key={Math.random()}>{emp.employeeId.firstName}</li>
+        ))}
+      </Modal>
       {roleUser === `ADMIN` ? (
         <Button width={'80px'} height={'40px'} onClick={() => assignPm()}>
           Asignar PM

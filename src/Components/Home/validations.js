@@ -97,18 +97,16 @@ export const validationsFormSuperadminEdit = Joi.object({
 });
 
 export const validationsFormAddEmployee = Joi.object({
-  employeeId: Joi.string().required().messages({
-    'string.empty': 'This field is required'
-  }),
-  role: Joi.string().messages({
-    'string.min': 'Password must contain at least 8 characters',
-    'string.pattern.base': 'Password must contain letters and numbers',
-    'string.empty': 'This field is required'
-  }),
-  rate: Joi.number().required(),
-  isPm: Joi.boolean().required()
+  employeeId: Joi.string().required(),
+  role: Joi.string().required(),
+  rate: Joi.number().required()
+  // isPm: Joi.boolean().required()
 });
 
 export const validationsFormAddTask = Joi.object({
-  taskName: Joi.string()
+  taskName: Joi.string(),
+  taskDescription: Joi.string(),
+  assignedEmployee: Joi.string(),
+  status: Joi.string(),
+  startDate: Joi.date()
 });

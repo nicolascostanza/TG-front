@@ -69,3 +69,29 @@ export const showCreateModal = () => ({
 export const showEditModal = () => ({
   type: types.SHOW_EDIT_MODAL
 });
+
+// ADD EMPLOYEE TO PROJECT
+export const addEmployeeToProject = () => ({
+  type: types.ADD_EMPLOYEE_TO_PROJECT
+});
+
+export const addEmployeeToProjectPending = () => ({
+  type: types.ADD_EMPLOYEE_TO_PROJECT_PENDING
+});
+
+export const addEmployeeToProjectFailed = () => ({
+  type: types.ADD_EMPLOYEE_TO_PROJECT_FAILED
+});
+
+// ADD_TASK_TO_PROJECT
+export const addTaskToProject = () => ({
+  type: types.ADD_TASK_TO_PROJECT
+});
+
+export const addTaskToProjectPending = () => ({
+  type: types.ADD_TASK_TO_PROJECT_PENDING
+});
+
+export const addTaskToProjectFailed = () => ({
+  type: types.ADD_TASK_TO_PROJECT_FAILED
+});

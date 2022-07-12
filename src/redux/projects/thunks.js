@@ -62,3 +62,37 @@ export const deleteProject = (id) => {
       });
   };
 };
+
+export const addEmployeeToProject = (body, id) => {
+  return (dispatch) => {
+    dispatch(actions.addEmployeeToProjectPending());
+    api
+      .addEmployeeToProjectaApi(body, id)
+      .then((response) => {
+        dispatch(actions.addEmployeeToProject(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.addEmployeeToProjectFailed(error));
+      });
+  };
+};
+
+export const addTaskToProject = (body, id) => {
+  return (dispatch) => {
+    dispatch(actions.addTaskToProjectPending());
+    api
+      .addTaskToProjectApi(body, id)
+      .then((response) => {
+        dispatch(actions.addTaskToProject(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.addTaskToProjectFailed(error));
+      });
+  };
+};
