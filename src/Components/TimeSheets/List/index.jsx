@@ -59,6 +59,7 @@ function TimeSheet() {
       isDeleted: false
     };
   });
+  formattedTimeSheets.reverse();
   const approveTimesheet = (id) => {
     console.log('slider ', id);
     console.log('sliderrrr ', timeSheets);
