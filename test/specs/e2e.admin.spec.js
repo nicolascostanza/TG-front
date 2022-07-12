@@ -5,11 +5,11 @@ const AdminsPage = require('../pageobjects/admin.page')
 
 describe('Admins e2e for trackGENIX app test', () => {
 	beforeAll('Open browser and admin login with valid credentials', () => {
-    browser.url('https://alfonso-trackgenix-app.vercel.app/')
-    HomePage.sidebarBtn.click()
-    HomePage.logInLink.click()
-    LoginPage.login('adminkpo@admin.com', 'qwer1234')
-		browser.debug(10000)
+		browser.url('https://alfonso-trackgenix-app.vercel.app/')
+		HomePage.sidebarBtn.click()
+		HomePage.logInLink.click()
+		LoginPage.login('adminkpo@admin.com', 'qwer1234')
+		browser.debug(15000)
 	})
 	describe('Elements display and redirections testing on ADMIN TABLE LIST page', () => {
 		it('Checking redirection to ADMIN TABLE LIST', async () => {

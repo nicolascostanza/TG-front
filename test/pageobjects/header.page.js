@@ -8,6 +8,8 @@ class HeaderPage {
     get navProjectsLink() { return $('#root > div > header > nav > ul > li:nth-child(5) > a') }
     get navTimesheetsLink() { return $('#root > div > header > nav > ul > li:nth-child(6) > a') }
     get navTasksLink() { return $('#root > div > header > nav > ul > li:nth-child(7) > a') }
+    get navLogOut() { return $('#root > div > header > nav > ul > li:nth-child(8) > a') }
+
 }
 
 module.exports = new HeaderPage();

@@ -9,7 +9,7 @@ describe('Employees e2e for trackGENIX app test', () => {
     HomePage.sidebarBtn.click()
     HomePage.logInLink.click()
     LoginPage.login('sarasa92@gmail.com', 'qwer1234')
-    browser.pause()
+    browser.debug(15000)
   })
   describe('Principal elements display testing', () => {
     it('Checking Employee Profile redirection', async () => {
@@ -32,7 +32,7 @@ describe('Employees e2e for trackGENIX app test', () => {
       await EmployeePage.employeeUpdateBtn.click()
     })
     it('Logout', async () => {
-      await EmployeePage.LogOutNavBarLink.click()
+      await HeaderPage.navLogOut.click()
       await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/')
     })
   })
