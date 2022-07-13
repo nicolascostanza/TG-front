@@ -98,18 +98,19 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
       dispatch(thunksProjects.addEmployeeToProject(data, idProject));
     } else {
       console.log('data tasks: ', data);
-      let taskToAdd = JSON.stringify({
+      let taskToAdd = {
         parentProject: idProject,
         taskName: data.taskName,
         taskDescription: data.taskDescription,
-        assignedEmployee: data.assignedEmployee,
+        assignedEmployee: [data.assignedEmployee],
         startDate: data.startDate,
         status: data.status
-      });
+      };
+      console.log(taskToAdd);
       dispatch(thunksTasks.addTask(taskToAdd));
     }
   };
-
+  console.log(dataTeam.length);
   // const handleInputChanges = (e) => {
   //   const { name, value } = e.target;
   //   setAssignedEmployees({
@@ -308,9 +309,14 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
         ))}
       </Modal>
       {roleUser === `ADMIN` ? (
-        <Button width={'80px'} height={'40px'} onClick={() => assignPm()}>
+        <button
+          disabled={dataTeam.length > 0 ? false : true}
+          width={'80px'}
+          height={'40px'}
+          onClick={() => assignPm()}
+        >
           Asignar PM
-        </Button>
+        </button>
       ) : null}
       {roleUser === `ADMIN` || roleUser === `PM` ? (
         <>
