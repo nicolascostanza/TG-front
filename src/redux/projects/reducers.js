@@ -122,6 +122,36 @@ export const projectsReducer = (state = initialState, action) => {
         ...state,
         error: action.payload
       };
+    // DELETE TASK TO PROJECT
+    case types.DELETE_TASK_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.DELETE_TASK_TO_PROJECT:
+      return {
+        ...state,
+        list: [...state.list, action.payload]
+      };
+    case types.DELETE_TASK_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // DELETE EMPLOYEE TO PROJECTS
+    case types.DELETE_EMPLOYEE_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.DELETE_EMPLOYEE_TO_PROJECT:
+      return {
+        ...state,
+        list: [...state.list, action.payload]
+      };
+    case types.DELETE_EMPLOYEE_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
     default:
       return state;
   }

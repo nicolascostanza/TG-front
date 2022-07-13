@@ -96,3 +96,36 @@ export const addTaskToProject = (body, id) => {
       });
   };
 };
+export const deleteTaskToProject = (idProject, idTask) => {
+  return (dispatch) => {
+    dispatch(actions.deleteTaskToProjectPending());
+    api
+      .deleteTaskToProjectApi(idProject, idTask)
+      .then((response) => {
+        dispatch(actions.deleteTaskToProject(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.deleteTaskToProjectFailed(error));
+      });
+  };
+};
+
+export const deleteEmployeeToProject = (idProject, idEmployee) => {
+  return (dispatch) => {
+    dispatch(actions.deleteEmployeeToProjectPending());
+    api
+      .deleteEmployeeToProjectApi(idProject, idEmployee)
+      .then((response) => {
+        dispatch(actions.deleteEmployeeToProject(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.deleteEmployeeToProjectFailed(error));
+      });
+  };
+};

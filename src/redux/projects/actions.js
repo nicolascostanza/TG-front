@@ -95,3 +95,27 @@ export const addTaskToProjectPending = () => ({
 export const addTaskToProjectFailed = () => ({
   type: types.ADD_TASK_TO_PROJECT_FAILED
 });
+// DELETE_TASK_TO_PROJECT
+export const deleteTaskToProject = () => ({
+  type: types.DELETE_TASK_TO_PROJECT
+});
+
+export const deleteTaskToProjectPending = () => ({
+  type: types.DELETE_TASK_TO_PROJECT_PENDING
+});
+
+export const deleteTaskToProjectFailed = () => ({
+  type: types.DELETE_TASK_TO_PROJECT_FAILED
+});
+// DELETE_EMPLOYEE_TO_PROJECT
+export const deleteEmployeeToProject = () => ({
+  type: types.DELETE_EMPLOYEE_TO_PROJECT
+});
+
+export const deleteEmployeeToProjectPending = () => ({
+  type: types.DELETE_EMPLOYEE_TO_PROJECT_PENDING
+});
+
+export const deleteEmployeeToProjectFailed = () => ({
+  type: types.DELETE_EMPLOYEE_TO_PROJECT_FAILED
+});

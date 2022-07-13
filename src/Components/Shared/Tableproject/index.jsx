@@ -11,7 +11,7 @@ import * as thunksProjects from 'redux/projects/thunks';
 import * as thunksTasks from 'redux/tasks/thunks';
 
 // BORRAR EL OPENTIMESHEET NO SIRVE MAS
-function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher, idProject }) {
+function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProject }) {
   const [tab, setTab] = useState('employees');
   const [filterProject, setFilterProject] = useState(true);
   const [indexPage, setIndexPage] = useState(1);
@@ -74,6 +74,12 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
   // const addTask = () => {
   //   console.log('aca agrego la tasks si es employee o admin');
   // };
+  const onDelete = (id) => {
+    console.log(id);
+  };
+  const onEdit = (id) => {
+    console.log(id);
+  };
 
   const {
     handleSubmit,
@@ -412,7 +418,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, onDelete, switcher
                     {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                     <td>
                       <Button
-                        onClick={() => onDelete(row._id)}
+                        onClick={() => onEdit(row._id)}
                         width={'50px'}
                         height={'25px'}
                         fontSize={'13px'}

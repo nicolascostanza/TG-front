@@ -88,3 +88,32 @@ export const addTaskToProjectApi = async (body, id) => {
     return error;
   }
 };
+
+export const deleteTaskToProjectApi = async (idProject, idTask) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/projects/${idProject}/task/${idTask}`,
+      {
+        method: 'PUT'
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+export const deleteEmployeeToProjectApi = async (idProject, idEmployee) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/projects/${idProject}/employee/${idEmployee}`,
+      {
+        method: 'PUT'
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
