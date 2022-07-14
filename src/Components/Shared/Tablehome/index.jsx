@@ -29,7 +29,6 @@ function Tablehome({
     }
   }, [data]);
   data.filter((data) => data.isDeleted === false);
-  console.log(data);
   const openRow = (role, id) => {
     selected(id);
     if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {

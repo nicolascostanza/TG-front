@@ -71,8 +71,9 @@ export const showEditModal = () => ({
 });
 
 // ADD EMPLOYEE TO PROJECT
-export const addEmployeeToProject = () => ({
-  type: types.ADD_EMPLOYEE_TO_PROJECT
+export const addEmployeeToProject = (employee) => ({
+  type: types.ADD_EMPLOYEE_TO_PROJECT,
+  payload: employee
 });
 
 export const addEmployeeToProjectPending = () => ({

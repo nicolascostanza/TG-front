@@ -9,22 +9,31 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { validationsFormAddEmployee, validationsFormAddTask } from 'Components/Home/validations';
 import * as thunksProjects from 'redux/projects/thunks';
 import * as thunksTasks from 'redux/tasks/thunks';
+import * as thunksEmployees from 'redux/employees/thunks';
+import { useSelector } from 'react-redux';
 
 // BORRAR EL OPENTIMESHEET NO SIRVE MAS
-function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProject }) {
+function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [tab, setTab] = useState('employees');
   const [filterProject, setFilterProject] = useState(true);
   const [indexPage, setIndexPage] = useState(1);
   const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [showModalTask, setShowModalTask] = useState(false);
   const [showModalPM, setShowModalPM] = useState(false);
+  const [method, setMethod] = useState('');
+  const [idToForm, setIdToForm] = useState('');
   // const [assignedEmployee, setAssignedEmployees] = useState([]);
   // const [task, setTask] = useState({});
   const dispatch = useDispatch();
-  // const allEmployees = useSelector((state) => state.employees.list);
-  // let isLoading = useSelector((state) => state.projects.isFetching);
-  // let projectsList = useSelector((state) => state.projects.list);
-  // let projectsError = useSelector((state) => state.projects.error);
+  const allEmployees = useSelector((state) => state.employees.list);
+  const allProjects = useSelector((state) => state.projects.list);
+  console.log('proyectos:', allProjects);
+  let projectoElegido = allProjects.filter((project) => project?._id === idProject);
+  console.log('proyectoelegido:', projectoElegido[0]);
+  let dataTeam = projectoElegido[0].team;
+  let dataTasks = projectoElegido[0].tasks;
+  console.log('team:', dataTeam);
+  console.log('tasks:', dataTasks);
   let headers;
   let keys;
   let data;
@@ -38,10 +47,12 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
     keys = ['_id', 'taskName', 'taskDescription'];
     data = dataTasks;
   }
-
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
+  console.log('muestro est:', show);
 
   useEffect(() => {
+    dispatch(thunksEmployees.getEmployees());
+    // dispatch(thunksProjects.getProjects());
     const maxIndexPage = data?.length > 10 ? Math.floor((data?.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
       setIndexPage(1);
@@ -63,6 +74,16 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
     }
   };
 
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(tab === 'employees' ? validationsFormAddEmployee : validationsFormAddTask)
+  });
+  // cambia de tab entre task y employee
   const changeFilter = () => {
     setFilterProject(!filterProject);
   };
@@ -71,11 +92,43 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
     console.log('asigno el pm');
     setShowModalPM(true);
   };
-  // const addTask = () => {
-  //   console.log('aca agrego la tasks si es employee o admin');
-  // };
+
+  const onAddEmployee = () => {
+    reset({});
+    setMethod('POST');
+    setShowModalEmployee(true);
+  };
+
+  const onAddTask = () => {
+    reset({});
+    setMethod('POST');
+    setShowModalTask(true);
+  };
+
+  const onEdit = (id) => {
+    if (tab === 'employees') {
+      const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
+      reset({
+        employeeId: valuesForm[0].employeeId._id,
+        role: valuesForm[0].role,
+        rate: valuesForm[0].rate
+      });
+      setShowModalEmployee(true);
+    } else {
+      const valuesForm = dataTasks.filter((task) => task._id === id);
+      reset({
+        taskName: valuesForm[0].taskName,
+        taskDescription: valuesForm[0].taskDescription,
+        assignedEmployee: valuesForm[0].assignedEmployee,
+        startDate: valuesForm[0].startDate,
+        status: valuesForm[0].status
+      });
+      setShowModalTask(true);
+    }
+    setIdToForm(id);
+  };
+
   const onDelete = (id) => {
-    console.log(id);
     if (confirm('are you sure?')) {
       dispatch(
         tab === 'tasks'
@@ -84,33 +137,17 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
       );
     }
   };
-  const onEdit = (id) => {
-    console.log(id);
-  };
-
-  const {
-    handleSubmit,
-    register,
-    formState: { errors }
-  } = useForm({
-    mode: 'onBlur',
-    resolver: joiResolver(tab === 'employees' ? validationsFormAddEmployee : validationsFormAddTask)
-  });
-
-  console.log(errors);
 
   const onSubmit = (data) => {
+    console.log('data enviada:', data);
     if (tab === 'employees') {
-      // const selectedProject = projectsList.filter((project) => project._id === idProject);
-      // selectedProject[0].team.push(data);
-      // console.log('para enviar: ', selectedProject[0]);
-      // console.log('employee en cero:', selectedProject[0].team[0].employeeId);
-      // dispatch(thunksProjects.updateProject(selectedProject[0], idProject));
-      console.log('data de employee para agregar: ', data);
-      console.log('y el id del proyecto deberia ser:', idProject);
-      dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+      if (method === 'POST') {
+        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+      } else {
+        dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
+        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+      }
     } else {
-      console.log('data tasks: ', data);
       let taskToAdd = {
         parentProject: idProject,
         taskName: data.taskName,
@@ -119,11 +156,16 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
         startDate: data.startDate,
         status: data.status
       };
-      console.log(taskToAdd);
-      dispatch(thunksTasks.addTask(taskToAdd));
+      if (method === 'POST') {
+        dispatch(thunksTasks.addTask(taskToAdd));
+      } else {
+        dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
+        dispatch(thunksTasks.addTask(taskToAdd));
+      }
     }
+    setMethod('');
+    setRequest(!setRequest);
   };
-  console.log(dataTeam.length);
   // const handleInputChanges = (e) => {
   //   const { name, value } = e.target;
   //   setAssignedEmployees({
@@ -146,7 +188,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
         <Modal
           showModal={showModalTask}
           handleClose={() => setShowModalTask(false)}
-          modalTitle={'ADD TASK'}
+          modalTitle={method === 'POST' ? 'ADD TASK' : 'EDIT TASK'}
         >
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
@@ -173,7 +215,15 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
             </div>
             <div>
               <label htmlFor="Assigned Employee">Assigned Employee</label>
-              <input
+              <select {...register('assignedEmployees')} name="assignedEmployees" id="">
+                {dataTeam.map((member) => (
+                  <option
+                    value={member.employeeId._id}
+                    key={member._id}
+                  >{`${member.employeeId.firstName} ${member.employeeId.lastName}`}</option>
+                ))}
+              </select>
+              {/* <input
                 // value={assignedEmployee}
                 // onChange={handleInputChanges}
                 name="assignedEmployees"
@@ -184,7 +234,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
               />
               {errors.assignedEmployee && (
                 <p className={styles.errorInput}>{errors.assignedEmployee?.message}</p>
-              )}
+              )} */}
               {/* <div className={styles.optionContainer}>
                 {assignedEmployee.length > 0
                   ? dataTeam
@@ -247,7 +297,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
             </div>
             <div className={styles.buttonsContainer}>
               <Button width={'75px'} height={'30px'} type="submit" value="task">
-                ADD TASK
+                {method === 'POST' ? 'ADD' : 'EDIT'}
               </Button>
             </div>
           </form>
@@ -258,30 +308,42 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
         <Modal
           showModal={showModalEmployee}
           handleClose={() => setShowModalEmployee(false)}
-          modalTitle={'ADD EMPLOYEE'}
+          modalTitle={method === 'POST' ? 'ADD EMPLOYEE' : 'EDIT EMPLOYEE'}
         >
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="employee id">Employee Id</label>
-              <input
+              <select {...register('employeeId')} name="employeeId" id="">
+                {allEmployees.map((member) => (
+                  <option
+                    value={member._id}
+                    key={member._id}
+                  >{`${member.firstName} ${member.lastName}`}</option>
+                ))}
+              </select>
+              {/* <input
                 type="text"
                 placeholder="Employee Id"
                 {...register('employeeId')}
                 error={appendErrors.employeeId?.message}
-              />
+              /> */}
               {errors.employeeId && (
                 <p className={styles.errorInput}>{errors.employeeId?.message}</p>
               )}
             </div>
             <div>
               <label htmlFor="role">Role</label>
-              <input
+              <select {...register('role')} name="role" id="">
+                <option>DEV</option>
+                <option>QA</option>
+              </select>
+              {/* <input
                 type="text"
                 placeholder="DEV"
                 {...register('role')}
                 error={appendErrors.role?.message}
               />
-              {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>}
+              {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>} */}
             </div>
             <div>
               <label htmlFor="Rate">Rate</label>
@@ -304,7 +366,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
             </div> */}
             <div className={styles.buttonsContainer}>
               <Button width={'75px'} height={'30px'} type="submit" value="GO">
-                ADD EMPLOYEE
+                {method === 'POST' ? 'ADD' : 'EDIT'}
               </Button>
             </div>
           </form>
@@ -338,13 +400,13 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
               width={'80px'}
               height={'40px'}
               fontSize={'15px'}
-              onClick={() => setShowModalEmployee(true)}
+              onClick={() => onAddEmployee()}
             >
               <i className="fa-solid fa-plus"></i>
               ADD EMPLOYEE
             </Button>
           ) : (
-            <Button onClick={() => setShowModalTask(true)}>ADD TASK</Button>
+            <Button onClick={() => onAddTask()}>ADD TASK</Button>
           )}
         </>
       ) : null}
@@ -425,7 +487,10 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
                     {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                     <td>
                       <Button
-                        onClick={() => onEdit(row._id)}
+                        onClick={() => {
+                          onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
+                          setMethod('PUT');
+                        }}
                         width={'50px'}
                         height={'25px'}
                         fontSize={'13px'}

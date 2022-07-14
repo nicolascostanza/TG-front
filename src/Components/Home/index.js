@@ -23,14 +23,15 @@ import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
 // HACER Q APAREZCAN LOS DATOS AL REVEZ
-// PONER EL BOTON PARA AGREGAR TASKS (ADENTRO DE LA TABLA O POR FUERA ?)
-// VER VALIDACIONES POR ADD EMPLOYEE
+// SETEAR LOS VALORES EN EDIT HOME
+// DROPWDOWN
 function Home() {
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [method, setMethod] = useState('');
+  const [request, setRequest] = useState(false);
   const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
   let projectsError = useSelector((state) => state.projects.error);
@@ -61,7 +62,7 @@ function Home() {
         dispatch(thunksProjects.getProjects());
       }
     }
-  }, [screen]);
+  }, [screen, request]);
 
   // headers and keys
   if (role === 'SUPERADMIN') {
@@ -148,7 +149,7 @@ function Home() {
     }
   };
   if (screen) {
-    const info = projectsList.filter((project) => project._id === id);
+    const info = projectsList.filter((project) => project?._id === id);
     const dataTeam = info[0].team;
     const dataTasks = info[0].tasks;
     return (
@@ -210,6 +211,7 @@ function Home() {
           </form>
         </Modal>
         <Tableproject
+          setRequest={setRequest}
           idProject={id}
           openModal={() => setShowModalEmployee(true)}
           switcher={switcher}
