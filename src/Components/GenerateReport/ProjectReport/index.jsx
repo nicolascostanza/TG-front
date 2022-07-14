@@ -5,6 +5,7 @@ import * as projectsThunks from 'redux/projects/thunks';
 import * as timesheetsThunks from 'redux/timesheets/thunks';
 import * as employeesThunks from 'redux/employees/thunks';
 import Loader from 'Components/Shared/Loader';
+import PieChart from '../Charts/Pie';
 
 const ProjectReport = () => {
   const dispatch = useDispatch();
@@ -67,14 +68,15 @@ const ProjectReport = () => {
       <h2>{`${project?.name}`}</h2>
       <p>
         From{' '}
-        {`${projectTimesheetsMap[0].date} to ${
-          projectTimesheetsMap[projectTimesheetsMap.length - 1].date
+        {`${projectTimesheetsMap[0]?.date} to ${
+          projectTimesheetsMap[projectTimesheetsMap.length - 1]?.date
         }`}
       </p>
       <table>
         <thead>
           <tr>
             <th>Date</th>
+            <th>Task</th>
             <th>Hours</th>
             <th>Employee</th>
             <th>Rate</th>
@@ -87,6 +89,7 @@ const ProjectReport = () => {
             return (
               <tr key={timesheet._id}>
                 <td>{timesheet.date}</td>
+                <td>{timesheet.taskId?.taskName}</td>
                 <td>{timesheet.hours}</td>
                 <td>{timesheet.employeeId.firstName}</td>
                 <td>{timesheet.rate}</td>
@@ -127,6 +130,13 @@ const ProjectReport = () => {
           })}
         </tbody>
       </table>
+      <PieChart
+        data={segmentedByEmployee ?? []}
+        width={300}
+        height={300}
+        innerRadius={0}
+        outerRadius={130}
+      />
     </div>
   );
 };
