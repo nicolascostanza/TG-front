@@ -59,36 +59,20 @@ export const editTimesheetApi = async (newBody, id) => {
   }
 };
 
-export const getEmployeeTimesheetApi = async (idEmployee, approved = null) => {
+export const getEmployeeTimesheetApi = async (id) => {
   try {
-    let url = `${process.env.REACT_APP_API_URL}/time-sheets/employee?id=${idEmployee}`;
-    if (approved !== null) {
-      url.concat(`&approved=${approved.toString}`);
-    }
-    const res = await fetch(url, {
-      headers: {
-        'Content-type': 'application/json'
-      }
-    });
-    const data = await res.json();
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/employee?id=${id}`);
+    const data = await response.json();
     return data;
   } catch (err) {
     return err;
   }
 };
 
-export const getTimesheetFromProjectApi = async (idProject, approved = null) => {
+export const getTimesheetFromProjectApi = async (id) => {
   try {
-    let url = `${process.env.REACT_APP_API_URL}/time-sheets/project?id=${idProject}`;
-    if (approved !== null) {
-      url.concat(`&approved=${approved.toString}`);
-    }
-    const res = await fetch(url, {
-      headers: {
-        'Content-type': 'application/json'
-      }
-    });
-    const data = await res.json();
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/project?id=${id}`);
+    const data = await response.json();
     return data;
   } catch (err) {
     return err;

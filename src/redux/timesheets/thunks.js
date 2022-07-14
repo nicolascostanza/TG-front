@@ -79,10 +79,10 @@ export const getEmployeeTimesheets = (id) => {
   };
 };
 
-export const getTimesheetsFromProject = (projectId, approved = null) => {
+export const getTimesheetsFromProject = (id) => {
   return (dispatch) => {
     dispatch(actions.getTimesheetsFromProjectPending());
-    getTimesheetFromProjectApi(projectId, approved)
+    getTimesheetFromProjectApi(id)
       .then((response) => {
         dispatch(actions.getTimesheetsFromProjectFulfilled(response.data));
       })
