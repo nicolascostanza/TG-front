@@ -76,6 +76,13 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
   // };
   const onDelete = (id) => {
     console.log(id);
+    if (confirm('are you sure?')) {
+      dispatch(
+        tab === 'tasks'
+          ? thunksProjects.deleteTaskToProject(idProject, id)
+          : thunksProjects.deleteEmployeeToProject(idProject, id)
+      );
+    }
   };
   const onEdit = (id) => {
     console.log(id);
@@ -428,7 +435,7 @@ function Tableproject({ title, dataTeam, dataTasks, roleUser, switcher, idProjec
                     </td>
                     <td>
                       <Button
-                        onClick={() => onDelete(row._id)}
+                        onClick={() => onDelete(tab === 'tasks' ? row._id : row.employeeId._id)}
                         width={'50px'}
                         height={'25px'}
                         fontSize={'13px'}
