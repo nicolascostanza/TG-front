@@ -141,3 +141,7 @@ body {
     -webkit-transition: all 0.35s;
     transition: all 0.35s;
   };
+#continueButton {
+  background-color: deepPurple[A700];
+  /* backgroundColor: deepPurple['A700'] */
+}

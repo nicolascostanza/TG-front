@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { appendErrors, useForm } from 'react-hook-form';
+// import { appendErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationLogIn } from 'Components/EmployeesFlow/validations';
 import * as thunksAuth from 'redux/auth/thunks';
@@ -8,6 +9,17 @@ import Sidebar from 'Components/Shared/Sidebar';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
 import Loader from 'Components/Shared/Loader';
+import { Button } from '@mui/material';
+import styled from '@emotion/styled';
+import { deepPurple } from '@mui/material/colors';
+import Container from '@mui/material/Container';
+import TextField from '@mui/material/TextField';
+import FormControl from '@mui/material/FormControl';
+import Typography from '@mui/material/Typography';
+
+const ContinueButton = styled(Button)({
+  backgroundColor: deepPurple['A700']
+});
 
 const Login = () => {
   const history = useHistory();
@@ -43,23 +55,38 @@ const Login = () => {
   };
 
   return (
-    <section className={styles.container}>
+    // <section className={styles.container}>
+    <Container>
       <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
         <Sidebar />
       </section>
-      <section className={styles.form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <h1 className={styles.tittle}>LOGIN</h1>
-          <div className={styles.formFlex}>
-            <div className={styles.inputContainer}>
+      {/* <section className={styles.form}> */}
+      <Container>
+        <FormControl onSubmit={handleSubmit(onSubmit)} sx={{ width: '380px' }}>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Container>
+              {/* <h1 className={styles.tittle}>LOGIN</h1> */}
+              <Typography variant="h3">Login</Typography>
+              <div className={styles.formFlex}>
+                {/* <div className={styles.inputContainer}>
               <label htmlFor="Email" className={styles.labels}>
                 Email
               </label>
               <input type="text" {...register('email')} error={appendErrors.email?.message}></input>
               {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
-            </div>
-            <div className={styles.inputContainer}>
+            </div> */}
+                <TextField
+                  id="email"
+                  label="Email"
+                  variant="outlined"
+                  {...register('email')}
+                  margin="normal"
+                  fullWidth
+                  error={errors.email && true}
+                  helperText={errors.email?.message}
+                />
+                {/* <div className={styles.inputContainer}>
               <label htmlFor="Password" className={styles.labels}>
                 Password
               </label>
@@ -69,17 +96,53 @@ const Login = () => {
                 error={appendErrors.password?.message}
               ></input>
               {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
-            </div>
-          </div>
-          <div className={styles.buttonsContainer}>
-            <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+            </div> */}
+                <TextField
+                  type="password"
+                  id="password"
+                  label="Password"
+                  variant="outlined"
+                  {...register('password')}
+                  margin="normal"
+                  fullWidth
+                  error={errors.password && true}
+                  helperText={errors.password?.message}
+                />
+              </div>
+              <Typography variant="subtitle1">Forgot password?</Typography>
+              <div className={styles.buttonsContainer}>
+                <ContinueButton
+                  variant="contained"
+                  type="submit"
+                  className={styles.continueButton}
+                  fullWidth
+                  onClick={handleSubmit}
+                  // sx={{
+                  //   backgroundColor: deepPurple['A700']
+                  // }}
+                >
+                  LOGIN
+                </ContinueButton>
+                {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
               CONTINUE
-            </button>
-          </div>
-        </form>
-      </section>
-    </section>
+            </button> */}
+              </div>
+              <Container>
+                <Typography variant="subtitle2" gutterBottom component="div">
+                  Don&apos;t have an account? Sign up
+                </Typography>
+              </Container>
+            </Container>
+          </form>
+        </FormControl>
+        {/* </section> */}
+      </Container>
+    </Container>
   );
+  // eslint-disable-next-line no-unreachable
+  {
+    /* </section> */
+  }
 };
 
 export default Login;

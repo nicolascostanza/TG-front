@@ -1,6 +1,8 @@
 import styles from './header.module.css';
 import { Link, withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+// import AppBar from '@mui/material/AppBar';
+// import IconButton from '@mui/material/IconButton';
 
 function Header() {
   const pathName = window.location.pathname;
@@ -11,6 +13,8 @@ function Header() {
     return null;
   }
   return (
+    // <AppBar>
+    //   <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
     <header>
       <nav className={styles.navbar}>
         <ul className={styles.rutes}>
@@ -42,6 +46,7 @@ function Header() {
         </div>
       </nav>
     </header>
+    // </AppBar>
   );
 }
 
