@@ -86,9 +86,9 @@ export const addEmployeeToProjectFailed = (error) => ({
 });
 
 // ADD_TASK_TO_PROJECT
-export const addTaskToProject = (task) => ({
+export const addTaskToProject = (project) => ({
   type: types.ADD_TASK_TO_PROJECT,
-  payload: task
+  payload: project
 });
 
 export const addTaskToProjectPending = () => ({
@@ -100,26 +100,30 @@ export const addTaskToProjectFailed = (error) => ({
   payload: error
 });
 // DELETE_TASK_TO_PROJECT
-export const deleteTaskToProject = () => ({
-  type: types.DELETE_TASK_TO_PROJECT
+export const deleteTaskToProject = (task) => ({
+  type: types.DELETE_TASK_TO_PROJECT,
+  payload: task
 });
 
 export const deleteTaskToProjectPending = () => ({
   type: types.DELETE_TASK_TO_PROJECT_PENDING
 });
 
-export const deleteTaskToProjectFailed = () => ({
-  type: types.DELETE_TASK_TO_PROJECT_FAILED
+export const deleteTaskToProjectFailed = (error) => ({
+  type: types.DELETE_TASK_TO_PROJECT_FAILED,
+  payload: error
 });
 // DELETE_EMPLOYEE_TO_PROJECT
-export const deleteEmployeeToProject = () => ({
-  type: types.DELETE_EMPLOYEE_TO_PROJECT
+export const deleteEmployeeToProject = (project) => ({
+  type: types.DELETE_EMPLOYEE_TO_PROJECT,
+  payload: project
 });
 
 export const deleteEmployeeToProjectPending = () => ({
   type: types.DELETE_EMPLOYEE_TO_PROJECT_PENDING
 });
 
-export const deleteEmployeeToProjectFailed = () => ({
-  type: types.DELETE_EMPLOYEE_TO_PROJECT_FAILED
+export const deleteEmployeeToProjectFailed = (error) => ({
+  type: types.DELETE_EMPLOYEE_TO_PROJECT_FAILED,
+  payload: error
 });

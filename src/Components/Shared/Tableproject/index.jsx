@@ -18,9 +18,10 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [indexPage, setIndexPage] = useState(1);
   const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [showModalTask, setShowModalTask] = useState(false);
-  const [showModalPM, setShowModalPM] = useState(false);
+  // const [showModalPM, setShowModalPM] = useState(false);
   const [method, setMethod] = useState('');
   const [idToForm, setIdToForm] = useState('');
+  const [assignPM, setAssignPM] = useState(false);
   // const [assignedEmployee, setAssignedEmployees] = useState([]);
   // const [task, setTask] = useState({});
   const dispatch = useDispatch();
@@ -86,9 +87,9 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setFilterProject(!filterProject);
   };
 
-  const assignPm = () => {
-    console.log('asigno el pm');
-    setShowModalPM(true);
+  const assignPmFunction = () => {
+    setShowModalEmployee(true);
+    setAssignPM(true);
   };
 
   const onAddEmployee = () => {
@@ -137,33 +138,48 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   };
 
   const onSubmit = (data) => {
-    console.log('data enviada:', data);
-    if (tab === 'employees') {
-      if (method === 'POST') {
-        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-      } else {
-        dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
-        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-      }
-    } else {
-      let taskToAdd = {
-        parentProject: idProject,
-        taskName: data.taskName,
-        taskDescription: data.taskDescription,
-        assignedEmployee: [data.assignedEmployee],
-        startDate: data.startDate,
-        status: data.status
+    if (assignPM) {
+      const employeePm = {
+        employeeId: data.employeeId,
+        role: 'PM',
+        rate: data.rate,
+        isPM: true
       };
-      if (method === 'POST') {
-        dispatch(thunksTasks.addTask(taskToAdd));
+      dispatch(thunksProjects.addEmployeeToProject(employeePm, idProject));
+    } else {
+      console.log('data enviada:', data);
+      if (tab === 'employees') {
+        if (method === 'POST') {
+          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+        } else {
+          dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
+          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+        }
       } else {
-        dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
-        dispatch(thunksTasks.addTask(taskToAdd));
+        console.log(data);
+        let taskToAdd = {
+          parentProject: idProject,
+          taskName: data.taskName,
+          taskDescription: data.taskDescription,
+          assignedEmployee: [data.assignedEmployee],
+          startDate: data.startDate,
+          status: data.status
+        };
+        console.log(taskToAdd);
+        if (method === 'POST') {
+          dispatch(thunksTasks.addTask(taskToAdd));
+        } else {
+          dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
+          dispatch(thunksTasks.addTask(taskToAdd));
+        }
       }
     }
+    setAssignPM(false);
     setMethod('');
     setRequest(!setRequest);
   };
+
+  console.log(errors);
   // const handleInputChanges = (e) => {
   //   const { name, value } = e.target;
   //   setAssignedEmployees({
@@ -213,7 +229,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             </div>
             <div>
               <label htmlFor="Assigned Employee">Assigned Employee</label>
-              <select {...register('assignedEmployees')} name="assignedEmployees" id="">
+              <select {...register('assignedEmployee')} name="assignedEmployee" id="">
                 {dataTeam.map((member) => (
                   <option
                     value={member.employeeId._id}
@@ -329,20 +345,23 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 <p className={styles.errorInput}>{errors.employeeId?.message}</p>
               )}
             </div>
-            <div>
-              <label htmlFor="role">Role</label>
-              <select {...register('role')} name="role" id="">
-                <option>DEV</option>
-                <option>QA</option>
-              </select>
-              {/* <input
+            {assignPM ? (
+              <div>
+                <label htmlFor="role">Role</label>
+                <select {...register('role')} name="role" id="">
+                  <option>DEV</option>
+                  <option>QA</option>
+                </select>
+                {/* <input
                 type="text"
                 placeholder="DEV"
                 {...register('role')}
                 error={appendErrors.role?.message}
               />
               {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>} */}
-            </div>
+              </div>
+            ) : null}
+
             <div>
               <label htmlFor="Rate">Rate</label>
               <input
@@ -371,22 +390,28 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         </Modal>
       ) : null}
       <h2>{title}</h2>
-      <Modal
+      {/* <Modal
         showModal={showModalPM}
         handleClose={() => setShowModalPM(false)}
         modalTitle={'SET PM '}
       >
         <h3>Employees:</h3>
-        {dataTeam.map((emp) => (
-          <li key={Math.random()}>{emp.employeeId.firstName}</li>
-        ))}
-      </Modal>
+        <table>
+          <thead>Name </thead>
+          {allEmployees.map((member) => (
+            <tr key={member._id}>
+              {`${member.firstName} ${member.lastName}`}
+              <button onClick={assignPm(member._id)}>assign</button>{' '}
+            </tr>
+          ))}
+        </table>
+      </Modal> */}
       {roleUser === `ADMIN` ? (
         <button
-          disabled={dataTeam.length > 0 ? false : true}
+          disabled={dataTeam.length > 0 ? true : false}
           width={'80px'}
           height={'40px'}
-          onClick={() => assignPm()}
+          onClick={assignPmFunction}
         >
           Asignar PM
         </button>
@@ -394,7 +419,8 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       {roleUser === `ADMIN` || roleUser === `PM` ? (
         <>
           {filterProject ? (
-            <Button
+            <button
+              disabled={dataTeam.length > 0 ? false : true}
               width={'80px'}
               height={'40px'}
               fontSize={'15px'}
@@ -402,7 +428,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             >
               <i className="fa-solid fa-plus"></i>
               ADD EMPLOYEE
-            </Button>
+            </button>
           ) : (
             <Button onClick={() => onAddTask()}>ADD TASK</Button>
           )}

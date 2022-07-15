@@ -106,7 +106,8 @@ export const validationsFormAddEmployee = Joi.object({
 export const validationsFormAddTask = Joi.object({
   taskName: Joi.string(),
   taskDescription: Joi.string(),
-  assignedEmployee: Joi.string(),
+  // assignedEmployee: Joi.array().items(Joi.string().alphanum().length(24)),
+  assignedEmployee: Joi.string().alphanum().length(24),
   status: Joi.string(),
   startDate: Joi.date()
 });
