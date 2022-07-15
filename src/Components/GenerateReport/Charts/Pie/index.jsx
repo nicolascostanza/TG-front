@@ -4,7 +4,7 @@ import { Pie } from 'react-chartjs-2';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-function PieChart(props) {
+const PieChart = (props) => {
   const options = {
     responsive: true,
     plugins: {
@@ -36,6 +36,6 @@ function PieChart(props) {
       <Pie data={data} options={options} />
     </div>
   );
-}
+};
 
 export default PieChart;

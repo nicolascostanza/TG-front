@@ -6,6 +6,8 @@
 // import Loader from 'Components/Shared/Loader';
 import PieChart from '../Charts/Pie';
 import BarChart from '../Charts/Bars';
+import MultiAxis from '../Charts/MultiAxis';
+import LineChart from '../Charts/Line';
 import styles from '../report.module.css';
 import { project, projectTimesheets } from './mock'; // delete after database update
 
@@ -152,6 +154,8 @@ const ProjectReport = () => {
         <div className={styles.barsContainer}>
           <BarChart className={styles.barChart} data={projectTimesheetsMap} label="date" />
         </div>
+        <MultiAxis />
+        <LineChart />
       </div>
     </div>
   );
