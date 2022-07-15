@@ -5,6 +5,7 @@
 // import * as employeesThunks from 'redux/employees/thunks';
 // import Loader from 'Components/Shared/Loader';
 import PieChart from '../Charts/Pie';
+import BarChart from '../Charts/Bars';
 import styles from '../report.module.css';
 import { project, projectTimesheets } from './mock'; // delete after database update
 
@@ -111,27 +112,19 @@ const ProjectReport = () => {
           </tfoot>
         </table>
         <div className={styles.graphContainer}>
-          <p>Hours</p>
           <PieChart
+            title="Hours"
             data={segmentedByEmployee ?? []}
             label="firstName"
             value="hours"
-            width={300}
-            height={300}
-            innerRadius={0}
-            outerRadius={150}
           />
         </div>
         <div className={styles.graphContainer}>
-          <p>Total Rate</p>
           <PieChart
+            title="Total Rate"
             data={segmentedByEmployee ?? []}
             label="firstName"
             value="totalRate"
-            width={300}
-            height={300}
-            innerRadius={0}
-            outerRadius={150}
           />
         </div>
         <table className={styles.condensedTable}>
@@ -156,6 +149,9 @@ const ProjectReport = () => {
             })}
           </tbody>
         </table>
+        <div className={styles.barsContainer}>
+          <BarChart className={styles.barChart} data={projectTimesheetsMap} label="date" />
+        </div>
       </div>
     </div>
   );
