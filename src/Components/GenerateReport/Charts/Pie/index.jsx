@@ -11,7 +11,7 @@ const Arc = ({ data, label, index, createArc, colors, format }) => (
       fill="white"
       fontSize="14"
     >
-      {`${label.firstName} (${format(data.value)})`}
+      {`${label} (${format(data.value)})`}
     </text>
   </g>
 );
@@ -19,7 +19,7 @@ const Arc = ({ data, label, index, createArc, colors, format }) => (
 const Pie = (props) => {
   const createPie = d3
     .pie()
-    .value((d) => d.hours)
+    .value((d) => d[props.value])
     .sort(null);
   const createArc = d3.arc().innerRadius(props.innerRadius).outerRadius(props.outerRadius);
   const colors = d3.scaleOrdinal(d3.schemeCategory10);
@@ -32,7 +32,7 @@ const Pie = (props) => {
         {data.map((d, i) => (
           <Arc
             key={i}
-            label={props.data[i]}
+            label={props.data[i][props.label]}
             data={d}
             index={i}
             createArc={createArc}
