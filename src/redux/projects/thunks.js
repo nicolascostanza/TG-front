@@ -69,6 +69,8 @@ export const addEmployeeToProject = (body, id) => {
     api
       .addEmployeeToProjectaApi(body, id)
       .then((response) => {
+        console.log('response:', response);
+        console.log('aca el dispatch', response.data, id);
         dispatch(actions.addEmployeeToProject(response.data));
         if (!response.error) {
           dispatch(actions.closeAllModals());

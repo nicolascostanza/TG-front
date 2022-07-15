@@ -25,6 +25,7 @@ import * as thunksAdmins from '../../redux/admins/thunks';
 // HACER Q APAREZCAN LOS DATOS AL REVEZ
 // SETEAR LOS VALORES EN EDIT HOME
 // DROPWDOWN
+// VER NOMBRE Y APELLIDO DE EMPLOYEES
 function Home() {
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
@@ -45,10 +46,11 @@ function Home() {
   const role = 'ADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
 
+  console.log('proyectsssssss: ', projectsList);
+
   useEffect(() => {
-    dispatch(thunksAdmins.getAdmins());
-    dispatch(thunksProjects.getProjects());
-    dispatch(thunksProjects.getProjects());
+    // dispatch(thunksAdmins.getAdmins());
+
     // if para el home, else para el open project
     if (id === '') {
       // aca despues hago un switch con la peticion nueva de projects asociados al employee
@@ -61,6 +63,8 @@ function Home() {
       if (role === 'PM' || role === 'EMPLOYEE') {
         dispatch(thunksProjects.getProjects());
       }
+    } else {
+      dispatch(thunksProjects.getProjects());
     }
   }, [screen, request]);
 

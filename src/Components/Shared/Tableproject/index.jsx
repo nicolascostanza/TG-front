@@ -12,7 +12,6 @@ import * as thunksTasks from 'redux/tasks/thunks';
 import * as thunksEmployees from 'redux/employees/thunks';
 import { useSelector } from 'react-redux';
 
-// BORRAR EL OPENTIMESHEET NO SIRVE MAS
 function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [tab, setTab] = useState('employees');
   const [filterProject, setFilterProject] = useState(true);
@@ -27,7 +26,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const dispatch = useDispatch();
   const allEmployees = useSelector((state) => state.employees.list);
   const allProjects = useSelector((state) => state.projects.list);
-  console.log('proyectos:', allProjects);
   let projectoElegido = allProjects.filter((project) => project?._id === idProject);
   console.log('proyectoelegido:', projectoElegido[0]);
   let dataTeam = projectoElegido[0].team;
@@ -47,9 +45,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     keys = ['_id', 'taskName', 'taskDescription'];
     data = dataTasks;
   }
-  const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
-  console.log('muestro est:', show);
-
   useEffect(() => {
     dispatch(thunksEmployees.getEmployees());
     // dispatch(thunksProjects.getProjects());
@@ -61,6 +56,9 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       setIndexPage(maxIndexPage);
     }
   }, [data]);
+
+  const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
+  console.log('muestro est:', show);
 
   const nextPage = () => {
     if (data.length / 10 > indexPage) {

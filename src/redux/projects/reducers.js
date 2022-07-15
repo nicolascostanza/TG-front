@@ -98,9 +98,15 @@ export const projectsReducer = (state = initialState, action) => {
         ...state
       };
     case types.ADD_EMPLOYEE_TO_PROJECT:
+      // projectSelected = state.list.filter((project) => project._id === action.payload.id);
+      // info = projectSelected.team.push(action.payload.employee);
+      // console.log('proyecto modificado:', info);
+      // list: state.list.map((item) => (item._id === action.payload._id ? action.payload : item))
       return {
         ...state,
-        list: [...state.list, action.payload]
+        list: state.list.map((project) =>
+          project._id === action.payload._id ? action.payload : project
+        )
       };
     case types.ADD_EMPLOYEE_TO_PROJECT_FAILED:
       return {

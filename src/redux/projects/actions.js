@@ -71,30 +71,33 @@ export const showEditModal = () => ({
 });
 
 // ADD EMPLOYEE TO PROJECT
-export const addEmployeeToProject = (employee) => ({
+export const addEmployeeToProject = (project) => ({
   type: types.ADD_EMPLOYEE_TO_PROJECT,
-  payload: employee
+  payload: project
 });
 
 export const addEmployeeToProjectPending = () => ({
   type: types.ADD_EMPLOYEE_TO_PROJECT_PENDING
 });
 
-export const addEmployeeToProjectFailed = () => ({
-  type: types.ADD_EMPLOYEE_TO_PROJECT_FAILED
+export const addEmployeeToProjectFailed = (error) => ({
+  type: types.ADD_EMPLOYEE_TO_PROJECT_FAILED,
+  payload: error
 });
 
 // ADD_TASK_TO_PROJECT
-export const addTaskToProject = () => ({
-  type: types.ADD_TASK_TO_PROJECT
+export const addTaskToProject = (task) => ({
+  type: types.ADD_TASK_TO_PROJECT,
+  payload: task
 });
 
 export const addTaskToProjectPending = () => ({
   type: types.ADD_TASK_TO_PROJECT_PENDING
 });
 
-export const addTaskToProjectFailed = () => ({
-  type: types.ADD_TASK_TO_PROJECT_FAILED
+export const addTaskToProjectFailed = (error) => ({
+  type: types.ADD_TASK_TO_PROJECT_FAILED,
+  payload: error
 });
 // DELETE_TASK_TO_PROJECT
 export const deleteTaskToProject = () => ({
