@@ -39,7 +39,7 @@ const PieChart = (props) => {
     datasets: [
       {
         data: props.data.map((item) => item[props.value]),
-        backgroundColor: colorScheme.niceScheme,
+        backgroundColor: colorScheme.corpo,
         borderColor: '#00000030'
       }
     ]

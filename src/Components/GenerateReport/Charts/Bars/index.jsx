@@ -7,6 +7,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import { colorScheme } from '../constants';
 import { Bar } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
@@ -33,36 +34,17 @@ function BarChart(props) {
     }
   };
 
-  const labels = props.data.map((item) => item[props.label]);
+  const labels = props.data.label.map((item) => item);
 
   const data = {
     labels,
-    datasets: [
-      {
-        label: 'Juan',
-        data: props.data
-          .filter((item) => item.employeeId.firstName === 'Juan')
-          .map((item) => item.hours),
-        borderColor: '#33bb00',
-        backgroundColor: '#33bb00'
-      },
-      {
-        label: 'Larita',
-        data: props.data
-          .filter((item) => item.employeeId.firstName === 'larita')
-          .map((item) => item.hours),
-        borderColor: '#ee7723',
-        backgroundColor: '#ee7723'
-      },
-      {
-        label: 'Muffin',
-        data: props.data
-          .filter((item) => item.employeeId.firstName === 'muffin')
-          .map((item) => item.hours),
-        borderColor: '#330077',
-        backgroundColor: '#330077'
-      }
-    ]
+    datasets: props.data.teamLabel.map((item) => {
+      return {
+        label: item,
+        data: props.data.data[props.data.teamLabel.indexOf(item)].map((dataItem) => dataItem),
+        backgroundColor: colorScheme[props.colorScheme][props.data.teamLabel.indexOf(item)]
+      };
+    })
   };
   return (
     <div>

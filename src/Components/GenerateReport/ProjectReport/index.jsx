@@ -12,6 +12,7 @@ import styles from '../report.module.css';
 import { project, projectTimesheets } from './mock'; // delete after database update
 
 const ProjectReport = () => {
+  const MILIS_PER_DAY = 86400000;
   // const dispatch = useDispatch();
   // const projects = useSelector((state) => state.projects.list);
   // const projectTimesheets = useSelector((state) => state.timesheet.listFromProject);
@@ -39,9 +40,81 @@ const ProjectReport = () => {
         rate
       };
     });
+  // console.log('ts map:', projectTimesheetsMap);
 
   // Project contributions by employees (hours and rate)
-  // const projectContributions = ;
+  const projectContr = projectTimesheetsMap
+    .map((item) => {
+      const { date, employeeId, hours, rate } = item;
+      const { _id, firstName, lastName } = employeeId;
+      return {
+        date,
+        hours,
+        rate,
+        _id,
+        firstName,
+        lastName
+      };
+    })
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  // Day by day contributions
+  const projectContrByDay = (data) => {
+    const initDate = data[0].date;
+    const initDateNum = Number(new Date(initDate));
+    const endDate = data[data.length - 1].date;
+    const dayDiff = (new Date(endDate) - new Date(initDate)) / MILIS_PER_DAY;
+    const team = project?.team.map((member) => {
+      return {
+        ...member.employeeId,
+        rate: member.rate
+      };
+    });
+    let dayList = [];
+
+    // First a list of the days between start and end
+    for (let i = 0; i <= dayDiff; i++) {
+      const dateToAppend = new Date(MILIS_PER_DAY * i + initDateNum).toISOString().split('T')[0];
+      dayList.push(dateToAppend);
+    }
+
+    // Then we map each contribution
+    const transposedEmpContr = dayList
+      .map((day) => {
+        return {
+          date: day,
+          contr: data.filter((dataItem) => dataItem.date === day)
+        };
+      })
+      .map((item) => {
+        return team.map((teamItem) => {
+          const hours = item.contr
+            .filter((contrItem) => {
+              return teamItem._id === contrItem._id;
+            })
+            .map((hour) => hour.hours)
+            .reduce((prev, curr) => prev + curr, 0);
+          return hours > 0 ? hours : null;
+        });
+      });
+
+    let empContr = [];
+    for (let i = 0; i < team.length; i++) {
+      let auxArr = [];
+      transposedEmpContr.map((item) => {
+        auxArr.push(item[i]);
+      });
+      empContr.push(auxArr);
+    }
+
+    // Last but not least, Join everything
+    return {
+      label: dayList,
+      teamLabel: team.map((item) => item.firstName),
+      data: empContr
+    };
+  };
+  // console.log('projectContrByDay: ', projectContrByDay(projectContr));
 
   // Segmented by employee (_id, firstName, lastName, rate, hours, totalRate)
   const segmentedByEmployee = project?.team.map((member) => {
@@ -155,7 +228,12 @@ const ProjectReport = () => {
           </tbody>
         </table>
         <div className={styles.barsContainer}>
-          <BarChart title="Historic rate" data={projectTimesheetsMap} label="date" />
+          <BarChart
+            title="Historic rate"
+            data={projectContrByDay(projectContr)}
+            label="date"
+            colorScheme="niceScheme"
+          />
         </div>
         <div className={styles.barsContainer}>
           <MultiAxis title="Multiline title" />
