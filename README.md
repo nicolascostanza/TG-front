@@ -1,7 +1,37 @@
-# BaSP - Trackgenix App codebase
+<div align=center>
+<img src="https://radiumrocket.com/static/rocket-logo-883f208f5b6a41d21540cfecae22fa07.png" alt="Logo" width="80" height="80">
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# BaSP - TrackGENIX App codebase
+
+<p>TrackGENIX is the essential time management tool that you and your team needs to become more organized, efficient, and get more things done.</p>
+<br>
+<p>
+  <a href="https://github.com/BaSP-m2022/alfonso-trackgenix-app/graphs/contributors">
+    <img src="https://img.shields.io/badge/Contributors-11-red" alt="contributors" />
+  </a>
+  <a href="https://github.com/BaSP-m2022/alfonso-trackgenix-app/commits/master">
+    <img src="https://img.shields.io/badge/Commits-437-brightgreen" alt="commits" />
+  </a>
+  <a href="https://github.com/BaSP-m2022/alfonso-trackgenix-app/network/members" alt="forks">
+    <img src="https://img.shields.io/badge/Forks-0-blue">
+  </a>
+  <a href="https://github.com/BaSP-m2022/alfonso-trackgenix-app/issues" alt="issues">
+    <img src="https://img.shields.io/badge/Issues-0-green">
+  </a>
+</p>
+</div>
+
+### Built with:
+* HTML
+* CSS
+* JS
+* NPM
+* Express
+* MongoDB
+* [Create React App](https://github.com/facebook/create-react-app)
+
+<h1>Getting started</h1>
 
 ### Install dependencies
 
@@ -30,7 +60,7 @@ You will also see any lint errors in the console.
 
 ### Members
 
-(example)
+
 |Photo | Name  | Mail | Github | Role
 | :-----: | :-----: | :-----: | :-----: | :-----: |
 <img src="https://avatars.githubusercontent.com/u/20587232?v=4" height="50" width="50">| Esteban Frare | esteban.frare@radiumrocket.com | [@estefrare](https://github.com/estefrare) | Course director
@@ -52,6 +82,9 @@ You will also see any lint errors in the console.
 
 <br>
 
+<div align="center">
+
 ### License & Copyright
 
 © Radium Rocket "Become a Software Professional 2022"
+</div>
