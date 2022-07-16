@@ -12,7 +12,7 @@ import { Line } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const MultiAxisChart = () => {
+const MultiAxisChart = (props) => {
   const options = {
     responsive: true,
     interaction: {
@@ -23,7 +23,7 @@ const MultiAxisChart = () => {
     plugins: {
       title: {
         display: true,
-        text: 'Chart.js Line Chart - Multi Axis'
+        text: props.title
       }
     },
     scales: {

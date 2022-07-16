@@ -1,13 +1,27 @@
-// import { projectTimesheets, project } from './mock';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import ChartDataLabels from 'chartjs-plugin-datalabels';
 import { Pie } from 'react-chartjs-2';
+import { colorScheme } from '../constants';
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
+ChartJS.defaults.set('plugins.datalabels', {
+  color: '#FFF',
+  backgroundColor: '#00000090',
+  borderRadius: 6,
+  display: false
+});
 
 const PieChart = (props) => {
   const options = {
     responsive: true,
     plugins: {
+      ChartDataLabels,
+      datalabels: {
+        color: '#FFF',
+        backgroundColor: '#00000090',
+        borderRadius: 6,
+        display: true
+      },
       legend: {
         position: 'top'
       },
@@ -24,9 +38,8 @@ const PieChart = (props) => {
     labels,
     datasets: [
       {
-        label: 'Coso 1',
         data: props.data.map((item) => item[props.value]),
-        backgroundColor: ['#33bb00', '#f1f266', '#004266'],
+        backgroundColor: colorScheme.niceScheme,
         borderColor: '#00000030'
       }
     ]

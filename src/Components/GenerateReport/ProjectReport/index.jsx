@@ -40,7 +40,10 @@ const ProjectReport = () => {
       };
     });
 
-  // Segmented by employee
+  // Project contributions by employees (hours and rate)
+  // const projectContributions = ;
+
+  // Segmented by employee (_id, firstName, lastName, rate, hours, totalRate)
   const segmentedByEmployee = project?.team.map((member) => {
     const hours = projectTimesheets
       .filter((ts) => {
@@ -82,8 +85,8 @@ const ProjectReport = () => {
           <thead>
             <tr>
               <th>Date</th>
-              <th>Task</th>
               <th>Hours</th>
+              <th>Task</th>
               <th>Employee</th>
               <th>Rate</th>
               <th>TS Cost</th>
@@ -94,8 +97,8 @@ const ProjectReport = () => {
               return (
                 <tr key={timesheet._id}>
                   <td>{timesheet.date}</td>
-                  <td>{timesheet.taskId?.taskName}</td>
                   <td>{timesheet.hours}</td>
+                  <td>{timesheet.taskId?.taskName}</td>
                   <td>{timesheet.employeeId.firstName}</td>
                   <td>{timesheet.rate}</td>
                   <td>{timesheet.hours * timesheet.rate}</td>
@@ -152,10 +155,14 @@ const ProjectReport = () => {
           </tbody>
         </table>
         <div className={styles.barsContainer}>
-          <BarChart className={styles.barChart} data={projectTimesheetsMap} label="date" />
+          <BarChart title="Historic rate" data={projectTimesheetsMap} label="date" />
         </div>
-        <MultiAxis />
-        <LineChart />
+        <div className={styles.barsContainer}>
+          <MultiAxis title="Multiline title" />
+        </div>
+        <div className={styles.barsContainer}>
+          <LineChart title="Line title" />
+        </div>
       </div>
     </div>
   );

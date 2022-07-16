@@ -14,11 +14,10 @@
 
 .extendedTable {
   min-width: 600px;
-  display: none;
 }
 
 .condensedTable {
-  display: none;
+  min-width: 400px;
 }
 
 .graphContainer {
@@ -33,6 +32,7 @@
 }
 
 .barsContainer {
-  min-width: 400px;
-  max-width: fit-content;
+  min-width: 300px;
+  width: 100%;
+  max-width: 800px;
 }

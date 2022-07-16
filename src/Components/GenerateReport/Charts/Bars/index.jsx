@@ -14,9 +14,12 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 function BarChart(props) {
   const options = {
     plugins: {
+      datalabels: {
+        display: true
+      },
       title: {
         display: true,
-        text: 'Chart.js Bar Chart - Stacked'
+        text: props.title
       }
     },
     responsive: true,
