@@ -6,7 +6,6 @@
 // import Loader from 'Components/Shared/Loader';
 import PieChart from '../Charts/Pie';
 import BarChart from '../Charts/Bars';
-import MultiAxis from '../Charts/MultiAxis';
 import LineChart from '../Charts/Line';
 import styles from '../report.module.css';
 import { project, projectTimesheets } from './mock'; // delete after database update
@@ -59,7 +58,7 @@ const ProjectReport = () => {
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   // Day by day contributions
-  const projectContrByDay = (data) => {
+  const projectContrByDay = (data, fillZero = false) => {
     const initDate = data[0].date;
     const initDateNum = Number(new Date(initDate));
     const endDate = data[data.length - 1].date;
@@ -94,7 +93,11 @@ const ProjectReport = () => {
             })
             .map((hour) => hour.hours)
             .reduce((prev, curr) => prev + curr, 0);
-          return hours > 0 ? hours : null;
+          if (fillZero) {
+            return hours;
+          } else {
+            return hours > 0 ? hours : null;
+          }
         });
       });
 
@@ -114,7 +117,6 @@ const ProjectReport = () => {
       data: empContr
     };
   };
-  // console.log('projectContrByDay: ', projectContrByDay(projectContr));
 
   // Segmented by employee (_id, firstName, lastName, rate, hours, totalRate)
   const segmentedByEmployee = project?.team.map((member) => {
@@ -236,10 +238,12 @@ const ProjectReport = () => {
           />
         </div>
         <div className={styles.barsContainer}>
-          <MultiAxis title="Multiline title" />
-        </div>
-        <div className={styles.barsContainer}>
-          <LineChart title="Line title" />
+          <LineChart
+            title="Historic rate"
+            data={projectContrByDay(projectContr, true)}
+            label="date"
+            colorScheme="niceScheme"
+          />
         </div>
       </div>
     </div>

@@ -16,7 +16,7 @@ function BarChart(props) {
   const options = {
     plugins: {
       datalabels: {
-        display: true
+        display: false
       },
       title: {
         display: true,
