@@ -2,6 +2,7 @@ import React from 'react';
 import styles from '../Sidebar/sidebar.module.css';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import { List, ListItem, Drawer } from '@mui/material';
 
 const Sidebar = ({ children }) => {
   const history = useHistory();
@@ -17,19 +18,55 @@ const Sidebar = ({ children }) => {
     );
   }
   return (
-    <div className={styles.Sidebar}>
-      <section className={styles.container}>
-        <div className={styles.sidebarTitle}>
+    // <div className={styles.Sidebar}>
+    //   <section className={styles.container}>
+    //     <div className={styles.sidebarTitle}>
+    //       <p>Menu</p>
+    //       <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+    //     </div>
+    //     <a>Home</a> {/*<Link to="/tasks">home</Link>*/}
+    //     <a onClick={() => history.push('/signup')}>Sign-up</a>
+    //     <a onClick={() => history.push('/login')}>Log-in</a>
+    //     <a>Contact</a>
+    //   </section>
+    //   <section className={styles.container}>{children}</section>
+    // </div>
+    <Drawer
+      variant="permanent"
+      // open={isOpen}
+      // onOpen={setIsOpen(true)}
+      // onClose={handleClose()}
+    >
+      {/* <section className={styles.container}> */}
+      <List>
+        <ListItem>
+          <p>Menu</p>
+        </ListItem>
+        <ListItem>
+          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+        </ListItem>
+        <ListItem>
+          <a>Home</a>
+        </ListItem>
+        <ListItem>
+          <a onClick={() => history.push('/signup')}>Sign-up</a>
+        </ListItem>
+        <ListItem>
+          <a onClick={() => history.push('/login')}>Log-in</a>
+        </ListItem>
+        <ListItem>Contact</ListItem>
+      </List>
+      {/* <div className={styles.sidebarTitle}>
           <p>Menu</p>
           <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
-        <a>Home</a> {/*<Link to="/tasks">home</Link>*/}
+        <a>Home</a> <Link to="/tasks">home</Link>
         <a onClick={() => history.push('/signup')}>Sign-up</a>
         <a onClick={() => history.push('/login')}>Log-in</a>
-        <a>Contact</a>
-      </section>
+        Contact */}
+      {/* </section> */}
       <section className={styles.container}>{children}</section>
-    </div>
+    </Drawer>
   );
 };
 

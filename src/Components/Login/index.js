@@ -9,13 +9,14 @@ import Sidebar from 'Components/Shared/Sidebar';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
 import Loader from 'Components/Shared/Loader';
-import { Button } from '@mui/material';
 import styled from '@emotion/styled';
+import { Button } from '@mui/material';
 import { deepPurple } from '@mui/material/colors';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
-import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
+import { Box } from '@mui/system';
+import { Link } from 'react-router-dom';
 
 const ContinueButton = styled(Button)({
   backgroundColor: deepPurple['A700']
@@ -56,37 +57,37 @@ const Login = () => {
 
   return (
     // <section className={styles.container}>
-    <Container>
+    <Box>
       <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
         <Sidebar />
       </section>
       {/* <section className={styles.form}> */}
-      <Container>
-        <FormControl onSubmit={handleSubmit(onSubmit)} sx={{ width: '380px' }}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <Container>
-              {/* <h1 className={styles.tittle}>LOGIN</h1> */}
-              <Typography variant="h3">Login</Typography>
-              <div className={styles.formFlex}>
-                {/* <div className={styles.inputContainer}>
+      <Container sx={{ maxWidth: 'sm' }}>
+        {/* <Container fixed> */}
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Container>
+            {/* <h1 className={styles.tittle}>LOGIN</h1> */}
+            <Typography variant="h3">Login</Typography>
+            <div className={styles.formFlex}>
+              {/* <div className={styles.inputContainer}>
               <label htmlFor="Email" className={styles.labels}>
                 Email
               </label>
               <input type="text" {...register('email')} error={appendErrors.email?.message}></input>
               {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
             </div> */}
-                <TextField
-                  id="email"
-                  label="Email"
-                  variant="outlined"
-                  {...register('email')}
-                  margin="normal"
-                  fullWidth
-                  error={errors.email && true}
-                  helperText={errors.email?.message}
-                />
-                {/* <div className={styles.inputContainer}>
+              <TextField
+                id="email"
+                label="Email"
+                variant="outlined"
+                {...register('email')}
+                margin="normal"
+                fullWidth
+                error={errors.email && true}
+                helperText={errors.email?.message}
+              />
+              {/* <div className={styles.inputContainer}>
               <label htmlFor="Password" className={styles.labels}>
                 Password
               </label>
@@ -97,47 +98,48 @@ const Login = () => {
               ></input>
               {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
             </div> */}
-                <TextField
-                  type="password"
-                  id="password"
-                  label="Password"
-                  variant="outlined"
-                  {...register('password')}
-                  margin="normal"
-                  fullWidth
-                  error={errors.password && true}
-                  helperText={errors.password?.message}
-                />
-              </div>
-              <Typography variant="subtitle1">Forgot password?</Typography>
-              <div className={styles.buttonsContainer}>
-                <ContinueButton
-                  variant="contained"
-                  type="submit"
-                  className={styles.continueButton}
-                  fullWidth
-                  onClick={handleSubmit}
-                  // sx={{
-                  //   backgroundColor: deepPurple['A700']
-                  // }}
-                >
-                  LOGIN
-                </ContinueButton>
-                {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+              <TextField
+                type="password"
+                id="password"
+                label="Password"
+                variant="outlined"
+                {...register('password')}
+                margin="normal"
+                fullWidth
+                error={errors.password && true}
+                helperText={errors.password?.message}
+              />
+            </div>
+            <Typography variant="subtitle1">Forgot password?</Typography>
+            <div className={styles.buttonsContainer}>
+              <ContinueButton
+                variant="contained"
+                type="submit"
+                className={styles.continueButton}
+                fullWidth
+                onClick={handleSubmit}
+                // sx={{
+                //   backgroundColor: deepPurple['A700']
+                // }}
+              >
+                LOGIN
+              </ContinueButton>
+              {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
               CONTINUE
             </button> */}
-              </div>
-              <Container>
+            </div>
+            <Container>
+              <Link to="/signup">
                 <Typography variant="subtitle2" gutterBottom component="div">
                   Don&apos;t have an account? Sign up
                 </Typography>
-              </Container>
+              </Link>
             </Container>
-          </form>
-        </FormControl>
+          </Container>
+        </form>
         {/* </section> */}
       </Container>
-    </Container>
+    </Box>
   );
   // eslint-disable-next-line no-unreachable
   {
