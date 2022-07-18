@@ -8,7 +8,7 @@ import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
-import { Button, Box } from '@mui/material';
+import { Button, Box, ButtonGroup } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 function TimeSheet() {
@@ -21,6 +21,7 @@ function TimeSheet() {
   let role = 'PM';
   // let role = 'EMPLOYEE';
   const [showAllTimesheets, setShowAllTimesheets] = useState(true);
+  const [showPendingTS, setShowPendingTS] = useState(false);
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
@@ -32,9 +33,12 @@ function TimeSheet() {
   // }
   useEffect(() => {
     if (showAllTimesheets === true) {
-      dispatch(thunks.getEmployeeTimesheets(currentUser._id));
-    } else {
       dispatch(thunks.getTimesheets());
+    } else {
+      dispatch(thunks.getEmployeeTimesheets(currentUser._id));
+    }
+    if (showPendingTS === true) {
+      console.log('pendientes');
     }
     dispatch(tasksThunks.getTasks());
     // reset({
@@ -60,19 +64,39 @@ function TimeSheet() {
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
-  const formattedTimeSheets = timeSheets.map((timeSheet) => {
-    return {
-      _id: timeSheet._id,
-      employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
-      projectId: timeSheet.projectId.name,
-      date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
-      taskId: timeSheet.taskId?.taskName,
-      hours: timeSheet.hours,
-      status: timeSheet.approved ? 'Approved' : 'Disapoproved',
-      isDeleted: false,
-      approveSlider: timeSheet.approved ? true : false
-    };
-  });
+  let formattedTimeSheets = [];
+  if (showPendingTS) {
+    formattedTimeSheets = timeSheets
+      .map((timeSheet) => {
+        return {
+          _id: timeSheet._id,
+          employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
+          projectId: timeSheet.projectId.name,
+          date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
+          taskId: timeSheet.taskId?.taskName,
+          hours: timeSheet.hours,
+          status: timeSheet.approved ? 'Approved' : 'Disapoproved',
+          isDeleted: false,
+          approveSlider: timeSheet.approved ? true : false,
+          approved: timeSheet.approved
+        };
+      })
+      .filter((item) => !item.approved);
+  } else {
+    formattedTimeSheets = timeSheets.map((timeSheet) => {
+      return {
+        _id: timeSheet._id,
+        employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
+        projectId: timeSheet.projectId.name,
+        date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
+        taskId: timeSheet.taskId?.taskName,
+        hours: timeSheet.hours,
+        status: timeSheet.approved ? 'Approved' : 'Disapoproved',
+        isDeleted: false,
+        approveSlider: timeSheet.approved ? true : false
+      };
+    });
+  }
   formattedTimeSheets.reverse();
   const statusChanger = async (status, id) => {
     dispatch(
@@ -84,7 +108,6 @@ function TimeSheet() {
         id
       )
     );
-    console.log('que es esto ', status.status);
   };
   // const approveTimesheet = (data, id) => {
   //   statusChanger();
@@ -98,7 +121,18 @@ function TimeSheet() {
   //   console.log('id sliderrr', id);
   // };
   // console.log(approveTimesheet);
-
+  const showMyTS = () => {
+    setShowAllTimesheets(false);
+    setShowPendingTS(false);
+  };
+  const showAllTS = () => {
+    setShowAllTimesheets(true);
+    setShowPendingTS(false);
+  };
+  const showTSToApprove = () => {
+    setShowAllTimesheets(false);
+    setShowPendingTS(true);
+  };
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -119,11 +153,13 @@ function TimeSheet() {
         currentUser={currentUser}
       ></AddTimeSheets>
       {role === 'PM' && (
-        <Box>
-          <Button onClick={() => setShowAllTimesheets(true)}>My timesheets</Button>
-          {/* <Button>Timesheets to approve</Button> */}
-          <Button onClick={() => setShowAllTimesheets(false)}>All timesheets</Button>
-        </Box>
+        <ButtonGroup>
+          <Box>
+            <Button onClick={() => showMyTS()}>My timesheets</Button>
+            <Button onClick={() => showTSToApprove()}>Timesheets to approve</Button>
+            <Button onClick={() => showAllTS()}>All timesheets</Button>
+          </Box>
+        </ButtonGroup>
       )}
       <EmployeeTimesheetTable
         title={role}
