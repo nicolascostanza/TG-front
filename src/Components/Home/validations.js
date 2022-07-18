@@ -56,6 +56,8 @@ export const validationsFormProjectEdit = Joi.object({
   })
 });
 export const validationsFormSuperadminCreate = Joi.object({
+  firstName: Joi.string().min(3).max(20).optional(),
+  lastName: Joi.string().min(3).max(20).optional(),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .min(7)
@@ -77,6 +79,8 @@ export const validationsFormSuperadminCreate = Joi.object({
   active: Joi.boolean().required()
 });
 export const validationsFormSuperadminEdit = Joi.object({
+  firstName: Joi.string().min(3).max(20).optional(),
+  lastName: Joi.string().min(3).max(20).optional(),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .min(7)
@@ -98,7 +102,7 @@ export const validationsFormSuperadminEdit = Joi.object({
 
 export const validationsFormAddEmployee = Joi.object({
   employeeId: Joi.string().required(),
-  role: Joi.string().required(),
+  role: Joi.string(),
   rate: Joi.number().required()
   // isPm: Joi.boolean().required()
 });
@@ -110,4 +114,9 @@ export const validationsFormAddTask = Joi.object({
   assignedEmployee: Joi.string().alphanum().length(24),
   status: Joi.string(),
   startDate: Joi.date()
+});
+
+export const validationsAssignPm = Joi.object({
+  employeeId: Joi.string().required(),
+  rate: Joi.number().required()
 });

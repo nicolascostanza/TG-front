@@ -22,15 +22,16 @@ import {
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
-// HACER Q APAREZCAN LOS DATOS AL REVEZ
 // SETEAR LOS VALORES EN EDIT HOME
+// CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
 // DROPWDOWN
 // VER NOMBRE Y APELLIDO DE EMPLOYEES
+// VALIDAR UN RANGO PARA EL ASIGN EMPLOYEE
+// VALIDAR QUE SI HAY UN PM LO CAMBIE EN ASIGN PM
 function Home() {
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [method, setMethod] = useState('');
   const [request, setRequest] = useState(false);
   const dispatch = useDispatch();
@@ -45,8 +46,6 @@ function Home() {
   let title = '';
   const role = 'ADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
-
-  console.log('proyectsssssss: ', projectsList);
 
   useEffect(() => {
     // dispatch(thunksAdmins.getAdmins());
@@ -67,11 +66,19 @@ function Home() {
       dispatch(thunksProjects.getProjects());
     }
   }, [screen, request]);
-
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(validator)
+  });
   // headers and keys
   if (role === 'SUPERADMIN') {
-    headers = ['Email', 'Password', 'Is Active ?'];
-    keys = ['email', 'password', 'active'];
+    headers = ['First Name', 'Last Name', 'Email', 'Password', 'Is Active ?'];
+    keys = ['firstName', 'lastName', 'email', 'password', 'active'];
     if (method === 'POST') {
       validator = validationsFormSuperadminCreate;
     } else {
@@ -86,22 +93,66 @@ function Home() {
       validator = validationsFormProjectEdit;
     }
   }
+  console.log('projects:', projectsList);
 
-  const {
-    handleSubmit,
-    register,
-    formState: { errors }
-  } = useForm({
-    mode: 'onBlur',
-    resolver: joiResolver(validator)
-  });
   const switcher = () => {
     setScreen(!screen);
   };
   const handleModal = (request, id) => {
+    // SETEO DE VALORES EN MODAL SUPERADMIN
+    if (role === 'SUPERADMIN') {
+      if (request === 'POST') {
+        reset({
+          firstName: '',
+          lastName: '',
+          email: '',
+          password: '',
+          active: false
+        });
+      } else {
+        let selected = adminsList.filter((admin) => admin._id === id);
+        console.log('selected:', selected);
+        reset({
+          firstName: selected[0].firstName,
+          lastName: selected[0].lastName,
+          email: selected[0].email,
+          password: selected[0].password,
+          active: selected[0].active
+        });
+      }
+      setShowModal(true);
+    } else {
+      // SETEO DE VALORES EN MODAL PROJECTS
+      if (request === 'POST') {
+        reset({
+          name: '',
+          lastName: '',
+          email: '',
+          password: '',
+          active: false
+        });
+      } else {
+        let selected = projectsList.filter((admin) => admin._id === id);
+        console.log('selected:', selected);
+        reset({
+          name: selected[0].name,
+          description: selected[0].description,
+          clientName: selected[0].clientName,
+          startDate: selected[0].startDate
+        });
+      }
+      setShowModal(true);
+    }
+    // reset({
+    //   taskName: valuesForm[0].taskName,
+    //   taskDescription: valuesForm[0].taskDescription,
+    //   assignedEmployee: valuesForm[0].assignedEmployee,
+    //   startDate: valuesForm[0].startDate,
+    //   status: valuesForm[0].status
+    // });
     setId(id);
-    setShowModal(!showModal);
     setMethod(request);
+    setShowModal(!showModal);
   };
   const onDelete = (id) => {
     const resp = confirm('Borrar ?');
@@ -160,64 +211,9 @@ function Home() {
       <>
         <Sidebar></Sidebar>
         <Loader isLoading={isLoading} />
-        <Modal
-          showModal={showModalEmployee}
-          handleClose={() => setShowModalEmployee(false)}
-          modalTitle={'ADD EMPLOYEE'}
-        >
-          <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label htmlFor="employee id">Employee Id</label>
-              <input
-                type="text"
-                placeholder="Employee Id"
-                {...register('employeeId')}
-                error={appendErrors.employeeId?.message}
-              />
-              {errors.employeeId && (
-                <p className={styles.errorInput}>{errors.employeeId?.message}</p>
-              )}
-            </div>
-            <div>
-              <label htmlFor="role">Role</label>
-              <input
-                type="text"
-                placeholder="Dev"
-                {...register('role')}
-                error={appendErrors.role?.message}
-              />
-              {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>}
-            </div>
-            <div>
-              <label htmlFor="Rate">Rate</label>
-              <input
-                type="number"
-                placeholder="500"
-                {...register('rate')}
-                error={appendErrors.rate?.message}
-              />
-              {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
-            </div>
-            <div className={styles.checkbox}>
-              <label htmlFor="isPm">Is PM ?</label>
-              <input
-                className={styles.inputsProfile}
-                type="checkbox"
-                name="isPm"
-                {...register('isPm')}
-              />
-            </div>
-            <div className={styles.buttonsContainer}>
-              <Button width={'75px'} height={'30px'} type="submit" value="GO">
-                ADD EMPLOYEE
-              </Button>
-            </div>
-          </form>
-        </Modal>
         <Tableproject
           setRequest={setRequest}
           idProject={id}
-          openModal={() => setShowModalEmployee(true)}
           switcher={switcher}
           title={title}
           roleUser={role}
@@ -235,10 +231,32 @@ function Home() {
         {role === 'SUPERADMIN' ? (
           <Modal
             showModal={showModal}
-            handleClose={handleModal}
+            handleClose={() => setShowModal(false)}
             modalTitle={method === 'POST' ? 'ADD ADMIN' : 'EDIT ADMIN'}
           >
             <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
+              <div>
+                <label htmlFor="First Name">First Name</label>
+                <input
+                  type="text"
+                  placeholder="First Name"
+                  {...register('firstName')}
+                  error={appendErrors.firstName?.message}
+                />
+                {errors.firstName && (
+                  <p className={styles.errorInput}>{errors.firstName?.message}</p>
+                )}
+              </div>
+              <div>
+                <label htmlFor="Last Name">Last Name</label>
+                <input
+                  type="text"
+                  placeholder="Last Name"
+                  {...register('lastName')}
+                  error={appendErrors.lastName?.message}
+                />
+                {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
+              </div>
               <div>
                 <label htmlFor="email">Email</label>
                 <input
@@ -278,7 +296,7 @@ function Home() {
         ) : (
           <Modal
             showModal={showModal}
-            handleClose={handleModal}
+            handleClose={() => setShowModal(false)}
             modalTitle={method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}
           >
             <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>

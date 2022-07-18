@@ -11,14 +11,15 @@ function Tablehome({
   keys,
   data,
   role,
-  // onEdit,
   onDelete,
   switcher,
   selected,
-  openModal
+  openModal,
+  setShowModal
 }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
+  show.reverse();
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
@@ -49,7 +50,15 @@ function Tablehome({
     <div className={styles.container}>
       <h2>{title}</h2>
       {role === `ADMIN` || role === `SUPERADMIN` ? (
-        <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => openModal('POST')}>
+        <Button
+          width={'100px'}
+          height={'40px'}
+          fontSize={'15px'}
+          onClick={() => {
+            openModal('POST');
+            setShowModal(true);
+          }}
+        >
           <i className="fa-solid fa-plus"></i>
           ADD
         </Button>
@@ -121,6 +130,7 @@ function Tablehome({
                         fontSize={'13px'}
                         onClick={() => {
                           openModal('PUT', row._id);
+                          setShowModal(true);
                           // onEdit(row._id);
                         }}
                       >

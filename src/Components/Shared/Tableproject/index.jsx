@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
+// import AssignPm from 'Components/Shared/assingPm';
 import { useDispatch } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -11,17 +12,19 @@ import * as thunksProjects from 'redux/projects/thunks';
 import * as thunksTasks from 'redux/tasks/thunks';
 import * as thunksEmployees from 'redux/employees/thunks';
 import { useSelector } from 'react-redux';
+import AssignPm from '../assingPm';
 
 function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [tab, setTab] = useState('employees');
   const [filterProject, setFilterProject] = useState(true);
   const [indexPage, setIndexPage] = useState(1);
+  const [showModalPm, setShowModalPm] = useState(false);
   const [showModalEmployee, setShowModalEmployee] = useState(false);
   const [showModalTask, setShowModalTask] = useState(false);
-  // const [showModalPM, setShowModalPM] = useState(false);
   const [method, setMethod] = useState('');
   const [idToForm, setIdToForm] = useState('');
   const [assignPM, setAssignPM] = useState(false);
+  // const [componente, setComponente] = useState(false);
   // const [assignedEmployee, setAssignedEmployees] = useState([]);
   // const [task, setTask] = useState({});
   const dispatch = useDispatch();
@@ -59,6 +62,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   }, [data]);
 
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
+  show.reverse();
   console.log('muestro est:', show);
 
   const nextPage = () => {
@@ -87,10 +91,12 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setFilterProject(!filterProject);
   };
 
-  const assignPmFunction = () => {
-    setShowModalEmployee(true);
-    setAssignPM(true);
-  };
+  // const assignPmFunction = () => {
+  //   // setShowModalEmployee(true);
+  //   setComponente(true);
+  //   setAssignPM(true);
+  //   // setShowModalPm(true);
+  // };
 
   const onAddEmployee = () => {
     reset({});
@@ -104,6 +110,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setShowModalTask(true);
   };
 
+  console.log('modal:', showModalPm);
   const onEdit = (id) => {
     if (tab === 'employees') {
       const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
@@ -136,68 +143,53 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       );
     }
   };
+  const openModalPm = () => {
+    setShowModalPm(true);
+  };
 
   const onSubmit = (data) => {
-    if (assignPM) {
-      const employeePm = {
-        employeeId: data.employeeId,
-        role: 'PM',
-        rate: data.rate,
-        isPM: true
-      };
-      dispatch(thunksProjects.addEmployeeToProject(employeePm, idProject));
-    } else {
-      console.log('data enviada:', data);
-      if (tab === 'employees') {
-        if (method === 'POST') {
-          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-        } else {
-          dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
-          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-        }
+    console.log('data enviada:', data);
+    if (tab === 'employees') {
+      if (method === 'POST') {
+        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
       } else {
-        console.log(data);
-        let taskToAdd = {
-          parentProject: idProject,
-          taskName: data.taskName,
-          taskDescription: data.taskDescription,
-          assignedEmployee: [data.assignedEmployee],
-          startDate: data.startDate,
-          status: data.status
-        };
-        console.log(taskToAdd);
-        if (method === 'POST') {
-          dispatch(thunksTasks.addTask(taskToAdd));
-        } else {
-          dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
-          dispatch(thunksTasks.addTask(taskToAdd));
-        }
+        dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
+        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+      }
+    } else {
+      console.log(data);
+      let taskToAdd = {
+        parentProject: idProject,
+        taskName: data.taskName,
+        taskDescription: data.taskDescription,
+        assignedEmployee: [data.assignedEmployee],
+        startDate: data.startDate,
+        status: data.status
+      };
+      console.log(taskToAdd);
+      if (method === 'POST') {
+        dispatch(thunksTasks.addTask(taskToAdd));
+      } else {
+        dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
+        dispatch(thunksTasks.addTask(taskToAdd));
       }
     }
+
     setAssignPM(false);
     setMethod('');
     setRequest(!setRequest);
   };
 
   console.log(errors);
-  // const handleInputChanges = (e) => {
-  //   const { name, value } = e.target;
-  //   setAssignedEmployees({
-  //     ...assignedEmployee,
-  //     [name]: value
-  //   });
-  //   console.log('data team:', dataTeam);
-  // };
-  // const deleteFromSelectedEmployees = (id) => {
-  //   setAssignedEmployees(assignedEmployee.filter((emp) => emp !== id));
-  // };
-  // const appendToSelectedEmployees = (id) => {
-  //   const previousState = assignedEmployee;
-  //   setAssignedEmployees([...previousState, id]);
-  // };
 
   return (
     <div className={styles.container}>
+      <AssignPm
+        showModalPM={showModalPm}
+        closeModalPM={() => setShowModalPm(false)}
+        allEmployees={allEmployees}
+        idProject={idProject}
+      ></AssignPm>
       {showModalTask ? (
         <Modal
           showModal={showModalTask}
@@ -345,7 +337,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 <p className={styles.errorInput}>{errors.employeeId?.message}</p>
               )}
             </div>
-            {assignPM ? (
+            {!assignPM ? (
               <div>
                 <label htmlFor="role">Role</label>
                 <select {...register('role')} name="role" id="">
@@ -407,14 +399,15 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         </table>
       </Modal> */}
       {roleUser === `ADMIN` ? (
-        <button
-          disabled={dataTeam.length > 0 ? true : false}
+        <Button
           width={'80px'}
           height={'40px'}
-          onClick={assignPmFunction}
+          onClick={() => {
+            openModalPm();
+          }}
         >
           Asignar PM
-        </button>
+        </Button>
       ) : null}
       {roleUser === `ADMIN` || roleUser === `PM` ? (
         <>
