@@ -1,7 +1,22 @@
-import styles from './header.module.css';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
+import * as authActions from 'redux/auth/actions';
+import * as currentUserActions from 'redux/currentUser/actions';
+import styles from './header.module.css';
 
 function Header() {
+  const dispatch = useDispatch();
+  const pathName = window.location.pathname;
+  const onHome = pathName === '/';
+  const role = useSelector((state) => state.auth.authenticated?.role);
+  const logOut = () => {
+    dispatch(authActions.setAuthentication(false));
+    dispatch(currentUserActions.setCurrentUserToInitialState());
+  };
+
+  if (!role && onHome) {
+    return null;
+  }
   return (
     <header>
       <nav className={styles.navbar}>
@@ -27,6 +42,13 @@ function Header() {
           <li>
             <Link to="/tasks">tasks</Link>
           </li>
+          {role ? (
+            <li>
+              <Link onClick={logOut} to="/">
+                Log Out
+              </Link>
+            </li>
+          ) : null}
         </ul>
         <div className={styles.appName}>
           <h1>TrackGENIX</h1>

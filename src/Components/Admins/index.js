@@ -83,7 +83,7 @@ function Admins() {
     }
   }, [method]);
 
-  const formattedAdmins = admins.map((admin) => {
+  const formattedAdmins = admins?.map((admin) => {
     return {
       _id: admin._id,
       firstName: admin.firstName,

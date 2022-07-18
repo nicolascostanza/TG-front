@@ -9,6 +9,7 @@ import { tasksReducer } from './tasks/reducers';
 import { adminsReducer } from './admins/reducers';
 import { authReducer } from './auth/reducers';
 import { accessibilityReducer } from './accessibility/reducers';
+import { currentUserReducer } from './currentUser/reducers';
 
 const rootReducer = combineReducers({
   projects: projectsReducer,
@@ -18,7 +19,8 @@ const rootReducer = combineReducers({
   tasks: tasksReducer,
   admins: adminsReducer,
   auth: authReducer,
-  accessibility: accessibilityReducer
+  accessibility: accessibilityReducer,
+  currentUser: currentUserReducer
 });
 
 const configureStore = () => {

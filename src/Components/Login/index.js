@@ -1,75 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationLogIn } from 'Components/EmployeesFlow/validations';
 import * as thunksAuth from 'redux/auth/thunks';
 import { useDispatch, useSelector } from 'react-redux';
-import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
-
-// const Login = ({ history }) => {
-//   const HandleLogin = useCallback(
-//     async (event) => {
-//       event.preventDefault();
-//       const { email, password } = event.target.elements;
-//       try {
-//         await app.auth().signInWithEmailandPassword(email.value, password.value);
-//         history.push('/');
-//       } catch (error) {
-//         alert(error);
-//       }
-//     },
-//     [history]
-//   );
-
-//   const { currentUser } = useContext(AuthContext);
-
-//   if (currentUser) {
-//     return <Redirect to="/" />;
-//   }
-// };
+import Loader from 'Components/Shared/Loader';
 
 const Login = () => {
   const history = useHistory();
-  const message = useSelector((state) => state.employees.message);
+  const role = useSelector((state) => state.auth.authenticated?.role);
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
+  const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
+  const isFetchingAuth = useSelector((state) => state.auth.isFetching);
   const dispatch = useDispatch();
-  const [showModalMessage, setShowModalMessage] = useState(false);
-  const handleCloseMessage = () => {
-    setShowModalMessage(false);
-    setShowModalMessage('');
-  };
   const {
     handleSubmit,
     register,
-    reset,
     formState: { errors }
   } = useForm({
     mode: 'onBlur',
     resolver: joiResolver(employeeValidationLogIn)
   });
+
+  // Should redirect after current user is auth and loaded
+  useEffect(() => {
+    if (role === 'EMPLOYEE' && currentUser?._id) {
+      history.push(`/employees/profile/${currentUser._id}`);
+    }
+    if (role === 'ADMIN') {
+      history.push('/admins');
+    }
+    if (role === 'SUPERADMIN') {
+      history.push('/superadmins');
+    }
+  }, [role, currentUser?._id]);
+
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));
-    setShowModalMessage(true);
   };
+
   return (
     <section className={styles.container}>
+      <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
         <Sidebar />
       </section>
-      <Modal showModal={showModalMessage} handleClose={handleCloseMessage}>
-        <div className={styles.modal}>
-          <p>{message}</p>
-          <button
-            onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}
-            className={styles.buttonOk}
-            value="OK"
-          >
-            OK
-          </button>
-        </div>
-      </Modal>
       <section className={styles.form}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <h1 className={styles.tittle}>LOGIN</h1>
@@ -94,9 +72,6 @@ const Login = () => {
             </div>
           </div>
           <div className={styles.buttonsContainer}>
-            <button className={styles.buttonReset} onClick={() => reset()}>
-              RESET
-            </button>
             <button className={styles.buttonContinue} type="submit" value="CONTINUE">
               CONTINUE
             </button>

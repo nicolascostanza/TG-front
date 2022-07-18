@@ -21,10 +21,10 @@ export const tokenListener = () => {
       const {
         claims: { role }
       } = await user.getIdTokenResult();
-      sessionStorage.setItem('token', token);
+      localStorage.setItem('token', token);
       store.dispatch(setAuthentication({ token, role }));
     } else {
-      sessionStorage.removeItem('token');
+      localStorage.removeItem('token');
       store.dispatch(setAuthentication());
     }
   });
