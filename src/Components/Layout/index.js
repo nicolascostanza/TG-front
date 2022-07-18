@@ -17,10 +17,13 @@ import Header from '../Header/index';
 import Home from '../Home/index';
 import Loader from 'Components/Shared/Loader';
 import styles from './layout.module.css';
+import { useSelector } from 'react-redux';
 
 function Layout() {
+  const theme = useSelector((state) => state.accessibility.theme);
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} data-theme={theme}>
       <Router>
         <Header />
         <Suspense fallback={<Loader />}>

@@ -4,7 +4,6 @@
     flex-direction: column;
     align-content:flex-end;
     z-index: 200;
-    box-sizing: border-box;
     padding: 5px 20px;
     top: 0;
     left: 0;
