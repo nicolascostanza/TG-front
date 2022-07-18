@@ -21,12 +21,11 @@ import {
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
-// SUPERADMIN REDUCERS BIEN
-// SETEAR LOS VALORES EN EDIT HOME
+// VER DATA CUANDO CREAS UN PROYECTO PQ NO LO CREA
+// EL EDIT EMPLOYEE DENTRO DEL PROYECT NO TOMA EL ROLE
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
 // DROPWDOWN
-// VER NOMBRE Y APELLIDO DE EMPLOYEES
-// VALIDAR UN RANGO PARA EL ASIGN EMPLOYEE
+// VALIDAR UN RANGO PARA EL ASIGN EMPLOYEE (RATE NEGATIVO)
 // VALIDAR QUE SI HAY UN PM LO CAMBIE EN ASIGN PM
 function Home() {
   const [screen, setScreen] = useState(false);
@@ -122,14 +121,12 @@ function Home() {
       if (request === 'POST') {
         reset({
           name: '',
-          lastName: '',
-          email: '',
-          password: '',
-          active: false
+          description: '',
+          clientName: '',
+          startDate: ''
         });
       } else {
         let selected = projectsList.filter((admin) => admin._id === id);
-        console.log('selected:', selected);
         reset({
           name: selected[0].name,
           description: selected[0].description,

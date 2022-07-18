@@ -82,6 +82,7 @@ export const addTaskToProjectApi = async (body, id) => {
       body: JSON.stringify(body)
     });
     const data = await response.json();
+    console.log(data, 'data enviada');
     alert(data.message);
     return data;
   } catch (error) {

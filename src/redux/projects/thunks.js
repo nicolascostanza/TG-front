@@ -69,7 +69,7 @@ export const addEmployeeToProject = (body, id) => {
     api
       .addEmployeeToProjectaApi(body, id)
       .then((response) => {
-        console.log('response:', response);
+        console.log('ERSTO ENVIO:', response.data);
         console.log('aca el dispatch', response.data, id);
         dispatch(actions.addEmployeeToProject(response.data));
         if (!response.error) {
@@ -82,13 +82,14 @@ export const addEmployeeToProject = (body, id) => {
   };
 };
 
-export const addTaskToProject = (body, id) => {
+export const addTaskToProject = (id, parentProjectId) => {
   return (dispatch) => {
     dispatch(actions.addTaskToProjectPending());
     api
-      .addTaskToProjectApi(body, id)
+      .addTaskToProjectApi(id, parentProjectId)
       .then((response) => {
-        dispatch(actions.addTaskToProject(response.data));
+        console.log('data respuesta: ', response.data);
+        dispatch(actions.addTaskToProjectFulfilled(response.data));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }

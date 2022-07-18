@@ -51,6 +51,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   }
   useEffect(() => {
     dispatch(thunksEmployees.getEmployees());
+    // dispatch(thunksTasks.getTasks());
     // dispatch(thunksProjects.getProjects());
     const maxIndexPage = data?.length > 10 ? Math.floor((data?.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
@@ -59,10 +60,11 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     if (indexPage > maxIndexPage) {
       setIndexPage(maxIndexPage);
     }
-  }, [data]);
+  }, [data, allProjects]);
 
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
   show.reverse();
+  console.log('data', data);
   console.log('muestro est:', show);
 
   const nextPage = () => {
@@ -114,6 +116,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const onEdit = (id) => {
     if (tab === 'employees') {
       const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
+      console.log('values Form', valuesForm);
       reset({
         employeeId: valuesForm[0].employeeId._id,
         role: valuesForm[0].role,
@@ -157,7 +160,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         dispatch(thunksProjects.addEmployeeToProject(data, idProject));
       }
     } else {
-      console.log(data);
       let taskToAdd = {
         parentProject: idProject,
         taskName: data.taskName,
@@ -166,7 +168,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         startDate: data.startDate,
         status: data.status
       };
-      console.log(taskToAdd);
       if (method === 'POST') {
         dispatch(thunksTasks.addTask(taskToAdd));
       } else {

@@ -86,8 +86,8 @@ export const addEmployeeToProjectFailed = (error) => ({
 });
 
 // ADD_TASK_TO_PROJECT
-export const addTaskToProject = (project) => ({
-  type: types.ADD_TASK_TO_PROJECT,
+export const addTaskToProjectFulfilled = (project) => ({
+  type: types.ADD_TASK_TO_PROJECT_FULFILLED,
   payload: project
 });
 

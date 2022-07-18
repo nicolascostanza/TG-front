@@ -114,7 +114,7 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state
       };
-    case types.ADD_TASK_TO_PROJECT:
+    case types.ADD_TASK_TO_PROJECT_FULFILLED:
       return {
         ...state,
         list: state.list.map((project) =>
