@@ -56,8 +56,6 @@ export const validationsFormProjectEdit = Joi.object({
   })
 });
 export const validationsFormSuperadminCreate = Joi.object({
-  firstName: Joi.string().min(3).max(20).optional(),
-  lastName: Joi.string().min(3).max(20).optional(),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .min(7)
@@ -79,8 +77,6 @@ export const validationsFormSuperadminCreate = Joi.object({
   active: Joi.boolean().required()
 });
 export const validationsFormSuperadminEdit = Joi.object({
-  firstName: Joi.string().min(3).max(20).optional(),
-  lastName: Joi.string().min(3).max(20).optional(),
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .min(7)

@@ -5,21 +5,10 @@ import Button from '../Button/index.jsx';
 import Dropdown from '../Dropdown/Dropdown';
 
 // ver el employeeid.name pq no popula bien
-function Tablehome({
-  title,
-  headers,
-  keys,
-  data,
-  role,
-  onDelete,
-  switcher,
-  selected,
-  openModal,
-  setShowModal
-}) {
+function Tablehome({ title, headers, keys, data, role, onDelete, switcher, selected, openModal }) {
   const [indexPage, setIndexPage] = useState(1);
+  // data.reverse();
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
-  show.reverse();
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
@@ -56,7 +45,7 @@ function Tablehome({
           fontSize={'15px'}
           onClick={() => {
             openModal('POST');
-            setShowModal(true);
+            // setShowModal(true);
           }}
         >
           <i className="fa-solid fa-plus"></i>
@@ -130,7 +119,7 @@ function Tablehome({
                         fontSize={'13px'}
                         onClick={() => {
                           openModal('PUT', row._id);
-                          setShowModal(true);
+                          // setShowModal(true);
                           // onEdit(row._id);
                         }}
                       >

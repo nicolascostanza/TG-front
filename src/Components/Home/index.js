@@ -17,11 +17,11 @@ import {
   validationsFormProjectEdit,
   validationsFormSuperadminCreate,
   validationsFormSuperadminEdit
-  // validationsFormAddEmployee
 } from 'Components/Home/validations';
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
+// SUPERADMIN REDUCERS BIEN
 // SETEAR LOS VALORES EN EDIT HOME
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
 // DROPWDOWN
@@ -66,19 +66,11 @@ function Home() {
       dispatch(thunksProjects.getProjects());
     }
   }, [screen, request]);
-  const {
-    handleSubmit,
-    register,
-    formState: { errors },
-    reset
-  } = useForm({
-    mode: 'onBlur',
-    resolver: joiResolver(validator)
-  });
+
   // headers and keys
   if (role === 'SUPERADMIN') {
-    headers = ['First Name', 'Last Name', 'Email', 'Password', 'Is Active ?'];
-    keys = ['firstName', 'lastName', 'email', 'password', 'active'];
+    headers = ['Email', 'Password', 'Is Active ?'];
+    keys = ['email', 'password', 'active'];
     if (method === 'POST') {
       validator = validationsFormSuperadminCreate;
     } else {
@@ -93,7 +85,16 @@ function Home() {
       validator = validationsFormProjectEdit;
     }
   }
-  console.log('projects:', projectsList);
+
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset
+  } = useForm({
+    mode: 'onBlur',
+    resolver: joiResolver(validator)
+  });
 
   const switcher = () => {
     setScreen(!screen);
@@ -103,8 +104,6 @@ function Home() {
     if (role === 'SUPERADMIN') {
       if (request === 'POST') {
         reset({
-          firstName: '',
-          lastName: '',
           email: '',
           password: '',
           active: false
@@ -113,14 +112,11 @@ function Home() {
         let selected = adminsList.filter((admin) => admin._id === id);
         console.log('selected:', selected);
         reset({
-          firstName: selected[0].firstName,
-          lastName: selected[0].lastName,
           email: selected[0].email,
           password: selected[0].password,
           active: selected[0].active
         });
       }
-      setShowModal(true);
     } else {
       // SETEO DE VALORES EN MODAL PROJECTS
       if (request === 'POST') {
@@ -141,18 +137,10 @@ function Home() {
           startDate: selected[0].startDate
         });
       }
-      setShowModal(true);
     }
-    // reset({
-    //   taskName: valuesForm[0].taskName,
-    //   taskDescription: valuesForm[0].taskDescription,
-    //   assignedEmployee: valuesForm[0].assignedEmployee,
-    //   startDate: valuesForm[0].startDate,
-    //   status: valuesForm[0].status
-    // });
+    setShowModal(true);
     setId(id);
     setMethod(request);
-    setShowModal(!showModal);
   };
   const onDelete = (id) => {
     const resp = confirm('Borrar ?');
@@ -171,6 +159,7 @@ function Home() {
   console.log(errors);
 
   const onSubmit = (data) => {
+    console.log('data', data);
     if (role === 'SUPERADMIN') {
       if (method === 'POST') {
         dispatch(thunksAdmins.addAdmin(data));
@@ -235,28 +224,6 @@ function Home() {
             modalTitle={method === 'POST' ? 'ADD ADMIN' : 'EDIT ADMIN'}
           >
             <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <label htmlFor="First Name">First Name</label>
-                <input
-                  type="text"
-                  placeholder="First Name"
-                  {...register('firstName')}
-                  error={appendErrors.firstName?.message}
-                />
-                {errors.firstName && (
-                  <p className={styles.errorInput}>{errors.firstName?.message}</p>
-                )}
-              </div>
-              <div>
-                <label htmlFor="Last Name">Last Name</label>
-                <input
-                  type="text"
-                  placeholder="Last Name"
-                  {...register('lastName')}
-                  error={appendErrors.lastName?.message}
-                />
-                {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
-              </div>
               <div>
                 <label htmlFor="email">Email</label>
                 <input
