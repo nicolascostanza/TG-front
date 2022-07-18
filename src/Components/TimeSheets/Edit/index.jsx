@@ -13,8 +13,6 @@ function EditTimeSheets(props) {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
-        console.log('response ', response);
-        console.log('proshectid ', response.data.projectId._id);
         reset({
           employeeId: response.data.employeeId ? response.data.employeeId._id : '',
           projectId: response.data.projectId._id,
@@ -75,7 +73,6 @@ function EditTimeSheets(props) {
       props.editId
     );
   };
-  console.log(errors);
   return (
     <section>
       <Form

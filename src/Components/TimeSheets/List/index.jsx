@@ -9,13 +9,13 @@ import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 import { Button, Box, ButtonGroup } from '@mui/material';
-import { useForm } from 'react-hook-form';
+// import { useForm } from 'react-hook-form';
 
 function TimeSheet() {
   // const { register, reset } = useForm({
-  const { register } = useForm({
-    mode: 'onChange'
-  });
+  // const { register } = useForm({
+  //   mode: 'onChange'
+  // });
   const currentUser = useSelector((state) => state.currentUser.currentUser);
   // let role = useSelector((state) => state.auth.authenticated.role);
   let role = 'PM';
@@ -28,6 +28,7 @@ function TimeSheet() {
   const [editId, setEditId] = useState('');
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
+  const [selectedTS, setSelectedTS] = useState([]);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
@@ -37,19 +38,14 @@ function TimeSheet() {
     } else {
       dispatch(thunks.getEmployeeTimesheets(currentUser._id));
     }
-    if (showPendingTS === true) {
-      console.log('pendientes');
-    }
     dispatch(tasksThunks.getTasks());
     // reset({
     //   approved: timeSheets.approved
     // });
   }, [timeSheets.length, showAllTimesheets]);
-  console.log('esteeee ', timeSheets);
   const allTasks = useSelector((state) => state.tasks.list);
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
-    console.log(id);
     if (resp) {
       dispatch(thunks.deleteTimesheets(id));
     }
@@ -58,6 +54,7 @@ function TimeSheet() {
     dispatch(actions.showCreateModal());
   };
   const openEditTimeSheet = (id) => {
+    console.log('openEditTimeSheet ', id);
     setEditId(id);
     dispatch(actions.showEditModal());
   };
@@ -102,7 +99,6 @@ function TimeSheet() {
     dispatch(
       thunks.editTimesheet(
         {
-          // approved: !timeSheets.approved
           approved: status.status === 'Approved' ? false : true
         },
         id
@@ -130,8 +126,12 @@ function TimeSheet() {
     setShowPendingTS(false);
   };
   const showTSToApprove = () => {
-    setShowAllTimesheets(false);
+    setShowAllTimesheets(true);
     setShowPendingTS(true);
+  };
+  const selectTS = (id) => {
+    setSelectedTS([...selectedTS, id]);
+    console.log('selectedTS ', selectedTS);
   };
   return (
     <>
@@ -163,7 +163,17 @@ function TimeSheet() {
       )}
       <EmployeeTimesheetTable
         title={role}
-        headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
+        headers={[
+          '',
+          'EMPLOYEE',
+          'Project',
+          'Start date',
+          'Task',
+          'Hours',
+          'Status',
+          'Edit',
+          'Delete'
+        ]}
         keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'status']}
         data={formattedTimeSheets}
         role={role}
@@ -171,8 +181,9 @@ function TimeSheet() {
         onAdd={openAddTimeSheet}
         onDelete={deleteTimeSheet}
         onApprove={statusChanger}
-        register={register}
-        registerValue={'approved'}
+        onSelect={selectTS}
+        // register={register}
+        // registerValue={'approved'}
         // isChecked={}
       />
     </>

@@ -14,7 +14,8 @@ function EmployeeTimesheetTable({
   onDelete,
   switcher,
   selectedTimesheet,
-  onApprove
+  onApprove,
+  onSelect
   // register,
   // registerValue
 }) {
@@ -45,7 +46,6 @@ function EmployeeTimesheetTable({
       setIndexPage(indexPage - 1);
     }
   };
-  console.log('dataaa ', data);
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
@@ -70,6 +70,9 @@ function EmployeeTimesheetTable({
           {show.map((row) => {
             return (
               <tr className={styles.row} key={row._id}>
+                <td>
+                  <input type="checkbox" onChange={() => onSelect(row._id)} />
+                </td>
                 {keys.map((key, index) => {
                   if (key === 'active') {
                     return (
@@ -86,15 +89,19 @@ function EmployeeTimesheetTable({
                 })}
                 <>
                   <td>
-                    <Button
-                      className={styles.buttonsRows}
-                      width={'50px'}
-                      height={'25px'}
-                      fontSize={'13px'}
-                      onClick={() => onEdit(row._id)}
-                    >
-                      <i className="fa-solid fa-pencil"></i>
-                    </Button>
+                    {row.status !== 'Approved' && (
+                      <Button
+                        className={styles.buttonsRows}
+                        width={'50px'}
+                        height={'25px'}
+                        fontSize={'13px'}
+                        disabled={row.status === 'Approved' && true}
+                        onClick={() => onEdit(row._id)}
+                      >
+                        <i className="fa-solid fa-pencil"></i>
+                        {/* {console.log('row ', row.status)} */}
+                      </Button>
+                    )}
                   </td>
                   <td>
                     <Button
@@ -120,7 +127,6 @@ function EmployeeTimesheetTable({
                           // {...(register ? register(registerValue) : registerValue)}
                           onChange={() => onApprove(row, row._id)}
                         />
-                        {console.log('row approved', row.approveSlider)}
                         <span className={styles.slider} />
                       </label>
                     )}
