@@ -8,7 +8,7 @@ import PieChart from '../Charts/Pie';
 import BarChart from '../Charts/Bars';
 import LineChart from '../Charts/Line';
 import styles from '../report.module.css';
-import { project, projectTimesheets } from './mock'; // delete after database update
+import { project, projectTimesheets } from '../mock'; // delete after database update
 
 const ProjectReport = () => {
   const MILIS_PER_DAY = 86400000;
@@ -39,7 +39,6 @@ const ProjectReport = () => {
         rate
       };
     });
-  // console.log('ts map:', projectTimesheetsMap);
 
   // Project contributions by employees (hours and rate)
   const projectContr = projectTimesheetsMap
@@ -58,7 +57,7 @@ const ProjectReport = () => {
     .sort((a, b) => new Date(a.date) - new Date(b.date));
 
   // Day by day contributions
-  const projectContrByDay = (data, fillZero = false) => {
+  const projectContrByDay = (data, fillZero = false, accumulate = false) => {
     const initDate = data[0].date;
     const initDateNum = Number(new Date(initDate));
     const endDate = data[data.length - 1].date;
@@ -105,6 +104,9 @@ const ProjectReport = () => {
     for (let i = 0; i < team.length; i++) {
       let auxArr = [];
       transposedEmpContr.map((item) => {
+        if (accumulate && auxArr.length > 0) {
+          item[i] += auxArr[auxArr.length - 1];
+        }
         auxArr.push(item[i]);
       });
       empContr.push(auxArr);
@@ -240,7 +242,7 @@ const ProjectReport = () => {
         <div className={styles.barsContainer}>
           <LineChart
             title="Historic rate"
-            data={projectContrByDay(projectContr, true)}
+            data={projectContrByDay(projectContr, true, true)}
             label="date"
             colorScheme="niceScheme"
           />

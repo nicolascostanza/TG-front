@@ -12,6 +12,12 @@
   justify-content: space-around;
 }
 
+.keyInfo {
+  border: 1px solid #00000030;
+  box-shadow: 0 2px 3px 0 #00000030;
+  border-radius: 4px;
+}
+
 .extendedTable {
   min-width: 600px;
 }

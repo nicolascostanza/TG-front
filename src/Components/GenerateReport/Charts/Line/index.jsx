@@ -37,7 +37,8 @@ const LineChart = (props) => {
         label: item,
         data: props.data.data[props.data.teamLabel.indexOf(item)].map((dataItem) => dataItem),
         backgroundColor: colorScheme[props.colorScheme][props.data.teamLabel.indexOf(item)],
-        borderColor: colorScheme[props.colorScheme][props.data.teamLabel.indexOf(item)]
+        borderColor: colorScheme[props.colorScheme][props.data.teamLabel.indexOf(item)],
+        pointRadius: 1
       };
     })
   };

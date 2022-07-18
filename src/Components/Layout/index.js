@@ -17,6 +17,7 @@ import Header from '../Header/index';
 import Home from '../Home/index';
 import Loader from 'Components/Shared/Loader';
 import styles from './layout.module.css';
+import EmployeeReport from 'Components/GenerateReport/EmployeeReport';
 import ProjectReport from 'Components/GenerateReport/ProjectReport';
 
 function Layout() {
@@ -26,11 +27,24 @@ function Layout() {
         <Header />
         <Suspense fallback={<Loader />}>
           <Switch>
+            <Route exact path="/" component={EmployeeReport} /> {/*DELETE THIS PLS*/}
             <Route exact path="/" component={ProjectReport} /> {/*DELETE THIS PLS*/}
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
+            <PrivateRoute
+              exact
+              path="/reports/employee/:id"
+              role="ADMIN"
+              component={EmployeeReport}
+            />
+            <PrivateRoute
+              exact
+              path="/reports/project/:id"
+              role="ADMIN"
+              component={ProjectReport}
+            />
             <PrivateRoute
               exact
               path="/admins/profile/:id"
