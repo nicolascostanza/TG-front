@@ -12,7 +12,16 @@
   justify-content: space-around;
 }
 
+.keyInfoContainer {
+  display: flex;
+  gap: 12px;
+}
+
 .keyInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 200px;
   border: 1px solid #00000030;
   box-shadow: 0 2px 3px 0 #00000030;
   border-radius: 4px;

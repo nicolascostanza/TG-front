@@ -27,8 +27,8 @@ function Layout() {
         <Header />
         <Suspense fallback={<Loader />}>
           <Switch>
-            <Route exact path="/" component={EmployeeReport} /> {/*DELETE THIS PLS*/}
             <Route exact path="/" component={ProjectReport} /> {/*DELETE THIS PLS*/}
+            <Route exact path="/" component={EmployeeReport} /> {/*DELETE THIS PLS*/}
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
