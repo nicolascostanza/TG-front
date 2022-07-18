@@ -14,9 +14,9 @@ function EmployeeTimesheetTable({
   onDelete,
   switcher,
   selectedTimesheet,
-  onApprove,
-  register,
-  registerValue
+  onApprove
+  // register,
+  // registerValue
 }) {
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
@@ -117,8 +117,8 @@ function EmployeeTimesheetTable({
                           value="approved"
                           checked={row.approveSlider === true ? true : false}
                           // checked={false}
-                          {...(register ? register(registerValue) : registerValue)}
-                          onChange={() => onApprove(row._id)}
+                          // {...(register ? register(registerValue) : registerValue)}
+                          onChange={() => onApprove(row, row._id)}
                         />
                         {console.log('row approved', row.approveSlider)}
                         <span className={styles.slider} />

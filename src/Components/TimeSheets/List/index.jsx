@@ -74,14 +74,30 @@ function TimeSheet() {
     };
   });
   formattedTimeSheets.reverse();
-  const approveTimesheet = (id) => {
-    console.log('slider ', id);
-    console.log('sliderrrr ', timeSheets);
-    console.log('value ', timeSheets.id.value);
-    // dispatch(thunks.editTimesheet(newBody, id));
-    // setEditId(id);
-    // console.log(editId);
+  const statusChanger = async (status, id) => {
+    dispatch(
+      thunks.editTimesheet(
+        {
+          // approved: !timeSheets.approved
+          approved: status.status === 'Approved' ? false : true
+        },
+        id
+      )
+    );
+    console.log('que es esto ', status.status);
   };
+  // const approveTimesheet = (data, id) => {
+  //   statusChanger();
+  //   // console.log('slider ', id);
+  //   // console.log('sliderrrr ', timeSheets);
+  //   // console.log('value ', timeSheets.id.value);
+  //   // dispatch(thunks.editTimesheet(newBody, id));
+  //   // setEditId(id);
+  //   // console.log(editId);
+  //   console.log('data slider', data);
+  //   console.log('id sliderrr', id);
+  // };
+  // console.log(approveTimesheet);
 
   return (
     <>
@@ -118,7 +134,7 @@ function TimeSheet() {
         onEdit={openEditTimeSheet}
         onAdd={openAddTimeSheet}
         onDelete={deleteTimeSheet}
-        onApprove={approveTimesheet}
+        onApprove={statusChanger}
         register={register}
         registerValue={'approved'}
         // isChecked={}
