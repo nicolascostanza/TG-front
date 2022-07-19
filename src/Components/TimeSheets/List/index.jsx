@@ -31,7 +31,7 @@ function TimeSheet() {
   // let role = useSelector((state) => state.auth.authenticated.role);
   let role = 'PM';
   // let role = 'EMPLOYEE';
-  const [showAllTimesheets, setShowAllTimesheets] = useState(true);
+  const [showAllTimesheets, setShowAllTimesheets] = useState(false);
   const [showPendingTS, setShowPendingTS] = useState(false);
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
@@ -40,9 +40,10 @@ function TimeSheet() {
   const [editId, setEditId] = useState('');
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
+  const [showDeletedModal, setShowDeletedModal] = useState(false);
+  const [showDeletedModalMessage, setShowDeletedModalMessage] = useState('');
   const [selectedTS, setSelectedTS] = useState([]);
   const [selectedButton, setSelectedButton] = useState(1);
-  // const [showDeletedModal, setShowDeletedModal] = useState(false);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
@@ -163,22 +164,35 @@ function TimeSheet() {
       for (let i = 0; i < selectedTS.length; i++) {
         deleteMoreThan1TS(selectedTS[i]);
       }
+      if (!isError) {
+        setShowDeletedModal(true);
+        setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
+        setSelectedTS([]);
+      }
+    } else {
+      // setSelectedTS([]);
     }
-    // if (!isError) {
-    // }
-    setSelectedTS([]);
+  };
+  const handleCloseMessage = () => {
+    setShowDeletedModal(false);
+    setShowDeletedModalMessage('');
   };
   return (
     <>
       <Loader isLoading={isFetching} />
       <Sidebar />
-      <Modal>
+      <Modal
+        open={showDeletedModal}
+        onClose={handleCloseMessage}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
         <Box sx={modalStyle}>
           <Typography variant="h6" component="h2" id="modal-modal-title">
             Success!
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {`${selectedTS.length} timesheets has been deleted`}
+            {showDeletedModalMessage}
           </Typography>
         </Box>
       </Modal>
@@ -202,25 +216,28 @@ function TimeSheet() {
           <ButtonGroup>
             <Box>
               <Button
+                id="showMyTimesheetsButton"
                 variant={selectedButton === 1 ? 'contained' : 'outlined'}
                 onClick={() => showMyTS()}
               >
                 My timesheets
               </Button>
               <Button
+                id="showTimesheetsToApproveButton"
                 variant={selectedButton === 2 ? 'contained' : 'outlined'}
                 onClick={() => showTSToApprove()}
               >
                 Timesheets to approve
               </Button>
               <Button
+                id="showAllTimesheetsButton"
                 variant={selectedButton === 3 ? 'contained' : 'outlined'}
                 onClick={() => showAllTS()}
               >
                 All timesheets
               </Button>
-              <Button onClick={() => console.log('selectedTS ', selectedTS)}>Selected TS</Button>
               <Button
+                id="deleteSelectedTimesheetsButton"
                 disabled={selectedTS.length ? false : true}
                 onClick={() => deleteSelectedTSAction()}
               >

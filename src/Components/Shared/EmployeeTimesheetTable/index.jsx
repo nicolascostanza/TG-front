@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './employeeTimesheetTable.module.css';
 import Button from '../Button/index.jsx';
+import Slider from '../Slider';
 
 function EmployeeTimesheetTable({
   title,
@@ -116,20 +117,29 @@ function EmployeeTimesheetTable({
                   <td>
                     {/* AGREGAR LOGICA AL SLIDER */}
                     {role === 'PM' && (
-                      <label className={styles.switch}>
-                        <input
-                          type="checkbox"
-                          id="approved"
-                          name="approved"
-                          value="approved"
-                          checked={row.approveSlider === true ? true : false}
-                          // checked={false}
-                          // {...(register ? register(registerValue) : registerValue)}
-                          onChange={() => onApprove(row, row._id)}
-                        />
-                        <span className={styles.slider} />
-                      </label>
+                      // <label className={styles.switch}>
+                      //   <input
+                      //     type="checkbox"
+                      //     id="approved"
+                      //     name="approved"
+                      //     value="approved"
+                      //     checked={row.approveSlider === true ? true : false}
+                      //     // checked={false}
+                      //     // {...(register ? register(registerValue) : registerValue)}
+                      //     onChange={() => onApprove(row, row._id)}
+                      //   />
+                      //   <span className={styles.slider} />
+                      // </label>
+                      <Slider
+                        idNameAndValue={'approved'}
+                        isChecked={row.approveSlider}
+                        onChangeFunction={onApprove}
+                        arg1={row}
+                        arg2={row._id}
+                        switchWidth={'200px'}
+                      />
                     )}
+                    {console.log('approve slider ', row.approveSlider)}
                   </td>
                 </>
               </tr>

@@ -1,19 +1,32 @@
 import React from 'react';
+import styles from './slider.module.css';
 
-const Slider = ({ id, name, value, onChange }) => {
+const Slider = ({
+  idNameAndValue,
+  isChecked,
+  onChangeFunction,
+  arg1,
+  arg2,
+  backgroundHeight,
+  backgroundWidth,
+  switchHeight,
+  switchWidth
+}) => {
   return (
-    <div>
+    <label className={styles.switch} style={{ width: backgroundWidth, height: backgroundHeight }}>
       <input
         type="checkbox"
-        id="approved"
-        name="approved"
-        value="approved"
-        checked={row.approveSlider === true ? true : false}
-        // checked={false}
-        // {...(register ? register(registerValue) : registerValue)}
-        onChange={() => onApprove(row, row._id)}
+        id={idNameAndValue}
+        name={idNameAndValue}
+        value={idNameAndValue}
+        checked={isChecked === true ? true : false}
+        onChange={() => onChangeFunction(arg1, arg2)}
       />
-    </div>
+      <span
+        className={styles.slider}
+        style={{ height: switchHeight, WebkitBorderBeforeWidth: switchWidth }}
+      />
+    </label>
   );
 };
 
