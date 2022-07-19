@@ -8,10 +8,21 @@ import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
-import { Button, Box, ButtonGroup } from '@mui/material';
+import { Button, Box, ButtonGroup, Modal, Typography } from '@mui/material';
 // import { useForm } from 'react-hook-form';
 
 function TimeSheet() {
+  const modalStyle = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4
+  };
   // const { register, reset } = useForm({
   // const { register } = useForm({
   //   mode: 'onChange'
@@ -25,11 +36,13 @@ function TimeSheet() {
   const dispatch = useDispatch();
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
+  const isError = useSelector((state) => state.timesheet.error);
   const [editId, setEditId] = useState('');
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const [selectedTS, setSelectedTS] = useState([]);
   const [selectedButton, setSelectedButton] = useState(1);
+  // const [showDeletedModal, setShowDeletedModal] = useState(false);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
@@ -50,6 +63,9 @@ function TimeSheet() {
     if (resp) {
       dispatch(thunks.deleteTimesheets(id));
     }
+  };
+  const deleteMoreThan1TS = (id) => {
+    dispatch(thunks.deleteTimesheets(id));
   };
   const openAddTimeSheet = () => {
     dispatch(actions.showCreateModal());
@@ -134,14 +150,38 @@ function TimeSheet() {
     setSelectedButton(3);
   };
   const selectTS = (id) => {
-    setSelectedTS([...selectedTS, id]);
+    const selectedAux = selectedTS.includes(id)
+      ? selectedTS.filter((item) => item != id)
+      : [...selectedTS, id];
+    setSelectedTS(selectedAux);
     console.log('selectedTS ', selectedTS);
   };
-  console.log(selectedButton);
+  const deleteSelectedTSAction = () => {
+    console.log('delete ', selectedTS);
+    const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
+    if (resp) {
+      for (let i = 0; i < selectedTS.length; i++) {
+        deleteMoreThan1TS(selectedTS[i]);
+      }
+    }
+    // if (!isError) {
+    // }
+    setSelectedTS([]);
+  };
   return (
     <>
       <Loader isLoading={isFetching} />
       <Sidebar />
+      <Modal>
+        <Box sx={modalStyle}>
+          <Typography variant="h6" component="h2" id="modal-modal-title">
+            Success!
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            {`${selectedTS.length} timesheets has been deleted`}
+          </Typography>
+        </Box>
+      </Modal>
       <EditTimeSheets
         showEditModal={showEditModal}
         handleClose={handleClose}
@@ -158,28 +198,37 @@ function TimeSheet() {
         currentUser={currentUser}
       ></AddTimeSheets>
       {role === 'PM' && (
-        <ButtonGroup>
-          <Box>
-            <Button
-              variant={selectedButton === 1 ? 'contained' : 'outlined'}
-              onClick={() => showMyTS()}
-            >
-              My timesheets
-            </Button>
-            <Button
-              variant={selectedButton === 2 ? 'contained' : 'outlined'}
-              onClick={() => showTSToApprove()}
-            >
-              Timesheets to approve
-            </Button>
-            <Button
-              variant={selectedButton === 3 ? 'contained' : 'outlined'}
-              onClick={() => showAllTS()}
-            >
-              All timesheets
-            </Button>
-          </Box>
-        </ButtonGroup>
+        <Box>
+          <ButtonGroup>
+            <Box>
+              <Button
+                variant={selectedButton === 1 ? 'contained' : 'outlined'}
+                onClick={() => showMyTS()}
+              >
+                My timesheets
+              </Button>
+              <Button
+                variant={selectedButton === 2 ? 'contained' : 'outlined'}
+                onClick={() => showTSToApprove()}
+              >
+                Timesheets to approve
+              </Button>
+              <Button
+                variant={selectedButton === 3 ? 'contained' : 'outlined'}
+                onClick={() => showAllTS()}
+              >
+                All timesheets
+              </Button>
+              <Button onClick={() => console.log('selectedTS ', selectedTS)}>Selected TS</Button>
+              <Button
+                disabled={selectedTS.length ? false : true}
+                onClick={() => deleteSelectedTSAction()}
+              >
+                Delete selected ts
+              </Button>
+            </Box>
+          </ButtonGroup>
+        </Box>
       )}
       <EmployeeTimesheetTable
         title={role}
@@ -202,9 +251,6 @@ function TimeSheet() {
         onDelete={deleteTimeSheet}
         onApprove={statusChanger}
         onSelect={selectTS}
-        // register={register}
-        // registerValue={'approved'}
-        // isChecked={}
       />
     </>
   );

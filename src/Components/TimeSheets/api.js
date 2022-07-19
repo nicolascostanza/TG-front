@@ -14,9 +14,9 @@ export const deleteTimesheetApi = async (id) => {
       method: 'PATCH'
     });
     const data = await response.json();
-    if (!data.error) {
-      alert(data.message);
-    }
+    // if (!data.error) {
+    //   alert(data.message);
+    // }
     return data;
   } catch (err) {
     return err;
