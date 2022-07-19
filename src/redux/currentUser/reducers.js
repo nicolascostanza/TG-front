@@ -30,6 +30,11 @@ export const currentUserReducer = (state = initialState, action) => {
         ...state,
         ...initialState
       };
+    case types.UPDATE_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: { ...action.payload }
+      };
     default:
       return state;
   }

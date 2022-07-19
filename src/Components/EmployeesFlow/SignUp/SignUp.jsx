@@ -77,46 +77,6 @@ function SignUp() {
           </div>
           <div className={styles.formFlex}>
             <div className={styles.inputContainer}>
-              <label htmlFor="Gender" className={styles.labels}>
-                Gender
-              </label>
-              <select {...register('gender')}>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-                <option value="Other">Other</option>
-              </select>
-              {errors.gender && <p className={styles.errorInput}>{errors.gender?.message}</p>}
-            </div>
-            <div className={styles.inputContainer}>
-              <label htmlFor="Address" className={styles.labels}>
-                Address
-              </label>
-              <input
-                type="text"
-                {...register('address')}
-                error={appendErrors.address?.message}
-              ></input>
-              {errors.address && <p className={styles.errorInput}>{errors.address?.message}</p>}
-            </div>
-          </div>
-          <div className={styles.formFlex}>
-            <div className={styles.inputContainer}>
-              <label htmlFor="Date of birth" className={styles.labels}>
-                Date of Birth
-              </label>
-              <input type="date" {...register('dob')} error={appendErrors.dob?.message}></input>
-              {errors.dob && <p className={styles.errorInput}>{errors.dob?.message}</p>}
-            </div>
-            <div className={styles.inputContainer}>
-              <label htmlFor="Phone" className={styles.labels}>
-                Phone
-              </label>
-              <input type="text" {...register('phone')} error={appendErrors.phone?.message}></input>
-              {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
-            </div>
-          </div>
-          <div className={styles.formFlex}>
-            <div className={styles.inputContainer}>
               <label htmlFor="Email" className={styles.labels}>
                 Email
               </label>

@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import * as currentUserActions from 'redux/currentUser/actions';
 
 export const getEmployees = () => {
   return (dispatch) => {
@@ -99,21 +100,18 @@ export const editEmployee = (newEmployee) => {
             firstName: newEmployee.firstName,
             lastName: newEmployee.lastName,
             email: newEmployee.email,
-            gender: newEmployee.gender,
-            address: newEmployee.address,
-            dob: newEmployee.dob,
-            password: newEmployee.password,
-            phone: newEmployee.phone,
-            active: newEmployee.active
+            password: newEmployee.password
           })
         }
       );
+
       const res = await response.json();
-      newEmployee.active = newEmployee.active ? 'true' : 'false';
+
       if (res.error) {
         throw res.message;
       }
       dispatch(actions.editEmployeeSucces(newEmployee, res));
+      dispatch(currentUserActions.updateCurrentUser(res.data));
     } catch (error) {
       dispatch(actions.editEmployeeError(error));
     }
