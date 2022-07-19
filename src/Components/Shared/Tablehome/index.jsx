@@ -123,12 +123,23 @@ function Tablehome({
                         </Dropdown>
                       </td>
                     );
+                  } else if (key === 'endDate') {
+                    if (row[key] === '') {
+                      <td> - </td>;
+                    } else {
+                      return (
+                        <td key={index} onClick={() => openRow(role, row._id)}>
+                          {row[key]}
+                        </td>
+                      );
+                    }
+                  } else {
+                    return (
+                      <td key={index} onClick={() => openRow(role, row._id)}>
+                        {row[key]}
+                      </td>
+                    );
                   }
-                  return (
-                    <td key={index} onClick={() => openRow(role, row._id)}>
-                      {row[key]}
-                    </td>
-                  );
                 })}
                 {role === `ADMIN` || role === `SUPERADMIN` ? (
                   <>
