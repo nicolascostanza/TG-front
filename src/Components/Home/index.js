@@ -21,18 +21,21 @@ import {
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
-// VER DATA CUANDO CREAS UN PROYECTO PQ NO LO CREA
+// VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
+// TABLE HOME tiene TODAS LAS FUNCIONALIDADES
+// EL TABLE HOME FALTA Q MUESTRE SI ES PM O EMPLOYEE SOLO LOS PROYECT ASOCIADOS Y DE ULTIMO A PRIMERO
+
+// CUANDO EDITO EL Q TIENE PM LO SACA EN VEZ DE EDITARLO, HASTA RECARGAR, VER REDUCERS
 // EL EDIT EMPLOYEE DENTRO DEL PROYECT NO TOMA EL ROLE
+// a tasks ponerle mas campos en la tabla, status, created, etc
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
-// DROPWDOWN
-// VALIDAR UN RANGO PARA EL ASIGN EMPLOYEE (RATE NEGATIVO)
 // VALIDAR QUE SI HAY UN PM LO CAMBIE EN ASIGN PM
+
 function Home() {
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [method, setMethod] = useState('');
-  const [request, setRequest] = useState(false);
   const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
   let projectsError = useSelector((state) => state.projects.error);
@@ -64,7 +67,7 @@ function Home() {
     } else {
       dispatch(thunksProjects.getProjects());
     }
-  }, [screen, request]);
+  }, [screen]);
 
   // headers and keys
   if (role === 'SUPERADMIN') {
@@ -99,6 +102,8 @@ function Home() {
     setScreen(!screen);
   };
   const handleModal = (request, id) => {
+    setId(id);
+    setMethod(request);
     // SETEO DE VALORES EN MODAL SUPERADMIN
     if (role === 'SUPERADMIN') {
       if (request === 'POST') {
@@ -136,8 +141,6 @@ function Home() {
       }
     }
     setShowModal(true);
-    setId(id);
-    setMethod(request);
   };
   const onDelete = (id) => {
     const resp = confirm('Borrar ?');
@@ -198,7 +201,7 @@ function Home() {
         <Sidebar></Sidebar>
         <Loader isLoading={isLoading} />
         <Tableproject
-          setRequest={setRequest}
+          // setRequest={setRequest}
           idProject={id}
           switcher={switcher}
           title={title}

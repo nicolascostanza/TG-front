@@ -1,5 +1,6 @@
 import * as api from '../../Components/Projects/api';
 import * as actions from './actions';
+import * as thunksTasks from 'redux/tasks/thunks';
 
 export const getProjects = () => {
   return (dispatch) => {
@@ -62,16 +63,15 @@ export const deleteProject = (id) => {
       });
   };
 };
-
+// functions of employee in projects
 export const addEmployeeToProject = (body, id) => {
   return (dispatch) => {
     dispatch(actions.addEmployeeToProjectPending());
     api
       .addEmployeeToProjectaApi(body, id)
       .then((response) => {
-        console.log('ERSTO ENVIO:', response.data);
-        console.log('aca el dispatch', response.data, id);
-        dispatch(actions.addEmployeeToProject(response.data));
+        console.log('response.datA del employee:', response.data);
+        dispatch(actions.addEmployeeToProjectSuccess(response.data));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
@@ -81,37 +81,20 @@ export const addEmployeeToProject = (body, id) => {
       });
   };
 };
-
-export const addTaskToProject = (id, parentProjectId) => {
+export const updateEmployeeToProject = (body, id, idProject) => {
   return (dispatch) => {
-    dispatch(actions.addTaskToProjectPending());
+    dispatch(actions.updateEmployeeToProjectPending());
+    api.deleteEmployeeToProjectApi(idProject, id);
     api
-      .addTaskToProjectApi(id, parentProjectId)
+      .addEmployeeToProjectaApi(body, idProject)
       .then((response) => {
-        console.log('data respuesta: ', response.data);
-        dispatch(actions.addTaskToProjectFulfilled(response.data));
+        dispatch(actions.updateEmployeeToProjectSuccess(response.data));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
       })
       .catch((error) => {
-        dispatch(actions.addTaskToProjectFailed(error));
-      });
-  };
-};
-export const deleteTaskToProject = (idProject, idTask) => {
-  return (dispatch) => {
-    dispatch(actions.deleteTaskToProjectPending());
-    api
-      .deleteTaskToProjectApi(idProject, idTask)
-      .then((response) => {
-        dispatch(actions.deleteTaskToProject(response.data));
-        if (!response.error) {
-          dispatch(actions.closeAllModals());
-        }
-      })
-      .catch((error) => {
-        dispatch(actions.deleteTaskToProjectFailed(error));
+        dispatch(actions.updateEmployeeToProjectFailed(error));
       });
   };
 };
@@ -122,13 +105,66 @@ export const deleteEmployeeToProject = (idProject, idEmployee) => {
     api
       .deleteEmployeeToProjectApi(idProject, idEmployee)
       .then((response) => {
-        dispatch(actions.deleteEmployeeToProject(response.data));
+        dispatch(actions.deleteEmployeeToProjectSuccess(response.data));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
       })
       .catch((error) => {
         dispatch(actions.deleteEmployeeToProjectFailed(error));
+      });
+  };
+};
+// functions of tasks in projects
+export const addTaskToProject = (id, parentProjectId) => {
+  return (dispatch) => {
+    dispatch(actions.addTaskToProjectPending());
+    api
+      .addTaskToProjectApi(id, parentProjectId)
+      .then((response) => {
+        dispatch(actions.addTaskToProjectFulfilled(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.addTaskToProjectFailed(error));
+      });
+  };
+};
+
+// dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
+// dispatch(thunksTasks.addTask(taskToAdd));
+export const updateTaskToProject = (body, id, idProject) => {
+  return (dispatch) => {
+    dispatch(actions.updateTaskToProjectPending());
+    api.deleteTaskToProjectApi(idProject, id);
+    dispatch(thunksTasks.addTask(body))
+      .then((response) => {
+        dispatch(actions.updateTaskToProjectFulfilled(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.updateTaskToProjectFailed(error));
+      });
+  };
+};
+
+export const deleteTaskToProject = (idProject, idTask) => {
+  return (dispatch) => {
+    dispatch(actions.deleteTaskToProjectPending());
+    api
+      .deleteTaskToProjectApi(idProject, idTask)
+      .then((response) => {
+        dispatch(actions.deleteTaskToProjectSuccess(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.deleteTaskToProjectFailed(error));
       });
   };
 };

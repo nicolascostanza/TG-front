@@ -71,8 +71,8 @@ export const showEditModal = () => ({
 });
 
 // ADD EMPLOYEE TO PROJECT
-export const addEmployeeToProject = (project) => ({
-  type: types.ADD_EMPLOYEE_TO_PROJECT,
+export const addEmployeeToProjectSuccess = (project) => ({
+  type: types.ADD_EMPLOYEE_TO_PROJECT_SUCCESS,
   payload: project
 });
 
@@ -100,8 +100,8 @@ export const addTaskToProjectFailed = (error) => ({
   payload: error
 });
 // DELETE_TASK_TO_PROJECT
-export const deleteTaskToProject = (task) => ({
-  type: types.DELETE_TASK_TO_PROJECT,
+export const deleteTaskToProjectSuccess = (task) => ({
+  type: types.DELETE_TASK_TO_PROJECT_SUCCESS,
   payload: task
 });
 
@@ -114,8 +114,8 @@ export const deleteTaskToProjectFailed = (error) => ({
   payload: error
 });
 // DELETE_EMPLOYEE_TO_PROJECT
-export const deleteEmployeeToProject = (project) => ({
-  type: types.DELETE_EMPLOYEE_TO_PROJECT,
+export const deleteEmployeeToProjectSuccess = (project) => ({
+  type: types.DELETE_EMPLOYEE_TO_PROJECT_SUCCESS,
   payload: project
 });
 
@@ -125,5 +125,35 @@ export const deleteEmployeeToProjectPending = () => ({
 
 export const deleteEmployeeToProjectFailed = (error) => ({
   type: types.DELETE_EMPLOYEE_TO_PROJECT_FAILED,
+  payload: error
+});
+// UPDATE EMPLOYEE IN PROJECT
+export const updateEmployeeToProjectSuccess = (project) => ({
+  type: types.UPDATE_EMPLOYEE_TO_PROJECT_SUCCESS,
+  payload: project
+});
+
+export const updateEmployeeToProjectPending = () => ({
+  type: types.UPDATE_EMPLOYEE_TO_PROJECT_PENDING
+});
+
+export const updateEmployeeToProjectFailed = (error) => ({
+  type: types.UPDATE_EMPLOYEE_TO_PROJECT_FAILED,
+  payload: error
+});
+
+// updateTaskToProject
+// UPDATE TASK IN PROJECT
+export const updateTaskToProjectPending = (project) => ({
+  type: types.UPDATE_TASK_TO_PROJECT_PENDING,
+  payload: project
+});
+
+export const updateTaskToProjectFulfilled = () => ({
+  type: types.UPDATE_TASK_TO_PROJECT_SUCCESS
+});
+
+export const updateTaskToProjectFailed = (error) => ({
+  type: types.UPDATE_TASK_TO_PROJECT_FAILED,
   payload: error
 });

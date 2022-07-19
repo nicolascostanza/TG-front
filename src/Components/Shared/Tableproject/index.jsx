@@ -93,13 +93,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setFilterProject(!filterProject);
   };
 
-  // const assignPmFunction = () => {
-  //   // setShowModalEmployee(true);
-  //   setComponente(true);
-  //   setAssignPM(true);
-  //   // setShowModalPm(true);
-  // };
-
   const onAddEmployee = () => {
     reset({});
     setMethod('POST');
@@ -111,12 +104,11 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setMethod('POST');
     setShowModalTask(true);
   };
-
-  console.log('modal:', showModalPm);
+  // seteo de valores en el edit de employees y de tasks
   const onEdit = (id) => {
+    setIdToForm(id);
     if (tab === 'employees') {
       const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
-      console.log('values Form', valuesForm);
       reset({
         employeeId: valuesForm[0].employeeId._id,
         role: valuesForm[0].role,
@@ -134,7 +126,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       });
       setShowModalTask(true);
     }
-    setIdToForm(id);
   };
 
   const onDelete = (id) => {
@@ -149,15 +140,17 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const openModalPm = () => {
     setShowModalPm(true);
   };
-
   const onSubmit = (data) => {
-    console.log('data enviada:', data);
+    // employees, post y put en el if, en el else post y put de tasks
     if (tab === 'employees') {
       if (method === 'POST') {
         dispatch(thunksProjects.addEmployeeToProject(data, idProject));
       } else {
-        dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
-        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+        // dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
+        // dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+        // body, id, idProject
+        dispatch(thunksProjects.updateEmployeeToProject(data, idToForm, idProject));
+        setIdToForm('');
       }
     } else {
       let taskToAdd = {
@@ -171,8 +164,11 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       if (method === 'POST') {
         dispatch(thunksTasks.addTask(taskToAdd));
       } else {
-        dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
-        dispatch(thunksTasks.addTask(taskToAdd));
+        // dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
+        // dispatch(thunksTasks.addTask(taskToAdd));
+        // (body, id, idProject)
+        dispatch(thunksProjects.updateTaskToProject(taskToAdd, idToForm, idProject));
+        setIdToForm('');
       }
     }
 
@@ -180,6 +176,8 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setMethod('');
     setRequest(!setRequest);
   };
+
+  // const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
 
   console.log(errors);
 
@@ -319,7 +317,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         >
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label htmlFor="employee id">Employee Id</label>
+              <label htmlFor="employee id">Employee</label>
               <select {...register('employeeId')} name="employeeId" id="">
                 {allEmployees.map((member) => (
                   <option

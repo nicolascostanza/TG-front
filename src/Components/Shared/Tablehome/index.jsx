@@ -5,9 +5,27 @@ import Button from '../Button/index.jsx';
 import Dropdown from '../Dropdown/Dropdown';
 
 // ver el employeeid.name pq no popula bien
-function Tablehome({ title, headers, keys, data, role, onDelete, switcher, selected, openModal }) {
+function Tablehome({
+  title,
+  headers,
+  keys,
+  data,
+  role,
+  onDelete,
+  switcher,
+  selected,
+  openModal
+  // userId
+}) {
   const [indexPage, setIndexPage] = useState(1);
   // data.reverse();
+  // console.log('data:', data);
+
+  // // const resp = data.filter((data) => data.isDeleted === false);
+  // console.log('respuesta:', resp);
+  // const prueba = data.map((a) => a.team.employeeId.includes(userId));
+  // console.log('data:', data);
+  // console.log('prueba:', prueba);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
@@ -18,7 +36,6 @@ function Tablehome({ title, headers, keys, data, role, onDelete, switcher, selec
       setIndexPage(maxIndexPage);
     }
   }, [data]);
-  data.filter((data) => data.isDeleted === false);
   const openRow = (role, id) => {
     selected(id);
     if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
@@ -96,7 +113,11 @@ function Tablehome({ title, headers, keys, data, role, onDelete, switcher, selec
                         <Dropdown width={'150px'} placeholder={'Team'}>
                           {/* aca iria .employeeId.firstName */}
                           {row[key]?.map((element) => {
-                            return <option key={Math.random()}>{element.role}</option>;
+                            return (
+                              <option
+                                key={Math.random()}
+                              >{`${element.employeeId.firstName} ${element.employeeId.lastName}`}</option>
+                            );
                           })}
                           ;
                         </Dropdown>

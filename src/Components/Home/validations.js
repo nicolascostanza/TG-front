@@ -114,5 +114,5 @@ export const validationsFormAddTask = Joi.object({
 
 export const validationsAssignPm = Joi.object({
   employeeId: Joi.string().required(),
-  rate: Joi.number().required()
+  rate: Joi.number().min(0).required()
 });

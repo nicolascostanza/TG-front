@@ -32,6 +32,7 @@ function AssignPm({ showModalPM, closeModalPM, allEmployees, idProject }) {
     };
     dispatch(thunksProjects.addEmployeeToProject(employeePm, idProject));
   };
+  console.log('todos empleaditos.:', allEmployees);
   if (!showModalPM) {
     return null;
   }
@@ -45,13 +46,13 @@ function AssignPm({ showModalPM, closeModalPM, allEmployees, idProject }) {
         <div className={styles.modalBody}>
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
-              <label htmlFor="employee id">Employee Id</label>
+              <label htmlFor="employee id">Employee</label>
               <select {...register('employeeId')} name="employeeId" id="">
                 {allEmployees.map((member) => (
                   <option
                     value={member._id}
                     key={member._id}
-                  >{`${member.firstName} ${member.lastName}`}</option>
+                  >{`${member.firstName} ${member.lastName} - ${member.email}`}</option>
                 ))}
               </select>
             </div>

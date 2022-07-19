@@ -97,7 +97,7 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state
       };
-    case types.ADD_EMPLOYEE_TO_PROJECT:
+    case types.ADD_EMPLOYEE_TO_PROJECT_SUCCESS:
       return {
         ...state,
         list: state.list.map((project) =>
@@ -131,7 +131,7 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state
       };
-    case types.DELETE_TASK_TO_PROJECT:
+    case types.DELETE_TASK_TO_PROJECT_SUCCESS:
       return {
         ...state,
         list: state.list.map((project) =>
@@ -148,7 +148,7 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state
       };
-    case types.DELETE_EMPLOYEE_TO_PROJECT:
+    case types.DELETE_EMPLOYEE_TO_PROJECT_SUCCESS:
       return {
         ...state,
         list: state.list.map((project) =>
@@ -156,6 +156,40 @@ export const projectsReducer = (state = initialState, action) => {
         )
       };
     case types.DELETE_EMPLOYEE_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // UPDATE EMPLOYEE IN PROJECT
+    case types.UPDATE_EMPLOYEE_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.UPDATE_EMPLOYEE_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((project) =>
+          project._id === action.payload._id ? action.payload : project
+        )
+      };
+    case types.UPDATE_EMPLOYEE_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // UPDATE TASK IN PROJECT
+    case types.UPDATE_TASK_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.UPDATE_TASK_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((project) =>
+          project._id === action.payload._id ? action.payload : project
+        )
+      };
+    case types.UPDATE_TASK_TO_PROJECT_FAILED:
       return {
         ...state,
         error: action.payload
