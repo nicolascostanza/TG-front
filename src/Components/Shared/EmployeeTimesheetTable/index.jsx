@@ -71,9 +71,11 @@ function EmployeeTimesheetTable({
           {show.map((row) => {
             return (
               <tr className={styles.row} key={row._id}>
-                <td>
-                  <input type="checkbox" onChange={() => onSelect(row._id)} />
-                </td>
+                {role === 'PM' && (
+                  <td>
+                    <input type="checkbox" onChange={() => onSelect(row._id)} />
+                  </td>
+                )}
                 {keys.map((key, index) => {
                   if (key === 'active') {
                     return (
@@ -105,14 +107,16 @@ function EmployeeTimesheetTable({
                     )}
                   </td>
                   <td>
-                    <Button
-                      onClick={() => onDelete(row._id)}
-                      width={'50px'}
-                      height={'25px'}
-                      fontSize={'13px'}
-                    >
-                      <i className="fa-solid fa-xmark"></i>
-                    </Button>
+                    {row.status !== 'Approved' && (
+                      <Button
+                        onClick={() => onDelete(row._id)}
+                        width={'50px'}
+                        height={'25px'}
+                        fontSize={'13px'}
+                      >
+                        <i className="fa-solid fa-xmark"></i>
+                      </Button>
+                    )}
                   </td>
                   <td>
                     {/* AGREGAR LOGICA AL SLIDER */}
@@ -136,7 +140,6 @@ function EmployeeTimesheetTable({
                         onChangeFunction={onApprove}
                         arg1={row}
                         arg2={row._id}
-                        switchWidth={'200px'}
                       />
                     )}
                     {console.log('approve slider ', row.approveSlider)}

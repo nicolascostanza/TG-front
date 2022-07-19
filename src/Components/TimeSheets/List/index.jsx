@@ -29,8 +29,8 @@ function TimeSheet() {
   // });
   const currentUser = useSelector((state) => state.currentUser.currentUser);
   // let role = useSelector((state) => state.auth.authenticated.role);
-  let role = 'PM';
-  // let role = 'EMPLOYEE';
+  // let role = 'PM';
+  let role = 'EMPLOYEE';
   const [showAllTimesheets, setShowAllTimesheets] = useState(false);
   const [showPendingTS, setShowPendingTS] = useState(false);
   const dispatch = useDispatch();
@@ -44,6 +44,7 @@ function TimeSheet() {
   const [showDeletedModalMessage, setShowDeletedModalMessage] = useState('');
   const [selectedTS, setSelectedTS] = useState([]);
   const [selectedButton, setSelectedButton] = useState(1);
+  // const [tableHeaders, setTableHeaders] = useState([]);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
@@ -177,6 +178,30 @@ function TimeSheet() {
     setShowDeletedModal(false);
     setShowDeletedModalMessage('');
   };
+  // if (role === 'PM') {
+  //   setTableHeaders([
+  //     '',
+  //     'EMPLOYEE',
+  //     'Project',
+  //     'Start date',
+  //     'Task',
+  //     'Hours',
+  //     'Status',
+  //     'Edit',
+  //     'Delete'
+  //   ]);
+  // } else {
+  //   setTableHeaders([
+  //     'EMPLOYEE',
+  //     'Project',
+  //     'Start date',
+  //     'Task',
+  //     'Hours',
+  //     'Status',
+  //     'Edit',
+  //     'Delete'
+  //   ]);
+  // }
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -260,6 +285,7 @@ function TimeSheet() {
           'Edit',
           'Delete'
         ]}
+        // headers={tableHeaders}
         keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'status']}
         data={formattedTimeSheets}
         role={role}

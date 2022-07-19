@@ -142,12 +142,12 @@ function EditTimeSheets(props) {
               onChange={(e) => setTasks(e.target.value)}
             />
           </div>
-          {props.role === 'PM' && (
+          {/* {props.role === 'PM' && (
             <div>
               <label htmlFor="approved">Approved</label>
               <input {...register('approved', { required: true })} type="checkbox" />
             </div>
-          )}
+          )} */}
         </div>
       </Form>
     </section>

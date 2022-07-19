@@ -22,10 +22,7 @@ const Slider = ({
         checked={isChecked === true ? true : false}
         onChange={() => onChangeFunction(arg1, arg2)}
       />
-      <span
-        className={styles.slider}
-        style={{ height: switchHeight, WebkitBorderBeforeWidth: switchWidth }}
-      />
+      <span className={styles.slider} style={{ height: switchHeight, width: switchWidth }} />
     </label>
   );
 };
