@@ -29,6 +29,7 @@ function TimeSheet() {
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const [selectedTS, setSelectedTS] = useState([]);
+  const [selectedButton, setSelectedButton] = useState(1);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
@@ -120,19 +121,23 @@ function TimeSheet() {
   const showMyTS = () => {
     setShowAllTimesheets(false);
     setShowPendingTS(false);
-  };
-  const showAllTS = () => {
-    setShowAllTimesheets(true);
-    setShowPendingTS(false);
+    setSelectedButton(1);
   };
   const showTSToApprove = () => {
     setShowAllTimesheets(true);
     setShowPendingTS(true);
+    setSelectedButton(2);
+  };
+  const showAllTS = () => {
+    setShowAllTimesheets(true);
+    setShowPendingTS(false);
+    setSelectedButton(3);
   };
   const selectTS = (id) => {
     setSelectedTS([...selectedTS, id]);
     console.log('selectedTS ', selectedTS);
   };
+  console.log(selectedButton);
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -155,9 +160,24 @@ function TimeSheet() {
       {role === 'PM' && (
         <ButtonGroup>
           <Box>
-            <Button onClick={() => showMyTS()}>My timesheets</Button>
-            <Button onClick={() => showTSToApprove()}>Timesheets to approve</Button>
-            <Button onClick={() => showAllTS()}>All timesheets</Button>
+            <Button
+              variant={selectedButton === 1 ? 'contained' : 'outlined'}
+              onClick={() => showMyTS()}
+            >
+              My timesheets
+            </Button>
+            <Button
+              variant={selectedButton === 2 ? 'contained' : 'outlined'}
+              onClick={() => showTSToApprove()}
+            >
+              Timesheets to approve
+            </Button>
+            <Button
+              variant={selectedButton === 3 ? 'contained' : 'outlined'}
+              onClick={() => showAllTS()}
+            >
+              All timesheets
+            </Button>
           </Box>
         </ButtonGroup>
       )}
