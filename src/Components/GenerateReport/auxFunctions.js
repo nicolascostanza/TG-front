@@ -1,6 +1,6 @@
-export const filterByDate = (data, { init = '2000-01-01', end = '2100-01-01' }) => {
-  const initDate = new Date(init);
-  const endDate = new Date(end);
+export const filterByDate = (data, { init = '', end = '' }) => {
+  const initDate = init !== '' ? new Date(init) : new Date('2000-01-01');
+  const endDate = end !== '' ? new Date(end) : new Date('2100-01-01');
   const filteredData = data.filter((item) => {
     return new Date(item.date) >= initDate && new Date(item.date) <= endDate;
   });
