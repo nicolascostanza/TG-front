@@ -20,12 +20,14 @@ function EmployeeTimesheetTable({
   // register,
   // registerValue
 }) {
+  const MILIS_IN_A_DAY = 86400000;
   const currentDay = new Date(Date.now()).getDay();
   const currentMonth = new Date(Date.now()).getMonth();
   const currentYear = new Date(Date.now()).getFullYear();
   const [day, setDay] = useState(currentDay);
   const [month, setMonth] = useState(currentMonth);
   const [year, setYear] = useState(currentYear);
+  const [period, setPeriod] = useState('year');
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
 
@@ -39,70 +41,118 @@ function EmployeeTimesheetTable({
     }
   }, [data]);
 
+  const calculateEndDate = (initDate, period) => {
+    const initYear = initDate.getFullYear();
+    const initMonth = initDate.getMonth();
+    const initDateMilis = Number(initDate);
+    switch (period) {
+      case 'year':
+        return new Date(initYear + 1, 0);
+      case 'month':
+        return new Date(initYear, initMonth + 1);
+      case 'week':
+        return new Date(MILIS_IN_A_DAY * 7 + initDateMilis);
+      case 'day':
+        return new Date(MILIS_IN_A_DAY + initDateMilis);
+      default:
+        return new Date('2100-01-01');
+    }
+  };
+
   const filterByDate = (data) => {
     const initDate = new Date(year, month, day);
+    const endDate = calculateEndDate(initDate, period);
     return data.filter((item) => {
-      return new Date(item.date) > initDate;
+      return new Date(item.date) > initDate && new Date(item.date) < endDate;
     });
   };
-  // console.log(new Date(year, month));
 
   const previousDay = () => {
-    setDay(day - 1);
+    const auxDate = new Date(year, month, day);
+    const auxDateMilis = Number(auxDate) - MILIS_IN_A_DAY;
+    const newDate = new Date(auxDateMilis);
+    const newDateDay = newDate.getDate();
+    const newDateMonth = newDate.getMonth();
+    const newDateYear = newDate.getFullYear();
+    setDay(newDateDay);
+    setMonth(newDateMonth);
+    setYear(newDateYear);
+    setPeriod('day');
   };
 
   const nextDay = () => {
-    setDay(day + 1);
+    const auxDate = new Date(year, month, day);
+    const auxDateMilis = Number(auxDate) + MILIS_IN_A_DAY;
+    const newDate = new Date(auxDateMilis);
+    const newDateDay = newDate.getDate();
+    const newDateMonth = newDate.getMonth();
+    const newDateYear = newDate.getFullYear();
+    setDay(newDateDay);
+    setMonth(newDateMonth);
+    setYear(newDateYear);
+    setPeriod('day');
   };
 
   const previousWeek = () => {
-    if (month < 1) {
-      setMonth(11);
-      setYear(year - 1);
-    } else {
-      setMonth(month - 1);
-    }
+    const auxDate = new Date(year, month, day);
+    const auxDateMilis = Number(auxDate) - 7 * MILIS_IN_A_DAY;
+    const newDate = new Date(auxDateMilis);
+    const newDateDay = newDate.getDate();
+    const newDateMonth = newDate.getMonth();
+    const newDateYear = newDate.getFullYear();
+    setDay(newDateDay);
+    setMonth(newDateMonth);
+    setYear(newDateYear);
+    setPeriod('week');
   };
 
   const nextWeek = () => {
-    if (month > 10) {
-      setMonth(0);
-      setYear(year + 1);
-    } else {
-      setMonth(month + 1);
-    }
+    const auxDate = new Date(year, month, day);
+    const auxDateMilis = Number(auxDate) + 7 * MILIS_IN_A_DAY;
+    const newDate = new Date(auxDateMilis);
+    const newDateDay = newDate.getDate();
+    const newDateMonth = newDate.getMonth();
+    const newDateYear = newDate.getFullYear();
+    setDay(newDateDay);
+    setMonth(newDateMonth);
+    setYear(newDateYear);
+    setPeriod('week');
   };
 
   const previousMonth = () => {
-    setDay(0);
+    setDay(1);
     if (month < 1) {
       setMonth(11);
       setYear(year - 1);
     } else {
       setMonth(month - 1);
     }
+    setPeriod('month');
   };
 
   const nextMonth = () => {
-    setDay(0);
+    setDay(1);
     if (month > 10) {
       setMonth(0);
       setYear(year + 1);
     } else {
       setMonth(month + 1);
     }
+    setPeriod('month');
   };
 
   const previousYear = () => {
-    setDay(0);
+    setDay(1);
     setMonth(0);
     setYear(year - 1);
+    setPeriod('year');
   };
 
   const nextYear = () => {
-    setDay(0);
+    setDay(1);
     setMonth(0);
     setYear(year + 1);
+    setPeriod('year');
   };
 
   const openRow = (role, id) => {
@@ -139,7 +189,7 @@ function EmployeeTimesheetTable({
         <button onClick={() => previousWeek()}>{'<W'}</button>
         <button onClick={() => previousDay()}>{'<D'}</button>
         <p>
-          Year: {year} || Month: {month} || Day: {day}
+          Year: {year} || Month: {month + 1} || Day: {day}
         </p>
         <button onClick={() => nextDay()}>{'D>'}</button>
         <button onClick={() => nextWeek()}>{'W>'}</button>
