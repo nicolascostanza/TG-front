@@ -42,10 +42,6 @@ function Profile() {
     const employee = { ...data, _id };
     dispatch(thunksEmployee.editEmployee(employee));
 
-    console.log('update: ', update);
-    console.log('data: ', data);
-    console.log('id: ', _id);
-
     if (!response) {
       setUpdate(!update);
     }

@@ -1,9 +1,11 @@
 import * as actions from './actions';
 
-export const getCurrentUserByEmail = (email) => {
+export const getCurrentUserByEmail = (email, token) => {
   return (dispatch) => {
     dispatch(actions.getCurrentUserByEmailPending());
-    return fetch(`${process.env.REACT_APP_API_URL}/employees?email=${email}`)
+    return fetch(`${process.env.REACT_APP_API_URL}/employees?email=${email}`, {
+      headers: { token }
+    })
       .then((response) => response.json())
       .then((json) => {
         return dispatch(actions.getCurrentUserByEmailSuccess(json.data[0]));
