@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
+import Dropdown from '../Dropdown/Dropdown';
 // import AssignPm from 'Components/Shared/assingPm';
 import { useDispatch } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -34,19 +35,43 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   console.log('proyectoelegido:', projectoElegido[0]);
   let dataTeam = projectoElegido[0].team;
   let dataTasks = projectoElegido[0].tasks;
-  console.log('team:', dataTeam);
-  console.log('tasks:', dataTasks);
+  console.log('EQUIPITO:', dataTeam);
+  console.log('CAMPOS PARA TASKS', dataTasks);
   let headers;
   let keys;
   let data;
+  // tabla para mostrar la tabla vacia
+  // function EmptyTable() {
+  //   if (tab === 'employees') {
+  //     return <td>There is no employee yet</td>;
+  //   }
+  //   return <td>There is no task yet</td>;
+  // }
 
   if (filterProject) {
     headers = ['ID', 'Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
     data = dataTeam;
   } else {
-    headers = ['ID', 'Task Name', 'Description'];
-    keys = ['_id', 'taskName', 'taskDescription'];
+    headers = [
+      'Task Name',
+      'Description',
+      'Assigned',
+      'Status',
+      'Created',
+      'Start Date',
+      'Updated'
+    ];
+    keys = [
+      // '_id',
+      'taskName',
+      'taskDescription',
+      'assignedEmployee',
+      'status',
+      'createdAt',
+      'startDate',
+      'updatedAt'
+    ];
     data = dataTasks;
   }
   useEffect(() => {
@@ -63,7 +88,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   }, [data, allProjects]);
 
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
-  show.reverse();
   console.log('data', data);
   console.log('muestro est:', show);
 
@@ -140,12 +164,46 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const openModalPm = () => {
     setShowModalPm(true);
   };
+  let currentPm = dataTeam.filter((employ) => employ.isPM === true);
+
   const onSubmit = (data) => {
     // employees, post y put en el if, en el else post y put de tasks
     if (tab === 'employees') {
       if (method === 'POST') {
         dispatch(thunksProjects.addEmployeeToProject(data, idProject));
       } else {
+        if (data.role === 'PM') {
+          const current = {
+            employeeId: currentPm[0].employeeId._id,
+            // a cambiar el role por -
+            role: 'QA',
+            rate: currentPm[0].rate,
+            isPM: false
+          };
+          fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
+            method: 'PUT',
+            headers: {
+              'Content-type': 'application/json'
+            },
+            body: JSON.stringify(current)
+          });
+        }
+        // if (idToForm === currentPm[0].employeeId._id) {
+        //   const current = {
+        //     employeeId: currentPm[0].employeeId._id,
+        //     role: 'QA',
+        //     // a cambiar el role por -
+        //     rate: currentPm[0].rate,
+        //     isPM: false
+        //   };
+        //   fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
+        //     method: 'PUT',
+        //     headers: {
+        //       'Content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify(current)
+        //   });
+        // }
         // dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
         // dispatch(thunksProjects.addEmployeeToProject(data, idProject));
         // body, id, idProject
@@ -180,13 +238,14 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   // const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
 
   console.log(errors);
+  console.log('todos los employees_:', allEmployees);
 
   return (
     <div className={styles.container}>
       <AssignPm
         showModalPM={showModalPm}
         closeModalPM={() => setShowModalPm(false)}
-        allEmployees={allEmployees}
+        employeesInProject={data}
         idProject={idProject}
       ></AssignPm>
       {showModalTask ? (
@@ -339,17 +398,16 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             {!assignPM ? (
               <div>
                 <label htmlFor="role">Role</label>
-                <select {...register('role')} name="role" id="">
-                  <option>DEV</option>
-                  <option>QA</option>
-                </select>
-                {/* <input
-                type="text"
-                placeholder="DEV"
-                {...register('role')}
-                error={appendErrors.role?.message}
-              />
-              {errors.role && <p className={styles.errorInput}>{errors.role?.message}</p>} */}
+                {idToForm === currentPm[0]?.employeeId._id ? (
+                  <p>PM</p>
+                ) : (
+                  <select {...register('role')} name="role" id="">
+                    <option>-</option>
+                    <option>DEV</option>
+                    <option>QA</option>
+                    <option>TL</option>
+                  </select>
+                )}
               </div>
             ) : null}
 
@@ -381,22 +439,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         </Modal>
       ) : null}
       <h2>{title}</h2>
-      {/* <Modal
-        showModal={showModalPM}
-        handleClose={() => setShowModalPM(false)}
-        modalTitle={'SET PM '}
-      >
-        <h3>Employees:</h3>
-        <table>
-          <thead>Name </thead>
-          {allEmployees.map((member) => (
-            <tr key={member._id}>
-              {`${member.firstName} ${member.lastName}`}
-              <button onClick={assignPm(member._id)}>assign</button>{' '}
-            </tr>
-          ))}
-        </table>
-      </Modal> */}
       {roleUser === `ADMIN` ? (
         <Button
           width={'80px'}
@@ -466,6 +508,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
           </tr>
         </thead>
         <tbody className={styles.tbody}>
+          {/* {show.length === 0 ? return <EmptyTable/> : } */}
           {show?.map((row) => {
             return (
               <tr className={styles.row} key={row._id}>
@@ -488,6 +531,21 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                     } else {
                       return null;
                     }
+                  } else if (key === 'assignedEmployee') {
+                    if (row[key].length > 1) {
+                      return (
+                        <Dropdown width={'150px'} placeholder="Tasks">
+                          {row[key].map((element) => {
+                            return <option key={Math.random()}>{element}</option>;
+                          })}
+                          ;
+                        </Dropdown>
+                      );
+                    } else if (row[key].length === 1) {
+                      return <td>{row[key]}</td>;
+                    } else {
+                      return <td> - </td>;
+                    }
                   } else if (key === 'role') {
                     if (row.isPM) {
                       return <td>PM</td>;
@@ -504,6 +562,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                     <td>
                       <Button
                         onClick={() => {
+                          setIdToForm(tab === 'tasks' ? row._id : row.employeeId._id);
                           onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
                           setMethod('PUT');
                         }}

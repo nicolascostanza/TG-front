@@ -21,16 +21,18 @@ import {
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
-// VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
-// TABLE HOME tiene TODAS LAS FUNCIONALIDADES
+// LO QUE FALTA
+// falta q este isactive o no (superadmin)
 // EL TABLE HOME FALTA Q MUESTRE SI ES PM O EMPLOYEE SOLO LOS PROYECT ASOCIADOS Y DE ULTIMO A PRIMERO
-// VER, EL - EN END DATE CUANDO NO HAY NADA
-
-// CUANDO EDITO EL Q TIENE PM LO SACA EN VEZ DE EDITARLO, HASTA RECARGAR, VER REDUCERS
-// EL EDIT EMPLOYEE DENTRO DEL PROYECT NO TOMA EL ROLE
-// a tasks ponerle mas campos en la tabla, status, created, etc
+// si no hay employees en el proyecto q no te deje apretar el boton asign pm
+// SI LAS TABLAS NO TIENEN NADA Q MUESTRE UN MSJ Q NO HAY DISPONIBLES
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
-// VALIDAR QUE SI HAY UN PM LO CAMBIE EN ASIGN PM
+// VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
+
+// LO QUE HICE
+// funcionalidad asingPM
+// deberia dejar agregar employees al proyecto y una vez dentro que te salga el dropdown en pm con los employees del proyecto, y elegis uno de esos, si no hay ninguno te sale empty en asign pm. Sino podes ver el q esta actual y si elegis otro lo modifica. Falta la funcion de editar en el reducer
+// agregue los campos faltantes a las tasks, y los dropdowns. Deberiamos tener en asiggned los nombres pero popula solo el id
 
 function Home() {
   const [screen, setScreen] = useState(false);
@@ -52,7 +54,6 @@ function Home() {
 
   useEffect(() => {
     // dispatch(thunksAdmins.getAdmins());
-
     // if para el home, else para el open project
     if (id === '') {
       // aca despues hago un switch con la peticion nueva de projects asociados al employee

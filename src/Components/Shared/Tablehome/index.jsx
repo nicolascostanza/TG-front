@@ -18,9 +18,6 @@ function Tablehome({
   // userId
 }) {
   const [indexPage, setIndexPage] = useState(1);
-  // data.reverse();
-  // console.log('data:', data);
-
   // // const resp = data.filter((data) => data.isDeleted === false);
   // console.log('respuesta:', resp);
   // const prueba = data.map((a) => a.team.employeeId.includes(userId));
@@ -124,8 +121,8 @@ function Tablehome({
                       </td>
                     );
                   } else if (key === 'endDate') {
-                    if (row[key] === '') {
-                      <td> - </td>;
+                    if (row[key] === undefined) {
+                      return <td> - </td>;
                     } else {
                       return (
                         <td key={index} onClick={() => openRow(role, row._id)}>
