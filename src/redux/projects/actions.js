@@ -16,9 +16,9 @@ export const getProjectsFailed = (error) => ({
 });
 
 // ADD NEW PROJECT
-export const addNewProjectFulfilled = (project) => ({
+export const addNewProjectFulfilled = (project, message) => ({
   type: types.ADD_NEW_PROJECT_FULFILLED,
-  payload: project
+  payload: { project, message }
 });
 
 export const addNewProjectPending = () => ({
@@ -31,20 +31,22 @@ export const addNewProjectFailed = (error) => ({
 });
 
 // UPDATE PROJECT
-export const updateProjectFulfilled = (project) => ({
+export const updateProjectFulfilled = (project, message) => ({
   type: types.UPDATE_PROJECT_FULFILLED,
-  payload: project
+  payload: { project, message }
 });
 export const updateProjectPending = () => ({
   type: types.UPDATE_PROJECT_PENDING
 });
-export const updateProjectFailed = () => ({
-  type: types.UPDATE_PROJECT_FAILED
+export const updateProjectFailed = (error) => ({
+  type: types.UPDATE_PROJECT_FAILED,
+  payload: error
 });
 
 // DELETE PROJECT
 export const deleteProjectFulfilled = (project) => ({
   type: types.DELETE_PROJECT_FULFILLED,
+  // ver pq no funciona el delete project, {project._id, message} en payload
   payload: project._id
 });
 

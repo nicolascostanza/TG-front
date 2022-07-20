@@ -22,23 +22,32 @@ import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
 // LO QUE FALTA
-// falta q este isactive o no (superadmin)
-// EL TABLE HOME FALTA Q MUESTRE SI ES PM O EMPLOYEE SOLO LOS PROYECT ASOCIADOS Y DE ULTIMO A PRIMERO
-// SI LAS TABLAS NO TIENEN NADA Q MUESTRE UN MSJ Q NO HAY DISPONIBLES
+// CORREGIR LOS PMS, EN EL REDUCER PARA Q ACTUALICE
+// MODALES mostrar mensajes (hice add project, edit project, falta corregir reducers y mensajes en delete, y admins (add, edit, delete))
+// mensajes en tableproject, de employees y tasks en modales, faltan todos
+// TOMAR EL ROLE DE REDUX (en table home, en tableHome y en tableProject)
+// falta q este isactive o no (superadmin) (lo hacemos mañana)
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
 // VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
+
+// A VER:
+// ver el reducers de employee in project (edit pm)
+// si devuelve la data de proyectos asociados o todos, en el table home (si es admin o employee)
 
 function Home() {
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [method, setMethod] = useState('');
+  const [showModalResponse, setShowModalResponse] = useState(false);
   const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
   let projectsError = useSelector((state) => state.projects.error);
   let adminsError = useSelector((state) => state.admins.error);
   let projectsList = useSelector((state) => state.projects.list);
   let adminsList = useSelector((state) => state.admins.list);
+  let userCurrent = useSelector((state) => state.currentUser.currentUser);
+  let message = useSelector((state) => state.projects.message);
   let headers = [];
   let keys = [];
   let validator;
@@ -63,7 +72,7 @@ function Home() {
     } else {
       dispatch(thunksProjects.getProjects());
     }
-  }, [screen]);
+  }, [screen, message]);
 
   // headers and keys
   if (role === 'SUPERADMIN') {
@@ -93,7 +102,13 @@ function Home() {
     mode: 'onBlur',
     resolver: joiResolver(validator)
   });
-
+  const dataProjects = (rol) => {
+    if (rol === 'ADMIN') {
+      return projectsList;
+    } else {
+      return userCurrent.associatedProjects;
+    }
+  };
   const switcher = () => {
     setScreen(!screen);
   };
@@ -155,35 +170,35 @@ function Home() {
   console.log(errors);
 
   const onSubmit = (data) => {
-    console.log('data', data);
     if (role === 'SUPERADMIN') {
       if (method === 'POST') {
         dispatch(thunksAdmins.addAdmin(data));
+        setShowModalResponse(true);
       } else if (method === 'PUT') {
         dispatch(thunksAdmins.updateAdmin(data, id));
+        setShowModalResponse(true);
         setMethod('');
       } else {
         // cambio isdeleted a true
         dispatch(thunksAdmins.deleteAdmin(id));
-      }
-      if (!adminsError) {
-        setShowModal(false);
-        setMethod('');
+        setShowModalResponse(true);
       }
     } else {
       if (method === 'POST') {
         dispatch(thunksProjects.addNewProject(data));
+        setShowModal(false);
+        setShowModalResponse(true);
         setMethod('');
       } else if (method === 'PUT') {
         dispatch(thunksProjects.updateProject(data, id));
+        setShowModal(false);
+        setShowModalResponse(true);
         setMethod('');
       } else {
         // cambio isdeleted a true
         dispatch(thunksProjects.deleteProject(id));
-        setMethod('');
-      }
-      if (!projectsError) {
         setShowModal(false);
+        setShowModalResponse(true);
         setMethod('');
       }
     }
@@ -212,6 +227,14 @@ function Home() {
       <section className={styles.container}>
         <Sidebar></Sidebar>
         <h2>Home</h2>
+        {/* modal con mensaje de exito o error */}
+        <Modal
+          showModal={showModalResponse}
+          handleClose={() => setShowModalResponse(false)}
+          modalTitle={projectsError || adminsError ? 'WARNING' : 'SUCCESS'}
+        >
+          {message}
+        </Modal>
         <Loader isLoading={isLoading} />
         {role === 'SUPERADMIN' ? (
           <Modal
@@ -342,7 +365,7 @@ function Home() {
           role={role}
           headers={headers}
           keys={keys}
-          data={role === 'SUPERADMIN' ? adminsList : projectsList}
+          data={role === 'SUPERADMIN' ? adminsList : dataProjects(role)}
           selected={setId}
           onDelete={onDelete}
         />

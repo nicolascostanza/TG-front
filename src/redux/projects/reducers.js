@@ -5,7 +5,8 @@ const initialState = {
   isFetching: false,
   error: '',
   createModalShow: false,
-  editModalShow: false
+  editModalShow: false,
+  message: ''
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -36,7 +37,8 @@ export const projectsReducer = (state = initialState, action) => {
     case types.ADD_NEW_PROJECT_FULFILLED:
       return {
         ...state,
-        list: [...state.list, action.payload]
+        list: [...state.list, action.payload.project],
+        message: action.payload.message
       };
     case types.ADD_NEW_PROJECT_FAILED:
       return {
@@ -51,12 +53,16 @@ export const projectsReducer = (state = initialState, action) => {
     case types.UPDATE_PROJECT_FULFILLED:
       return {
         ...state,
-        list: state.list.map((item) => (item._id === action.payload._id ? action.payload : item))
+        list: state.list.map((item) =>
+          item._id === action.payload.project._id ? action.payload.project : item
+        ),
+        message: action.payload.message
       };
     case types.UPDATE_PROJECT_FAILED:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        message: action.payload
       };
     // DELETE PROJECTS
     case types.DELETE_PROJECT_PENDING:
@@ -73,7 +79,8 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         isFetching: false,
-        error: action.payload
+        error: action.payload,
+        message: action.payload
       };
     // MODAL HANDLING FUNCTIONS
     case types.CLOSE_ALL_MODALS:

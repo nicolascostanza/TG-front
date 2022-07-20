@@ -8,6 +8,16 @@ export const getProjectsApi = async () => {
   }
 };
 
+export const getProjectByIdApi = async (idProject) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export const addNewProjectApi = async (body) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/projects`, {
@@ -18,7 +28,7 @@ export const addNewProjectApi = async (body) => {
       body: JSON.stringify(body)
     });
     const data = await response.json();
-    alert(data.message);
+    // alert(data.message);
     return data;
   } catch (error) {
     return error;
@@ -110,6 +120,25 @@ export const deleteEmployeeToProjectApi = async (idProject, idEmployee) => {
       `${process.env.REACT_APP_API_URL}/projects/${idProject}/employee/${idEmployee}`,
       {
         method: 'PUT'
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateEmployeeInProject = async (idProject, body) => {
+  try {
+    const response = await fetch(
+      `${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-type': 'application/json'
+        },
+        body: JSON.stringify(body)
       }
     );
     const data = await response.json();

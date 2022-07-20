@@ -22,7 +22,7 @@ export const addNewProject = (body) => {
     api
       .addNewProjectApi(body)
       .then((response) => {
-        dispatch(actions.addNewProjectFulfilled(response.data));
+        dispatch(actions.addNewProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
@@ -39,10 +39,10 @@ export const updateProject = (body, id) => {
     api
       .updateProjectApi(body, id)
       .then((response) => {
-        dispatch(actions.updateProjectFulfilled(response.data));
-        if (!response.error) {
-          dispatch(actions.closeAllModals());
+        if (response.error) {
+          throw response.error;
         }
+        dispatch(actions.updateProjectFulfilled(response.data, response.message));
       })
       .catch((error) => {
         dispatch(actions.updateProjectFailed(error));
@@ -56,7 +56,7 @@ export const deleteProject = (id) => {
     api
       .deleteProjectApi(id)
       .then((response) => {
-        dispatch(actions.deleteProjectFulfilled(response.data));
+        dispatch(actions.deleteProjectFulfilled(response.data, response.message));
       })
       .catch((error) => {
         dispatch(actions.deleteProjectFailed(error));
@@ -81,23 +81,23 @@ export const addEmployeeToProject = (body, id) => {
       });
   };
 };
-export const updateEmployeeToProject = (body, id, idProject) => {
-  return (dispatch) => {
-    dispatch(actions.updateEmployeeToProjectPending());
-    api.deleteEmployeeToProjectApi(idProject, id);
-    api
-      .addEmployeeToProjectaApi(body, idProject)
-      .then((response) => {
-        dispatch(actions.updateEmployeeToProjectSuccess(response.data));
-        if (!response.error) {
-          dispatch(actions.closeAllModals());
-        }
-      })
-      .catch((error) => {
-        dispatch(actions.updateEmployeeToProjectFailed(error));
-      });
-  };
-};
+// export const updateEmployeeToProject = (body, id, idProject) => {
+//   return (dispatch) => {
+//     dispatch(actions.updateEmployeeToProjectPending());
+//     api.deleteEmployeeToProjectApi(idProject, id);
+//     api
+//       .addEmployeeToProjectaApi(body, idProject)
+//       .then((response) => {
+//         dispatch(actions.updateEmployeeToProjectSuccess(response.data));
+//         if (!response.error) {
+//           dispatch(actions.closeAllModals());
+//         }
+//       })
+//       .catch((error) => {
+//         dispatch(actions.updateEmployeeToProjectFailed(error));
+//       });
+//   };
+// };
 
 export const deleteEmployeeToProject = (idProject, idEmployee) => {
   return (dispatch) => {
@@ -165,6 +165,37 @@ export const deleteTaskToProject = (idProject, idTask) => {
       })
       .catch((error) => {
         dispatch(actions.deleteTaskToProjectFailed(error));
+      });
+  };
+};
+// updateEmployeeInProject
+export const updateEmployeeToProject = (idProject, body) => {
+  return (dispatch) => {
+    dispatch(actions.updateEmployeeToProjectPending());
+    api
+      .updateEmployeeInProject(idProject, body)
+      .then((response) => {
+        if (response.error) {
+          throw response.error;
+        }
+        console.log('response de el update employee:', response);
+      })
+      .catch((error) => {
+        console.log('error del update employee:', error);
+      });
+    api
+      .getProjectByIdApi(idProject)
+      .then((response) => {
+        if (response.error) {
+          throw response.error;
+        }
+        dispatch(actions.updateEmployeeToProjectSuccess(response.data));
+        if (!response.error) {
+          dispatch(actions.closeAllModals());
+        }
+      })
+      .catch((error) => {
+        dispatch(actions.updateEmployeeToProjectFailed(error));
       });
   };
 };

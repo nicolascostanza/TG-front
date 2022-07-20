@@ -88,8 +88,8 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   }, [data, allProjects]);
 
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
-  console.log('data', data);
-  console.log('muestro est:', show);
+  console.log('muestro esto PERREKE:', show);
+  console.log('TAMAÑO A MOSTRAR:', show.length);
 
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
@@ -175,18 +175,18 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         if (data.role === 'PM') {
           const current = {
             employeeId: currentPm[0].employeeId._id,
-            // a cambiar el role por -
-            role: 'QA',
+            role: '-',
             rate: currentPm[0].rate,
             isPM: false
           };
-          fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
-            method: 'PUT',
-            headers: {
-              'Content-type': 'application/json'
-            },
-            body: JSON.stringify(current)
-          });
+          // fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
+          //   method: 'PUT',
+          //   headers: {
+          //     'Content-type': 'application/json'
+          //   },
+          //   body: JSON.stringify(current)
+          // });
+          dispatch(thunksProjects.updateEmployeeToProject(current, idToForm, idProject));
         }
         // if (idToForm === currentPm[0].employeeId._id) {
         //   const current = {
@@ -247,6 +247,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         closeModalPM={() => setShowModalPm(false)}
         employeesInProject={data}
         idProject={idProject}
+        projectAssociated={projectoElegido}
       ></AssignPm>
       {showModalTask ? (
         <Modal
@@ -510,140 +511,149 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       >
         Tasks
       </button>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            {headers.map((header, index) => {
-              if (header === 'Rate') {
-                if (roleUser === 'ADMIN' || roleUser === 'PM') {
-                  return <th key={index}>{header}</th>;
-                }
-              } else {
-                return <th key={index}>{header}</th>;
-              }
-            })}
-            {roleUser === `ADMIN` || roleUser === `PM` ? (
-              <>
-                <th>Edit</th>
-                <th>Delete</th>
-              </>
-            ) : null}
-          </tr>
-        </thead>
-        <tbody className={styles.tbody}>
-          {/* {show.length === 0 ? return <EmptyTable/> : } */}
-          {show?.map((row) => {
-            return (
-              <tr className={styles.row} key={row._id}>
-                {keys.map((key, index) => {
-                  if (key === 'employeeId') {
-                    return (
-                      <>
-                        <td key={index}>{row.employeeId?._id ? row.employeeId?._id : '-'}</td>
-                        <td key={index}>
-                          {row.employeeId?.firstName ? row.employeeId?.firstName : '-'}
-                        </td>
-                        <td key={index}>
-                          {row.employeeId?.lastName ? row.employeeId?.lastName : '-'}
-                        </td>
-                      </>
-                    );
-                  } else if (key === 'rate') {
-                    if (roleUser === `ADMIN` || roleUser === `PM`) {
-                      return <td key={index}>{row[key]}</td>;
-                    } else {
-                      return null;
-                    }
-                  } else if (key === 'assignedEmployee') {
-                    if (row[key].length > 1) {
-                      return (
-                        <Dropdown width={'150px'} placeholder="Tasks">
-                          {row[key].map((element) => {
-                            return <option key={Math.random()}>{element}</option>;
-                          })}
-                          ;
-                        </Dropdown>
-                      );
-                    } else if (row[key].length === 1) {
-                      return <td>{row[key]}</td>;
-                    } else {
-                      return <td> - </td>;
-                    }
-                  } else if (key === 'role') {
-                    if (row.isPM) {
-                      return <td>PM</td>;
-                    } else {
-                      return <td key={index}>{row[key]}</td>;
+      {show.length === 0 ? (
+        <>
+          <h1>No information to display</h1>
+          <h2>To start add an {tab === 'employees' ? 'Employee' : 'Task'}</h2>
+        </>
+      ) : (
+        <>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                {headers.map((header, index) => {
+                  if (header === 'Rate') {
+                    if (roleUser === 'ADMIN' || roleUser === 'PM') {
+                      return <th key={index}>{header}</th>;
                     }
                   } else {
-                    return <td key={index}>{row[key]}</td>;
+                    return <th key={index}>{header}</th>;
                   }
                 })}
                 {roleUser === `ADMIN` || roleUser === `PM` ? (
                   <>
-                    {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
-                    <td>
-                      <Button
-                        id="buttonEditInProject"
-                        onClick={() => {
-                          setIdToForm(tab === 'tasks' ? row._id : row.employeeId._id);
-                          onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
-                          setMethod('PUT');
-                        }}
-                        width={'50px'}
-                        height={'25px'}
-                        fontSize={'13px'}
-                      >
-                        <i className="fa-solid fa-pencil"></i>
-                      </Button>
-                    </td>
-                    <td>
-                      <Button
-                        id="buttonDeleteInProject"
-                        onClick={() => onDelete(tab === 'tasks' ? row._id : row.employeeId._id)}
-                        width={'50px'}
-                        height={'25px'}
-                        fontSize={'13px'}
-                      >
-                        <i className="fa-solid fa-xmark"></i>
-                      </Button>
-                    </td>
+                    <th>Edit</th>
+                    <th>Delete</th>
                   </>
                 ) : null}
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <div className={styles.buttons}>
-        <div>
-          <p>Page {indexPage}</p>
-        </div>
-        <div>
-          <Button
-            id="previouspage"
-            width={'50px'}
-            height={'40px'}
-            fontSize={'15px'}
-            disabled={indexPage <= 1}
-            onClick={() => previousPage()}
-          >
-            <i className="fa-solid fa-angle-left"></i>
-          </Button>
-        </div>
-        <div>
-          <Button
-            id="nextpage"
-            width={'50px'}
-            height={'40px'}
-            fontSize={'15px'}
-            disabled={indexPage >= data?.length / 10}
-            onClick={() => nextPage()}
-          >
-            <i className="fa-solid fa-angle-right"></i>
-          </Button>
-        </div>
-      </div>
+            </thead>
+            <tbody className={styles.tbody}>
+              {/* {show.length === 0 ? return <EmptyTable/> : } */}
+              {show?.map((row) => {
+                return (
+                  <tr className={styles.row} key={row._id}>
+                    {keys.map((key, index) => {
+                      if (key === 'employeeId') {
+                        return (
+                          <>
+                            <td key={index}>{row.employeeId?._id ? row.employeeId?._id : '-'}</td>
+                            <td key={index}>
+                              {row.employeeId?.firstName ? row.employeeId?.firstName : '-'}
+                            </td>
+                            <td key={index}>
+                              {row.employeeId?.lastName ? row.employeeId?.lastName : '-'}
+                            </td>
+                          </>
+                        );
+                      } else if (key === 'rate') {
+                        if (roleUser === `ADMIN` || roleUser === `PM`) {
+                          return <td key={index}>{row[key]}</td>;
+                        } else {
+                          return null;
+                        }
+                      } else if (key === 'assignedEmployee') {
+                        if (row[key].length > 1) {
+                          return (
+                            <Dropdown width={'150px'} placeholder="Tasks">
+                              {row[key].map((element) => {
+                                return <option key={Math.random()}>{element}</option>;
+                              })}
+                              ;
+                            </Dropdown>
+                          );
+                        } else if (row[key].length === 1) {
+                          return <td>{row[key]}</td>;
+                        } else {
+                          return <td> - </td>;
+                        }
+                      } else if (key === 'role') {
+                        if (row.isPM) {
+                          return <td>PM</td>;
+                        } else {
+                          return <td key={index}>{row[key]}</td>;
+                        }
+                      } else {
+                        return <td key={index}>{row[key]}</td>;
+                      }
+                    })}
+                    {roleUser === `ADMIN` || roleUser === `PM` ? (
+                      <>
+                        {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
+                        <td>
+                          <Button
+                            id="buttonEditInProject"
+                            onClick={() => {
+                              setIdToForm(tab === 'tasks' ? row._id : row.employeeId._id);
+                              onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
+                              setMethod('PUT');
+                            }}
+                            width={'50px'}
+                            height={'25px'}
+                            fontSize={'13px'}
+                          >
+                            <i className="fa-solid fa-pencil"></i>
+                          </Button>
+                        </td>
+                        <td>
+                          <Button
+                            id="buttonDeleteInProject"
+                            onClick={() => onDelete(tab === 'tasks' ? row._id : row.employeeId._id)}
+                            width={'50px'}
+                            height={'25px'}
+                            fontSize={'13px'}
+                          >
+                            <i className="fa-solid fa-xmark"></i>
+                          </Button>
+                        </td>
+                      </>
+                    ) : null}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div className={styles.buttons}>
+            <div>
+              <p>Page {indexPage}</p>
+            </div>
+            <div>
+              <Button
+                id="previouspage"
+                width={'50px'}
+                height={'40px'}
+                fontSize={'15px'}
+                disabled={indexPage <= 1}
+                onClick={() => previousPage()}
+              >
+                <i className="fa-solid fa-angle-left"></i>
+              </Button>
+            </div>
+            <div>
+              <Button
+                id="nextpage"
+                width={'50px'}
+                height={'40px'}
+                fontSize={'15px'}
+                disabled={indexPage >= data?.length / 10}
+                onClick={() => nextPage()}
+              >
+                <i className="fa-solid fa-angle-right"></i>
+              </Button>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

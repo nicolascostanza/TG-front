@@ -3,17 +3,17 @@ import React from 'react';
 import styles from 'Components/Shared/Modal/modal.module.css';
 import Button from '../Button/index.jsx';
 // import { useState } from 'react';
-// import { useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { validationsAssignPm } from 'Components/Home/validations';
-// import * as thunksProjects from 'redux/projects/thunks';
+import * as thunksProjects from 'redux/projects/thunks';
 // import * as thunksTasks from 'redux/tasks/thunks';
 // import * as thunksEmployees from 'redux/employees/thunks';
 // import { useSelector } from 'react-redux';
 
-function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) {
-  // const dispatch = useDispatch();
+function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject, projectAssociated }) {
+  const dispatch = useDispatch();
   const {
     handleSubmit,
     register,
@@ -23,15 +23,15 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
     mode: 'onBlur',
     resolver: joiResolver(validationsAssignPm)
   });
+  console.log('proy asociado:', projectAssociated);
   let currentPm = employeesInProject.filter((employ) => employ.isPM === true);
-  console.log('currentPM:', currentPm);
   const onSubmit = (data) => {
     // si hay current pm le cambio el role, sino solo edito el q pide a pm
     if (currentPm.length != 0) {
       const current = {
         employeeId: currentPm[0].employeeId._id,
         // a cambiar el role por -
-        role: 'QA',
+        role: 'DEV',
         rate: currentPm[0].rate,
         isPM: false
       };
@@ -49,14 +49,33 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
       rate: data.rate,
       isPM: true
     };
-    fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json'
-      },
-      body: JSON.stringify(newPm)
-    });
-    // dispatch(thunksProjects.addEmployeeToProject(newPm, idProject));
+    // fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify(newPm)
+    // });
+    // let respuestaProject = state.list.filter((project) => project._id === action.payload.idProject);
+    // console.log('proyecto elegido:', respuestaProject[0]);
+    let modifiedTeam = projectAssociated[0].team.map((employee) =>
+      employee._id == newPm.employeeId ? newPm : employee
+    );
+    console.log('TEAM MODIFICADO:', modifiedTeam);
+    const modifiedProject = {
+      clientName: projectAssociated[0].clientName,
+      description: projectAssociated[0].description,
+      endDate: projectAssociated[0].endDate,
+      isDeleted: projectAssociated[0].isDeleted,
+      name: projectAssociated[0].name,
+      projectManager: projectAssociated[0].projectManager,
+      startDate: projectAssociated[0].startDate,
+      tasks: projectAssociated[0].tasks,
+      team: modifiedTeam,
+      updatedAt: projectAssociated[0].updatedAt
+    };
+    console.log('project modificado ???', modifiedProject);
+    dispatch(thunksProjects.updateEmployeeToProject(idProject, newPm, modifiedProject));
   };
   if (!showModalPM) {
     return null;
@@ -79,7 +98,7 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="employee id">Employee</label>
-              <select {...register('employeeId')} name="employeeId" id="">
+              <select id="employeeIdToPM" {...register('employeeId')} name="employeeId">
                 {employeesInProject.map((member) => (
                   <option
                     value={member.employeeId._id}
@@ -91,6 +110,7 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
             <div>
               <label htmlFor="Rate">Rate</label>
               <input
+                id="ratePm"
                 type="number"
                 placeholder="500"
                 {...register('rate')}
