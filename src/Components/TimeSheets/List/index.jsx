@@ -27,23 +27,25 @@ function TimeSheet() {
   // const { register } = useForm({
   //   mode: 'onChange'
   // });
-  const currentUser = useSelector((state) => state.currentUser.currentUser);
-  // let role = useSelector((state) => state.auth.authenticated.role);
-  // let role = 'PM';
-  let role = 'EMPLOYEE';
+
+  // const role = 'PM';
+  const role = 'EMPLOYEE';
+
+  const dispatch = useDispatch();
   const [showAllTimesheets, setShowAllTimesheets] = useState(false);
   const [showPendingTS, setShowPendingTS] = useState(false);
-  const dispatch = useDispatch();
-  const timeSheets = useSelector((state) => state.timesheet.list);
-  const isFetching = useSelector((state) => state.timesheet.isFetching);
-  const isError = useSelector((state) => state.timesheet.error);
   const [editId, setEditId] = useState('');
-  const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
-  const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const [showDeletedModal, setShowDeletedModal] = useState(false);
   const [showDeletedModalMessage, setShowDeletedModalMessage] = useState('');
   const [selectedTS, setSelectedTS] = useState([]);
   const [selectedButton, setSelectedButton] = useState(1);
+  const timeSheets = useSelector((state) => state.timesheet.list);
+  const isFetching = useSelector((state) => state.timesheet.isFetching);
+  const isError = useSelector((state) => state.timesheet.error);
+  const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
+  const showEditModal = useSelector((state) => state.timesheet.showEditModal);
+  // let role = useSelector((state) => state.auth.authenticated.role);
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
   // const [tableHeaders, setTableHeaders] = useState([]);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
@@ -60,27 +62,34 @@ function TimeSheet() {
     // });
   }, [timeSheets.length, showAllTimesheets]);
   const allTasks = useSelector((state) => state.tasks.list);
+
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
       dispatch(thunks.deleteTimesheets(id));
     }
   };
+
   const deleteMoreThan1TS = (id) => {
     dispatch(thunks.deleteTimesheets(id));
   };
+
   const openAddTimeSheet = () => {
     dispatch(actions.showCreateModal());
   };
+
   const openEditTimeSheet = (id) => {
     console.log('openEditTimeSheet ', id);
     setEditId(id);
     dispatch(actions.showEditModal());
   };
+
   const handleClose = () => {
     dispatch(actions.closeModals());
   };
+
   let formattedTimeSheets = [];
+
   if (showPendingTS) {
     formattedTimeSheets = timeSheets
       .map((timeSheet) => {
@@ -91,7 +100,7 @@ function TimeSheet() {
           date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
           taskId: timeSheet.taskId?.taskName,
           hours: timeSheet.hours,
-          status: timeSheet.approved ? 'Approved' : 'Disapoproved',
+          status: timeSheet.approved ? 'Approved' : 'Disapproved',
           isDeleted: false,
           approveSlider: timeSheet.approved ? true : false,
           approved: timeSheet.approved
@@ -107,12 +116,13 @@ function TimeSheet() {
         date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
         taskId: timeSheet.taskId?.taskName,
         hours: timeSheet.hours,
-        status: timeSheet.approved ? 'Approved' : 'Disapoproved',
+        status: timeSheet.approved ? 'Approved' : 'Disapproved',
         isDeleted: false,
         approveSlider: timeSheet.approved ? true : false
       };
     });
   }
+
   formattedTimeSheets.reverse();
   const statusChanger = async (status, id) => {
     dispatch(
@@ -124,6 +134,7 @@ function TimeSheet() {
       )
     );
   };
+
   // const approveTimesheet = (data, id) => {
   //   statusChanger();
   //   // console.log('slider ', id);
@@ -136,21 +147,25 @@ function TimeSheet() {
   //   console.log('id sliderrr', id);
   // };
   // console.log(approveTimesheet);
+
   const showMyTS = () => {
     setShowAllTimesheets(false);
     setShowPendingTS(false);
     setSelectedButton(1);
   };
+
   const showTSToApprove = () => {
     setShowAllTimesheets(true);
     setShowPendingTS(true);
     setSelectedButton(2);
   };
+
   const showAllTS = () => {
     setShowAllTimesheets(true);
     setShowPendingTS(false);
     setSelectedButton(3);
   };
+
   const selectTS = (id) => {
     const selectedAux = selectedTS.includes(id)
       ? selectedTS.filter((item) => item != id)
@@ -158,6 +173,7 @@ function TimeSheet() {
     setSelectedTS(selectedAux);
     console.log('selectedTS ', selectedTS);
   };
+
   const deleteSelectedTSAction = () => {
     console.log('delete ', selectedTS);
     const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
@@ -174,34 +190,12 @@ function TimeSheet() {
       // setSelectedTS([]);
     }
   };
+
   const handleCloseMessage = () => {
     setShowDeletedModal(false);
     setShowDeletedModalMessage('');
   };
-  // if (role === 'PM') {
-  //   setTableHeaders([
-  //     '',
-  //     'EMPLOYEE',
-  //     'Project',
-  //     'Start date',
-  //     'Task',
-  //     'Hours',
-  //     'Status',
-  //     'Edit',
-  //     'Delete'
-  //   ]);
-  // } else {
-  //   setTableHeaders([
-  //     'EMPLOYEE',
-  //     'Project',
-  //     'Start date',
-  //     'Task',
-  //     'Hours',
-  //     'Status',
-  //     'Edit',
-  //     'Delete'
-  //   ]);
-  // }
+
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -274,17 +268,7 @@ function TimeSheet() {
       )}
       <EmployeeTimesheetTable
         title={role}
-        headers={[
-          '',
-          'EMPLOYEE',
-          'Project',
-          'Start date',
-          'Task',
-          'Hours',
-          'Status',
-          'Edit',
-          'Delete'
-        ]}
+        headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
         // headers={tableHeaders}
         keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'status']}
         data={formattedTimeSheets}

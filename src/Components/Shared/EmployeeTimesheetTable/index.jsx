@@ -20,8 +20,15 @@ function EmployeeTimesheetTable({
   // register,
   // registerValue
 }) {
+  const currentDay = new Date(Date.now()).getDay();
+  const currentMonth = new Date(Date.now()).getMonth();
+  const currentYear = new Date(Date.now()).getFullYear();
+  const [day, setDay] = useState(currentDay);
+  const [month, setMonth] = useState(currentMonth);
+  const [year, setYear] = useState(currentYear);
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
+
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
@@ -31,22 +38,94 @@ function EmployeeTimesheetTable({
       setIndexPage(maxIndexPage);
     }
   }, [data]);
+
+  const filterByDate = (data) => {
+    const initDate = new Date(year, month, day);
+    return data.filter((item) => {
+      return new Date(item.date) > initDate;
+    });
+  };
+  // console.log(new Date(year, month));
+
+  const previousDay = () => {
+    setDay(day - 1);
+  };
+
+  const nextDay = () => {
+    setDay(day + 1);
+  };
+
+  const previousWeek = () => {
+    if (month < 1) {
+      setMonth(11);
+      setYear(year - 1);
+    } else {
+      setMonth(month - 1);
+    }
+  };
+
+  const nextWeek = () => {
+    if (month > 10) {
+      setMonth(0);
+      setYear(year + 1);
+    } else {
+      setMonth(month + 1);
+    }
+  };
+
+  const previousMonth = () => {
+    setDay(0);
+    if (month < 1) {
+      setMonth(11);
+      setYear(year - 1);
+    } else {
+      setMonth(month - 1);
+    }
+  };
+
+  const nextMonth = () => {
+    setDay(0);
+    if (month > 10) {
+      setMonth(0);
+      setYear(year + 1);
+    } else {
+      setMonth(month + 1);
+    }
+  };
+
+  const previousYear = () => {
+    setDay(0);
+    setMonth(0);
+    setYear(year - 1);
+  };
+
+  const nextYear = () => {
+    setDay(0);
+    setMonth(0);
+    setYear(year + 1);
+  };
+
   const openRow = (role, id) => {
     selectedTimesheet(id);
     if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
       switcher();
     }
   };
+
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
       setIndexPage(indexPage + 1);
     }
   };
+
   const previousPage = () => {
     if (indexPage > 1) {
       setIndexPage(indexPage - 1);
     }
   };
+
+  const filtershow = filterByDate(show);
+
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
@@ -54,6 +133,19 @@ function EmployeeTimesheetTable({
         <i className="fa-solid fa-plus"></i>
         ADD
       </Button>
+      <div className={styles.buttonControllercontainer}>
+        <button onClick={() => previousYear()}>{'<Y'}</button>
+        <button onClick={() => previousMonth()}>{'<M'}</button>
+        <button onClick={() => previousWeek()}>{'<W'}</button>
+        <button onClick={() => previousDay()}>{'<D'}</button>
+        <p>
+          Year: {year} || Month: {month} || Day: {day}
+        </p>
+        <button onClick={() => nextDay()}>{'D>'}</button>
+        <button onClick={() => nextWeek()}>{'W>'}</button>
+        <button onClick={() => nextMonth()}>{'M>'}</button>
+        <button onClick={() => nextYear()}>{'Y>'}</button>
+      </div>
       <table className={styles.table}>
         <thead>
           <tr>
@@ -68,7 +160,7 @@ function EmployeeTimesheetTable({
           </tr>
         </thead>
         <tbody className={styles.tbody}>
-          {show.map((row) => {
+          {filtershow.map((row) => {
             return (
               <tr className={styles.row} key={row._id}>
                 {role === 'PM' && (
@@ -118,22 +210,22 @@ function EmployeeTimesheetTable({
                       </Button>
                     )}
                   </td>
-                  <td>
-                    {/* AGREGAR LOGICA AL SLIDER */}
-                    {role === 'PM' && (
-                      // <label className={styles.switch}>
-                      //   <input
-                      //     type="checkbox"
-                      //     id="approved"
-                      //     name="approved"
-                      //     value="approved"
-                      //     checked={row.approveSlider === true ? true : false}
-                      //     // checked={false}
-                      //     // {...(register ? register(registerValue) : registerValue)}
-                      //     onChange={() => onApprove(row, row._id)}
-                      //   />
-                      //   <span className={styles.slider} />
-                      // </label>
+                  {/* AGREGAR LOGICA AL SLIDER */}
+                  {role === 'PM' && (
+                    <td>
+                      <label className={styles.switch}>
+                        <input
+                          type="checkbox"
+                          id="approved"
+                          name="approved"
+                          value="approved"
+                          checked={row.approveSlider === true ? true : false}
+                          // checked={false}
+                          // {...(register ? register(registerValue) : registerValue)}
+                          onChange={() => onApprove(row, row._id)}
+                        />
+                        <span className={styles.slider} />
+                      </label>
                       <Slider
                         idNameAndValue={'approved'}
                         isChecked={row.approveSlider}
@@ -141,9 +233,8 @@ function EmployeeTimesheetTable({
                         arg1={row}
                         arg2={row._id}
                       />
-                    )}
-                    {console.log('approve slider ', row.approveSlider)}
-                  </td>
+                    </td>
+                  )}
                 </>
               </tr>
               // )}

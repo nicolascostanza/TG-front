@@ -23,8 +23,8 @@ function Layout() {
   return (
     <div className={styles.container}>
       <Router>
+        <Header />
         <Container>
-          <Header />
           <Suspense fallback={<Loader />}>
             <Switch>
               <Route exact path="/" component={Home} />
@@ -82,8 +82,8 @@ function Layout() {
               <Redirect to="/login" />
             </Switch>
           </Suspense>
-          <Footer />
         </Container>
+        <Footer />
       </Router>
     </div>
   );
