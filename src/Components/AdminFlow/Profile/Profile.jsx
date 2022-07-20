@@ -1,6 +1,5 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as thunksAdmins from 'redux/admins/thunks';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -11,28 +10,25 @@ import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
 
 function Profile() {
-  const param = useParams();
   const dispatch = useDispatch();
   const [update, setUpdate] = useState(true);
   const [showModalMessage, setShowModalMessage] = useState(false);
-  const admins = useSelector((state) => state.admins.list);
-  const adminSelected = admins.filter((admin) => admin._id === param.id);
+  const currentUser = useSelector((state) => state.currentUser.currentUser);
   const message = useSelector((state) => state.admins.message);
   const response = useSelector((state) => state.admins.error);
+  const { _id, firstName, lastName, email, password } = currentUser;
   useEffect(() => {
-    dispatch(thunksAdmins.getAdmins());
-    fetch(`${process.env.REACT_APP_API_URL}/admins/${param.id}`)
-      .then((response) => response.json())
-      .then((data) => {
-        const { firstName, lastName, email, password, active } = data.data;
-        reset({
-          firstName,
-          lastName,
-          email,
-          password,
-          active
-        });
-      });
+    // dispatch(thunksAdmins.getAdmins());
+    // fetch(`${process.env.REACT_APP_API_URL}/admins/${param.id}`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     const { firstName, lastName, email, password, active } = data.data;
+    reset({
+      firstName,
+      lastName,
+      email,
+      password
+    });
   }, []);
   const {
     handleSubmit,
@@ -43,8 +39,10 @@ function Profile() {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
+  console.log(errors);
   const UpdateAdmin = (data) => {
-    dispatch(thunksAdmins.updateAdmin(data, param.id));
+    console.log(data);
+    dispatch(thunksAdmins.updateAdmin(data, _id));
     if (!response) {
       setUpdate(!update);
     }
@@ -57,7 +55,7 @@ function Profile() {
   return (
     <>
       <Sidebar />
-      <h1>Welcome {adminSelected[0]?.firstName}</h1>
+      <h1>Welcome {currentUser.firstName}</h1>
       <div className={styles.divButton}>
         <button
           className={update ? styles.greenButton : styles.redButton}
@@ -83,7 +81,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{adminSelected[0]?.firstName}</p>
+              <p className={styles.text}>{currentUser?.firstName}</p>
             ) : (
               <>
                 <input
@@ -92,7 +90,7 @@ function Profile() {
                   name="firstName"
                   {...register('firstName')}
                   disabled={update}
-                  placeholder={adminSelected[0]?.firstName}
+                  placeholder={currentUser?.firstName}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.firstName && (
@@ -108,7 +106,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{adminSelected[0]?.lastName}</p>
+              <p className={styles.text}>{currentUser?.lastName}</p>
             ) : (
               <>
                 <input
@@ -117,7 +115,7 @@ function Profile() {
                   name="lastName"
                   {...register('lastName')}
                   disabled={update}
-                  placeholder={adminSelected[0]?.lastName}
+                  placeholder={currentUser?.lastName}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
@@ -131,7 +129,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{adminSelected[0]?.email}</p>
+              <p className={styles.text}>{currentUser?.email}</p>
             ) : (
               <>
                 <input
@@ -140,7 +138,7 @@ function Profile() {
                   name="email"
                   {...register('email')}
                   disabled={update}
-                  placeholder={adminSelected[0]?.email}
+                  placeholder={currentUser?.email}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
@@ -154,7 +152,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{adminSelected[0]?.password}</p>
+              <p className={styles.text}>{currentUser?.password}</p>
             ) : (
               <>
                 <input
@@ -163,7 +161,7 @@ function Profile() {
                   name="password"
                   {...register('password')}
                   disabled={update}
-                  placeholder={adminSelected[0]?.password}
+                  placeholder={currentUser?.password}
                   error={appendErrors.firstName?.message}
                 ></input>
                 {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
@@ -177,7 +175,7 @@ function Profile() {
           </label>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{adminSelected[0]?.active ? 'Yes' : 'No'}</p>
+              <p className={styles.text}>{currentUser?.active ? 'Yes' : 'No'}</p>
             ) : (
               <>
                 <input
@@ -186,7 +184,7 @@ function Profile() {
                   name="active"
                   {...register('active')}
                   disabled={update}
-                  placeholder={adminSelected[0]?.active}
+                  placeholder={currentUser?.active}
                   error={appendErrors.active?.message}
                 ></input>
               </>

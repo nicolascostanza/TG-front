@@ -13,8 +13,8 @@ export const login = (credentials) => {
         const {
           claims: { role }
         } = await response.user.getIdTokenResult();
-        dispatch(getCurrentUserByEmail(credentials.email, token));
-        return dispatch(actions.loginSuccess({ role, token }));
+        dispatch(actions.loginSuccess({ role, token }));
+        return dispatch(getCurrentUserByEmail(credentials.email, token, role));
       })
       .catch((error) => {
         return dispatch(actions.loginError(error.toString()));
