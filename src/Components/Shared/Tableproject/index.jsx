@@ -258,6 +258,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             <div>
               <label htmlFor="Task Name">Task Name</label>
               <input
+                id="taskname"
                 type="text"
                 placeholder="Task Name"
                 {...register('taskName')}
@@ -268,6 +269,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             <div>
               <label htmlFor="Task Description">Task Description</label>
               <input
+                id="taskDescription"
                 type="text"
                 placeholder="Description"
                 {...register('taskDescription')}
@@ -279,7 +281,11 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             </div>
             <div>
               <label htmlFor="Assigned Employee">Assigned Employee</label>
-              <select {...register('assignedEmployee')} name="assignedEmployee" id="">
+              <select
+                id="assignedEmployee"
+                {...register('assignedEmployee')}
+                name="assignedEmployee"
+              >
                 {dataTeam.map((member) => (
                   <option
                     value={member.employeeId._id}
@@ -343,6 +349,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             <div>
               <label htmlFor="Start date">Start Date</label>
               <input
+                id="startDateTask"
                 type="date"
                 {...register('startDate')}
                 error={appendErrors.startDate?.message}
@@ -352,6 +359,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             <div>
               <label htmlFor="Status">Status</label>
               <input
+                id="statusTask"
                 type="text"
                 placeholder="Status"
                 {...register('status')}
@@ -360,7 +368,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
               {errors.status && <p className={styles.errorInput}>{errors.status?.message}</p>}
             </div>
             <div className={styles.buttonsContainer}>
-              <Button width={'75px'} height={'30px'} type="submit" value="task">
+              <Button id="addModalTasks" width={'75px'} height={'30px'} type="submit" value="task">
                 {method === 'POST' ? 'ADD' : 'EDIT'}
               </Button>
             </div>
@@ -377,7 +385,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="employee id">Employee</label>
-              <select {...register('employeeId')} name="employeeId" id="">
+              <select id="employees" {...register('employeeId')} name="employeeId">
                 {allEmployees.map((member) => (
                   <option
                     value={member._id}
@@ -401,7 +409,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 {idToForm === currentPm[0]?.employeeId._id ? (
                   <p>PM</p>
                 ) : (
-                  <select {...register('role')} name="role" id="">
+                  <select id="roleEmployee" {...register('role')} name="role">
                     <option>-</option>
                     <option>DEV</option>
                     <option>QA</option>
@@ -414,6 +422,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
             <div>
               <label htmlFor="Rate">Rate</label>
               <input
+                id="rateEmployee"
                 type="number"
                 placeholder="500"
                 {...register('rate')}
@@ -431,7 +440,13 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
               />
             </div> */}
             <div className={styles.buttonsContainer}>
-              <Button width={'75px'} height={'30px'} type="submit" value="GO">
+              <Button
+                id="addModalEmployees"
+                width={'75px'}
+                height={'30px'}
+                type="submit"
+                value="GO"
+              >
                 {method === 'POST' ? 'ADD' : 'EDIT'}
               </Button>
             </div>
@@ -440,7 +455,9 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       ) : null}
       <h2>{title}</h2>
       {roleUser === `ADMIN` ? (
-        <Button
+        <button
+          disabled={dataTeam.length > 0 ? false : true}
+          id="buttonAssignPm"
           width={'80px'}
           height={'40px'}
           onClick={() => {
@@ -448,13 +465,13 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
           }}
         >
           Asignar PM
-        </Button>
+        </button>
       ) : null}
       {roleUser === `ADMIN` || roleUser === `PM` ? (
         <>
           {filterProject ? (
             <button
-              disabled={dataTeam.length > 0 ? false : true}
+              id="buttonAddEmployee"
               width={'80px'}
               height={'40px'}
               fontSize={'15px'}
@@ -464,12 +481,17 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
               ADD EMPLOYEE
             </button>
           ) : (
-            <Button onClick={() => onAddTask()}>ADD TASK</Button>
+            <Button id="buttonAddTask" onClick={() => onAddTask()}>
+              ADD TASK
+            </Button>
           )}
         </>
       ) : null}
-      <Button onClick={() => switcher()}>BACK</Button>
+      <Button id="buttonBack" onClick={() => switcher()}>
+        BACK
+      </Button>
       <button
+        id="buttonTabEmployees"
         disabled={filterProject ? true : false}
         onClick={() => {
           setTab('employees');
@@ -479,6 +501,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         Employees
       </button>
       <button
+        id="buttonTabTask"
         disabled={!filterProject ? true : false}
         onClick={() => {
           setTab('tasks');
@@ -561,6 +584,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                     {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                     <td>
                       <Button
+                        id="buttonEditInProject"
                         onClick={() => {
                           setIdToForm(tab === 'tasks' ? row._id : row.employeeId._id);
                           onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
@@ -575,6 +599,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                     </td>
                     <td>
                       <Button
+                        id="buttonDeleteInProject"
                         onClick={() => onDelete(tab === 'tasks' ? row._id : row.employeeId._id)}
                         width={'50px'}
                         height={'25px'}
@@ -596,6 +621,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         </div>
         <div>
           <Button
+            id="previouspage"
             width={'50px'}
             height={'40px'}
             fontSize={'15px'}
@@ -607,6 +633,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         </div>
         <div>
           <Button
+            id="nextpage"
             width={'50px'}
             height={'40px'}
             fontSize={'15px'}

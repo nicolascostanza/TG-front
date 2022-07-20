@@ -99,7 +99,7 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
             <div className={styles.buttonsContainer}>
-              <Button width={'75px'} height={'30px'} type="submit" value="GO">
+              <Button id="assingPmModal" width={'75px'} height={'30px'} type="submit" value="GO">
                 ASSIGN PM
               </Button>
             </div>

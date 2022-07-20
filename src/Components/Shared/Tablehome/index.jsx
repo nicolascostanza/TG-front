@@ -54,6 +54,7 @@ function Tablehome({
       <h2>{title}</h2>
       {role === `ADMIN` || role === `SUPERADMIN` ? (
         <Button
+          id="buttonAddHome"
           width={'100px'}
           height={'40px'}
           fontSize={'15px'}
@@ -90,7 +91,7 @@ function Tablehome({
                   if (key === 'active') {
                     return (
                       <td>
-                        <button>{row[key]}boolean</button>
+                        <button id="buttonIsActive">{row[key]}no funciona</button>
                       </td>
                     );
                   }
@@ -142,6 +143,7 @@ function Tablehome({
                   <>
                     <td>
                       <Button
+                        id="buttonEditHome"
                         className={styles.buttonsRows}
                         width={'50px'}
                         height={'25px'}
@@ -157,6 +159,7 @@ function Tablehome({
                     </td>
                     <td>
                       <Button
+                        id="buttonDeleteHome"
                         onClick={() => onDelete(row._id)}
                         width={'50px'}
                         height={'25px'}
@@ -178,6 +181,7 @@ function Tablehome({
         </div>
         <div>
           <Button
+            id="buttonPreviosPageHome"
             width={'50px'}
             height={'40px'}
             fontSize={'15px'}
@@ -189,6 +193,7 @@ function Tablehome({
         </div>
         <div>
           <Button
+            id="buttonNextPageHome"
             width={'50px'}
             height={'40px'}
             fontSize={'15px'}

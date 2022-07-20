@@ -24,15 +24,9 @@ import * as thunksAdmins from '../../redux/admins/thunks';
 // LO QUE FALTA
 // falta q este isactive o no (superadmin)
 // EL TABLE HOME FALTA Q MUESTRE SI ES PM O EMPLOYEE SOLO LOS PROYECT ASOCIADOS Y DE ULTIMO A PRIMERO
-// si no hay employees en el proyecto q no te deje apretar el boton asign pm
 // SI LAS TABLAS NO TIENEN NADA Q MUESTRE UN MSJ Q NO HAY DISPONIBLES
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
 // VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
-
-// LO QUE HICE
-// funcionalidad asingPM
-// deberia dejar agregar employees al proyecto y una vez dentro que te salga el dropdown en pm con los employees del proyecto, y elegis uno de esos, si no hay ninguno te sale empty en asign pm. Sino podes ver el q esta actual y si elegis otro lo modifica. Falta la funcion de editar en el reducer
-// agregue los campos faltantes a las tasks, y los dropdowns. Deberiamos tener en asiggned los nombres pero popula solo el id
 
 function Home() {
   const [screen, setScreen] = useState(false);
@@ -229,6 +223,7 @@ function Home() {
               <div>
                 <label htmlFor="email">Email</label>
                 <input
+                  id="emailAdmin"
                   type="email"
                   placeholder="example@gmail.com"
                   {...register('email')}
@@ -239,6 +234,7 @@ function Home() {
               <div>
                 <label htmlFor="password">Password</label>
                 <input
+                  id="passwordAdmin"
                   type="password"
                   placeholder="password"
                   {...register('password')}
@@ -249,6 +245,7 @@ function Home() {
               <div className={styles.checkbox}>
                 <label htmlFor="active">Active</label>
                 <input
+                  id="activeAdmin"
                   className={styles.inputsProfile}
                   type="checkbox"
                   name="active"
@@ -256,7 +253,13 @@ function Home() {
                 />
               </div>
               <div className={styles.buttonsContainer}>
-                <Button width={'75px'} height={'30px'} type="submit" value="CONTINUE">
+                <Button
+                  id="buttonSuperadminCreate"
+                  width={'75px'}
+                  height={'30px'}
+                  type="submit"
+                  value="CONTINUE"
+                >
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </Button>
               </div>
@@ -272,6 +275,7 @@ function Home() {
               <div>
                 <label htmlFor="name">Name</label>
                 <input
+                  id="nameProject"
                   type="text"
                   placeholder="Name"
                   {...register('name')}
@@ -282,6 +286,7 @@ function Home() {
               <div>
                 <label htmlFor="description">Description</label>
                 <input
+                  id="descriptionProject"
                   type="text"
                   placeholder="Description"
                   {...register('description')}
@@ -294,6 +299,7 @@ function Home() {
               <div>
                 <label htmlFor="client">Client</label>
                 <input
+                  id="clientProject"
                   type="text"
                   placeholder="Client"
                   {...register('clientName')}
@@ -306,6 +312,7 @@ function Home() {
               <div>
                 <label htmlFor="start date">Start Date</label>
                 <input
+                  id="startdateProject"
                   type="date"
                   {...register('startDate')}
                   error={appendErrors.startDate?.message}
@@ -315,7 +322,13 @@ function Home() {
                 )}
               </div>
               <div className={styles.buttonsContainer}>
-                <Button width={'75px'} height={'30px'} type="submit" value="CONTINUE">
+                <Button
+                  id="buttonProjects"
+                  width={'75px'}
+                  height={'30px'}
+                  type="submit"
+                  value="CONTINUE"
+                >
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
                 </Button>
               </div>
