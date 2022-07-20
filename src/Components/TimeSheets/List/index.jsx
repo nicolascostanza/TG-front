@@ -112,7 +112,7 @@ function TimeSheet() {
       return {
         _id: timeSheet._id,
         employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
-        projectId: timeSheet.projectId.name,
+        projectId: timeSheet.projectId?.name,
         date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
         taskId: timeSheet.taskId?.taskName,
         hours: timeSheet.hours,

@@ -31,15 +31,16 @@ function EmployeeTimesheetTable({
   const [indexPage, setIndexPage] = useState(1);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
 
-  useEffect(() => {
-    const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
-    if (indexPage < 1) {
-      setIndexPage(1);
+  const calculateInitDate = (period) => {
+    switch (period) {
+      case 'year':
+        return new Date(year, 0);
+      case 'month':
+        return new Date(year, month);
+      default:
+        return new Date(year, month, day);
     }
-    if (indexPage > maxIndexPage) {
-      setIndexPage(maxIndexPage);
-    }
-  }, [data]);
+  };
 
   const calculateEndDate = (initDate, period) => {
     const initYear = initDate.getFullYear();
@@ -59,11 +60,31 @@ function EmployeeTimesheetTable({
     }
   };
 
+  const setPeriodYear = () => {
+    setPeriod('year');
+  };
+
+  const setPeriodMonth = () => {
+    setDay(1);
+    setPeriod('month');
+  };
+
+  const setPeriodWeek = () => {
+    setPeriod('week');
+  };
+
+  const setPeriodDay = () => {
+    setPeriod('day');
+  };
+
   const filterByDate = (data) => {
-    const initDate = new Date(year, month, day);
+    const initDate = calculateInitDate(period);
     const endDate = calculateEndDate(initDate, period);
+    // console.log('initDate: ', initDate); // DEBUG
+    // console.log('endDate: ', endDate); // DEBUG
+    // console.log((endDate - initDate) / MILIS_IN_A_DAY); // DEBUG
     return data.filter((item) => {
-      return new Date(item.date) > initDate && new Date(item.date) < endDate;
+      return new Date(item.date) >= initDate && new Date(item.date) < endDate;
     });
   };
 
@@ -176,6 +197,17 @@ function EmployeeTimesheetTable({
 
   const filtershow = filterByDate(show);
 
+  useEffect(() => {
+    const maxIndexPage =
+      filtershow.length > 10 ? Math.floor((filtershow.length - 0.01) / 10) + 1 : 1;
+    if (indexPage < 1) {
+      setIndexPage(1);
+    }
+    if (indexPage > maxIndexPage) {
+      setIndexPage(maxIndexPage);
+    }
+  }, [filtershow]);
+
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
@@ -183,6 +215,12 @@ function EmployeeTimesheetTable({
         <i className="fa-solid fa-plus"></i>
         ADD
       </Button>
+      <div className={styles.buttonControllercontainer}>
+        <button onClick={() => setPeriodYear()}>Filter by year</button>
+        <button onClick={() => setPeriodMonth()}>Filter by month</button>
+        <button onClick={() => setPeriodWeek()}>Filter by week</button>
+        <button onClick={() => setPeriodDay()}>Filter by day</button>
+      </div>
       <div className={styles.buttonControllercontainer}>
         <button onClick={() => previousYear()}>{'<Y'}</button>
         <button onClick={() => previousMonth()}>{'<M'}</button>

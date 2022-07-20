@@ -1,24 +1,23 @@
+/* eslint-disable no-unused-vars */
 import { useState } from 'react';
 import styles from './Form.module.css';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/timesheets/thunks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 import { useEffect } from 'react';
 
 function AddTimeSheets(props) {
-  const [tasks, setTasks] = useState('');
   const { showCreateModal, handleClose } = props;
+  const [tasks, setTasks] = useState('');
+  const [searchProject, setSearchProject] = useState('');
+  const [selectedProject, setSelectedProject] = useState('');
   const dispatch = useDispatch();
+  const userProjects = useSelector((state) => state.currentUser.currentUser.associatedProjects);
   const schema = Joi.object({
     employeeId: Joi.string().alphanum().length(24).required().messages({
-      'string.empty': 'This field must be complete',
-      'string.length': 'Employee ID must be 24 characters long',
-      'string.alphanum': 'Employee ID must only contain alpha-numeric characters'
-    }),
-    projectId: Joi.string().alphanum().length(24).required().messages({
       'string.empty': 'This field must be complete',
       'string.length': 'Employee ID must be 24 characters long',
       'string.alphanum': 'Employee ID must only contain alpha-numeric characters'
@@ -35,6 +34,16 @@ function AddTimeSheets(props) {
     approved: Joi.bool().optional(),
     taskId: Joi.string()
   });
+
+  const handleProjectChange = (e) => {
+    setSearchProject(e.target.value);
+  };
+
+  const selectProject = (id, name) => {
+    setSelectedProject(id);
+    setSearchProject(name);
+  };
+
   const {
     register,
     handleSubmit,
@@ -44,6 +53,7 @@ function AddTimeSheets(props) {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
+
   useEffect(() => {
     reset({
       employeeId: props.currentUser._id
@@ -51,18 +61,22 @@ function AddTimeSheets(props) {
   }, []);
 
   const addTimeSheets = async (timeSheet) => {
-    dispatch(thunks.addTimesheets(timeSheet));
+    console.log(timeSheet);
+    // dispatch(thunks.addTimesheets(timeSheet));
   };
+
   const onSubmit = (data, e) => {
     e.preventDefault();
     addTimeSheets({
       ...data,
+      projectId: selectedProject,
       employeeId: props.currentUser._id,
       approved: false
     });
     console.log(data);
-    console.log('tasls ', tasks);
+    console.log('tasks ', tasks);
   };
+
   return (
     <section>
       <Form
@@ -87,17 +101,44 @@ function AddTimeSheets(props) {
           )}
           <div>
             <label htmlFor="projectId">Project ID</label>
-            <input
-              {...register('projectId', { required: true })}
-              type="text"
-              placeholder="Project ID"
-            />
-            {errors.project?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.project.message}</p>
+            {selectedProject.length > 24 ? (
+              <input
+                name="projectId"
+                value={searchProject}
+                onChange={handleProjectChange}
+                placeholder="Search a project"
+              />
+            ) : (
+              <input
+                name="projectId"
+                value={searchProject}
+                onChange={handleProjectChange}
+                placeholder="Search a project"
+                readOnly
+              />
             )}
-            {errors.project?.type === 'string.min' && (
-              <p className={styles.error}>{errors.project.message}</p>
-            )}
+
+            {searchProject.length > 0 && selectedProject.length > 24
+              ? userProjects
+                  .filter((item) => item.projectId.name.match(new RegExp(searchProject, 'i')))
+                  .map((userProject) => {
+                    return (
+                      <p
+                        key={userProject.projectId._id}
+                        onClick={() =>
+                          selectProject(userProject.projectId._id, userProject.projectId.name)
+                        }
+                        className={
+                          userProject.projectId._id === searchProject
+                            ? styles.selectedItem
+                            : styles.notSelectedItem
+                        }
+                      >
+                        {userProject.projectId.name}
+                      </p>
+                    );
+                  })
+              : null}
           </div>
           <div>
             <label htmlFor="date">Date</label>
