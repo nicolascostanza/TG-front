@@ -11,10 +11,18 @@ const EmployeeReport = () => {
   const [orderField, setOrderField] = useState('date');
   const [ascendOrder, setAscendOrder] = useState(true);
   const [dateFilters, setDateFilters] = useState(initDateFilters);
+  const [employee, setEmployee] = useState({});
   const laritaID = '62b89fb0dd9fb8d43161894c';
   const dispatch = useDispatch();
+  const employeeFetch = async () => {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/employees/${laritaID}`);
+    const data = await response.json();
+    setEmployee(data.data);
+  };
+
   useEffect(() => {
     dispatch(timesheetThunks.getEmployeeTimesheets(laritaID));
+    employeeFetch();
   }, []);
   const employeeTimesheets = useSelector((state) => state.timesheet.listFromEmployee);
   const employeeTimesheetsMap = employeeTimesheets.sort((prev, curr) => {
@@ -105,7 +113,10 @@ const EmployeeReport = () => {
 
   return (
     <div className={styles.reportContainer}>
-      <form>
+      <h2>{employee?.firstName}</h2>
+      <button>Previous month</button>
+      <button>Next month</button>
+      {/* <form>
         <label htmlFor="init">
           Since
           <input type="date" name="init" id="initDate" onChange={handleDateChanges} />
@@ -114,7 +125,7 @@ const EmployeeReport = () => {
           To
           <input type="date" name="end" id="endDate" onChange={handleDateChanges} />
         </label>
-      </form>
+      </form> */}
       <table className={styles.condensedTable}>
         <thead>
           <tr>
