@@ -9,6 +9,7 @@ import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
 import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
+import { Container, Typography } from '@mui/material';
 
 function Profile() {
   const history = useHistory();
@@ -56,9 +57,10 @@ function Profile() {
     setShowModalMessage('');
   };
   return (
-    <>
+    <Container>
       <Sidebar />
-      <h1>Welcome {firstName}</h1>
+      {/* <h1>Welcome {firstName}</h1> */}
+      <Typography variant="h3" align="center">{`Welcome ${firstName}`}</Typography>
       <div className={styles.divButton}>
         <button
           className={update ? styles.greenButton : styles.redButton}
@@ -69,6 +71,7 @@ function Profile() {
         >
           {update ? 'EDIT' : 'CANCEL'}
         </button>
+        {/* <Button>{update ? 'EDIT' : 'CANCEL'}</Button> */}
         <button
           className={styles.goHome}
           onClick={() => history.push('/employees/home/629d83d3d9d731ead71b218c')}
@@ -184,7 +187,7 @@ function Profile() {
           </button>
         )}
       </form>
-    </>
+    </Container>
   );
 }
 

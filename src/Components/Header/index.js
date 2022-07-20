@@ -6,6 +6,7 @@ import * as currentUserActions from 'redux/currentUser/actions';
 import { AppBar, Box, Toolbar, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
+import { deepPurple } from '@mui/material/colors';
 
 function Header() {
   const dispatch = useDispatch();
@@ -22,9 +23,16 @@ function Header() {
   }
   return (
     <Box>
-      <AppBar position="static">
+      <AppBar position="static" sx={{ backgroundColor: deepPurple['A700'] }}>
         <Toolbar>
-          <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
+          <IconButton
+            onClick={() => console.log('click')}
+            size="large"
+            edge="start"
+            color="inherit"
+            aria-label="menu"
+            sx={{ mr: 2 }}
+          >
             <MenuIcon />
           </IconButton>
           <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
