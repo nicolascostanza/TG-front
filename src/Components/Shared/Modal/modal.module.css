@@ -42,7 +42,7 @@
 }
 
 .modalBody {
- overflow: auto;
- height: max-content;
- max-height: calc(90vh - 75px);
+	overflow: auto;
+	height: max-content;
+	max-height: calc(90vh - 75px);
 }

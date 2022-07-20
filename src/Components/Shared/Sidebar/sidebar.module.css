@@ -54,7 +54,6 @@
     cursor:pointer;
     background-color: rgb(60, 60, 80);
     color:white;
-    
 }
 
 .Sidebar ul {
@@ -72,7 +71,7 @@
 .Sidebar li:hover {
     cursor:pointer;
     background-color: rgb(60, 60, 80);
-    color:white;   
+    color:white;
 }
 
 .sidebarTitle > i:hover {
@@ -90,13 +89,13 @@
 }
 
 .sideButton i{
-  color: black;
-  transform: scale(1.6);
+    color: black;
+    transform: scale(1.6);
 }
 
 .sideButton i:hover {
-  cursor: pointer;
-  color: rgb(198, 46, 46);
+    cursor: pointer;
+    color: rgb(198, 46, 46);
 }
 
 @media screen and (min-width: 768px) {
@@ -106,7 +105,6 @@
     .sidebarTitle i {
         padding-right: 5px;
     }
-    
 }
 
 @media screen and (min-width: 1024px) {
