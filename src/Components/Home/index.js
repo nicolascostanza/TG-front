@@ -239,6 +239,16 @@ function Home() {
             ? `are you sure you want to delete the ${adminSelected[0]?.firstName} ${adminSelected[0]?.lastName} admin?`
             : `are you sure you want to delete the ${projectSelected[0]?.name} project?`}
           <Button onClick={onDelete}>DELETE</Button>
+          <Button
+            onClick={() => setShowModalDelete(false)}
+            id="deleteCancel"
+            width={'75px'}
+            height={'30px'}
+            type="submit"
+            value="cancelDelete"
+          >
+            CANCEL
+          </Button>
         </Modal>
         <Modal
           showModal={showModalResponse}

@@ -108,8 +108,9 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.map((project) =>
-          project._id === action.payload._id ? action.payload : project
-        )
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message
       };
     case types.ADD_EMPLOYEE_TO_PROJECT_FAILED:
       return {
@@ -125,8 +126,9 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.map((project) =>
-          project._id === action.payload._id ? action.payload : project
-        )
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message
       };
     case types.ADD_TASK_TO_PROJECT_FAILED:
       return {
@@ -142,8 +144,9 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.map((project) =>
-          project._id === action.payload._id ? action.payload : project
-        )
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message
       };
     case types.DELETE_TASK_TO_PROJECT_FAILED:
       return {
@@ -159,8 +162,9 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.map((project) =>
-          project._id === action.payload._id ? action.payload : project
-        )
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message
       };
     case types.DELETE_EMPLOYEE_TO_PROJECT_FAILED:
       return {
@@ -176,13 +180,15 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.map((project) =>
-          project._id === action.payload._id ? action.payload : project
-        )
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message
       };
     case types.UPDATE_EMPLOYEE_TO_PROJECT_FAILED:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        message: action.payload.message
       };
     // UPDATE TASK IN PROJECT
     case types.UPDATE_TASK_TO_PROJECT_PENDING:
@@ -193,8 +199,9 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.map((project) =>
-          project._id === action.payload._id ? action.payload : project
-        )
+          project._id === action.payload.proejct._id ? action.payload.project : project
+        ),
+        message: action.payload.message
       };
     case types.UPDATE_TASK_TO_PROJECT_FAILED:
       return {

@@ -73,9 +73,9 @@ export const showEditModal = () => ({
 });
 
 // ADD EMPLOYEE TO PROJECT
-export const addEmployeeToProjectSuccess = (project) => ({
+export const addEmployeeToProjectSuccess = (project, message) => ({
   type: types.ADD_EMPLOYEE_TO_PROJECT_SUCCESS,
-  payload: project
+  payload: { project, message }
 });
 
 export const addEmployeeToProjectPending = () => ({
@@ -88,9 +88,9 @@ export const addEmployeeToProjectFailed = (error) => ({
 });
 
 // ADD_TASK_TO_PROJECT
-export const addTaskToProjectFulfilled = (project) => ({
+export const addTaskToProjectFulfilled = (project, message) => ({
   type: types.ADD_TASK_TO_PROJECT_FULFILLED,
-  payload: project
+  payload: { project, message }
 });
 
 export const addTaskToProjectPending = () => ({
@@ -102,9 +102,9 @@ export const addTaskToProjectFailed = (error) => ({
   payload: error
 });
 // DELETE_TASK_TO_PROJECT
-export const deleteTaskToProjectSuccess = (task) => ({
+export const deleteTaskToProjectSuccess = (project, message) => ({
   type: types.DELETE_TASK_TO_PROJECT_SUCCESS,
-  payload: task
+  payload: { project, message }
 });
 
 export const deleteTaskToProjectPending = () => ({
@@ -116,9 +116,9 @@ export const deleteTaskToProjectFailed = (error) => ({
   payload: error
 });
 // DELETE_EMPLOYEE_TO_PROJECT
-export const deleteEmployeeToProjectSuccess = (project) => ({
+export const deleteEmployeeToProjectSuccess = (project, message) => ({
   type: types.DELETE_EMPLOYEE_TO_PROJECT_SUCCESS,
-  payload: project
+  payload: { project, message }
 });
 
 export const deleteEmployeeToProjectPending = () => ({
@@ -130,9 +130,9 @@ export const deleteEmployeeToProjectFailed = (error) => ({
   payload: error
 });
 // UPDATE EMPLOYEE IN PROJECT
-export const updateEmployeeToProjectSuccess = (project) => ({
+export const updateEmployeeToProjectSuccess = (project, message) => ({
   type: types.UPDATE_EMPLOYEE_TO_PROJECT_SUCCESS,
-  payload: project
+  payload: { project, message }
 });
 
 export const updateEmployeeToProjectPending = () => ({
@@ -146,13 +146,13 @@ export const updateEmployeeToProjectFailed = (error) => ({
 
 // updateTaskToProject
 // UPDATE TASK IN PROJECT
-export const updateTaskToProjectPending = (project) => ({
-  type: types.UPDATE_TASK_TO_PROJECT_PENDING,
-  payload: project
+export const updateTaskToProjectPending = () => ({
+  type: types.UPDATE_TASK_TO_PROJECT_PENDING
 });
 
-export const updateTaskToProjectFulfilled = () => ({
-  type: types.UPDATE_TASK_TO_PROJECT_SUCCESS
+export const updateTaskToProjectFulfilled = (project, message) => ({
+  type: types.UPDATE_TASK_TO_PROJECT_SUCCESS,
+  payload: { project, message }
 });
 
 export const updateTaskToProjectFailed = (error) => ({
