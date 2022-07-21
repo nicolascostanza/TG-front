@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Form.module.css';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/timesheets/thunks';
@@ -7,15 +6,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
-import { useEffect } from 'react';
 
 function AddTimeSheets(props) {
   const { showCreateModal, handleClose } = props;
-  const [tasks, setTasks] = useState('');
   const [searchProject, setSearchProject] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
+  const [selectedTask, setSelectedTask] = useState('');
+  const [searchTask, setSearchTask] = useState('');
   const dispatch = useDispatch();
   const userProjects = useSelector((state) => state.currentUser.currentUser.associatedProjects);
+  const allTasks = useSelector((state) => state.tasks.list);
   const schema = Joi.object({
     employeeId: Joi.string().alphanum().length(24).required().messages({
       'string.empty': 'This field must be complete',
@@ -49,6 +49,20 @@ function AddTimeSheets(props) {
     setSearchProject('');
   };
 
+  const handleTaskChange = (e) => {
+    setSearchTask(e.target.value);
+  };
+
+  const selectTask = (id, name) => {
+    setSelectedTask(id);
+    setSearchTask(name);
+  };
+
+  const clearTaskSelection = () => {
+    setSelectedTask('');
+    setSearchTask('');
+  };
+
   const {
     register,
     reset,
@@ -75,10 +89,9 @@ function AddTimeSheets(props) {
       ...data,
       projectId: selectedProject,
       employeeId: props.currentUser._id,
+      taskId: selectedTask,
       approved: false
     });
-    console.log(data);
-    console.log('tasks ', tasks);
   };
 
   return (
@@ -176,14 +189,53 @@ function AddTimeSheets(props) {
             )}
           </div>
           <div>
-            <label htmlFor="taskId">Task</label>
-            <input
-              {...register('taskId', { required: true })}
-              type="text"
-              placeholder="Task ID"
-              value={tasks.name}
-              onChange={(e) => setTasks(e.target.value)}
-            />
+            <label htmlFor="taskId">
+              Task
+              {selectedTask.length < 24 ? null : (
+                <i
+                  className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                  onClick={clearTaskSelection}
+                />
+              )}
+            </label>
+            {selectedTask.length < 24 ? (
+              <input
+                name="taskId"
+                value={searchTask}
+                onChange={handleTaskChange}
+                placeholder="Search a task"
+              />
+            ) : (
+              <input
+                name="taskId"
+                value={searchTask}
+                onChange={handleTaskChange}
+                placeholder="Search a task"
+                readOnly
+              />
+            )}
+
+            {searchTask.length > 0 && selectedTask.length < 24
+              ? allTasks
+                  .filter(
+                    (item) =>
+                      item.taskName.match(new RegExp(searchTask, 'i')) ||
+                      item.taskDescription.match(new RegExp(searchTask, 'i'))
+                  )
+                  .map((task) => {
+                    return (
+                      <p
+                        key={task._id}
+                        onClick={() => selectTask(task._id, task.taskName)}
+                        className={
+                          task._id === searchTask ? styles.selectedItem : styles.notSelectedItem
+                        }
+                      >
+                        {task.taskName}
+                      </p>
+                    );
+                  })
+              : null}
           </div>
           {props.role === 'PM' && (
             <div>

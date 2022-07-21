@@ -29,7 +29,48 @@ function EmployeeTimesheetTable({
   const [year, setYear] = useState(currentYear);
   const [period, setPeriod] = useState('year');
   const [indexPage, setIndexPage] = useState(1);
+  const [orderField, setOrderField] = useState('date');
+  const [ascendOrder, setAscendOrder] = useState(true);
+
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
+
+  const toggleOrder = (bool) => {
+    setAscendOrder(bool);
+  };
+
+  const handleOrderField = (name) => {
+    setOrderField(name);
+  };
+
+  const strComparator = (str1, str2) => {
+    const len1 = str1.length;
+    const len2 = str2.length;
+    for (let i = 0; i < Math.max(len1, len2); i++) {
+      if (str1[i].toUpperCase() > str2[i].toUpperCase()) {
+        return ascendOrder ? 1 : -1;
+      }
+      if (str1[i].toUpperCase() < str2[i].toUpperCase()) {
+        return ascendOrder ? -1 : 1;
+      }
+    }
+    return 0;
+  };
+
+  const orderByField = (ts) => {
+    if (orderField === 'date') {
+      return ascendOrder
+        ? ts.sort((prev, curr) => new Date(prev.date) - new Date(curr.date))
+        : ts.sort((prev, curr) => new Date(curr.date) - new Date(prev.date));
+    }
+
+    if (orderField !== 'hours') {
+      return ts.sort((prev, curr) => strComparator(prev[orderField], curr[orderField]));
+    }
+
+    return ascendOrder
+      ? ts.sort((prev, curr) => prev[orderField] - curr[orderField])
+      : ts.sort((prev, curr) => curr[orderField] - prev[orderField]);
+  };
 
   const calculateInitDate = (period) => {
     switch (period) {
@@ -80,9 +121,6 @@ function EmployeeTimesheetTable({
   const filterByDate = (data) => {
     const initDate = calculateInitDate(period);
     const endDate = calculateEndDate(initDate, period);
-    // console.log('initDate: ', initDate); // DEBUG
-    // console.log('endDate: ', endDate); // DEBUG
-    // console.log((endDate - initDate) / MILIS_IN_A_DAY); // DEBUG
     return data.filter((item) => {
       return new Date(item.date) >= initDate && new Date(item.date) < endDate;
     });
@@ -195,7 +233,17 @@ function EmployeeTimesheetTable({
     }
   };
 
-  const filtershow = filterByDate(show);
+  const filtershow = orderByField(filterByDate(show));
+
+  const arrowDown = <i onClick={() => toggleOrder(true)} className={`fa-solid fa-arrow-up`}></i>;
+  const arrowUp = <i onClick={() => toggleOrder(false)} className={`fa-solid fa-arrow-down`}></i>;
+
+  const showArrow = (bool) => {
+    if (bool) {
+      return ascendOrder ? arrowUp : arrowDown;
+    }
+    return null;
+  };
 
   useEffect(() => {
     const maxIndexPage =
@@ -238,7 +286,14 @@ function EmployeeTimesheetTable({
         <thead>
           <tr>
             {headers.map((header, index) => {
-              return <th key={index}>{header}</th>;
+              return header === 'Edit' || header === 'Delete' ? (
+                <th key={index}>{header}</th>
+              ) : (
+                <th key={index} onClick={() => handleOrderField(keys[index])}>
+                  {header}
+                  {showArrow(orderField === keys[index])}
+                </th>
+              );
             })}
             {role === `PM` && (
               <>

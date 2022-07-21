@@ -9,11 +9,13 @@ import Joi from 'joi';
 
 function EditTimeSheets(props) {
   const { showEditModal, handleClose } = props;
-  const [tasks, setTasks] = useState('');
   const [searchProject, setSearchProject] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
+  const [selectedTask, setSelectedTask] = useState('');
+  const [searchTask, setSearchTask] = useState('');
   const dispatch = useDispatch();
   const userProjects = useSelector((state) => state.currentUser.currentUser.associatedProjects);
+  const allTasks = useSelector((state) => state.tasks.list);
 
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
@@ -21,6 +23,8 @@ function EditTimeSheets(props) {
       .then((response) => {
         setSelectedProject(response.data.projectId._id);
         setSearchProject(response.data.projectId.name);
+        setSelectedTask(response.data.taskId._id);
+        setSearchTask(response.data.taskId.taskName);
         reset({
           employeeId: response.data.employeeId ? response.data.employeeId._id : '',
           date: new Date(response.data.date).toISOString().split('T')[0] || '',
@@ -64,6 +68,20 @@ function EditTimeSheets(props) {
     setSearchProject('');
   };
 
+  const handleTaskChange = (e) => {
+    setSearchTask(e.target.value);
+  };
+
+  const selectTask = (id, name) => {
+    setSelectedTask(id);
+    setSearchTask(name);
+  };
+
+  const clearTaskSelection = () => {
+    setSelectedTask('');
+    setSearchTask('');
+  };
+
   const {
     register,
     reset,
@@ -85,7 +103,8 @@ function EditTimeSheets(props) {
       {
         ...data,
         projectId: selectedProject,
-        employeeId: props.currentUser._id
+        employeeId: props.currentUser._id,
+        taskId: selectedTask
       },
       props.editId
     );
@@ -185,14 +204,53 @@ function EditTimeSheets(props) {
             )}
           </div>
           <div>
-            <label>Task</label>
-            <input
-              type="text"
-              placeholder="Task"
-              value={tasks}
-              {...register('taskId', { required: true })}
-              onChange={(e) => setTasks(e.target.value)}
-            />
+            <label htmlFor="taskId">
+              Task
+              {selectedTask.length < 24 ? null : (
+                <i
+                  className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                  onClick={clearTaskSelection}
+                />
+              )}
+            </label>
+            {selectedTask.length < 24 ? (
+              <input
+                name="taskId"
+                value={searchTask}
+                onChange={handleTaskChange}
+                placeholder="Search a task"
+              />
+            ) : (
+              <input
+                name="taskId"
+                value={searchTask}
+                onChange={handleTaskChange}
+                placeholder="Search a task"
+                readOnly
+              />
+            )}
+
+            {searchTask.length > 0 && selectedTask.length < 24
+              ? allTasks
+                  .filter(
+                    (item) =>
+                      item.taskName.match(new RegExp(searchTask, 'i')) ||
+                      item.taskDescription.match(new RegExp(searchTask, 'i'))
+                  )
+                  .map((task) => {
+                    return (
+                      <p
+                        key={task._id}
+                        onClick={() => selectTask(task._id, task.taskName)}
+                        className={
+                          task._id === searchTask ? styles.selectedItem : styles.notSelectedItem
+                        }
+                      >
+                        {task.taskName}
+                      </p>
+                    );
+                  })
+              : null}
           </div>
           {/* {props.role === 'PM' && (
             <div>
