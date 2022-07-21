@@ -246,11 +246,9 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
 
   console.log(errors);
 
-  let employeesTasks = dataTasks.assignedEmployee?.map((employee) =>
-    dataTeam.map((team) => team?.employeeId._id === employee)
-  );
-
-  console.log('devolucion:', employeesTasks);
+  // let employeesTasks = dataTasks.assignedEmployee?.map((employee) =>
+  //   dataTeam.map((team) => team?.employeeId._id === employee)
+  // );
 
   return (
     <div className={styles.container}>
@@ -556,7 +554,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 return (
                   <tr className={styles.row} key={row._id}>
                     {keys.map((key, index) => {
-                      console.log('indice:', index);
                       if (key === 'employeeId') {
                         return (
                           <>
