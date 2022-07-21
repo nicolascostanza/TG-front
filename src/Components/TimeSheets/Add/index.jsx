@@ -44,10 +44,15 @@ function AddTimeSheets(props) {
     setSearchProject(name);
   };
 
+  const clearProjectSelection = () => {
+    setSelectedProject('');
+    setSearchProject('');
+  };
+
   const {
     register,
-    handleSubmit,
     reset,
+    handleSubmit,
     formState: { errors }
   } = useForm({
     mode: 'onBlur',
@@ -61,8 +66,7 @@ function AddTimeSheets(props) {
   }, []);
 
   const addTimeSheets = async (timeSheet) => {
-    console.log(timeSheet);
-    // dispatch(thunks.addTimesheets(timeSheet));
+    dispatch(thunks.addTimesheets(timeSheet));
   };
 
   const onSubmit = (data, e) => {
@@ -100,8 +104,16 @@ function AddTimeSheets(props) {
             </div>
           )}
           <div>
-            <label htmlFor="projectId">Project ID</label>
-            {selectedProject.length > 24 ? (
+            <label htmlFor="projectId">
+              Project ID
+              {selectedProject.length < 24 ? null : (
+                <i
+                  className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                  onClick={clearProjectSelection}
+                />
+              )}
+            </label>
+            {selectedProject.length < 24 ? (
               <input
                 name="projectId"
                 value={searchProject}
@@ -118,7 +130,7 @@ function AddTimeSheets(props) {
               />
             )}
 
-            {searchProject.length > 0 && selectedProject.length > 24
+            {searchProject.length > 0 && selectedProject.length < 24
               ? userProjects
                   .filter((item) => item.projectId.name.match(new RegExp(searchProject, 'i')))
                   .map((userProject) => {

@@ -1,21 +1,28 @@
-import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from '../Add/Form.module.css';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/timesheets/thunks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 function EditTimeSheets(props) {
+  const { showEditModal, handleClose } = props;
+  const [tasks, setTasks] = useState('');
+  const [searchProject, setSearchProject] = useState('');
+  const [selectedProject, setSelectedProject] = useState('');
+  const dispatch = useDispatch();
+  const userProjects = useSelector((state) => state.currentUser.currentUser.associatedProjects);
+
   useEffect(() => {
     fetch(`${process.env.REACT_APP_API_URL}/time-sheets/${props.editId}`)
       .then((response) => response.json())
       .then((response) => {
+        setSelectedProject(response.data.projectId._id);
+        setSearchProject(response.data.projectId.name);
         reset({
           employeeId: response.data.employeeId ? response.data.employeeId._id : '',
-          projectId: response.data.projectId._id,
           date: new Date(response.data.date).toISOString().split('T')[0] || '',
           hours: response.data.hours,
           approved: response.data.approved,
@@ -23,17 +30,9 @@ function EditTimeSheets(props) {
         });
       });
   }, [props.editId]);
-  const [tasks, setTasks] = useState('');
-  const dispatch = useDispatch();
-  const { showEditModal, handleClose } = props;
 
   const schema = Joi.object({
     employeeId: Joi.string().alphanum().length(24).required().messages({
-      'string.empty': 'This field must be complete',
-      'string.length': 'Employee ID must be 24 characters long',
-      'string.alphanum': 'Employee ID must only contain alpha-numeric characters'
-    }),
-    projectId: Joi.string().alphanum().length(24).required().messages({
       'string.empty': 'This field must be complete',
       'string.length': 'Employee ID must be 24 characters long',
       'string.alphanum': 'Employee ID must only contain alpha-numeric characters'
@@ -47,9 +46,24 @@ function EditTimeSheets(props) {
       'number.min': 'This field must have at least 1 hour',
       'number.max': 'This field can not have more than 24 hours'
     }),
-    taskId: Joi.string(),
-    approved: Joi.bool().optional()
+    approved: Joi.bool().optional(),
+    taskId: Joi.string()
   });
+
+  const handleProjectChange = (e) => {
+    setSearchProject(e.target.value);
+  };
+
+  const selectProject = (id, name) => {
+    setSelectedProject(id);
+    setSearchProject(name);
+  };
+
+  const clearProjectSelection = () => {
+    setSelectedProject('');
+    setSearchProject('');
+  };
+
   const {
     register,
     reset,
@@ -63,12 +77,15 @@ function EditTimeSheets(props) {
   const editTimeSheets = async (newBody, id) => {
     dispatch(thunks.editTimesheet(newBody, id));
   };
+
   const onSubmit = (data, e) => {
     e.preventDefault();
 
     editTimeSheets(
       {
-        ...data
+        ...data,
+        projectId: selectedProject,
+        employeeId: props.currentUser._id
       },
       props.editId
     );
@@ -96,18 +113,53 @@ function EditTimeSheets(props) {
             </div>
           )}
           <div>
-            <label>Project ID</label>
-            <input
-              {...register('projectId', { required: true })}
-              type="text"
-              placeholder="Project"
-            />
-            {errors.project?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.project.message}</p>
+            <label>
+              Project ID
+              {selectedProject.length < 24 ? null : (
+                <i
+                  className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                  onClick={clearProjectSelection}
+                />
+              )}
+            </label>
+            {selectedProject.length < 24 ? (
+              <input
+                name="projectId"
+                value={searchProject}
+                onChange={handleProjectChange}
+                placeholder="Search a project"
+              />
+            ) : (
+              <input
+                name="projectId"
+                value={searchProject}
+                onChange={handleProjectChange}
+                placeholder="Search a project"
+                readOnly
+              />
             )}
-            {errors.project?.type === 'string.min' && (
-              <p className={styles.error}>{errors.project.message}</p>
-            )}
+
+            {searchProject.length > 0 && selectedProject.length < 24
+              ? userProjects
+                  .filter((item) => item.projectId.name.match(new RegExp(searchProject, 'i')))
+                  .map((userProject) => {
+                    return (
+                      <p
+                        key={userProject.projectId._id}
+                        onClick={() =>
+                          selectProject(userProject.projectId._id, userProject.projectId.name)
+                        }
+                        className={
+                          userProject.projectId._id === searchProject
+                            ? styles.selectedItem
+                            : styles.notSelectedItem
+                        }
+                      >
+                        {userProject.projectId.name}
+                      </p>
+                    );
+                  })
+              : null}
           </div>
           <div>
             <label>Date</label>

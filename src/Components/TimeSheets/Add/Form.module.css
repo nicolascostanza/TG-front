@@ -83,4 +83,16 @@
 }
 .error {
 	color: red;
-	font-size: 12px; }
+	font-size: 12px;
+}
+
+.closeMark {
+	float: right;
+	position: relative;
+	right: 2px;
+	top: 21px;
+}
+
+.closeMark:hover {
+	color: red;
+}
