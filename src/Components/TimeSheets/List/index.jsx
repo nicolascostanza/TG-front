@@ -49,14 +49,14 @@ function TimeSheet() {
   useEffect(() => {
     if (showAllTimesheets === true) {
       dispatch(thunks.getTimesheets());
-    } else {
-      dispatch(thunks.getEmployeeTimesheets(currentUser._id));
     }
-    dispatch(tasksThunks.getTasks());
-    // reset({
-    //   approved: timeSheets.approved
-    // });
   }, [timeSheets.length, showAllTimesheets]);
+
+  useEffect(() => {
+    dispatch(thunks.getEmployeeTimesheets(currentUser._id));
+    dispatch(tasksThunks.getTasks());
+  }, []);
+
   const allTasks = useSelector((state) => state.tasks.list);
 
   const deleteTimeSheet = (id) => {
