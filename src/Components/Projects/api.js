@@ -79,6 +79,7 @@ export const addEmployeeToProjectaApi = async (body, id) => {
 };
 
 export const addTaskToProjectApi = async (body, id) => {
+  console.log('body task ?', body);
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}/task`, {
       method: 'PUT',

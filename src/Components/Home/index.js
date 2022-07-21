@@ -4,12 +4,9 @@ import Tablehome from 'Components/Shared/Tablehome';
 import Loader from 'Components/Shared/Loader';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-//import Form from 'Components/Shared/Form';
-// import Button from 'Components/Shared/Button';
-import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import Tableproject from 'Components/Shared/Tableproject';
-import { useSelector } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import {
@@ -23,16 +20,9 @@ import * as thunksAdmins from '../../redux/admins/thunks';
 
 // LO QUE FALTA
 // CORREGIR LOS PMS, EN EL REDUCER PARA Q ACTUALICE
-// MODALES mostrar mensajes (hice add project, edit project, falta corregir reducers y mensajes en delete, y admins (add, edit, delete))
-// mensajes en tableproject, de employees y tasks en modales, faltan todos
 // TOMAR EL ROLE DE REDUX (en table home, en tableHome y en tableProject)
-// falta q este isactive o no (superadmin) (lo hacemos mañana)
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
 // VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
-
-// A VER:
-// ver el reducers de employee in project (edit pm)
-// si devuelve la data de proyectos asociados o todos, en el table home (si es admin o employee)
 
 function Home() {
   const [screen, setScreen] = useState(false);
@@ -54,7 +44,7 @@ function Home() {
   let keys = [];
   let validator;
   let title = '';
-  const role = 'SUPERADMIN';
+  const role = 'ADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
 
   useEffect(() => {

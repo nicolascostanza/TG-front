@@ -37,6 +37,16 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   let headers;
   let keys;
   let data;
+  //p.tags = ["PHP", "Wordpress"]
+  // console.log(tags.includes(tag));
+  //
+  let nuevoArray = dataTeam.filter((employee) =>
+    dataTasks.map((id) => {
+      employee.employeeId._id === id;
+    })
+  );
+  console.log('respuesta de arrays:', nuevoArray);
+
   // tabla para mostrar la tabla vacia
   // function EmptyTable() {
   //   if (tab === 'employees') {
@@ -46,7 +56,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   // }
 
   if (filterProject) {
-    headers = ['ID', 'Name', 'Last Name', 'Role', 'Rate'];
+    headers = ['Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
     data = dataTeam;
   } else {
@@ -235,6 +245,12 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   // const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
 
   console.log(errors);
+
+  let employeesTasks = dataTasks.assignedEmployee?.map((employee) =>
+    dataTeam.map((team) => team?.employeeId._id === employee)
+  );
+
+  console.log('devolucion:', employeesTasks);
 
   return (
     <div className={styles.container}>
@@ -540,10 +556,10 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 return (
                   <tr className={styles.row} key={row._id}>
                     {keys.map((key, index) => {
+                      console.log('indice:', index);
                       if (key === 'employeeId') {
                         return (
                           <>
-                            <td key={index}>{row.employeeId?._id ? row.employeeId?._id : '-'}</td>
                             <td key={index}>
                               {row.employeeId?.firstName ? row.employeeId?.firstName : '-'}
                             </td>
@@ -560,16 +576,22 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                         }
                       } else if (key === 'assignedEmployee') {
                         if (row[key].length > 1) {
+                          let dati = nuevoArray[index];
                           return (
                             <Dropdown width={'150px'} placeholder="Tasks">
-                              {row[key].map((element) => {
-                                return <option key={Math.random()}>{element}</option>;
+                              {dati.map((element) => {
+                                return (
+                                  <option key={Math.random()}>
+                                    {element.employeeId.firstName}
+                                  </option>
+                                );
                               })}
                               ;
                             </Dropdown>
                           );
                         } else if (row[key].length === 1) {
-                          return <td>{row[key]}</td>;
+                          return <td>{nuevoArray[index]?.employeeId.firstName}</td>;
+                          // return <td>{nuevoArray}</td>;
                         } else {
                           return <td> - </td>;
                         }
@@ -578,6 +600,21 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                           return <td>PM</td>;
                         } else {
                           return <td key={index}>{row[key]}</td>;
+                        }
+                      } else if (
+                        key === 'createdAt' ||
+                        key === 'startDate' ||
+                        key === 'updatedAt'
+                      ) {
+                        if (row[key] === undefined) {
+                          return <td> - </td>;
+                        } else {
+                          let dateFormatted = new Date(row[key]).toLocaleDateString('en-us', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          });
+                          return <td key={index}>{dateFormatted}</td>;
                         }
                       } else {
                         return <td key={index}>{row[key]}</td>;
