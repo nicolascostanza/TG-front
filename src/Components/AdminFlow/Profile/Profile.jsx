@@ -16,16 +16,9 @@ function Profile() {
   const currentUser = useSelector((state) => state.currentUser.currentUser);
   const message = useSelector((state) => state.admins.message);
   const response = useSelector((state) => state.admins.error);
-  const { _id, firstName, lastName, email, password } = currentUser;
+  const { _id, email, password } = currentUser;
   useEffect(() => {
-    // dispatch(thunksAdmins.getAdmins());
-    // fetch(`${process.env.REACT_APP_API_URL}/admins/${param.id}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     const { firstName, lastName, email, password, active } = data.data;
     reset({
-      firstName,
-      lastName,
       email,
       password
     });
@@ -76,54 +69,6 @@ function Profile() {
       </Modal>
       <form className={styles.form} onSubmit={handleSubmit(UpdateAdmin)}>
         <div className={styles.row}>
-          <label htmlFor="First name" className={styles.label}>
-            First Name
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{currentUser?.firstName}</p>
-            ) : (
-              <>
-                <input
-                  className={styles.inputsProfile}
-                  type="text"
-                  name="firstName"
-                  {...register('firstName')}
-                  disabled={update}
-                  placeholder={currentUser?.firstName}
-                  error={appendErrors.firstName?.message}
-                ></input>
-                {errors.firstName && (
-                  <p className={styles.errorInput}>{errors.firstName?.message}</p>
-                )}
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.row}>
-          <label htmlFor="Last name" className={styles.label}>
-            Last Name
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{currentUser?.lastName}</p>
-            ) : (
-              <>
-                <input
-                  className={styles.inputsProfile}
-                  type="text"
-                  name="lastName"
-                  {...register('lastName')}
-                  disabled={update}
-                  placeholder={currentUser?.lastName}
-                  error={appendErrors.firstName?.message}
-                ></input>
-                {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.row}>
           <label htmlFor="Email" className={styles.label}>
             Email
           </label>
@@ -169,30 +114,8 @@ function Profile() {
             )}
           </div>
         </div>
-        <div className={styles.row}>
-          <label htmlFor="Active" className={styles.label}>
-            Active
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{currentUser?.active ? 'Yes' : 'No'}</p>
-            ) : (
-              <>
-                <input
-                  className={styles.inputsProfile}
-                  type="checkbox"
-                  name="active"
-                  {...register('active')}
-                  disabled={update}
-                  placeholder={currentUser?.active}
-                  error={appendErrors.active?.message}
-                ></input>
-              </>
-            )}
-          </div>
-        </div>
         {update ? null : (
-          <button className={styles.buttonSubmit} type="submit" value="submit">
+          <button id="saveAdmin" className={styles.buttonSubmit} type="submit" value="submit">
             UPDATE
           </button>
         )}

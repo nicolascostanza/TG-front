@@ -31,9 +31,15 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <a>Home</a>
-          <Link to="/signup">Sign-up</Link>
-          <Link to="/login">Log-in</Link>
+          <Link className={styles.sidebarLink} to="/">
+            Home
+          </Link>
+          <Link className={styles.sidebarLink} to="/signup">
+            Sign-up
+          </Link>
+          <Link className={styles.sidebarLink} to="/login">
+            Log-in
+          </Link>
         </section>
         <section className={styles.container}>{children}</section>
       </div>
@@ -46,11 +52,13 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <a>Home</a>
-          <Link to="/signup">Sign-up</Link>
-          <Link to="/login">Log-in</Link>
-          <Link to="/employees/profile">Profile</Link>
-          <Link onClick={logOut} to="/">
+          <Link className={styles.sidebarLink} to="/">
+            Home
+          </Link>
+          <Link className={styles.sidebarLink} to="/employees/profile">
+            Profile
+          </Link>
+          <Link className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
           </Link>
         </section>
@@ -65,11 +73,19 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <a>Home</a>
-          <Link to="/signup">Sign-up</Link>
-          <Link to="/login">Log-in</Link>
-          <Link to="/admins/profile">Profile</Link>
-          <Link onClick={logOut} to="/">
+          <Link className={styles.sidebarLink} to="/">
+            Home
+          </Link>
+          <Link className={styles.sidebarLink} to="/signup">
+            Sign-up
+          </Link>
+          <Link className={styles.sidebarLink} to="/login">
+            Log-in
+          </Link>
+          <Link className={styles.sidebarLink} to="/admins/profile">
+            Profile
+          </Link>
+          <Link className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
           </Link>
         </section>
