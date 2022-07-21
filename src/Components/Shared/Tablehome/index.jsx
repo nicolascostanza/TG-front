@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Dropdown from '../Dropdown/Dropdown';
+import Slider from 'Components/Shared/Slider';
 
 // ver el employeeid.name pq no popula bien
 function Tablehome({
@@ -13,8 +14,9 @@ function Tablehome({
   role,
   onDelete,
   switcher,
-  selected,
-  openModal
+  setId,
+  openModal,
+  activeChanger
   // userId
 }) {
   const [indexPage, setIndexPage] = useState(1);
@@ -34,7 +36,7 @@ function Tablehome({
     }
   }, [data]);
   const openRow = (role, id) => {
-    selected(id);
+    setId(id);
     if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
       switcher();
     }
@@ -49,6 +51,7 @@ function Tablehome({
       setIndexPage(indexPage - 1);
     }
   };
+
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
@@ -96,45 +99,66 @@ function Tablehome({
                   <tr className={styles.row} key={row._id}>
                     {keys?.map((key, index) => {
                       if (key === 'active') {
+                        console.log('activo:', row[key]);
                         return (
                           <td>
-                            <button id="buttonIsActive">{row[key]}no funciona</button>
+                            <Slider
+                              idNameAndValue={'active'}
+                              isChecked={row[key]}
+                              onChangeFunction={activeChanger}
+                              arg1={row}
+                              arg2={row._id}
+                            ></Slider>
                           </td>
                         );
                       }
                       if (key === 'tasks') {
-                        return (
-                          <Dropdown width={'150px'} placeholder="Tasks">
-                            {row[key].map((element) => {
-                              return <option key={Math.random()}>{element.taskName}</option>;
-                            })}
-                            ;
-                          </Dropdown>
-                        );
-                      }
-                      if (key === 'team') {
-                        return (
-                          <td>
-                            <Dropdown width={'150px'} placeholder={'Team'}>
-                              {/* aca iria .employeeId.firstName */}
-                              {row[key]?.map((element) => {
-                                return (
-                                  <option
-                                    key={Math.random()}
-                                  >{`${element.employeeId.firstName} ${element.employeeId.lastName}`}</option>
-                                );
+                        if (row[key].length < 1) {
+                          return <td>No tasks yet</td>;
+                        } else {
+                          return (
+                            <Dropdown width={'150px'} placeholder="Tasks">
+                              {row[key].map((element) => {
+                                return <option key={Math.random()}>{element.taskName}</option>;
                               })}
                               ;
                             </Dropdown>
-                          </td>
-                        );
-                      } else if (key === 'endDate') {
+                          );
+                        }
+                      }
+                      if (key === 'team') {
+                        if (row[key].length < 1) {
+                          return <td>No members yet</td>;
+                        } else {
+                          return (
+                            <td>
+                              <Dropdown width={'150px'} placeholder={'Team'}>
+                                {/* aca iria .employeeId.firstName */}
+                                {row[key]?.map((element) => {
+                                  return (
+                                    <option
+                                      key={Math.random()}
+                                    >{`${element.employeeId.firstName} ${element.employeeId.lastName}`}</option>
+                                  );
+                                })}
+                                ;
+                              </Dropdown>
+                            </td>
+                          );
+                        }
+                      } else if (key === 'endDate' || key === 'startDate') {
                         if (row[key] === undefined) {
                           return <td> - </td>;
                         } else {
+                          let dateFormatted = new Date(row[key]).toLocaleDateString('en-us', {
+                            // weekday: 'long',
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          });
                           return (
                             <td key={index} onClick={() => openRow(role, row._id)}>
-                              {row[key]}
+                              {dateFormatted}
                             </td>
                           );
                         }
@@ -156,6 +180,7 @@ function Tablehome({
                             height={'25px'}
                             fontSize={'13px'}
                             onClick={() => {
+                              setId(row._id);
                               openModal('PUT', row._id);
                               // setShowModal(true);
                               // onEdit(row._id);
@@ -167,7 +192,10 @@ function Tablehome({
                         <td>
                           <Button
                             id="buttonDeleteHome"
-                            onClick={() => onDelete(row._id)}
+                            onClick={() => {
+                              onDelete(row._id);
+                              setId(row._id);
+                            }}
                             width={'50px'}
                             height={'25px'}
                             fontSize={'13px'}

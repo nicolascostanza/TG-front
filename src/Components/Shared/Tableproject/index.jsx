@@ -32,11 +32,8 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const allEmployees = useSelector((state) => state.employees.list);
   const allProjects = useSelector((state) => state.projects.list);
   let projectoElegido = allProjects.filter((project) => project?._id === idProject);
-  console.log('proyectoelegido:', projectoElegido[0]);
   let dataTeam = projectoElegido[0].team;
   let dataTasks = projectoElegido[0].tasks;
-  console.log('EQUIPITO:', dataTeam);
-  console.log('CAMPOS PARA TASKS', dataTasks);
   let headers;
   let keys;
   let data;
@@ -88,8 +85,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   }, [data, allProjects]);
 
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
-  console.log('muestro esto PERREKE:', show);
-  console.log('TAMAÑO A MOSTRAR:', show.length);
 
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
@@ -128,6 +123,8 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setMethod('POST');
     setShowModalTask(true);
   };
+  console.log('daatask:', dataTasks);
+
   // seteo de valores en el edit de employees y de tasks
   const onEdit = (id) => {
     setIdToForm(id);
@@ -238,7 +235,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   // const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
 
   console.log(errors);
-  console.log('todos los employees_:', allEmployees);
 
   return (
     <div className={styles.container}>
@@ -355,17 +351,18 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 {...register('startDate')}
                 error={appendErrors.startDate?.message}
               />
-              {errors.status && <p className={styles.errorInput}>{errors.startDate?.message}</p>}
+              {errors.startDate && <p className={styles.errorInput}>{errors.startDate?.message}</p>}
             </div>
             <div>
               <label htmlFor="Status">Status</label>
-              <input
-                id="statusTask"
-                type="text"
-                placeholder="Status"
-                {...register('status')}
-                error={appendErrors.status?.message}
-              />
+              <select id="status" {...register('status')} name="status">
+                <option>Ready to deliver</option>
+                <option>Paused</option>
+                <option>Unassigned</option>
+                <option>In progress</option>
+                <option>Completed</option>
+                <option>Cancelled</option>
+              </select>
               {errors.status && <p className={styles.errorInput}>{errors.status?.message}</p>}
             </div>
             <div className={styles.buttonsContainer}>
@@ -539,7 +536,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
               </tr>
             </thead>
             <tbody className={styles.tbody}>
-              {/* {show.length === 0 ? return <EmptyTable/> : } */}
               {show?.map((row) => {
                 return (
                   <tr className={styles.row} key={row._id}>

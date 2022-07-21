@@ -28,7 +28,6 @@ export const addNewProjectApi = async (body) => {
       body: JSON.stringify(body)
     });
     const data = await response.json();
-    // alert(data.message);
     return data;
   } catch (error) {
     return error;
@@ -45,7 +44,6 @@ export const updateProjectApi = async (body, id) => {
       body: JSON.stringify(body)
     });
     const data = await response.json();
-    alert(data.message);
     return data;
   } catch (error) {
     return error;
@@ -58,7 +56,6 @@ export const deleteProjectApi = async (id) => {
       method: 'PATCH'
     });
     const data = await response.json();
-    alert(data.message);
     return data;
   } catch (error) {
     return error;
@@ -75,7 +72,6 @@ export const addEmployeeToProjectaApi = async (body, id) => {
       body: JSON.stringify(body)
     });
     const data = await response.json();
-    alert(data.message);
     return data;
   } catch (error) {
     return error;
@@ -92,8 +88,6 @@ export const addTaskToProjectApi = async (body, id) => {
       body: JSON.stringify(body)
     });
     const data = await response.json();
-    console.log(data, 'data enviada');
-    alert(data.message);
     return data;
   } catch (error) {
     return error;

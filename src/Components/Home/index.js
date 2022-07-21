@@ -38,8 +38,10 @@ function Home() {
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
-  const [method, setMethod] = useState('');
   const [showModalResponse, setShowModalResponse] = useState(false);
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
+  const [method, setMethod] = useState('');
   const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
   let projectsError = useSelector((state) => state.projects.error);
@@ -52,7 +54,7 @@ function Home() {
   let keys = [];
   let validator;
   let title = '';
-  const role = 'ADMIN';
+  const role = 'SUPERADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
 
   useEffect(() => {
@@ -73,7 +75,6 @@ function Home() {
       dispatch(thunksProjects.getProjects());
     }
   }, [screen, message]);
-
   // headers and keys
   if (role === 'SUPERADMIN') {
     headers = ['Email', 'Password', 'Is Active ?'];
@@ -112,6 +113,10 @@ function Home() {
   const switcher = () => {
     setScreen(!screen);
   };
+  // elijo proyecto
+  let projectSelected = projectsList.filter((project) => project._id === id);
+  let adminSelected = adminsList.filter((admin) => admin._id === id);
+  // modal reset values
   const handleModal = (request, id) => {
     setId(id);
     setMethod(request);
@@ -153,22 +158,30 @@ function Home() {
     }
     setShowModal(true);
   };
-  const onDelete = (id) => {
-    const resp = confirm('Borrar ?');
+  const activeChanger = async (data, id) => {
+    dispatch(
+      thunksAdmins.updateAdmin(
+        {
+          active: data.active === true ? false : true
+        },
+        id
+      )
+    );
+  };
+  const onDelete = () => {
     if (role === 'SUPERADMIN') {
-      if (resp) {
-        dispatch(thunksAdmins.deleteAdmin(id));
-        setMethod('');
-      }
+      dispatch(thunksAdmins.deleteAdmin(id));
+      setShowModalDelete(false);
+      setshowModalDeleteResponse(true);
+      setMethod('');
     } else {
-      if (resp) {
-        dispatch(thunksProjects.deleteProject(id));
-        setMethod('');
-      }
+      dispatch(thunksProjects.deleteProject(id));
+      setShowModalDelete(false);
+      setshowModalDeleteResponse(true);
+      setMethod('');
     }
   };
   console.log(errors);
-
   const onSubmit = (data) => {
     if (role === 'SUPERADMIN') {
       if (method === 'POST') {
@@ -179,7 +192,6 @@ function Home() {
         setShowModalResponse(true);
         setMethod('');
       } else {
-        // cambio isdeleted a true
         dispatch(thunksAdmins.deleteAdmin(id));
         setShowModalResponse(true);
       }
@@ -229,12 +241,30 @@ function Home() {
         <h2>Home</h2>
         {/* modal con mensaje de exito o error */}
         <Modal
+          showModal={showModalDelete}
+          handleClose={() => setShowModalDelete(false)}
+          modalTitle={'DELETE'}
+        >
+          {role === 'SUPERADMIN'
+            ? `are you sure you want to delete the ${adminSelected[0]?.firstName} ${adminSelected[0]?.lastName} admin?`
+            : `are you sure you want to delete the ${projectSelected[0]?.name} project?`}
+          <Button onClick={onDelete}>DELETE</Button>
+        </Modal>
+        <Modal
           showModal={showModalResponse}
           handleClose={() => setShowModalResponse(false)}
           modalTitle={projectsError || adminsError ? 'WARNING' : 'SUCCESS'}
         >
           {message}
         </Modal>
+        <Modal
+          showModal={showModalDeleteResponse}
+          handleClose={() => setshowModalDeleteResponse(false)}
+          modalTitle={`DELETED`}
+        >
+          <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
+        </Modal>
+
         <Loader isLoading={isLoading} />
         {role === 'SUPERADMIN' ? (
           <Modal
@@ -365,9 +395,12 @@ function Home() {
           role={role}
           headers={headers}
           keys={keys}
+          activeChanger={activeChanger}
           data={role === 'SUPERADMIN' ? adminsList : dataProjects(role)}
-          selected={setId}
-          onDelete={onDelete}
+          setId={setId}
+          onDelete={() => {
+            setShowModalDelete(true);
+          }}
         />
       </section>
     );
