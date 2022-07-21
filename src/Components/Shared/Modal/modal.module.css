@@ -1,7 +1,3 @@
-* {
-	box-sizing: border-box;
-}
-
 .modalBackground {
 	position: fixed;
 	display: flex;

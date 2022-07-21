@@ -25,6 +25,11 @@ export const currentUserReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
+    case types.SET_CURRENT_USER_TO_INITIAL_STATE:
+      return {
+        ...state,
+        ...initialState
+      };
     default:
       return state;
   }

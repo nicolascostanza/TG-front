@@ -19,3 +19,9 @@ export const getCurrentUserByEmailError = (error) => {
     payload: error
   };
 };
+
+export const setCurrentUserToInitialState = () => {
+  return {
+    type: types.SET_CURRENT_USER_TO_INITIAL_STATE
+  };
+};

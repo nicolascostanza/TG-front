@@ -8,7 +8,6 @@
     border-radius: 15px;
     margin: 0 auto;
     background-color: rgba(150 , 150, 150, 0.05);
-    box-sizing: border-box;
 }
 
 .container input:not(.button) {
@@ -56,10 +55,6 @@
 .error {
 	color: red;
 	font-size: 12px;
-}
-
-* {
-	box-sizing: border-box;
 }
 
 .notSelectedItem, .selectedItem {
