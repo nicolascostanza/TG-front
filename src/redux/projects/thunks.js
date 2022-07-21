@@ -71,7 +71,7 @@ export const addEmployeeToProject = (body, id) => {
       .addEmployeeToProjectaApi(body, id)
       .then((response) => {
         console.log('response.datA del employee:', response.data);
-        dispatch(actions.addEmployeeToProjectSuccess(response.data));
+        dispatch(actions.addEmployeeToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
@@ -105,7 +105,7 @@ export const deleteEmployeeToProject = (idProject, idEmployee) => {
     api
       .deleteEmployeeToProjectApi(idProject, idEmployee)
       .then((response) => {
-        dispatch(actions.deleteEmployeeToProjectSuccess(response.data));
+        dispatch(actions.deleteEmployeeToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
@@ -122,7 +122,7 @@ export const addTaskToProject = (id, parentProjectId) => {
     api
       .addTaskToProjectApi(id, parentProjectId)
       .then((response) => {
-        dispatch(actions.addTaskToProjectFulfilled(response.data));
+        dispatch(actions.addTaskToProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
@@ -141,7 +141,7 @@ export const updateTaskToProject = (body, id, idProject) => {
     api.deleteTaskToProjectApi(idProject, id);
     dispatch(thunksTasks.addTask(body))
       .then((response) => {
-        dispatch(actions.updateTaskToProjectFulfilled(response.data));
+        dispatch(actions.updateTaskToProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
@@ -158,7 +158,7 @@ export const deleteTaskToProject = (idProject, idTask) => {
     api
       .deleteTaskToProjectApi(idProject, idTask)
       .then((response) => {
-        dispatch(actions.deleteTaskToProjectSuccess(response.data));
+        dispatch(actions.deleteTaskToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
@@ -189,7 +189,7 @@ export const updateEmployeeToProject = (idProject, body) => {
         if (response.error) {
           throw response.error;
         }
-        dispatch(actions.updateEmployeeToProjectSuccess(response.data));
+        dispatch(actions.updateEmployeeToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }

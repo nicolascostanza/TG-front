@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
-import Dropdown from '../Dropdown/Dropdown';
+// import Dropdown from '../Dropdown/Dropdown';
 // import AssignPm from 'Components/Shared/assingPm';
 import { useDispatch } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -17,6 +17,7 @@ import AssignPm from '../assingPm';
 
 function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [tab, setTab] = useState('employees');
+  const [idToDelete, setIdToDelete] = useState('');
   const [filterProject, setFilterProject] = useState(true);
   const [indexPage, setIndexPage] = useState(1);
   const [showModalPm, setShowModalPm] = useState(false);
@@ -25,7 +26,13 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [method, setMethod] = useState('');
   const [idToForm, setIdToForm] = useState('');
   const [assignPM, setAssignPM] = useState(false);
-  // const [componente, setComponente] = useState(false);
+  const [showModalResponse, setShowModalResponse] = useState(false);
+  const message = useSelector((state) => state.projects.message);
+  const errorEmployeeOrTask = useSelector((state) => state.projects.error);
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
+  const [showListEmployeesTask, setShowListEmployeesTask] = useState(false);
+  const [listEmployeesTask, setListEmployeesTask] = useState([]);
   // const [assignedEmployee, setAssignedEmployees] = useState([]);
   // const [task, setTask] = useState({});
   const dispatch = useDispatch();
@@ -40,12 +47,12 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   //p.tags = ["PHP", "Wordpress"]
   // console.log(tags.includes(tag));
   //
-  let nuevoArray = dataTeam.filter((employee) =>
-    dataTasks.map((id) => {
-      employee.employeeId._id === id;
-    })
-  );
-  console.log('respuesta de arrays:', nuevoArray);
+  // let nuevoArray = dataTeam.filter((employee) =>
+  //   dataTasks.map((cadaTarea) => {
+  //     cadaTarea.assignedEmployee.map((id) => employee.employeeId._id === id);
+  //   })
+  // );
+  // console.log('son los empleados de esa tarea?', nuevoArray);
 
   // tabla para mostrar la tabla vacia
   // function EmptyTable() {
@@ -158,15 +165,18 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       setShowModalTask(true);
     }
   };
-
-  const onDelete = (id) => {
-    if (confirm('are you sure?')) {
-      dispatch(
-        tab === 'tasks'
-          ? thunksProjects.deleteTaskToProject(idProject, id)
-          : thunksProjects.deleteEmployeeToProject(idProject, id)
-      );
-    }
+  const onDeletePreviousFunction = (id) => {
+    setIdToDelete(id);
+    setShowModalDelete(true);
+  };
+  const onDelete = () => {
+    dispatch(
+      tab === 'tasks'
+        ? thunksProjects.deleteTaskToProject(idProject, idToDelete)
+        : thunksProjects.deleteEmployeeToProject(idProject, idToDelete)
+    );
+    setShowModalDelete(false);
+    setshowModalDeleteResponse(true);
   };
   const openModalPm = () => {
     setShowModalPm(true);
@@ -174,10 +184,14 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   let currentPm = dataTeam.filter((employ) => employ.isPM === true);
 
   const onSubmit = (data) => {
+    console.log('idToForm', idToForm);
+    console.log('ID PROJECT', idProject);
     // employees, post y put en el if, en el else post y put de tasks
     if (tab === 'employees') {
       if (method === 'POST') {
         dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+        setShowModalEmployee(false);
+        setShowModalResponse(true);
       } else {
         if (data.role === 'PM') {
           const current = {
@@ -194,6 +208,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
           //   body: JSON.stringify(current)
           // });
           dispatch(thunksProjects.updateEmployeeToProject(current, idToForm, idProject));
+          setShowModalResponse(true);
         }
         // if (idToForm === currentPm[0].employeeId._id) {
         //   const current = {
@@ -214,7 +229,10 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         // dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
         // dispatch(thunksProjects.addEmployeeToProject(data, idProject));
         // body, id, idProject
+        //por que hace 2 veces lo mismo ??
         dispatch(thunksProjects.updateEmployeeToProject(data, idToForm, idProject));
+        setShowModalEmployee(false);
+        setShowModalResponse(true);
         setIdToForm('');
       }
     } else {
@@ -228,11 +246,15 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       };
       if (method === 'POST') {
         dispatch(thunksTasks.addTask(taskToAdd));
+        setShowModalTask(false);
+        setShowModalResponse(true);
       } else {
         // dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
         // dispatch(thunksTasks.addTask(taskToAdd));
         // (body, id, idProject)
         dispatch(thunksProjects.updateTaskToProject(taskToAdd, idToForm, idProject));
+        setShowModalTask(false);
+        setShowModalResponse(true);
         setIdToForm('');
       }
     }
@@ -249,6 +271,25 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   // let employeesTasks = dataTasks.assignedEmployee?.map((employee) =>
   //   dataTeam.map((team) => team?.employeeId._id === employee)
   // );
+
+  const listEmployeesTaskFunction = (id) => {
+    const selectedTask = dataTasks.filter((task) => task._id === id);
+    let listEmployeesTaskL = dataTeam.find((employee) =>
+      selectedTask[0].assignedEmployee.filter((idE) => idE === employee.employeeId._id)
+    );
+    console.log('Los empleados de esa tarea son??: ', listEmployeesTaskL);
+    selectedTask[0].assignedEmployee.map((idE) =>
+      console.log('id del mapeo de la task elegida:', idE)
+    );
+    console.log('la tarea elegida es?: ', selectedTask[0]);
+    setListEmployeesTask(listEmployeesTask);
+    console.log('el estado de la lista es: ', listEmployeesTask);
+    setShowListEmployeesTask(true);
+  };
+  const closeListEmployeesTask = () => {
+    setListEmployeesTask([]);
+    setShowListEmployeesTask(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -384,6 +425,18 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 {method === 'POST' ? 'ADD' : 'EDIT'}
               </Button>
             </div>
+            <div className={styles.buttonsContainer}>
+              <Button
+                onClick={() => setShowModalTask(false)}
+                id="addModalTasksCancel"
+                width={'75px'}
+                height={'30px'}
+                type="submit"
+                value="cancelTask"
+              >
+                CANCEL
+              </Button>
+            </div>
           </form>
         </Modal>
       ) : null}
@@ -462,9 +515,47 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                 {method === 'POST' ? 'ADD' : 'EDIT'}
               </Button>
             </div>
+            <div>
+              <Button
+                onClick={() => setShowModalEmployee(false)}
+                id="addModalEmployeeCancel"
+                width={'75px'}
+                height={'30px'}
+                type="submit"
+                value="cancelEmoployee"
+              >
+                CANCEL
+              </Button>
+            </div>
           </form>
         </Modal>
       ) : null}
+      <Modal
+        showModal={showModalDelete}
+        handleClose={() => setShowModalDelete(false)}
+        modalTitle={'DELETE'}
+      >
+        {tab === 'employees'
+          ? `are you sure you want to delete this employee?`
+          : `are you sure you want to delete this task??`}
+        <Button onClick={onDelete}>DELETE</Button>
+        <Button onClick={() => setShowModalDelete(false)}>CANCEL</Button>
+      </Modal>
+      <Modal
+        showModal={showModalDeleteResponse}
+        handleClose={() => setshowModalDeleteResponse(false)}
+        modalTitle={`DELETED`}
+      >
+        <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
+      </Modal>
+
+      <Modal
+        showModal={showModalResponse}
+        handleClose={() => setShowModalResponse(false)}
+        modalTitle={errorEmployeeOrTask ? 'WARNING' : 'SUCCESS'}
+      >
+        {message}
+      </Modal>
       <h2>{title}</h2>
       {roleUser === `ADMIN` ? (
         <button
@@ -572,22 +663,32 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                           return null;
                         }
                       } else if (key === 'assignedEmployee') {
-                        if (row[key].length > 1) {
-                          let dati = nuevoArray[index];
+                        if (row[key].length >= 1) {
                           return (
-                            <Dropdown width={'150px'} placeholder="Tasks">
-                              {dati.map((element) => {
-                                return (
-                                  <option key={Math.random()}>
-                                    {element.employeeId.firstName}
-                                  </option>
-                                );
-                              })}
-                              ;
-                            </Dropdown>
+                            <Button
+                              id="buttonListEmploeesTask"
+                              width={'100px'}
+                              height={'30px'}
+                              fontSize={'12px'}
+                              onClick={() => listEmployeesTaskFunction(row._id)}
+                            >
+                              Employee List
+                            </Button>
                           );
-                        } else if (row[key].length === 1) {
-                          return <td>{nuevoArray[index]?.employeeId.firstName}</td>;
+                          // let dati = nuevoArray[index];
+                          // return (
+                          //   <Dropdown width={'150px'} placeholder="Tasks">
+                          //     {dati.map((element) => {
+                          //       return (
+                          //         <option key={Math.random()}>
+                          //           {element.employeeId.firstName}
+                          //         </option>
+                          //       );
+                          //     })}
+                          //     ;
+                          //   </Dropdown>
+                          // } else if (row[key].length === 1) {
+                          //   return <td>{nuevoArray[index]?.employeeId.firstName}</td>;
                           // return <td>{nuevoArray}</td>;
                         } else {
                           return <td> - </td>;
@@ -638,7 +739,11 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                         <td>
                           <Button
                             id="buttonDeleteInProject"
-                            onClick={() => onDelete(tab === 'tasks' ? row._id : row.employeeId._id)}
+                            onClick={() =>
+                              onDeletePreviousFunction(
+                                tab === 'tasks' ? row._id : row.employeeId._id
+                              )
+                            }
                             width={'50px'}
                             height={'25px'}
                             fontSize={'13px'}
@@ -684,6 +789,18 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
           </div>
         </>
       )}
+      <Modal
+        showModal={showListEmployeesTask}
+        handleClose={closeListEmployeesTask}
+        modalTitle={`Employees:`}
+      >
+        {/* <ol>
+          {listEmployeesTask.map((employee) => (
+            <li key={Math.random()}>`${employee.employeeId.firstName}`</li>
+          ))}
+        </ol> */}
+        <Button onClick={closeListEmployeesTask}>OK</Button>
+      </Modal>
     </div>
   );
 }
