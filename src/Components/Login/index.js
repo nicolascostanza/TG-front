@@ -11,7 +11,6 @@ import Loader from 'Components/Shared/Loader';
 
 const Login = () => {
   const history = useHistory();
-  //const role = useSelector((state) => state.auth.authenticated?.role);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
   const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
   const isFetchingAuth = useSelector((state) => state.auth.isFetching);

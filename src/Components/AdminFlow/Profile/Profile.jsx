@@ -32,9 +32,7 @@ function Profile() {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-  console.log(errors);
   const UpdateAdmin = (data) => {
-    console.log(data);
     dispatch(thunksAdmins.updateAdmin(data, _id));
     if (!response) {
       setUpdate(!update);

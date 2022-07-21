@@ -13,6 +13,7 @@ export const login = (credentials) => {
         const {
           claims: { role }
         } = await response.user.getIdTokenResult();
+        sessionStorage.setItem('authenticated', JSON.stringify({ role, token }));
         dispatch(actions.loginSuccess({ role, token }));
         return dispatch(getCurrentUserByEmail(credentials.email, token, role));
       })

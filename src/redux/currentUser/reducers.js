@@ -2,7 +2,7 @@ import * as types from './constants';
 
 const initialState = {
   isFetching: false,
-  currentUser: {},
+  currentUser: JSON.parse(sessionStorage.getItem('currentUser')) || {},
   error: ''
 };
 

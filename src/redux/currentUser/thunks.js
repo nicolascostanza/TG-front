@@ -9,6 +9,7 @@ export const getCurrentUserByEmail = (email, token, role) => {
       })
         .then((response) => response.json())
         .then((json) => {
+          sessionStorage.setItem('currentUser', JSON.stringify(json.data[0]));
           return dispatch(actions.getCurrentUserByEmailSuccess(json.data[0]));
         })
         .catch((error) => {
