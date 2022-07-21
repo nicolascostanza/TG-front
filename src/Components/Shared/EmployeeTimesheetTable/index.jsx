@@ -17,8 +17,6 @@ function EmployeeTimesheetTable({
   selectedTimesheet,
   onApprove,
   onSelect
-  // register,
-  // registerValue
 }) {
   const MILIS_IN_A_DAY = 86400000;
   const currentDay = new Date(Date.now()).getDay();
@@ -29,7 +27,7 @@ function EmployeeTimesheetTable({
   const [year, setYear] = useState(currentYear);
   const [period, setPeriod] = useState('year');
   const [indexPage, setIndexPage] = useState(1);
-  const [orderField, setOrderField] = useState('date');
+  const [orderField, setOrderField] = useState('');
   const [ascendOrder, setAscendOrder] = useState(true);
 
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
@@ -42,18 +40,28 @@ function EmployeeTimesheetTable({
     setOrderField(name);
   };
 
-  const strComparator = (str1, str2) => {
-    const len1 = str1.length;
-    const len2 = str2.length;
-    for (let i = 0; i < Math.max(len1, len2); i++) {
-      if (str1[i].toUpperCase() > str2[i].toUpperCase()) {
-        return ascendOrder ? 1 : -1;
+  const strComparator = (str1 = 'a', str2 = 'a') => {
+    try {
+      let auxstr1 = str1;
+      let auxstr2 = str2;
+      if (!str1 || !str2) {
+        auxstr1 = 'a';
+        auxstr2 = 'a';
       }
-      if (str1[i].toUpperCase() < str2[i].toUpperCase()) {
-        return ascendOrder ? -1 : 1;
+      const len1 = auxstr1.length;
+      const len2 = auxstr2.length;
+      for (let i = 0; i < Math.max(len1, len2); i++) {
+        if (auxstr1[i].toUpperCase() > auxstr2[i].toUpperCase()) {
+          return ascendOrder ? 1 : -1;
+        }
+        if (auxstr1[i].toUpperCase() < auxstr2[i].toUpperCase()) {
+          return ascendOrder ? -1 : 1;
+        }
       }
+      return 0;
+    } catch (error) {
+      return 0;
     }
-    return 0;
   };
 
   const orderByField = (ts) => {
@@ -106,7 +114,6 @@ function EmployeeTimesheetTable({
   };
 
   const setPeriodMonth = () => {
-    setDay(1);
     setPeriod('month');
   };
 
@@ -136,7 +143,6 @@ function EmployeeTimesheetTable({
     setDay(newDateDay);
     setMonth(newDateMonth);
     setYear(newDateYear);
-    setPeriod('day');
   };
 
   const nextDay = () => {
@@ -149,7 +155,6 @@ function EmployeeTimesheetTable({
     setDay(newDateDay);
     setMonth(newDateMonth);
     setYear(newDateYear);
-    setPeriod('day');
   };
 
   const previousWeek = () => {
@@ -162,7 +167,6 @@ function EmployeeTimesheetTable({
     setDay(newDateDay);
     setMonth(newDateMonth);
     setYear(newDateYear);
-    setPeriod('week');
   };
 
   const nextWeek = () => {
@@ -175,7 +179,6 @@ function EmployeeTimesheetTable({
     setDay(newDateDay);
     setMonth(newDateMonth);
     setYear(newDateYear);
-    setPeriod('week');
   };
 
   const previousMonth = () => {
@@ -186,7 +189,6 @@ function EmployeeTimesheetTable({
     } else {
       setMonth(month - 1);
     }
-    setPeriod('month');
   };
 
   const nextMonth = () => {
@@ -197,21 +199,17 @@ function EmployeeTimesheetTable({
     } else {
       setMonth(month + 1);
     }
-    setPeriod('month');
   };
 
   const previousYear = () => {
     setDay(1);
-    setMonth(0);
     setYear(year - 1);
-    setPeriod('year');
   };
 
   const nextYear = () => {
     setDay(1);
     setMonth(0);
     setYear(year + 1);
-    setPeriod('year');
   };
 
   const openRow = (role, id) => {
@@ -270,21 +268,31 @@ function EmployeeTimesheetTable({
         <button onClick={() => setPeriodDay()}>Filter by day</button>
       </div>
       <div className={styles.buttonControllercontainer}>
-        <button onClick={() => previousYear()}>{'<Y'}</button>
-        <button onClick={() => previousMonth()}>{'<M'}</button>
-        <button onClick={() => previousWeek()}>{'<W'}</button>
-        <button onClick={() => previousDay()}>{'<D'}</button>
+        {/* SORRY IN ADVANCE... */}
+        <button onClick={() => previousYear()}>{'<YEAR'}</button>
+        {period !== 'year' ? <button onClick={() => previousMonth()}>{'<MONTH'}</button> : null}
+        {period !== 'year' && period !== 'month' ? (
+          <button onClick={() => previousWeek()}>{'<WEEK'}</button>
+        ) : null}
+        {period === 'day' ? <button onClick={() => previousDay()}>{'<DAY'}</button> : null}
         <p>
-          Year: {year} || Month: {month + 1} || Day: {day}
+          Year: {year}
+          {period !== 'year' ? `  ||  Month: ${month + 1}` : null}
+          {period !== 'year' && period !== 'month' ? `  ||  Day: ${day}` : null}
         </p>
-        <button onClick={() => nextDay()}>{'D>'}</button>
-        <button onClick={() => nextWeek()}>{'W>'}</button>
-        <button onClick={() => nextMonth()}>{'M>'}</button>
-        <button onClick={() => nextYear()}>{'Y>'}</button>
+        {period === 'day' ? <button onClick={() => nextDay()}>{'DAY>'}</button> : null}
+        {period !== 'year' && period !== 'month' ? (
+          <button onClick={() => nextWeek()}>{'WEEK>'}</button>
+        ) : null}
+        {period !== 'year' ? <button onClick={() => nextMonth()}>{'MONTH>'}</button> : null}
+        <button onClick={() => nextYear()}>{'YEAR>'}</button>
+        {/* I AM SURE THERE IS A CLEANER WAY TO DO THIS BUT I AM LAZY, SORRY NOT SORRY */}
+        {/* BTW, STYLES SHOULD BE MODIFIED, SO WHY SHOULD I BOTHER? */}
       </div>
       <table className={styles.table}>
         <thead>
           <tr>
+            {role !== 'EMPLOYEE' ? <th /> : null}
             {headers.map((header, index) => {
               return header === 'Edit' || header === 'Delete' ? (
                 <th key={index}>{header}</th>
@@ -337,7 +345,6 @@ function EmployeeTimesheetTable({
                         onClick={() => onEdit(row._id)}
                       >
                         <i className="fa-solid fa-pencil"></i>
-                        {/* {console.log('row ', row.status)} */}
                       </Button>
                     )}
                   </td>
@@ -353,22 +360,8 @@ function EmployeeTimesheetTable({
                       </Button>
                     )}
                   </td>
-                  {/* AGREGAR LOGICA AL SLIDER */}
                   {role === 'PM' && (
                     <td>
-                      <label className={styles.switch}>
-                        <input
-                          type="checkbox"
-                          id="approved"
-                          name="approved"
-                          value="approved"
-                          checked={row.approveSlider === true ? true : false}
-                          // checked={false}
-                          // {...(register ? register(registerValue) : registerValue)}
-                          onChange={() => onApprove(row, row._id)}
-                        />
-                        <span className={styles.slider} />
-                      </label>
                       <Slider
                         idNameAndValue={'approved'}
                         isChecked={row.approveSlider}
@@ -380,7 +373,6 @@ function EmployeeTimesheetTable({
                   )}
                 </>
               </tr>
-              // )}
             );
           })}
         </tbody>

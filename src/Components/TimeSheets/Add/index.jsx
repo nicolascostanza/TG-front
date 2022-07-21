@@ -118,7 +118,7 @@ function AddTimeSheets(props) {
           )}
           <div>
             <label htmlFor="projectId">
-              Project ID
+              Project
               {selectedProject.length < 24 ? null : (
                 <i
                   className={`fa-solid fa-circle-xmark ${styles.closeMark}`}

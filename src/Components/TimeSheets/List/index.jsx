@@ -9,7 +9,6 @@ import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 import { Button, Box, ButtonGroup, Modal, Typography } from '@mui/material';
-// import { useForm } from 'react-hook-form';
 
 function TimeSheet() {
   const modalStyle = {
@@ -23,13 +22,10 @@ function TimeSheet() {
     boxShadow: 24,
     p: 4
   };
-  // const { register, reset } = useForm({
-  // const { register } = useForm({
-  //   mode: 'onChange'
-  // });
 
-  // const role = 'PM';
-  const role = 'EMPLOYEE';
+  // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
+  const [role, setRole] = useState('PM');
+  // DELETE AFTER MERGING TO PROD, PLEASE...
 
   const dispatch = useDispatch();
   const [showAllTimesheets, setShowAllTimesheets] = useState(false);
@@ -96,17 +92,17 @@ function TimeSheet() {
         return {
           _id: timeSheet._id,
           employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
-          projectId: timeSheet.projectId.name,
+          projectId: timeSheet.projectId?.name,
           date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
           taskId: timeSheet.taskId?.taskName,
           hours: timeSheet.hours,
           status: timeSheet.approved ? 'Approved' : 'Disapproved',
           isDeleted: false,
-          approveSlider: timeSheet.approved ? true : false,
-          approved: timeSheet.approved
+          approveSlider: timeSheet.approved ? true : false
+          // approved: timeSheet.approved
         };
       })
-      .filter((item) => !item.approved);
+      .filter((item) => !item.approveSlider);
   } else {
     formattedTimeSheets = timeSheets.map((timeSheet) => {
       return {
@@ -135,19 +131,6 @@ function TimeSheet() {
     );
   };
 
-  // const approveTimesheet = (data, id) => {
-  //   statusChanger();
-  //   // console.log('slider ', id);
-  //   // console.log('sliderrrr ', timeSheets);
-  //   // console.log('value ', timeSheets.id.value);
-  //   // dispatch(thunks.editTimesheet(newBody, id));
-  //   // setEditId(id);
-  //   // console.log(editId);
-  //   console.log('data slider', data);
-  //   console.log('id sliderrr', id);
-  // };
-  // console.log(approveTimesheet);
-
   const showMyTS = () => {
     setShowAllTimesheets(false);
     setShowPendingTS(false);
@@ -171,11 +154,9 @@ function TimeSheet() {
       ? selectedTS.filter((item) => item != id)
       : [...selectedTS, id];
     setSelectedTS(selectedAux);
-    console.log('selectedTS ', selectedTS);
   };
 
   const deleteSelectedTSAction = () => {
-    console.log('delete ', selectedTS);
     const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
     if (resp) {
       for (let i = 0; i < selectedTS.length; i++) {
@@ -186,9 +167,8 @@ function TimeSheet() {
         setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
         setSelectedTS([]);
       }
-    } else {
-      // setSelectedTS([]);
     }
+    setSelectedTS([]);
   };
 
   const handleCloseMessage = () => {
@@ -198,6 +178,10 @@ function TimeSheet() {
 
   return (
     <>
+      {/* --------------- JUST FOR DEBUG START --------------- */}
+      <button onClick={() => setRole('EMPLOYEE')}>SET ROLE TO EMPLOYEE</button>
+      <button onClick={() => setRole('PM')}>SET ROLE TO PM</button>
+      {/* --------------- JUST FOR DEBUG FINISH --------------- */}
       <Loader isLoading={isFetching} />
       <Sidebar />
       <Modal
@@ -215,21 +199,25 @@ function TimeSheet() {
           </Typography>
         </Box>
       </Modal>
-      <EditTimeSheets
-        showEditModal={showEditModal}
-        handleClose={handleClose}
-        editId={editId}
-        allTasks={allTasks}
-        role={role}
-        currentUser={currentUser}
-      />
-      <AddTimeSheets
-        showCreateModal={showCreateModal}
-        handleClose={handleClose}
-        allTasks={allTasks}
-        role={role}
-        currentUser={currentUser}
-      ></AddTimeSheets>
+      {showEditModal ? (
+        <EditTimeSheets
+          showEditModal={showEditModal}
+          handleClose={handleClose}
+          editId={editId}
+          allTasks={allTasks}
+          role={role}
+          currentUser={currentUser}
+        />
+      ) : null}
+      {showCreateModal ? (
+        <AddTimeSheets
+          showCreateModal={showCreateModal}
+          handleClose={handleClose}
+          allTasks={allTasks}
+          role={role}
+          currentUser={currentUser}
+        />
+      ) : null}
       {role === 'PM' && (
         <Box>
           <ButtonGroup>
@@ -269,7 +257,6 @@ function TimeSheet() {
       <EmployeeTimesheetTable
         title={role}
         headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
-        // headers={tableHeaders}
         keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'status']}
         data={formattedTimeSheets}
         role={role}
