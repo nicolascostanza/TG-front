@@ -125,8 +125,8 @@ export const deleteEmployeeToProjectApi = async (idProject, idEmployee) => {
 };
 
 export const updateEmployeeInProject = async (idProject, body) => {
-  // console.log('idproj:', idProject.employeeId);
-  // console.log('bodyyy:', body);
+  console.log('idproj:', idProject);
+  console.log('bodyyy:', body);
   try {
     const response = await fetch(
       `${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`,

@@ -13,69 +13,38 @@ import * as thunksProjects from 'redux/projects/thunks';
 // import { useSelector } from 'react-redux';
 
 function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject, projectAssociated }) {
+  console.log('APENAS ARRANCA EL CODIGO:', projectAssociated);
   const dispatch = useDispatch();
   const {
     handleSubmit,
     register,
     formState: { errors }
-    // reset
   } = useForm({
     mode: 'onBlur',
     resolver: joiResolver(validationsAssignPm)
   });
-  console.log('proy asociado:', projectAssociated);
   let currentPm = employeesInProject.filter((employ) => employ.isPM === true);
+  console.log('CURRENT PM ACTUAL FILTRADO:', currentPm);
   const onSubmit = (data) => {
-    // si hay current pm le cambio el role, sino solo edito el q pide a pm
     if (currentPm.length != 0) {
-      const current = {
+      // ESTE PARA MANDAR AL DISPATCH CON ID COMO STRING
+      // ACA EN ROLE DEBERIA IR EL GUION
+      let current = {
         employeeId: currentPm[0].employeeId._id,
-        // a cambiar el role por -
-        role: 'DEV',
+        role: '-',
         rate: currentPm[0].rate,
         isPM: false
       };
-      fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
-        method: 'PUT',
-        headers: {
-          'Content-type': 'application/json'
-        },
-        body: JSON.stringify(current)
-      });
+      dispatch(thunksProjects.updateEmployeeToProject(idProject, current));
     }
+    // el nuevo pm lo cambia biennn
     const newPm = {
       employeeId: data.employeeId,
-      role: 'PM',
+      role: '-',
       rate: data.rate,
       isPM: true
     };
-    // fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
-    //   method: 'PUT',
-    //   headers: {
-    //     'Content-type': 'application/json'
-    //   },
-    //   body: JSON.stringify(newPm)
-    // });
-    // let respuestaProject = state.list.filter((project) => project._id === action.payload.idProject);
-    // console.log('proyecto elegido:', respuestaProject[0]);
-    let modifiedTeam = projectAssociated[0].team.map((employee) =>
-      employee._id == newPm.employeeId ? newPm : employee
-    );
-    console.log('TEAM MODIFICADO:', modifiedTeam);
-    const modifiedProject = {
-      clientName: projectAssociated[0].clientName,
-      description: projectAssociated[0].description,
-      endDate: projectAssociated[0].endDate,
-      isDeleted: projectAssociated[0].isDeleted,
-      name: projectAssociated[0].name,
-      projectManager: projectAssociated[0].projectManager,
-      startDate: projectAssociated[0].startDate,
-      tasks: projectAssociated[0].tasks,
-      team: modifiedTeam,
-      updatedAt: projectAssociated[0].updatedAt
-    };
-    console.log('project modificado ???', modifiedProject);
-    dispatch(thunksProjects.updateEmployeeToProject(idProject, newPm, modifiedProject));
+    dispatch(thunksProjects.updateEmployeeToProject(idProject, newPm));
   };
   if (!showModalPM) {
     return null;

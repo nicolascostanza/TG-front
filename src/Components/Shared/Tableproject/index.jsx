@@ -196,41 +196,15 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         if (data.role === 'PM') {
           const current = {
             employeeId: currentPm[0].employeeId._id,
-            role: '-',
+            role: 'QA',
             rate: currentPm[0].rate,
             isPM: false
           };
-          // fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
-          //   method: 'PUT',
-          //   headers: {
-          //     'Content-type': 'application/json'
-          //   },
-          //   body: JSON.stringify(current)
-          // });
-          dispatch(thunksProjects.updateEmployeeToProject(current, idToForm, idProject));
+          dispatch(thunksProjects.updateEmployeeToProject(idProject, current));
           setShowModalResponse(true);
         }
-        // if (idToForm === currentPm[0].employeeId._id) {
-        //   const current = {
-        //     employeeId: currentPm[0].employeeId._id,
-        //     role: 'QA',
-        //     // a cambiar el role por -
-        //     rate: currentPm[0].rate,
-        //     isPM: false
-        //   };
-        //   fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}/edit/employee`, {
-        //     method: 'PUT',
-        //     headers: {
-        //       'Content-type': 'application/json'
-        //     },
-        //     body: JSON.stringify(current)
-        //   });
-        // }
-        // dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToForm));
-        // dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-        // body, id, idProject
-        //por que hace 2 veces lo mismo ??
-        dispatch(thunksProjects.updateEmployeeToProject(data, idToForm, idProject));
+        // dispatch(thunksProjects.updateEmployeeToProject(idProject, newPm));
+        dispatch(thunksProjects.updateEmployeeToProject(idProject, data));
         setShowModalEmployee(false);
         setShowModalResponse(true);
         setIdToForm('');
@@ -450,23 +424,21 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="employee id">Employee</label>
-              <select id="employees" {...register('employeeId')} name="employeeId">
-                {allEmployees.map((member) => (
-                  <option
-                    value={member._id}
-                    key={member._id}
-                  >{`${member.firstName} ${member.lastName}`}</option>
-                ))}
-              </select>
-              {/* <input
-                type="text"
-                placeholder="Employee Id"
-                {...register('employeeId')}
-                error={appendErrors.employeeId?.message}
-              /> */}
-              {errors.employeeId && (
-                <p className={styles.errorInput}>{errors.employeeId?.message}</p>
+              {method === 'POST' ? (
+                <select id="employees" {...register('employeeId')} name="employeeId">
+                  {allEmployees.map((member) => (
+                    <option
+                      value={member._id}
+                      key={member._id}
+                    >{`${member.firstName} ${member.lastName}`}</option>
+                  ))}
+                </select>
+              ) : (
+                <p>Poner el nombre del employee cuando edita</p>
               )}
+              {/* {errors.employeeId && (
+                <p className={styles.errorInput}>{errors.employeeId?.message}</p>
+              )} */}
             </div>
             {!assignPM ? (
               <div>

@@ -179,8 +179,8 @@ export const projectsReducer = (state = initialState, action) => {
     case types.UPDATE_EMPLOYEE_TO_PROJECT_SUCCESS:
       return {
         ...state,
-        list: state.list.map((project) =>
-          project._id === action.payload.project._id ? action.payload.project : project
+        list: state.list.map((proy) =>
+          proy._id === action.payload.project._id ? action.payload.project : proy
         ),
         message: action.payload.message
       };

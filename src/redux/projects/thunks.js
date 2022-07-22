@@ -81,23 +81,6 @@ export const addEmployeeToProject = (body, id) => {
       });
   };
 };
-// export const updateEmployeeToProject = (body, id, idProject) => {
-//   return (dispatch) => {
-//     dispatch(actions.updateEmployeeToProjectPending());
-//     api.deleteEmployeeToProjectApi(idProject, id);
-//     api
-//       .addEmployeeToProjectaApi(body, idProject)
-//       .then((response) => {
-//         dispatch(actions.updateEmployeeToProjectSuccess(response.data));
-//         if (!response.error) {
-//           dispatch(actions.closeAllModals());
-//         }
-//       })
-//       .catch((error) => {
-//         dispatch(actions.updateEmployeeToProjectFailed(error));
-//       });
-//   };
-// };
 
 export const deleteEmployeeToProject = (idProject, idEmployee) => {
   return (dispatch) => {
@@ -138,9 +121,10 @@ export const addTaskToProject = (id, parentProjectId) => {
 export const updateTaskToProject = (body, id, idProject) => {
   return (dispatch) => {
     dispatch(actions.updateTaskToProjectPending());
-    api.deleteTaskToProjectApi(idProject, id);
-    dispatch(thunksTasks.addTask(body))
+    api
+      .deleteTaskToProjectApi(idProject, id)
       .then((response) => {
+        dispatch(thunksTasks.addTask(body));
         dispatch(actions.updateTaskToProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
@@ -169,7 +153,9 @@ export const deleteTaskToProject = (idProject, idTask) => {
   };
 };
 // updateEmployeeInProject
+// dispatch(thunksProjects.updateEmployeeToProject(idProject, modifiedProject, current));
 export const updateEmployeeToProject = (idProject, body) => {
+  console.log('cosas q mando al api request:', idProject, body);
   return (dispatch) => {
     dispatch(actions.updateEmployeeToProjectPending());
     api
@@ -186,10 +172,13 @@ export const updateEmployeeToProject = (idProject, body) => {
     api
       .getProjectByIdApi(idProject)
       .then((response) => {
+        console.log('ACTUALIZADOOOO DE LA API CON GET BY ID:', response.data);
         if (response.error) {
           throw response.error;
         }
-        dispatch(actions.updateEmployeeToProjectSuccess(response.data, response.message));
+        dispatch(
+          actions.updateEmployeeToProjectSuccess(response.data, 'Employee Updated successfully')
+        );
         if (!response.error) {
           dispatch(actions.closeAllModals());
         }
