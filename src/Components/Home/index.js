@@ -18,7 +18,7 @@ function Home() {
         <Button
           width={'175px'}
           height={'40px'}
-          onClick={() => history.push('/employees/profile/629d83d3d9d731ead71b218c')}
+          onClick={() => history.push('/employees/profile')}
           value="employee profile"
         >
           Employee profile
@@ -32,7 +32,7 @@ function Home() {
         <Button
           width={'130px'}
           height={'40px'}
-          onClick={() => history.push('/admins/profile/62bb2dbe576424de7c76bff5')}
+          onClick={() => history.push('/admins/profile')}
           value="admin profile"
         >
           Admin profile

@@ -2,7 +2,7 @@ import * as types from './constants';
 
 const initialState = {
   isFetching: false,
-  currentUser: {},
+  currentUser: JSON.parse(sessionStorage.getItem('currentUser')) || {},
   error: ''
 };
 
@@ -29,6 +29,11 @@ export const currentUserReducer = (state = initialState, action) => {
       return {
         ...state,
         ...initialState
+      };
+    case types.UPDATE_CURRENT_USER:
+      return {
+        ...state,
+        currentUser: { ...action.payload }
       };
     default:
       return state;
