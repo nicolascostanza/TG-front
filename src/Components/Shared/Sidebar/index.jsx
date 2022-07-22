@@ -31,13 +31,13 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <Link className={styles.sidebarLink} to="/">
+          <Link className={styles.sidebarLink} to="/" id="sidebarHome">
             Home
           </Link>
-          <Link className={styles.sidebarLink} to="/signup">
+          <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
             Sign-up
           </Link>
-          <Link className={styles.sidebarLink} to="/login">
+          <Link className={styles.sidebarLink} to="/login" id="sidebarLogin">
             Log-in
           </Link>
         </section>
@@ -52,7 +52,7 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <Link className={styles.sidebarLink} to="/">
+          <Link className={styles.sidebarLink} to="/" id="sidebarHome">
             Home
           </Link>
           <Link className={styles.sidebarLink} to="/employees/profile">
@@ -60,6 +60,19 @@ const Sidebar = ({ children }) => {
           </Link>
           <Link className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
+          </Link>
+        </section>
+        <section className={styles.container}>
+          {/* ESTO NO FUNCA BIEN DEL TODO ME PARECE, si inicio sesion, la cierro y quiero
+          logearme de nuevo ya aparece logeado */}
+          {/* <Link className={styles.sidebarLink} onClick={logOut} to="/">
+            Log Out
+          </Link> */}
+          <Link className={styles.sidebarLink} to="/time-sheets">
+            Timesheets
+          </Link>
+          <Link className={styles.sidebarLink} to="/tasks">
+            Tasks
           </Link>
         </section>
         <section className={styles.container}>{children}</section>
@@ -73,20 +86,25 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <Link className={styles.sidebarLink} to="/">
+          <Link className={styles.sidebarLink} to="/" id="sidebarHome">
             Home
           </Link>
-          <Link className={styles.sidebarLink} to="/signup">
+          {/* <Link className={styles.sidebarLink} to="/signup">
             Sign-up
-          </Link>
-          <Link className={styles.sidebarLink} to="/login">
+          </Link> */}
+          {/* <Link className={styles.sidebarLink} to="/login">
             Log-in
-          </Link>
+          </Link> */}
           <Link className={styles.sidebarLink} to="/admins/profile">
             Profile
           </Link>
           <Link className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
+          </Link>
+        </section>
+        <section className={styles.container}>
+          <Link className={styles.sidebarLink} to="/projects">
+            Projects
           </Link>
         </section>
         <section className={styles.container}>{children}</section>

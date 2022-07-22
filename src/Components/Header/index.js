@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+// import { Link, withRouter } from 'react-router-dom';
 import styles from './header.module.css';
+import logo from './logo.svg';
 
 function Header() {
   const pathName = window.location.pathname;
@@ -13,7 +15,7 @@ function Header() {
   return (
     <header>
       <nav className={styles.navbar}>
-        <ul className={styles.rutes}>
+        {/* <ul className={styles.rutes}>
           <li>
             <Link to="/">home</Link>
           </li>
@@ -35,11 +37,14 @@ function Header() {
           <li>
             <Link to="/tasks">tasks</Link>
           </li>
-        </ul>
-        <div className={styles.appName}>
-          <h1>TrackGENIX</h1>
-          <h2>we build solutions</h2>
-        </div>
+        </ul> */}
+        <section>
+          <img className={styles.logo} src={logo}></img>
+        </section>
+        <section>
+          <button className={styles.button}>Login</button>
+          <button className={styles.button}>Signup</button>
+        </section>
       </nav>
     </header>
   );
