@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import * as authActions from 'redux/auth/actions';
 import * as currentUserActions from 'redux/currentUser/actions';
-// import styles from './header.module.css';
+import styles from './header.module.css';
 import { AppBar, Box, Toolbar, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
@@ -62,7 +62,7 @@ function Header() {
               <Button color="inherit">Logout</Button>
             </Link>
           ) : null}
-          <img src={logo} alt="logo" sx={{ align: 'right' }} />
+          <img className={styles.logo} src={logo} alt="logo" sx={{ align: 'right' }} />
         </Toolbar>
       </AppBar>
     </Box>

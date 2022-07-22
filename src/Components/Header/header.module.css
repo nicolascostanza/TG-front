@@ -1,4 +1,4 @@
-.navbar {
+/* .navbar {
   display: flex;
   flex-direction: column-reverse;
   justify-content: center;
@@ -105,4 +105,10 @@
   .appName {
     transform: scale(1.6);
   }
+} */
+
+.logo{
+  position: absolute;
+  right: 50px;
+  transform: scale(0.8);
 }

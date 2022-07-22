@@ -5,7 +5,8 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationLogIn } from 'Components/EmployeesFlow/validations';
 import * as thunksAuth from 'redux/auth/thunks';
 import { useDispatch, useSelector } from 'react-redux';
-import Sidebar from 'Components/Shared/Sidebar';
+//import Sidebar from 'Components/Shared/Sidebar';
+import Drawer from 'Components/Shared/Sidebar/drawer';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
 import Loader from 'Components/Shared/Loader';
@@ -60,7 +61,7 @@ const Login = () => {
     <section className={styles.container}>
       <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
-        <Sidebar />
+        <Drawer />
       </section>
       {/* <section className={styles.form}> */}
       <Container maxWidth="sm">
