@@ -3,13 +3,15 @@ import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as thunksEmployee from 'redux/employees/thunks';
-import { appendErrors, useForm } from 'react-hook-form';
+// import { appendErrors, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
 import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
-import { Container, Typography } from '@mui/material';
+import { Button, Container, Typography, TextField, Box } from '@mui/material';
+import { deepPurple } from '@mui/material/colors';
 
 function Profile() {
   const history = useHistory();
@@ -59,25 +61,21 @@ function Profile() {
   return (
     <Container>
       <Sidebar />
-      {/* <h1>Welcome {firstName}</h1> */}
       <Typography variant="h3" align="center">{`Welcome ${firstName}`}</Typography>
       <div className={styles.divButton}>
-        <button
-          className={update ? styles.greenButton : styles.redButton}
+        <Button
+          variant="contained"
+          color={update ? 'success' : 'error'}
           onClick={(e) => {
             e.preventDefault();
             setUpdate(!update);
           }}
         >
           {update ? 'EDIT' : 'CANCEL'}
-        </button>
-        {/* <Button>{update ? 'EDIT' : 'CANCEL'}</Button> */}
-        <button
-          className={styles.goHome}
-          onClick={() => history.push('/employees/home/629d83d3d9d731ead71b218c')}
-        >
-          GO HOME
-        </button>
+        </Button>
+        <Button onClick={() => history.push('/employees/home/629d83d3d9d731ead71b218c')}>
+          Go home
+        </Button>
       </div>
       <Modal
         modalTitle={response ? 'WARNING' : 'SUCCESS'}
@@ -88,103 +86,107 @@ function Profile() {
       </Modal>
       <form className={styles.form} onSubmit={handleSubmit(UpdateEmployee)}>
         <div className={styles.row}>
-          <label htmlFor="First name" className={styles.label}>
-            First Name
-          </label>
+          <Typography variant="body1">First Name</Typography>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{firstName}</p>
+              <Typography variant="body1">{firstName}</Typography>
             ) : (
               <>
-                <input
-                  className={styles.inputsProfile}
-                  type="text"
-                  name="firstName"
+                <TextField
+                  id="firstName"
+                  variant="outlined"
                   {...register('firstName')}
+                  defaultValue={firstName}
+                  margin="none"
+                  size="small"
                   disabled={update}
-                  placeholder={firstName}
-                  error={appendErrors.firstName?.message}
-                ></input>
-                {errors.firstName && (
-                  <p className={styles.errorInput}>{errors.firstName?.message}</p>
-                )}
+                  error={errors.firstName && true}
+                  helperText={errors.firstName?.message}
+                />
               </>
             )}
           </div>
         </div>
         <div className={styles.row}>
-          <label htmlFor="Last name" className={styles.label}>
-            Last Name
-          </label>
+          <Typography variant="body1">Last Name</Typography>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{lastName}</p>
+              <Typography variant="body1">{lastName}</Typography>
             ) : (
               <>
-                <input
-                  className={styles.inputsProfile}
-                  type="text"
-                  name="lastName"
+                <TextField
+                  id="lastName"
+                  variant="outlined"
                   {...register('lastName')}
+                  defaultValue={lastName}
+                  margin="none"
+                  size="small"
                   disabled={update}
-                  placeholder={lastName}
-                  error={appendErrors.firstName?.message}
-                ></input>
-                {errors.lastName && <p className={styles.errorInput}>{errors.lastName?.message}</p>}
+                  error={errors.lastName && true}
+                  helperText={errors.lastName?.message}
+                />
               </>
             )}
           </div>
         </div>
         <div className={styles.row}>
-          <label htmlFor="Email" className={styles.label}>
-            Email
-          </label>
+          <Typography variant="body1">Email</Typography>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>{email}</p>
+              // <p className={styles.text}>{email}</p>
+              <Typography variant="body1">{email}</Typography>
             ) : (
               <>
-                <input
-                  className={styles.inputsProfile}
+                <TextField
                   type="email"
-                  name="email"
+                  id="email"
+                  variant="outlined"
                   {...register('email')}
+                  defaultValue={email}
+                  margin="none"
+                  size="small"
                   disabled={update}
-                  placeholder={email}
-                  error={appendErrors.firstName?.message}
-                ></input>
-                {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
+                  error={errors.email && true}
+                  helperText={errors.email?.message}
+                />
               </>
             )}
           </div>
         </div>
         <div className={styles.row}>
-          <label htmlFor="Password" className={styles.label}>
-            Password
-          </label>
+          <Typography variant="body1">Password</Typography>
           <div className={styles.secondColumn}>
             {update ? (
-              <p className={styles.text}>**************</p>
+              <Typography variant="body1">**************</Typography>
             ) : (
               <>
-                <input
-                  className={styles.inputsProfile}
+                <TextField
                   type="password"
-                  name="password"
+                  id="password"
+                  variant="outlined"
                   {...register('password')}
+                  defaultValue={password}
+                  margin="none"
+                  size="small"
                   disabled={update}
-                  placeholder={password}
-                  error={appendErrors.firstName?.message}
-                ></input>
-                {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
+                  error={errors.password && true}
+                  helperText={errors.password?.message}
+                />
               </>
             )}
           </div>
         </div>
         {update ? null : (
-          <button className={styles.buttonSubmit} type="submit" value="submit">
-            UPDATE
-          </button>
+          <Box>
+            <Button
+              type="submit"
+              value="submit"
+              variant="contained"
+              sx={{ backgroundColor: deepPurple['A700'], color: 'white' }}
+            >
+              Update
+            </Button>
+          </Box>
         )}
       </form>
     </Container>

@@ -76,6 +76,7 @@ const Login = () => {
               {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
             </div> */}
             <TextField
+              type="email"
               id="email"
               label="Email"
               variant="outlined"

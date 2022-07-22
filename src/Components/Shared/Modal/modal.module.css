@@ -1,4 +1,4 @@
-.modalBackground {
+/* .modalBackground {
 	position: fixed;
 	display: flex;
 	align-items: center;
@@ -45,4 +45,4 @@
 	overflow: auto;
 	height: max-content;
 	max-height: calc(90vh - 75px);
-}
+} */

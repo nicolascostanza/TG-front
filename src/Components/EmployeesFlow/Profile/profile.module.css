@@ -46,11 +46,19 @@ h1 {
   background: #ffffff;
   box-shadow: inset 0px -1px 0px #e0e0e0;
   transition: 0.2s;
+  height: 56px;
 }
 .form > :nth-child(odd) {
   background: rgba(170, 206, 155, 0.2);
   box-shadow: inset 0px -1px 0px #e0e0e0;
   transition: 0.2s;
+  height: 56px;
+}
+.form > :nth-child(5) {
+  background: #fff;
+  box-shadow: 0;
+  height: 56px;
+  border: 0px;
 }
 .secondColumn {
   width: 45%;

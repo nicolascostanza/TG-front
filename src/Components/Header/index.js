@@ -7,6 +7,7 @@ import { AppBar, Box, Toolbar, Button } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import IconButton from '@mui/material/IconButton';
 import { deepPurple } from '@mui/material/colors';
+import logo from './logo.svg';
 
 function Header() {
   const dispatch = useDispatch();
@@ -61,6 +62,7 @@ function Header() {
               <Button color="inherit">Logout</Button>
             </Link>
           ) : null}
+          <img src={logo} alt="logo" sx={{ align: 'right' }} />
         </Toolbar>
       </AppBar>
     </Box>
