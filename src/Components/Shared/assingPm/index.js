@@ -12,8 +12,7 @@ import * as thunksProjects from 'redux/projects/thunks';
 // import * as thunksEmployees from 'redux/employees/thunks';
 // import { useSelector } from 'react-redux';
 
-function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject, projectAssociated }) {
-  console.log('APENAS ARRANCA EL CODIGO:', projectAssociated);
+function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) {
   const dispatch = useDispatch();
   const {
     handleSubmit,

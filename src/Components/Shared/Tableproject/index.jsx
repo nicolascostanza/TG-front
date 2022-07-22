@@ -15,7 +15,7 @@ import * as thunksEmployees from 'redux/employees/thunks';
 import { useSelector } from 'react-redux';
 import AssignPm from '../assingPm';
 
-function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
+function Tableproject({ title, roleUser, switcher, idProject }) {
   const [tab, setTab] = useState('employees');
   const [idToDelete, setIdToDelete] = useState('');
   const [filterProject, setFilterProject] = useState(true);
@@ -200,9 +200,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       }
     }
     setMethod('');
-    setRequest(!setRequest);
   };
-
   const listEmployeesTaskFunction = (id) => {
     let selectedTaskVar = allTask.filter((task) => task._id === id);
     setListEmployeesTask(selectedTaskVar[0].assignedEmployee);
@@ -234,7 +232,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         closeModalPM={() => setShowModalPm(false)}
         employeesInProject={data}
         idProject={idProject}
-        projectAssociated={projectoElegido}
       ></AssignPm>
       {showModalTask ? (
         <Modal
