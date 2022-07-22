@@ -152,10 +152,9 @@ export const deleteTaskToProject = (idProject, idTask) => {
       });
   };
 };
-// updateEmployeeInProject
-// dispatch(thunksProjects.updateEmployeeToProject(idProject, modifiedProject, current));
+// dispatch(thunksProjects.updateEmployeeToProject(idProject, sendData));
 export const updateEmployeeToProject = (idProject, body) => {
-  console.log('cosas q mando al api request:', idProject, body);
+  console.log('body a la Request', body);
   return (dispatch) => {
     dispatch(actions.updateEmployeeToProjectPending());
     api
@@ -164,27 +163,23 @@ export const updateEmployeeToProject = (idProject, body) => {
         if (response.error) {
           throw response.error;
         }
-        console.log('response de el update employee:', response);
+        api
+          .getProjectByIdApi(idProject)
+          .then((response) => {
+            console.log('ACTUALIZADOOOO DE LA API CON GET BY ID:', response.data);
+            if (response.error) {
+              throw response.error;
+            }
+            dispatch(
+              actions.updateEmployeeToProjectSuccess(response.data, 'Employee Updated successfully')
+            );
+          })
+          .catch((error) => {
+            dispatch(actions.updateEmployeeToProjectFailed(error));
+          });
       })
       .catch((error) => {
-        console.log('error del update employee:', error);
-      });
-    api
-      .getProjectByIdApi(idProject)
-      .then((response) => {
-        console.log('ACTUALIZADOOOO DE LA API CON GET BY ID:', response.data);
-        if (response.error) {
-          throw response.error;
-        }
-        dispatch(
-          actions.updateEmployeeToProjectSuccess(response.data, 'Employee Updated successfully')
-        );
-        if (!response.error) {
-          dispatch(actions.closeAllModals());
-        }
-      })
-      .catch((error) => {
-        dispatch(actions.updateEmployeeToProjectFailed(error));
+        console.log(error);
       });
   };
 };

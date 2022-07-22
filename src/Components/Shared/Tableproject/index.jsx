@@ -25,18 +25,15 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [showModalTask, setShowModalTask] = useState(false);
   const [method, setMethod] = useState('');
   const [idToForm, setIdToForm] = useState('');
-  const [assignPM, setAssignPM] = useState(false);
-  const [showModalResponse, setShowModalResponse] = useState(false);
-  const message = useSelector((state) => state.projects.message);
-  const errorEmployeeOrTask = useSelector((state) => state.projects.error);
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
   const [showListEmployeesTask, setShowListEmployeesTask] = useState(false);
-  const [selectedTask, setSelectedTask] = useState({});
   const [listEmployeesTask, setListEmployeesTask] = useState([]);
-  // const [assignedEmployee, setAssignedEmployees] = useState([]);
-  // const [task, setTask] = useState({});
+  const [currentEmployee, setCurrentEmployee] = useState({});
+  const [showModalResponse, setShowModalResponse] = useState(false);
   const dispatch = useDispatch();
+  const message = useSelector((state) => state.projects.message);
+  const errorEmployeeOrTask = useSelector((state) => state.projects.error);
   const allTask = useSelector((state) => state.tasks.list);
   const allEmployees = useSelector((state) => state.employees.list);
   const allProjects = useSelector((state) => state.projects.list);
@@ -46,24 +43,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   let headers;
   let keys;
   let data;
-  //p.tags = ["PHP", "Wordpress"]
-  // console.log(tags.includes(tag));
-  //
-  // let nuevoArray = dataTeam.filter((employee) =>
-  //   dataTasks.map((cadaTarea) => {
-  //     cadaTarea.assignedEmployee.map((id) => employee.employeeId._id === id);
-  //   })
-  // );
-  // console.log('son los empleados de esa tarea?', nuevoArray);
-
-  // tabla para mostrar la tabla vacia
-  // function EmptyTable() {
-  //   if (tab === 'employees') {
-  //     return <td>There is no employee yet</td>;
-  //   }
-  //   return <td>There is no task yet</td>;
-  // }
-
+  // KEYS AND VALUES
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
@@ -79,7 +59,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       'Updated'
     ];
     keys = [
-      // '_id',
       'taskName',
       'taskDescription',
       'assignedEmployee',
@@ -93,8 +72,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   useEffect(() => {
     dispatch(thunksEmployees.getEmployees());
     dispatch(thunksTasks.getTasks());
-    // dispatch(thunksTasks.getTasks());
-    // dispatch(thunksProjects.getProjects());
     const maxIndexPage = data?.length > 10 ? Math.floor((data?.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
       setIndexPage(1);
@@ -117,7 +94,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       setIndexPage(indexPage - 1);
     }
   };
-
+  // REACT HOOK FORMS
   const {
     handleSubmit,
     register,
@@ -127,28 +104,27 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     mode: 'onBlur',
     resolver: joiResolver(tab === 'employees' ? validationsFormAddEmployee : validationsFormAddTask)
   });
-  // cambia de tab entre task y employee
+  // CAMBIA LA TAB DEL FITLRADO
   const changeFilter = () => {
     setFilterProject(!filterProject);
   };
-
+  // OPEN MODALS EN FUNCIONES ADD
   const onAddEmployee = () => {
     reset({});
     setMethod('POST');
     setShowModalEmployee(true);
   };
-
   const onAddTask = () => {
     reset({});
     setMethod('POST');
     setShowModalTask(true);
   };
-
-  // seteo de valores en el edit de employees y de tasks
+  // SETEO DE VALORES EN EDIT
   const onEdit = (id) => {
     setIdToForm(id);
     if (tab === 'employees') {
       const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
+      setCurrentEmployee(valuesForm[0]);
       reset({
         employeeId: valuesForm[0].employeeId._id,
         role: valuesForm[0].role,
@@ -167,6 +143,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
       setShowModalTask(true);
     }
   };
+  // DELETE MODAL AND FUNCTIONS
   const onDeletePreviousFunction = (id) => {
     setIdToDelete(id);
     setShowModalDelete(true);
@@ -180,33 +157,24 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setShowModalDelete(false);
     setshowModalDeleteResponse(true);
   };
+  // OPEN MODAL ASSIGN PM
   const openModalPm = () => {
     setShowModalPm(true);
   };
-  let currentPm = dataTeam.filter((employ) => employ.isPM === true);
-
   const onSubmit = (data) => {
-    console.log('idToForm', idToForm);
-    console.log('ID PROJECT', idProject);
-    // employees, post y put en el if, en el else post y put de tasks
     if (tab === 'employees') {
       if (method === 'POST') {
         dispatch(thunksProjects.addEmployeeToProject(data, idProject));
         setShowModalEmployee(false);
         setShowModalResponse(true);
       } else {
-        if (data.role === 'PM') {
-          const current = {
-            employeeId: currentPm[0].employeeId._id,
-            role: 'QA',
-            rate: currentPm[0].rate,
-            isPM: false
-          };
-          dispatch(thunksProjects.updateEmployeeToProject(idProject, current));
-          setShowModalResponse(true);
-        }
-        // dispatch(thunksProjects.updateEmployeeToProject(idProject, newPm));
-        dispatch(thunksProjects.updateEmployeeToProject(idProject, data));
+        let sendData = {
+          employeeId: data.employeeId,
+          role: data.role,
+          rate: data.rate,
+          isPM: data.role === 'PM' ? true : false
+        };
+        dispatch(thunksProjects.updateEmployeeToProject(idProject, sendData));
         setShowModalEmployee(false);
         setShowModalResponse(true);
         setIdToForm('');
@@ -225,39 +193,38 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         setShowModalTask(false);
         setShowModalResponse(true);
       } else {
-        // dispatch(thunksProjects.deleteTaskToProject(idProject, idToForm));
-        // dispatch(thunksTasks.addTask(taskToAdd));
-        // (body, id, idProject)
         dispatch(thunksProjects.updateTaskToProject(taskToAdd, idToForm, idProject));
         setShowModalTask(false);
         setShowModalResponse(true);
         setIdToForm('');
       }
     }
-
-    setAssignPM(false);
     setMethod('');
     setRequest(!setRequest);
   };
 
-  // const valuesForm = dataTeam.filter((member) => member.employeeId._id === id);
-
-  console.log(errors);
-
-  // let employeesTasks = dataTasks.assignedEmployee?.map((employee) =>
-  //   dataTeam.map((team) => team?.employeeId._id === employee)
-  // );
-
   const listEmployeesTaskFunction = (id) => {
     let selectedTaskVar = allTask.filter((task) => task._id === id);
-    setSelectedTask(selectedTaskVar[0]);
     setListEmployeesTask(selectedTaskVar[0].assignedEmployee);
     setShowListEmployeesTask(true);
   };
-  console.log('tarea seleccionada:', selectedTask);
   const closeListEmployeesTask = () => {
-    setSelectedTask({});
+    setListEmployeesTask([]);
     setShowListEmployeesTask(false);
+  };
+  // RETORNA DROPDOWN O ETIQUETA P , SI ES PM O NO
+  const editOptions = (current) => {
+    if (current.role === 'PM') {
+      return <p>PM</p>;
+    }
+    return (
+      <select id="roleEmployee" {...register('role')} name="role">
+        <option>-</option>
+        <option>DEV</option>
+        <option>QA</option>
+        <option>TL</option>
+      </select>
+    );
   };
 
   return (
@@ -314,58 +281,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                   >{`${member.employeeId.firstName} ${member.employeeId.lastName}`}</option>
                 ))}
               </select>
-              {/* <input
-                // value={assignedEmployee}
-                // onChange={handleInputChanges}
-                name="assignedEmployees"
-                type="text"
-                // placeholder="Search an employee"
-                {...register('assignedEmployee')}
-                error={appendErrors.assignedEmployee?.message}
-              />
-              {errors.assignedEmployee && (
-                <p className={styles.errorInput}>{errors.assignedEmployee?.message}</p>
-              )} */}
-              {/* <div className={styles.optionContainer}>
-                {assignedEmployee.length > 0
-                  ? dataTeam
-                      .filter(
-                        (employee) =>
-                          employee.employeeId.firstName.match(new RegExp(assignedEmployee, 'i')) ||
-                          employee.employeeId.lastName.match(new RegExp(assignedEmployee, 'i'))
-                      )
-                      .map((member) => {
-                        return (
-                          <p
-                            key={member._id}
-                            onClick={() =>
-                              assignedEmployee.find((emp) => emp === member._id)
-                                ? deleteFromSelectedEmployees(member._id)
-                                : appendToSelectedEmployees(member._id)
-                            }
-                            className={
-                              assignedEmployee.find((emp) => emp === member._id)
-                                ? styles.selectedItem
-                                : styles.notSelectedItem
-                            }
-                          >
-                            {member.firstName}: {member.email}
-                          </p>
-                        );
-                      })
-                  : assignedEmployee.map((member) => {
-                      return (
-                        <p
-                          key={member}
-                          className={styles.chip}
-                          onClick={() => deleteFromSelectedEmployees(member)}
-                        >
-                          {dataTeam.find((emp) => emp._id === member).firstName} (
-                          {dataTeam.find((emp) => emp._id === member).lastName})
-                        </p>
-                      );
-                    })}
-              </div> */}
             </div>
             <div>
               <label htmlFor="Start date">Start Date</label>
@@ -429,28 +344,24 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
                   ))}
                 </select>
               ) : (
-                <p>Poner el nombre del employee cuando edita</p>
+                <p>{`${currentEmployee.employeeId.firstName} ${currentEmployee.employeeId.lastName}`}</p>
               )}
-              {/* {errors.employeeId && (
-                <p className={styles.errorInput}>{errors.employeeId?.message}</p>
-              )} */}
             </div>
-            {!assignPM ? (
+            {
               <div>
                 <label htmlFor="role">Role</label>
-                {idToForm === currentPm[0]?.employeeId._id ? (
-                  <p>PM</p>
-                ) : (
+                {method === 'POST' ? (
                   <select id="roleEmployee" {...register('role')} name="role">
                     <option>-</option>
                     <option>DEV</option>
                     <option>QA</option>
                     <option>TL</option>
                   </select>
+                ) : (
+                  editOptions(currentEmployee)
                 )}
               </div>
-            ) : null}
-
+            }
             <div>
               <label htmlFor="Rate">Rate</label>
               <input
@@ -462,15 +373,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
               />
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
-            {/* <div className={styles.checkbox}>
-              <label htmlFor="isPm">Is PM ?</label>
-              <input
-                className={styles.inputsProfile}
-                type="checkbox"
-                name="isPm"
-                {...register('isPm')}
-              />
-            </div> */}
             <div className={styles.buttonsContainer}>
               <Button
                 id="addModalEmployees"

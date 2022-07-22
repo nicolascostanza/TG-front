@@ -5,7 +5,6 @@ import Button from '../Button/index.jsx';
 import Dropdown from '../Dropdown/Dropdown';
 import Slider from 'Components/Shared/Slider';
 
-// ver el employeeid.name pq no popula bien
 function Tablehome({
   title,
   headers,
@@ -17,14 +16,8 @@ function Tablehome({
   setId,
   openModal,
   activeChanger
-  // userId
 }) {
   const [indexPage, setIndexPage] = useState(1);
-  // // const resp = data.filter((data) => data.isDeleted === false);
-  // console.log('respuesta:', resp);
-  // const prueba = data.map((a) => a.team.employeeId.includes(userId));
-  // console.log('data:', data);
-  // console.log('prueba:', prueba);
   const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
@@ -35,12 +28,6 @@ function Tablehome({
       setIndexPage(maxIndexPage);
     }
   }, [data]);
-  const openRow = (role, id) => {
-    setId(id);
-    if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
-      switcher();
-    }
-  };
   const nextPage = () => {
     if (data.length / 10 > indexPage) {
       setIndexPage(indexPage + 1);
@@ -49,6 +36,13 @@ function Tablehome({
   const previousPage = () => {
     if (indexPage > 1) {
       setIndexPage(indexPage - 1);
+    }
+  };
+  // FUNCION Q ABRE EL PROYECTO CLICKEADO EN LA TABLA
+  const openRow = (role, id) => {
+    setId(id);
+    if (role === 'ADMIN' || role === 'PM' || role === 'EMPLOYEE') {
+      switcher();
     }
   };
 
@@ -63,7 +57,6 @@ function Tablehome({
           fontSize={'15px'}
           onClick={() => {
             openModal('POST');
-            // setShowModal(true);
           }}
         >
           <i className="fa-solid fa-plus"></i>
@@ -133,7 +126,6 @@ function Tablehome({
                           return (
                             <td>
                               <Dropdown width={'150px'} placeholder={'Team'}>
-                                {/* aca iria .employeeId.firstName */}
                                 {row[key]?.map((element) => {
                                   return (
                                     <option
@@ -151,7 +143,6 @@ function Tablehome({
                           return <td> - </td>;
                         } else {
                           let dateFormatted = new Date(row[key]).toLocaleDateString('en-us', {
-                            // weekday: 'long',
                             year: 'numeric',
                             month: 'short',
                             day: 'numeric'
@@ -182,8 +173,6 @@ function Tablehome({
                             onClick={() => {
                               setId(row._id);
                               openModal('PUT', row._id);
-                              // setShowModal(true);
-                              // onEdit(row._id);
                             }}
                           >
                             <i className="fa-solid fa-pencil"></i>

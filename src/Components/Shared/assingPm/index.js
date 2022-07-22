@@ -40,7 +40,7 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject, pr
     // el nuevo pm lo cambia biennn
     const newPm = {
       employeeId: data.employeeId,
-      role: '-',
+      role: 'PM',
       rate: data.rate,
       isPM: true
     };

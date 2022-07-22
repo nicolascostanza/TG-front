@@ -18,13 +18,15 @@ import {
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 
-// LO QUE FALTA
-// CORREGIR LOS PMS, EN EL REDUCER PARA Q ACTUALICE
 // TOMAR EL ROLE DE REDUX (en table home, en tableHome y en tableProject)
 // CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
 // VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
-
+// hay q traer el current user con el role (ESTA HARDCODEADO)
 function Home() {
+  let headers = [];
+  let keys = [];
+  let validator;
+  let title = '';
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -40,18 +42,12 @@ function Home() {
   let adminsList = useSelector((state) => state.admins.list);
   let userCurrent = useSelector((state) => state.currentUser.currentUser);
   let message = useSelector((state) => state.projects.message);
-  let headers = [];
-  let keys = [];
-  let validator;
-  let title = '';
   const role = 'ADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
+  console.log('usuariecioto', userCurrent);
 
   useEffect(() => {
-    // dispatch(thunksAdmins.getAdmins());
-    // if para el home, else para el open project
     if (id === '') {
-      // aca despues hago un switch con la peticion nueva de projects asociados al employee
       if (role === 'SUPERADMIN') {
         dispatch(thunksAdmins.getAdmins());
       }
@@ -83,7 +79,7 @@ function Home() {
       validator = validationsFormProjectEdit;
     }
   }
-
+  // REACT HOOK FORMS
   const {
     handleSubmit,
     register,
@@ -93,6 +89,7 @@ function Home() {
     mode: 'onBlur',
     resolver: joiResolver(validator)
   });
+  // MANDA SOLO LOS PROYECTOS RELACIONADOS A SU ROLE
   const dataProjects = (rol) => {
     if (rol === 'ADMIN') {
       return projectsList;
@@ -100,17 +97,17 @@ function Home() {
       return userCurrent.associatedProjects;
     }
   };
+  // CAMBIA LA PANTALLA
   const switcher = () => {
     setScreen(!screen);
   };
-  // elijo proyecto
+  // SELECCIONA EL PROYECTO PARA PASAR A LA OTRA TABLA
   let projectSelected = projectsList.filter((project) => project._id === id);
   let adminSelected = adminsList.filter((admin) => admin._id === id);
-  // modal reset values
+  // RESETS EN EL EDIT CON REACT HOOK FORMS
   const handleModal = (request, id) => {
     setId(id);
     setMethod(request);
-    // SETEO DE VALORES EN MODAL SUPERADMIN
     if (role === 'SUPERADMIN') {
       if (request === 'POST') {
         reset({
@@ -128,7 +125,6 @@ function Home() {
         });
       }
     } else {
-      // SETEO DE VALORES EN MODAL PROJECTS
       if (request === 'POST') {
         reset({
           name: '',
@@ -148,6 +144,7 @@ function Home() {
     }
     setShowModal(true);
   };
+  // SLIDER EN SUPERADMIN HOME
   const activeChanger = async (data, id) => {
     dispatch(
       thunksAdmins.updateAdmin(
@@ -158,6 +155,7 @@ function Home() {
       )
     );
   };
+  // DELETE FUNCTION
   const onDelete = () => {
     if (role === 'SUPERADMIN') {
       dispatch(thunksAdmins.deleteAdmin(id));
@@ -171,7 +169,6 @@ function Home() {
       setMethod('');
     }
   };
-  console.log(errors);
   const onSubmit = (data) => {
     if (role === 'SUPERADMIN') {
       if (method === 'POST') {
@@ -214,7 +211,6 @@ function Home() {
         <Sidebar></Sidebar>
         <Loader isLoading={isLoading} />
         <Tableproject
-          // setRequest={setRequest}
           idProject={id}
           switcher={switcher}
           title={title}
@@ -264,7 +260,6 @@ function Home() {
         >
           <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
         </Modal>
-
         <Loader isLoading={isLoading} />
         {role === 'SUPERADMIN' ? (
           <Modal
@@ -314,6 +309,18 @@ function Home() {
                   value="CONTINUE"
                 >
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
+                </Button>
+              </div>
+              <div>
+                <Button
+                  onClick={() => setShowModal(false)}
+                  id="addModalEmployeeCancel"
+                  width={'75px'}
+                  height={'30px'}
+                  type="submit"
+                  value="cancelEmoployee"
+                >
+                  CANCEL
                 </Button>
               </div>
             </form>
@@ -383,6 +390,18 @@ function Home() {
                   value="CONTINUE"
                 >
                   {method === 'POST' ? 'CREATE' : 'EDIT'}
+                </Button>
+              </div>
+              <div>
+                <Button
+                  onClick={() => setShowModal(false)}
+                  id="addModalEmployeeCancel"
+                  width={'75px'}
+                  height={'30px'}
+                  type="submit"
+                  value="cancelEmoployee"
+                >
+                  CANCEL
                 </Button>
               </div>
             </form>
