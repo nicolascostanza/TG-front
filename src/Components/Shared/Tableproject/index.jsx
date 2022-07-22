@@ -32,10 +32,12 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
   const [showListEmployeesTask, setShowListEmployeesTask] = useState(false);
+  const [selectedTask, setSelectedTask] = useState({});
   const [listEmployeesTask, setListEmployeesTask] = useState([]);
   // const [assignedEmployee, setAssignedEmployees] = useState([]);
   // const [task, setTask] = useState({});
   const dispatch = useDispatch();
+  const allTask = useSelector((state) => state.tasks.list);
   const allEmployees = useSelector((state) => state.employees.list);
   const allProjects = useSelector((state) => state.projects.list);
   let projectoElegido = allProjects.filter((project) => project?._id === idProject);
@@ -90,6 +92,7 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   }
   useEffect(() => {
     dispatch(thunksEmployees.getEmployees());
+    dispatch(thunksTasks.getTasks());
     // dispatch(thunksTasks.getTasks());
     // dispatch(thunksProjects.getProjects());
     const maxIndexPage = data?.length > 10 ? Math.floor((data?.length - 0.01) / 10) + 1 : 1;
@@ -140,7 +143,6 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
     setMethod('POST');
     setShowModalTask(true);
   };
-  console.log('daatask:', dataTasks);
 
   // seteo de valores en el edit de employees y de tasks
   const onEdit = (id) => {
@@ -247,21 +249,14 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
   // );
 
   const listEmployeesTaskFunction = (id) => {
-    const selectedTask = dataTasks.filter((task) => task._id === id);
-    let listEmployeesTaskL = dataTeam.find((employee) =>
-      selectedTask[0].assignedEmployee.filter((idE) => idE === employee.employeeId._id)
-    );
-    console.log('Los empleados de esa tarea son??: ', listEmployeesTaskL);
-    selectedTask[0].assignedEmployee.map((idE) =>
-      console.log('id del mapeo de la task elegida:', idE)
-    );
-    console.log('la tarea elegida es?: ', selectedTask[0]);
-    setListEmployeesTask(listEmployeesTask);
-    console.log('el estado de la lista es: ', listEmployeesTask);
+    let selectedTaskVar = allTask.filter((task) => task._id === id);
+    setSelectedTask(selectedTaskVar[0]);
+    setListEmployeesTask(selectedTaskVar[0].assignedEmployee);
     setShowListEmployeesTask(true);
   };
+  console.log('tarea seleccionada:', selectedTask);
   const closeListEmployeesTask = () => {
-    setListEmployeesTask([]);
+    setSelectedTask({});
     setShowListEmployeesTask(false);
   };
 
@@ -766,11 +761,11 @@ function Tableproject({ title, roleUser, switcher, idProject, setRequest }) {
         handleClose={closeListEmployeesTask}
         modalTitle={`Employees:`}
       >
-        {/* <ol>
+        <ol>
           {listEmployeesTask.map((employee) => (
-            <li key={Math.random()}>`${employee.employeeId.firstName}`</li>
+            <li key={Math.random()}>{`${employee.firstName} ${employee.lastName}`}</li>
           ))}
-        </ol> */}
+        </ol>
         <Button onClick={closeListEmployeesTask}>OK</Button>
       </Modal>
     </div>
