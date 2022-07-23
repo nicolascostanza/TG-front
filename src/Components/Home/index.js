@@ -17,11 +17,17 @@ import {
 } from 'Components/Home/validations';
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
-
-// TOMAR EL ROLE DE REDUX (en table home, en tableHome y en tableProject)
-// CORREGIR LOS SETEOS DE FECHAS EN EL RESET HOOKS FORM
-// VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
+// VER
+// PQ LA FECHA SETEA SE ME SETEA UN DIA DESPUES ? ZONA HORARIA ?
+// cambiar modal de task created
 // hay q traer el current user con el role (ESTA HARDCODEADO)
+
+// HACER
+// MENSAJES ESPECIFICOS EN ERRORES DEL MODAL
+// el update task deberia actualizar solo la fecha cada vez q edito
+// MOSTRAMOS EL DESCRIPTION PROYECT ? MAS CORTO O COMO HACEMOS ?
+// TOMAR EL ROLE DE REDUX (en table home, en tableHome y en tableProject)
+// VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
 function Home() {
   let headers = [];
   let keys = [];
@@ -45,6 +51,12 @@ function Home() {
   const role = 'ADMIN';
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
   console.log('usuariecioto', userCurrent);
+  // let role = useSelector((state) => state.auth.authenticated.role);
+  // const currentUser = useSelector((state) => state.currentUser.currentUser);
+  // const [tableHeaders, setTableHeaders] = useState([]);
+  // const authRole = () => {
+  //   role = useSelector((state) => state.auth.authenticated.role);
+  // }
 
   useEffect(() => {
     if (id === '') {
@@ -117,7 +129,6 @@ function Home() {
         });
       } else {
         let selected = adminsList.filter((admin) => admin._id === id);
-        console.log('selected:', selected);
         reset({
           email: selected[0].email,
           password: selected[0].password,
@@ -130,7 +141,8 @@ function Home() {
           name: '',
           description: '',
           clientName: '',
-          startDate: ''
+          startDate: '',
+          endDate: ''
         });
       } else {
         let selected = projectsList.filter((admin) => admin._id === id);
@@ -138,7 +150,8 @@ function Home() {
           name: selected[0].name,
           description: selected[0].description,
           clientName: selected[0].clientName,
-          startDate: selected[0].startDate
+          startDate: selected[0].startDate.substring(0, 10),
+          endDate: selected[0].endDate.substring(0, 10)
         });
       }
     }
@@ -371,15 +384,11 @@ function Home() {
               </div>
               <div>
                 <label htmlFor="start date">Start Date</label>
-                <input
-                  id="startdateProject"
-                  type="date"
-                  {...register('startDate')}
-                  error={appendErrors.startDate?.message}
-                />
-                {errors.startDate && (
-                  <p className={styles.errorInput}>{errors.startDate?.message}</p>
-                )}
+                <input id="startdateProject" type="date" {...register('startDate')} />
+              </div>
+              <div>
+                <label htmlFor="end date">End Date</label>
+                <input id="endDateProject" type="date" {...register('endDate')} />
               </div>
               <div className={styles.buttonsContainer}>
                 <Button

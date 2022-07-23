@@ -27,7 +27,8 @@ export const validationsFormProjectCreate = Joi.object({
     'date.min': 'Start date must be after 01-01-2000',
     'date.base': 'Date is not valid',
     'date.empty': 'This field is required'
-  })
+  }),
+  endDate: Joi.date().min('01-01-2000').optional()
 });
 export const validationsFormProjectEdit = Joi.object({
   name: Joi.string()
@@ -53,7 +54,8 @@ export const validationsFormProjectEdit = Joi.object({
     'date.min': 'Start date must be after 01-01-2000',
     'date.base': 'Date is not valid',
     'date.empty': 'This field is required'
-  })
+  }),
+  endDate: Joi.date().min('01-01-2000').optional()
 });
 export const validationsFormSuperadminCreate = Joi.object({
   email: Joi.string()

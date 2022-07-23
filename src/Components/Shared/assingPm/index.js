@@ -23,10 +23,8 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
     resolver: joiResolver(validationsAssignPm)
   });
   let currentPm = employeesInProject.filter((employ) => employ.isPM === true);
-  console.log('CURRENT PM ACTUAL FILTRADO:', currentPm);
   const onSubmit = (data) => {
     if (currentPm.length != 0) {
-      // ESTE PARA MANDAR AL DISPATCH CON ID COMO STRING
       // ACA EN ROLE DEBERIA IR EL GUION
       let current = {
         employeeId: currentPm[0].employeeId._id,

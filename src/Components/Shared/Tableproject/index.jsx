@@ -43,6 +43,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
+  console.log('datatask:', dataTasks);
   // KEYS AND VALUES
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
@@ -133,11 +134,12 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       setShowModalEmployee(true);
     } else {
       const valuesForm = dataTasks.filter((task) => task._id === id);
+      console.log('tareita assigned:', valuesForm[0].assignedEmployee[0]);
       reset({
         taskName: valuesForm[0].taskName,
         taskDescription: valuesForm[0].taskDescription,
-        assignedEmployee: valuesForm[0].assignedEmployee,
-        startDate: valuesForm[0].startDate,
+        assignedEmployee: valuesForm[0].assignedEmployee[0],
+        startDate: valuesForm[0].startDate.substring(0, 10),
         status: valuesForm[0].status
       });
       setShowModalTask(true);
@@ -161,6 +163,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   const openModalPm = () => {
     setShowModalPm(true);
   };
+
   const onSubmit = (data) => {
     if (tab === 'employees') {
       if (method === 'POST') {
@@ -180,6 +183,13 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         setIdToForm('');
       }
     } else {
+      // const date = new Date();
+      // let output =
+      //   String(date.getFullYear()) +
+      //   '/' +
+      //   String(date.getMonth() + 1).padStart(2, '0') +
+      //   '/' +
+      //   String(date.getDate()).padStart(2, '0');
       let taskToAdd = {
         parentProject: idProject,
         taskName: data.taskName,
@@ -187,6 +197,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         assignedEmployee: [data.assignedEmployee],
         startDate: data.startDate,
         status: data.status
+        // createdAt: method === 'POST' ? output : null
       };
       if (method === 'POST') {
         dispatch(thunksTasks.addTask(taskToAdd));
@@ -423,8 +434,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         {message}
       </Modal>
       <h2>{title}</h2>
-      {roleUser === `ADMIN` ? (
-        <button
+      {roleUser === `ADMIN` && tab === 'employees' ? (
+        <Button
           disabled={dataTeam.length > 0 ? false : true}
           id="buttonAssignPm"
           width={'80px'}
@@ -434,12 +445,12 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           }}
         >
           Asignar PM
-        </button>
+        </Button>
       ) : null}
       {roleUser === `ADMIN` || roleUser === `PM` ? (
         <>
           {filterProject ? (
-            <button
+            <Button
               id="buttonAddEmployee"
               width={'80px'}
               height={'40px'}
@@ -448,7 +459,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             >
               <i className="fa-solid fa-plus"></i>
               ADD EMPLOYEE
-            </button>
+            </Button>
           ) : (
             <Button id="buttonAddTask" onClick={() => onAddTask()}>
               ADD TASK
