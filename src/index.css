@@ -1,6 +1,6 @@
 :root {
   /* MATERIAL COLORS */
-  --primary-color: #373867;
+  --primary-color: #008AD6;
   --primary-color-light: #656195;
   --primary-color-dark: #0b123c;
   --secondary-color: #ea3354;
@@ -31,7 +31,7 @@
 
 [data-theme='dark'] {
   /* MATERIAL COLORS */
-  --primary-color: #bb86fc;
+  --primary-color: #008AD6;
   --primary-color-light: #9d46ff;
   --primary-color-dark: #0a00b6;
   --secondary-color: #03dac6;

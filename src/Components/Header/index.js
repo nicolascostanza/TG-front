@@ -1,17 +1,7 @@
-import { useSelector } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-// import { Link, withRouter } from 'react-router-dom';
 import styles from './header.module.css';
 import logo from './logo.svg';
 
 function Header() {
-  const pathName = window.location.pathname;
-  const onHome = pathName === '/';
-  const role = useSelector((state) => state.auth.authenticated?.role);
-
-  if (!role && onHome) {
-    return null;
-  }
   return (
     <header>
       <nav className={styles.navbar}>
@@ -38,16 +28,12 @@ function Header() {
             <Link to="/tasks">tasks</Link>
           </li>
         </ul> */}
-        <section>
+        <div>
           <img className={styles.logo} src={logo}></img>
-        </section>
-        <section>
-          <button className={styles.button}>Login</button>
-          <button className={styles.button}>Signup</button>
-        </section>
+        </div>
       </nav>
     </header>
   );
 }
 
-export default withRouter(Header);
+export default Header;

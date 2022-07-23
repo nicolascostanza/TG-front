@@ -2,27 +2,7 @@ body, .messageForm > textarea{
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
   Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-.iconsHeader {
-  display: flex;
-  justify-content: flex-end;
-  list-style: none;
-}
-.iconsHeader > li {
-  padding: 10px;
-  cursor: pointer;
-}
-.header {
-  margin: 0 5%;
-}
-nav {
-  border-bottom: 3px solid #373867;
-  position: sticky;
-  top: 0px;
-  width: 100%;
-  margin: 0 auto;
-  background-color: #fff;
-  z-index: 100;
-}
+
 .nameEmailForm {
   display: flex;
   justify-content: space-around;
@@ -83,9 +63,6 @@ nav {
 .buttonForm:hover {
   background-color: #AA4949;
   color: #fff;
-}
-nav > ul:last-child {
-  padding-right: 50px;
 }
 
 .firstSection {

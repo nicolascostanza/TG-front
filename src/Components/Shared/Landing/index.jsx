@@ -10,58 +10,7 @@ import img5 from './assets/img/img5.png';
 function Landing() {
   return (
     <>
-      <Sidebar>
-        <h2>Get in touch</h2>
-        <a>Worked hours</a>
-        <a>Reports</a>
-        <a>Management</a>
-        <a>Roles</a>
-      </Sidebar>
-      <nav>
-        <ul className={styles.iconsHeader}>
-          <li>
-            <a
-              href={'https://www.facebook.com/radiumrocket'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-facebook"></i>
-            </a>
-          </li>
-          <li>
-            <a href={'https://twitter.com/radiumrocket'} target="_blank" rel="noopener noreferrer">
-              <i className="fa-brands fa-twitter"></i>
-            </a>
-          </li>
-          <li>
-            <a
-              href={'https://www.linkedin.com/company/radium-rocket'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a
-              href={'https://www.instagram.com/radium.rocket/'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-instagram"></i>
-            </a>
-          </li>
-          <li>
-            <a
-              href={'https://github.com/radiumrocketapps'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-github"></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <Sidebar />
       <div className={styles.sidebarMain}>
         <main className={styles.mainSection}>
           <section className={styles.firstSection}>
@@ -86,7 +35,6 @@ function Landing() {
                 Interdum vel, pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo
                 nulla. Ac mauris ac ultrices egestas maecenas suspendisse leo, mi.
               </p>
-              <button className={styles.buttonMore}>LEARN MORE</button>
             </div>
             <div className={styles.wrapImage}>
               <img className={styles.imgMainSection} src={img5} alt="Reloj" />
