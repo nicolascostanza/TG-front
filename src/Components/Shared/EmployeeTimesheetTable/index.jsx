@@ -261,122 +261,130 @@ function EmployeeTimesheetTable({
         <i className="fa-solid fa-plus"></i>
         ADD
       </Button>
-      <div className={styles.buttonControllercontainer}>
-        <button onClick={() => setPeriodYear()}>Filter by year</button>
-        <button onClick={() => setPeriodMonth()}>Filter by month</button>
-        <button onClick={() => setPeriodWeek()}>Filter by week</button>
-        <button onClick={() => setPeriodDay()}>Filter by day</button>
-      </div>
-      <div className={styles.buttonControllercontainer}>
-        {/* SORRY IN ADVANCE... */}
-        <button onClick={() => previousYear()}>{'<YEAR'}</button>
-        {period !== 'year' ? <button onClick={() => previousMonth()}>{'<MONTH'}</button> : null}
-        {period !== 'year' && period !== 'month' ? (
-          <button onClick={() => previousWeek()}>{'<WEEK'}</button>
-        ) : null}
-        {period === 'day' ? <button onClick={() => previousDay()}>{'<DAY'}</button> : null}
-        <p>
-          Year: {year}
-          {period !== 'year' ? `  ||  Month: ${month + 1}` : null}
-          {period !== 'year' && period !== 'month' ? `  ||  Day: ${day}` : null}
-        </p>
-        {period === 'day' ? <button onClick={() => nextDay()}>{'DAY>'}</button> : null}
-        {period !== 'year' && period !== 'month' ? (
-          <button onClick={() => nextWeek()}>{'WEEK>'}</button>
-        ) : null}
-        {period !== 'year' ? <button onClick={() => nextMonth()}>{'MONTH>'}</button> : null}
-        <button onClick={() => nextYear()}>{'YEAR>'}</button>
-        {/* I AM SURE THERE IS A CLEANER WAY TO DO THIS BUT I AM LAZY, SORRY NOT SORRY */}
-        {/* BTW, STYLES SHOULD BE MODIFIED, SO WHY SHOULD I BOTHER? */}
-      </div>
-      <table className={styles.table}>
-        <thead>
-          <tr>
-            {role !== 'EMPLOYEE' ? <th /> : null}
-            {headers.map((header, index) => {
-              return header === 'Edit' || header === 'Delete' ? (
-                <th key={index}>{header}</th>
-              ) : (
-                <th key={index} onClick={() => handleOrderField(keys[index])}>
-                  {header}
-                  {showArrow(orderField === keys[index])}
-                </th>
-              );
-            })}
-            {role === `PM` && (
-              <>
-                <th>Approve</th>
-              </>
-            )}
-          </tr>
-        </thead>
-        <tbody className={styles.tbody}>
-          {filtershow.map((row) => {
-            return (
-              <tr className={styles.row} key={row._id}>
-                {role === 'PM' && (
-                  <td>
-                    <input type="checkbox" onChange={() => onSelect(row._id)} />
-                  </td>
-                )}
-                {keys.map((key, index) => {
-                  if (key === 'active') {
-                    return (
-                      <td>
-                        <button>{row[key]}boolean</button>
-                      </td>
-                    );
-                  }
-                  return (
-                    <td key={index} onClick={() => openRow(role, row._id)}>
-                      {row[key]}
-                    </td>
-                  );
-                })}
+      {data.length > 0 ? (
+        <div className={styles.filterContainer}>
+          <div className={styles.buttonControllercontainer}>
+            <button onClick={() => setPeriodYear()}>Filter by year</button>
+            <button onClick={() => setPeriodMonth()}>Filter by month</button>
+            <button onClick={() => setPeriodWeek()}>Filter by week</button>
+            <button onClick={() => setPeriodDay()}>Filter by day</button>
+          </div>
+          <div className={styles.buttonControllercontainer}>
+            {/* SORRY IN ADVANCE... */}
+            <button onClick={() => previousYear()}>{'<YEAR'}</button>
+            {period !== 'year' ? <button onClick={() => previousMonth()}>{'<MONTH'}</button> : null}
+            {period !== 'year' && period !== 'month' ? (
+              <button onClick={() => previousWeek()}>{'<WEEK'}</button>
+            ) : null}
+            {period === 'day' ? <button onClick={() => previousDay()}>{'<DAY'}</button> : null}
+            <p>
+              Year: {year}
+              {period !== 'year' ? `  ||  Month: ${month + 1}` : null}
+              {period !== 'year' && period !== 'month' ? `  ||  Day: ${day}` : null}
+            </p>
+            {period === 'day' ? <button onClick={() => nextDay()}>{'DAY>'}</button> : null}
+            {period !== 'year' && period !== 'month' ? (
+              <button onClick={() => nextWeek()}>{'WEEK>'}</button>
+            ) : null}
+            {period !== 'year' ? <button onClick={() => nextMonth()}>{'MONTH>'}</button> : null}
+            <button onClick={() => nextYear()}>{'YEAR>'}</button>
+            {/* I AM SURE THERE IS A CLEANER WAY TO DO THIS BUT I AM LAZY, SORRY NOT SORRY */}
+            {/* BTW, STYLES SHOULD BE MODIFIED, SO WHY SHOULD I BOTHER? */}
+          </div>
+        </div>
+      ) : null}
+      {data.length > 0 ? (
+        <table className={styles.table}>
+          <thead>
+            <tr>
+              {role !== 'EMPLOYEE' ? <th /> : null}
+              {headers.map((header, index) => {
+                return header === 'Edit' || header === 'Delete' ? (
+                  <th key={index}>{header}</th>
+                ) : (
+                  <th key={index} onClick={() => handleOrderField(keys[index])}>
+                    {header}
+                    {showArrow(orderField === keys[index])}
+                  </th>
+                );
+              })}
+              {role === `PM` && (
                 <>
-                  <td>
-                    {row.status !== 'Approved' && (
-                      <Button
-                        className={styles.buttonsRows}
-                        width={'50px'}
-                        height={'25px'}
-                        fontSize={'13px'}
-                        disabled={row.status === 'Approved' && true}
-                        onClick={() => onEdit(row._id)}
-                      >
-                        <i className="fa-solid fa-pencil"></i>
-                      </Button>
-                    )}
-                  </td>
-                  <td>
-                    {row.status !== 'Approved' && (
-                      <Button
-                        onClick={() => onDelete(row._id)}
-                        width={'50px'}
-                        height={'25px'}
-                        fontSize={'13px'}
-                      >
-                        <i className="fa-solid fa-xmark"></i>
-                      </Button>
-                    )}
-                  </td>
+                  <th>Approve</th>
+                </>
+              )}
+            </tr>
+          </thead>
+          <tbody className={styles.tbody}>
+            {filtershow.map((row) => {
+              return (
+                <tr className={styles.row} key={row._id}>
                   {role === 'PM' && (
                     <td>
-                      <Slider
-                        idNameAndValue={'approved'}
-                        isChecked={row.approveSlider}
-                        onChangeFunction={onApprove}
-                        arg1={row}
-                        arg2={row._id}
-                      />
+                      <input type="checkbox" onChange={() => onSelect(row._id)} />
                     </td>
                   )}
-                </>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+                  {keys.map((key, index) => {
+                    if (key === 'active') {
+                      return (
+                        <td>
+                          <button>{row[key]}boolean</button>
+                        </td>
+                      );
+                    }
+                    return (
+                      <td key={index} onClick={() => openRow(role, row._id)}>
+                        {row[key]}
+                      </td>
+                    );
+                  })}
+                  <>
+                    <td>
+                      {row.status !== 'Approved' && (
+                        <Button
+                          className={styles.buttonsRows}
+                          width={'50px'}
+                          height={'25px'}
+                          fontSize={'13px'}
+                          disabled={row.status === 'Approved' && true}
+                          onClick={() => onEdit(row._id)}
+                        >
+                          <i className="fa-solid fa-pencil"></i>
+                        </Button>
+                      )}
+                    </td>
+                    <td>
+                      {row.status !== 'Approved' && (
+                        <Button
+                          onClick={() => onDelete(row._id)}
+                          width={'50px'}
+                          height={'25px'}
+                          fontSize={'13px'}
+                        >
+                          <i className="fa-solid fa-xmark"></i>
+                        </Button>
+                      )}
+                    </td>
+                    {role === 'PM' && (
+                      <td>
+                        <Slider
+                          idNameAndValue={'approved'}
+                          isChecked={row.approveSlider}
+                          onChangeFunction={onApprove}
+                          arg1={row}
+                          arg2={row._id}
+                        />
+                      </td>
+                    )}
+                  </>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <h3>No timesheets yet</h3>
+      )}
       <div className={styles.buttons}>
         <div>
           <p>Page {indexPage}</p>

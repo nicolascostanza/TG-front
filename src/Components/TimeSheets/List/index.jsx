@@ -176,6 +176,9 @@ function TimeSheet() {
     setShowDeletedModalMessage('');
   };
 
+  console.log('timeSheets: ', timeSheets);
+  // const totalHours = timeSheets.reduce();
+
   return (
     <>
       {/* --------------- JUST FOR DEBUG START --------------- */}
@@ -266,6 +269,10 @@ function TimeSheet() {
         onApprove={statusChanger}
         onSelect={selectTS}
       />
+      <div>
+        {/* <h3>{`Total hours: ${}`}</h3> */}
+        <h3>Total hours: 5</h3>
+      </div>
     </>
   );
 }
