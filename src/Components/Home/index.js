@@ -5,6 +5,7 @@ import Loader from 'Components/Shared/Loader';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
 import Tableproject from 'Components/Shared/Tableproject';
+import Landing from 'Components/Shared/Landing';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -48,8 +49,9 @@ function Home() {
   let adminsList = useSelector((state) => state.admins.list);
   let userCurrent = useSelector((state) => state.currentUser.currentUser);
   let message = useSelector((state) => state.projects.message);
-  const role = 'ADMIN';
-  // let role = useSelector((state) => state.auth.authenticated.role);
+  // const role = 'ADMIN';
+  let role = useSelector((state) => state.auth.authenticated.role);
+  console.log('role', role);
   role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
   // const currentUser = useSelector((state) => state.currentUser.currentUser);
   // const authRole = () => {
@@ -233,6 +235,10 @@ function Home() {
       }
     }
   };
+
+  if (!role) {
+    return <Landing />;
+  }
   if (screen) {
     const info = projectsList.filter((project) => project?._id === id);
     const dataTeam = info[0].team;

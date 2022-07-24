@@ -92,7 +92,6 @@ function Tablehome({
                   <tr className={styles.row} key={row._id}>
                     {keys?.map((key, index) => {
                       if (key === 'active') {
-                        console.log('activo:', row[key]);
                         return (
                           <td>
                             <Slider
@@ -106,12 +105,13 @@ function Tablehome({
                         );
                       }
                       if (key === 'tasks') {
-                        if (row[key].length < 1) {
+                        // <div>ola</div>;
+                        if (!row.tasks) {
                           return <td>No tasks yet</td>;
                         } else {
                           return (
                             <Dropdown width={'150px'} placeholder="Tasks">
-                              {row[key].map((element) => {
+                              {row[key]?.map((element) => {
                                 return <option key={Math.random()}>{element.taskName}</option>;
                               })}
                               ;
@@ -120,7 +120,8 @@ function Tablehome({
                         }
                       }
                       if (key === 'team') {
-                        if (row[key].length < 1) {
+                        <div>ola</div>;
+                        if (!row.team) {
                           return <td>No members yet</td>;
                         } else {
                           return (

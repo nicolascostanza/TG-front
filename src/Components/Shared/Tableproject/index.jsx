@@ -43,7 +43,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
-  console.log('datatask:', dataTasks);
   // KEYS AND VALUES
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
@@ -134,7 +133,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       setShowModalEmployee(true);
     } else {
       const valuesForm = dataTasks.filter((task) => task._id === id);
-      console.log('tareita assigned:', valuesForm[0].assignedEmployee[0]);
       reset({
         taskName: valuesForm[0].taskName,
         taskDescription: valuesForm[0].taskDescription,

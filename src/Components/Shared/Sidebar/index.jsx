@@ -12,6 +12,7 @@ const Sidebar = ({ children }) => {
   const logOut = () => {
     dispatch(authActions.setAuthentication(false));
     dispatch(currentUserActions.setCurrentUserToInitialState());
+    sessionStorage.clear();
   };
   const role = useSelector((state) => state.auth.authenticated?.role);
   const handleClose = () => {

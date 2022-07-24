@@ -12,7 +12,7 @@ const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
 const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
-const Landing = lazy(() => import('Components/Shared/Landing'));
+// const Landing = lazy(() => import('Components/Shared/Landing'));
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -29,8 +29,8 @@ function Layout() {
         <Header />
         <Suspense fallback={<Loader />}>
           <Switch>
-            <Route exact path="/" component={Landing} />
-            <PrivateRoute exact path="/" role="EMPLOYEE" component={Home} />
+            <Route exact path="/" component={Home} />
+            <PrivateRoute exact path="/" role="EMPLOYEE" component={EmployeesHome} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
