@@ -5,7 +5,8 @@ const initialState = {
   isFetching: false,
   error: '',
   createModalShow: false,
-  editModalShow: false
+  editModalShow: false,
+  message: ''
 };
 
 export const projectsReducer = (state = initialState, action) => {
@@ -20,7 +21,8 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: action.payload,
-        isFetching: false
+        isFetching: false,
+        error: false
       };
     case types.GET_PROJECTS_FAILED:
       return {
@@ -36,7 +38,9 @@ export const projectsReducer = (state = initialState, action) => {
     case types.ADD_NEW_PROJECT_FULFILLED:
       return {
         ...state,
-        list: [...state.list, action.payload]
+        list: [...state.list, action.payload.project],
+        message: action.payload.message,
+        error: false
       };
     case types.ADD_NEW_PROJECT_FAILED:
       return {
@@ -51,12 +55,17 @@ export const projectsReducer = (state = initialState, action) => {
     case types.UPDATE_PROJECT_FULFILLED:
       return {
         ...state,
-        list: state.list.map((item) => (item._id === action.payload._id ? action.payload : item))
+        list: state.list.map((item) =>
+          item._id === action.payload.project._id ? action.payload.project : item
+        ),
+        message: action.payload.message,
+        error: false
       };
     case types.UPDATE_PROJECT_FAILED:
       return {
         ...state,
-        error: action.payload
+        error: action.payload,
+        message: action.payload
       };
     // DELETE PROJECTS
     case types.DELETE_PROJECT_PENDING:
@@ -67,13 +76,15 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         list: state.list.filter((item) => item._id !== action.payload),
-        isFetching: false
+        isFetching: false,
+        error: false
       };
     case types.DELETE_PROJECT_FAILED:
       return {
         ...state,
         isFetching: false,
-        error: action.payload
+        error: action.payload,
+        message: action.payload
       };
     // MODAL HANDLING FUNCTIONS
     case types.CLOSE_ALL_MODALS:
@@ -91,6 +102,121 @@ export const projectsReducer = (state = initialState, action) => {
       return {
         ...state,
         editModalShow: true
+      };
+    // ADD EMPLOYEE TO PROJECT
+    case types.ADD_EMPLOYEE_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.ADD_EMPLOYEE_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((project) =>
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message,
+        error: false
+      };
+    case types.ADD_EMPLOYEE_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // ADD TASK TO PROJECT
+    case types.ADD_TASK_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.ADD_TASK_TO_PROJECT_FULFILLED:
+      return {
+        ...state,
+        list: state.list.map((project) =>
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message,
+        error: false
+      };
+    case types.ADD_TASK_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // DELETE TASK TO PROJECT
+    case types.DELETE_TASK_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.DELETE_TASK_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((project) =>
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message,
+        error: false
+      };
+    case types.DELETE_TASK_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // DELETE EMPLOYEE TO PROJECTS
+    case types.DELETE_EMPLOYEE_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.DELETE_EMPLOYEE_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((project) =>
+          project._id === action.payload.project._id ? action.payload.project : project
+        ),
+        message: action.payload.message,
+        error: false
+      };
+    case types.DELETE_EMPLOYEE_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
+      };
+    // UPDATE EMPLOYEE IN PROJECT
+    case types.UPDATE_EMPLOYEE_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.UPDATE_EMPLOYEE_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((proy) =>
+          proy._id === action.payload.project._id ? action.payload.project : proy
+        ),
+        message: action.payload.message,
+        error: false
+      };
+    case types.UPDATE_EMPLOYEE_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload,
+        message: action.payload.message
+      };
+    // UPDATE TASK IN PROJECT
+    case types.UPDATE_TASK_TO_PROJECT_PENDING:
+      return {
+        ...state
+      };
+    case types.UPDATE_TASK_TO_PROJECT_SUCCESS:
+      return {
+        ...state,
+        list: state.list.map((project) =>
+          project._id === action.payload.proejct._id ? action.payload.project : project
+        ),
+        message: action.payload.message,
+        error: false
+      };
+    case types.UPDATE_TASK_TO_PROJECT_FAILED:
+      return {
+        ...state,
+        error: action.payload
       };
     default:
       return state;
