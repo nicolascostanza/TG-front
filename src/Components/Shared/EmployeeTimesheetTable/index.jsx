@@ -30,7 +30,7 @@ function EmployeeTimesheetTable({
   const [orderField, setOrderField] = useState('');
   const [ascendOrder, setAscendOrder] = useState(true);
 
-  const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
+  // const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
 
   const toggleOrder = (bool) => {
     setAscendOrder(bool);
@@ -219,8 +219,11 @@ function EmployeeTimesheetTable({
     }
   };
 
+  const show = filterByDate(data);
+  const filtershow = orderByField(show).slice(10 * (indexPage - 1), 10 * indexPage);
+
   const nextPage = () => {
-    if (data.length / 10 > indexPage) {
+    if (show.length / 10 > indexPage) {
       setIndexPage(indexPage + 1);
     }
   };
@@ -230,8 +233,10 @@ function EmployeeTimesheetTable({
       setIndexPage(indexPage - 1);
     }
   };
+  // const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
 
-  const filtershow = orderByField(filterByDate(show));
+  const totalHours = show.reduce((prev, curr) => prev + curr.hours, 0);
+  const totalRate = show.reduce((prev, curr) => prev + curr.hours * curr.rate, 0);
 
   const arrowDown = <i onClick={() => toggleOrder(true)} className={`fa-solid fa-arrow-up`}></i>;
   const arrowUp = <i onClick={() => toggleOrder(false)} className={`fa-solid fa-arrow-down`}></i>;
@@ -244,15 +249,14 @@ function EmployeeTimesheetTable({
   };
 
   useEffect(() => {
-    const maxIndexPage =
-      filtershow.length > 10 ? Math.floor((filtershow.length - 0.01) / 10) + 1 : 1;
+    const maxIndexPage = show.length > 10 ? Math.floor((show.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {
       setIndexPage(1);
     }
     if (indexPage > maxIndexPage) {
       setIndexPage(maxIndexPage);
     }
-  }, [filtershow]);
+  }, [data]);
 
   return (
     <div className={styles.container}>
@@ -391,6 +395,7 @@ function EmployeeTimesheetTable({
         </div>
         <div>
           <Button
+            id="prevPageButton"
             width={'50px'}
             height={'40px'}
             fontSize={'15px'}
@@ -402,6 +407,7 @@ function EmployeeTimesheetTable({
         </div>
         <div>
           <Button
+            id="nextPageButton"
             width={'50px'}
             height={'40px'}
             fontSize={'15px'}
@@ -410,6 +416,10 @@ function EmployeeTimesheetTable({
           >
             <i className="fa-solid fa-angle-right"></i>
           </Button>
+        </div>
+        <div>
+          <h3>{`Total hours: ${totalHours}`}</h3>
+          <h3>{`Total rate: ${totalRate}`}</h3>
         </div>
       </div>
     </div>

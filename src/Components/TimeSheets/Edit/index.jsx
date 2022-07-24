@@ -141,22 +141,13 @@ function EditTimeSheets(props) {
                 />
               )}
             </label>
-            {selectedProject.length < 24 ? (
-              <input
-                name="projectId"
-                value={searchProject}
-                onChange={handleProjectChange}
-                placeholder="Search a project"
-              />
-            ) : (
-              <input
-                name="projectId"
-                value={searchProject}
-                onChange={handleProjectChange}
-                placeholder="Search a project"
-                readOnly
-              />
-            )}
+            <input
+              name="projectId"
+              value={searchProject}
+              onChange={handleProjectChange}
+              placeholder="Search a project"
+              readOnly={selectedProject?.length > 0}
+            />
 
             {searchProject.length > 0 && selectedProject.length < 24
               ? userProjects
@@ -213,22 +204,13 @@ function EditTimeSheets(props) {
                 />
               )}
             </label>
-            {selectedTask.length < 24 ? (
-              <input
-                name="taskId"
-                value={searchTask}
-                onChange={handleTaskChange}
-                placeholder="Search a task"
-              />
-            ) : (
-              <input
-                name="taskId"
-                value={searchTask}
-                onChange={handleTaskChange}
-                placeholder="Search a task"
-                readOnly
-              />
-            )}
+            <input
+              name="taskId"
+              value={searchTask}
+              onChange={handleTaskChange}
+              placeholder="Search a task"
+              readOnly={selectedTask?.length > 0}
+            />
 
             {searchTask.length > 0 && selectedTask.length < 24
               ? allTasks

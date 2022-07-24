@@ -84,6 +84,7 @@ function TimeSheet() {
     dispatch(actions.closeModals());
   };
 
+  console.log('timeSheets: ', timeSheets);
   let formattedTimeSheets = [];
 
   if (showPendingTS) {
@@ -98,7 +99,8 @@ function TimeSheet() {
           hours: timeSheet.hours,
           status: timeSheet.approved ? 'Approved' : 'Disapproved',
           isDeleted: false,
-          approveSlider: timeSheet.approved ? true : false
+          approveSlider: timeSheet.approved ? true : false,
+          rate: 5
           // approved: timeSheet.approved
         };
       })
@@ -114,7 +116,8 @@ function TimeSheet() {
         hours: timeSheet.hours,
         status: timeSheet.approved ? 'Approved' : 'Disapproved',
         isDeleted: false,
-        approveSlider: timeSheet.approved ? true : false
+        approveSlider: timeSheet.approved ? true : false,
+        rate: 5
       };
     });
   }
@@ -175,9 +178,6 @@ function TimeSheet() {
     setShowDeletedModal(false);
     setShowDeletedModalMessage('');
   };
-
-  console.log('timeSheets: ', timeSheets);
-  // const totalHours = timeSheets.reduce();
 
   return (
     <>
@@ -269,10 +269,6 @@ function TimeSheet() {
         onApprove={statusChanger}
         onSelect={selectTS}
       />
-      <div>
-        {/* <h3>{`Total hours: ${}`}</h3> */}
-        <h3>Total hours: 5</h3>
-      </div>
     </>
   );
 }

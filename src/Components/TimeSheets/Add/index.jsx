@@ -9,6 +9,8 @@ import Joi from 'joi';
 
 function AddTimeSheets(props) {
   const { showCreateModal, handleClose } = props;
+  const [searchEmployee, setSearchEmployee] = useState(props.currentUser.firstName);
+  const [selectedEmployee, setSelectedEmployee] = useState(props.currentUser._id);
   const [searchProject, setSearchProject] = useState('');
   const [selectedProject, setSelectedProject] = useState('');
   const [selectedTask, setSelectedTask] = useState('');
@@ -34,6 +36,20 @@ function AddTimeSheets(props) {
     approved: Joi.bool().optional(),
     taskId: Joi.string()
   });
+
+  const handleEmployeeChange = (e) => {
+    setSearchEmployee(e.target.value);
+  };
+
+  const selectEmployee = (id, name) => {
+    setSelectedEmployee(id);
+    setSearchEmployee(name);
+  };
+
+  const clearEmployeeSelection = () => {
+    setSelectedEmployee('');
+    setSearchEmployee('');
+  };
 
   const handleProjectChange = (e) => {
     setSearchProject(e.target.value);
@@ -88,7 +104,7 @@ function AddTimeSheets(props) {
     addTimeSheets({
       ...data,
       projectId: selectedProject,
-      employeeId: props.currentUser._id,
+      employeeId: selectedEmployee,
       taskId: selectedTask,
       approved: false
     });
@@ -105,15 +121,42 @@ function AddTimeSheets(props) {
         <div className={styles.container}>
           {props.role === 'PM' && (
             <div>
-              <label htmlFor="employeeId">Employee ID</label>
+              <label htmlFor="employeeId">
+                Employee
+                {selectedEmployee.length < 24 ? null : (
+                  <i
+                    className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                    onClick={clearEmployeeSelection}
+                  />
+                )}
+              </label>
               <input
-                {...register('employeeId', { required: true })}
-                type="text"
-                placeholder="Employee ID"
+                name="employeeId"
+                value={searchEmployee}
+                onChange={handleEmployeeChange}
+                placeholder="Search an employee"
+                readOnly={selectedEmployee?.length > 0}
               />
-              {errors.employeeId?.type === 'string.empty' && (
-                <p className={styles.error}>{errors.employeeId.message}</p>
-              )}
+
+              {searchEmployee.length > 0 && selectedEmployee.length < 24
+                ? userProjects
+                    .filter((item) => item.firstName?.match(new RegExp(searchEmployee, 'i')))
+                    .map((emp) => {
+                      return (
+                        <p
+                          key={emp.projectId._id}
+                          onClick={() => selectEmployee(emp._id, emp.firstName)}
+                          className={
+                            emp._id === searchEmployee
+                              ? styles.selectedItem
+                              : styles.notSelectedItem
+                          }
+                        >
+                          {emp.firstName}: {emp.email}
+                        </p>
+                      );
+                    })
+                : null}
             </div>
           )}
           <div>
@@ -126,23 +169,13 @@ function AddTimeSheets(props) {
                 />
               )}
             </label>
-            {selectedProject.length < 24 ? (
-              <input
-                name="projectId"
-                value={searchProject}
-                onChange={handleProjectChange}
-                placeholder="Search a project"
-              />
-            ) : (
-              <input
-                name="projectId"
-                value={searchProject}
-                onChange={handleProjectChange}
-                placeholder="Search a project"
-                readOnly
-              />
-            )}
-
+            <input
+              name="projectId"
+              value={searchProject}
+              onChange={handleProjectChange}
+              placeholder="Search a project"
+              readOnly={selectedProject?.length > 0}
+            />
             {searchProject.length > 0 && selectedProject.length < 24
               ? userProjects
                   .filter((item) => item.projectId.name.match(new RegExp(searchProject, 'i')))
@@ -198,22 +231,13 @@ function AddTimeSheets(props) {
                 />
               )}
             </label>
-            {selectedTask.length < 24 ? (
-              <input
-                name="taskId"
-                value={searchTask}
-                onChange={handleTaskChange}
-                placeholder="Search a task"
-              />
-            ) : (
-              <input
-                name="taskId"
-                value={searchTask}
-                onChange={handleTaskChange}
-                placeholder="Search a task"
-                readOnly
-              />
-            )}
+            <input
+              name="taskId"
+              value={searchTask}
+              onChange={handleTaskChange}
+              placeholder="Search a task"
+              readOnly={selectedTask?.length > 0}
+            />
 
             {searchTask.length > 0 && selectedTask.length < 24
               ? allTasks
