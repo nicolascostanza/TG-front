@@ -3,7 +3,7 @@ import AddTimeSheets from '../Add';
 import EditTimeSheets from '../Edit';
 import Sidebar from 'Components/Shared/Sidebar';
 import Loader from 'Components/Shared/Loader';
-import * as thunks from 'redux/timesheets/thunks';
+import * as timesheetsThunks from 'redux/timesheets/thunks';
 import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +24,7 @@ function TimeSheet() {
   };
 
   // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
-  const [role, setRole] = useState('PM');
+  // const [role, setRole] = useState('PM');
   // DELETE AFTER MERGING TO PROD, PLEASE...
 
   const dispatch = useDispatch();
@@ -40,20 +40,19 @@ function TimeSheet() {
   const isError = useSelector((state) => state.timesheet.error);
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
-  // let role = useSelector((state) => state.auth.authenticated.role);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  // const [tableHeaders, setTableHeaders] = useState([]);
-  // const authRole = () => {
-  //   role = useSelector((state) => state.auth.authenticated.role);
-  // }
+  let role = useSelector((state) => state.auth.authenticated.role);
+  const rateList = currentUser.associatedProjects?.map((item) => {
+    return { id: item.projectId._id, rate: item.rate };
+  });
   useEffect(() => {
     if (showAllTimesheets === true) {
-      dispatch(thunks.getTimesheets());
+      dispatch(timesheetsThunks.getTimesheets());
     }
   }, [timeSheets.length, showAllTimesheets]);
 
   useEffect(() => {
-    dispatch(thunks.getEmployeeTimesheets(currentUser._id));
+    dispatch(timesheetsThunks.getEmployeeTimesheets(currentUser._id));
     dispatch(tasksThunks.getTasks());
   }, []);
 
@@ -62,12 +61,12 @@ function TimeSheet() {
   const deleteTimeSheet = (id) => {
     const resp = confirm('Are you sure you want to delete it?');
     if (resp) {
-      dispatch(thunks.deleteTimesheets(id));
+      dispatch(timesheetsThunks.deleteTimesheets(id));
     }
   };
 
   const deleteMoreThan1TS = (id) => {
-    dispatch(thunks.deleteTimesheets(id));
+    dispatch(timesheetsThunks.deleteTimesheets(id));
   };
 
   const openAddTimeSheet = () => {
@@ -75,7 +74,6 @@ function TimeSheet() {
   };
 
   const openEditTimeSheet = (id) => {
-    console.log('openEditTimeSheet ', id);
     setEditId(id);
     dispatch(actions.showEditModal());
   };
@@ -84,7 +82,6 @@ function TimeSheet() {
     dispatch(actions.closeModals());
   };
 
-  console.log('timeSheets: ', timeSheets);
   let formattedTimeSheets = [];
 
   if (showPendingTS) {
@@ -100,7 +97,7 @@ function TimeSheet() {
           status: timeSheet.approved ? 'Approved' : 'Disapproved',
           isDeleted: false,
           approveSlider: timeSheet.approved ? true : false,
-          rate: 5
+          rate: rateList.find((item) => item.id === timeSheet.projectId._id).rate ?? 0
           // approved: timeSheet.approved
         };
       })
@@ -117,7 +114,7 @@ function TimeSheet() {
         status: timeSheet.approved ? 'Approved' : 'Disapproved',
         isDeleted: false,
         approveSlider: timeSheet.approved ? true : false,
-        rate: 5
+        rate: rateList.find((item) => item.id === timeSheet.projectId._id).rate ?? 0
       };
     });
   }
@@ -125,7 +122,7 @@ function TimeSheet() {
   formattedTimeSheets.reverse();
   const statusChanger = async (status, id) => {
     dispatch(
-      thunks.editTimesheet(
+      timesheetsThunks.editTimesheet(
         {
           approved: status.status === 'Approved' ? false : true
         },
@@ -182,8 +179,8 @@ function TimeSheet() {
   return (
     <>
       {/* --------------- JUST FOR DEBUG START --------------- */}
-      <button onClick={() => setRole('EMPLOYEE')}>SET ROLE TO EMPLOYEE</button>
-      <button onClick={() => setRole('PM')}>SET ROLE TO PM</button>
+      {/* <button onClick={() => setRole('EMPLOYEE')}>SET ROLE TO EMPLOYEE</button>
+      <button onClick={() => setRole('PM')}>SET ROLE TO PM</button> */}
       {/* --------------- JUST FOR DEBUG FINISH --------------- */}
       <Loader isLoading={isFetching} />
       <Sidebar />
