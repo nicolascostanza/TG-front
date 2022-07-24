@@ -106,7 +106,7 @@ function Tablehome({
                       }
                       if (key === 'tasks') {
                         // <div>ola</div>;
-                        if (!row.tasks) {
+                        if (!row.tasks || row.tasks.length < 1) {
                           return <td>No tasks yet</td>;
                         } else {
                           return (
@@ -121,7 +121,7 @@ function Tablehome({
                       }
                       if (key === 'team') {
                         <div>ola</div>;
-                        if (!row.team) {
+                        if (!row.team || row.team.length < 1) {
                           return <td>No members yet</td>;
                         } else {
                           return (
@@ -143,11 +143,7 @@ function Tablehome({
                         if (row[key] === undefined) {
                           return <td> - </td>;
                         } else {
-                          let dateFormatted = new Date(row[key]).toLocaleDateString('en-us', {
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric'
-                          });
+                          let dateFormatted = new Date(row[key]).toISOString().split('T')[0];
                           return (
                             <td key={index} onClick={() => openRow(role, row._id)}>
                               {dateFormatted}

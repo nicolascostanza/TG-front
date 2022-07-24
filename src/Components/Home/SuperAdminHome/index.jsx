@@ -1,8 +1,8 @@
 import React from 'react';
-import Sidebar from '../Shared/Sidebar';
+import Sidebar from 'Components/Shared/Sidebar';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import * as thunksAdmins from '../../redux/admins/thunks';
+import * as thunksAdmins from 'redux/admins/thunks';
 import {
   validationsFormSuperadminCreate,
   validationsFormSuperadminEdit
@@ -12,10 +12,10 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import Loader from 'Components/Shared/Loader';
 import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
-import styles from './home.module.css';
+import styles from '../home.module.css';
 import Tablehome from 'Components/Shared/Tablehome';
 
-const superAdminHome = () => {
+const SuperAdminHome = () => {
   const dispatch = useDispatch();
   let message = useSelector((state) => state.projects.message);
   const [showModalResponse, setShowModalResponse] = useState(false);
@@ -29,16 +29,14 @@ const superAdminHome = () => {
   let adminsList = useSelector((state) => state.admins.list);
   let projectsError = useSelector((state) => state.projects.error);
   let adminsError = useSelector((state) => state.admins.error);
-  // ROLE
-  let role = useSelector((state) => state.auth.authenticated.role);
   let title = 'SUPERADMIN';
 
   useEffect(() => {
     dispatch(thunksAdmins.getAdmins());
   }, [screen, message]);
 
-  let headers = ['Email', 'Is Active ?'];
-  let keys = ['email', 'active'];
+  const headers = ['Email', 'Is Active ?'];
+  const keys = ['email', 'active'];
   let validator;
 
   if (method === 'POST') {
@@ -70,7 +68,7 @@ const superAdminHome = () => {
     dispatch(
       thunksAdmins.updateAdmin(
         {
-          active: data.active === true ? false : true
+          active: data.active ? false : true
         },
         id
       )
@@ -225,7 +223,7 @@ const superAdminHome = () => {
         openModal={handleModal}
         switcher={switcher}
         title={title}
-        role={role}
+        role={'SUPERADMIN'}
         headers={headers}
         keys={keys}
         activeChanger={activeChanger}
@@ -239,4 +237,4 @@ const superAdminHome = () => {
   );
 };
 
-export default superAdminHome;
+export default SuperAdminHome;

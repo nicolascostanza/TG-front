@@ -6,15 +6,16 @@ import Modal from 'Components/Shared/Modal';
 import Button from 'Components/Shared/Button';
 import Tableproject from 'Components/Shared/Tableproject';
 import Landing from 'Components/Shared/Landing';
+import SuperAdminHome from './SuperAdminHome';
+// import AdminHome from './AdminHome';
+// import EmployeeHome from './EmployeeHome';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import {
   validationsFormProjectCreate,
-  validationsFormProjectEdit,
-  validationsFormSuperadminCreate,
-  validationsFormSuperadminEdit
+  validationsFormProjectEdit
 } from 'Components/Home/validations';
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
@@ -33,7 +34,6 @@ function Home() {
   let headers = [];
   let keys = [];
   let validator;
-  let title = '';
   const [screen, setScreen] = useState(false);
   const [id, setId] = useState('');
   const [showModal, setShowModal] = useState(false);
@@ -49,29 +49,14 @@ function Home() {
   let adminsList = useSelector((state) => state.admins.list);
   let userCurrent = useSelector((state) => state.currentUser.currentUser);
   let message = useSelector((state) => state.projects.message);
-  // const role = 'ADMIN';
-  let role = useSelector((state) => state.auth.authenticated.role);
+  const role = 'ADMIN';
+  // let role = useSelector((state) => state.auth.authenticated.role);
   console.log('role', role);
-  role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
+  const title = 'PROJECTS';
   // const currentUser = useSelector((state) => state.currentUser.currentUser);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
-
-  // COSITA NUEVA PARA ORGANIZAR
-
-  // if (!role) {
-  //   return <Landing />;
-  // }
-  // if (role === 'SUPERADMIN') {
-  //   return <SuperAdminHome />;
-  // } else if (role === 'ADMIN') {
-  //   return <AdminHome />;
-  // } else {
-  //   return <EmployeeHome />;
-  // }
-
-  // COSITA NUEVA PARA ORGANIZAR
 
   useEffect(() => {
     if (id === '') {
@@ -89,23 +74,14 @@ function Home() {
     }
   }, [screen, message]);
   // headers and keys
-  if (role === 'SUPERADMIN') {
-    headers = ['Email', 'Is Active ?'];
-    keys = ['email', 'active'];
-    if (method === 'POST') {
-      validator = validationsFormSuperadminCreate;
-    } else {
-      validator = validationsFormSuperadminEdit;
-    }
+  headers = ['Name', 'Description', 'Client Name', 'Start Date', 'End Date', 'Tasks', 'Team'];
+  keys = ['name', 'description', 'clientName', 'startDate', 'endDate', 'tasks', 'team'];
+  if (method === 'POST') {
+    validator = validationsFormProjectCreate;
   } else {
-    headers = ['Name', 'Description', 'Client Name', 'Start Date', 'End Date', 'Tasks', 'Team'];
-    keys = ['name', 'description', 'clientName', 'startDate', 'endDate', 'tasks', 'team'];
-    if (method === 'POST') {
-      validator = validationsFormProjectCreate;
-    } else {
-      validator = validationsFormProjectEdit;
-    }
+    validator = validationsFormProjectEdit;
   }
+
   // REACT HOOK FORMS
   const {
     handleSubmit,
@@ -160,13 +136,13 @@ function Home() {
           endDate: ''
         });
       } else {
-        let selected = projectsList.filter((admin) => admin._id === id);
+        let selected = projectsList.find((admin) => admin._id === id);
         reset({
-          name: selected[0].name,
-          description: selected[0].description,
-          clientName: selected[0].clientName,
-          startDate: selected[0].startDate.substring(0, 10),
-          endDate: selected[0].endDate.substring(0, 10)
+          name: selected?.name,
+          description: selected?.description,
+          clientName: selected?.clientName,
+          startDate: new Date(selected?.startDate).toISOString().split('T')[0],
+          endDate: selected?.endDate ? new Date(selected?.endDate).toISOString().split('T')[0] : ''
         });
       }
     }
@@ -250,10 +226,22 @@ function Home() {
       }
     }
   };
+  // <----- HERE START THE RETURNS ----->
+  // COSITA NUEVA PARA ORGANIZAR
 
   if (!role) {
     return <Landing />;
   }
+  if (role === 'SUPERADMIN') {
+    return <SuperAdminHome />;
+    // } else if (role === 'ADMIN') {
+    //   return <AdminHome />;
+    // } else {
+    //   return <EmployeeHome />;
+  }
+
+  // COSITA NUEVA PARA ORGANIZAR
+
   if (screen) {
     const info = projectsList.filter((project) => project?._id === id);
     const dataTeam = info[0].team;
@@ -321,148 +309,82 @@ function Home() {
           <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
         </Modal>
         <Loader isLoading={isLoading} />
-        {role === 'SUPERADMIN' ? (
-          <Modal
-            showModal={showModal}
-            handleClose={() => setShowModal(false)}
-            modalTitle={method === 'POST' ? 'ADD ADMIN' : 'EDIT ADMIN'}
-          >
-            <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <label htmlFor="email">Email</label>
-                <input
-                  id="emailAdmin"
-                  type="email"
-                  placeholder="example@gmail.com"
-                  {...register('email')}
-                  error={appendErrors.email?.message}
-                />
-                {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
-              </div>
-              <div>
-                <label htmlFor="password">Password</label>
-                <input
-                  id="passwordAdmin"
-                  type="password"
-                  placeholder="password"
-                  {...register('password')}
-                  error={appendErrors.password?.message}
-                />
-                {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
-              </div>
-              <div className={styles.checkbox}>
-                <label htmlFor="active">Active</label>
-                <input
-                  id="activeAdmin"
-                  className={styles.inputsProfile}
-                  type="checkbox"
-                  name="active"
-                  {...register('active')}
-                />
-              </div>
-              <div className={styles.buttonsContainer}>
-                <Button
-                  id="buttonSuperadminCreate"
-                  width={'75px'}
-                  height={'30px'}
-                  type="submit"
-                  value="CONTINUE"
-                >
-                  {method === 'POST' ? 'CREATE' : 'EDIT'}
-                </Button>
-              </div>
-              <div>
-                <Button
-                  onClick={() => setShowModal(false)}
-                  id="addModalEmployeeCancel"
-                  width={'75px'}
-                  height={'30px'}
-                  type="submit"
-                  value="cancelEmoployee"
-                >
-                  CANCEL
-                </Button>
-              </div>
-            </form>
-          </Modal>
-        ) : (
-          <Modal
-            showModal={showModal}
-            handleClose={() => setShowModal(false)}
-            modalTitle={method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}
-          >
-            <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-              <div>
-                <label htmlFor="name">Name</label>
-                <input
-                  id="nameProject"
-                  type="text"
-                  placeholder="Name"
-                  {...register('name')}
-                  error={appendErrors.name?.message}
-                />
-                {errors.name && <p className={styles.errorInput}>{errors.name?.message}</p>}
-              </div>
-              <div>
-                <label htmlFor="description">Description</label>
-                <input
-                  id="descriptionProject"
-                  type="text"
-                  placeholder="Description"
-                  {...register('description')}
-                  error={appendErrors.description?.message}
-                />
-                {errors.description && (
-                  <p className={styles.errorInput}>{errors.description?.message}</p>
-                )}
-              </div>
-              <div>
-                <label htmlFor="client">Client</label>
-                <input
-                  id="clientProject"
-                  type="text"
-                  placeholder="Client"
-                  {...register('clientName')}
-                  error={appendErrors.clientName?.message}
-                />
-                {errors.clientName && (
-                  <p className={styles.errorInput}>{errors.clientName?.message}</p>
-                )}
-              </div>
-              <div>
-                <label htmlFor="start date">Start Date</label>
-                <input id="startdateProject" type="date" {...register('startDate')} />
-              </div>
-              <div>
-                <label htmlFor="end date">End Date</label>
-                <input id="endDateProject" type="date" {...register('endDate')} />
-              </div>
-              <div className={styles.buttonsContainer}>
-                <Button
-                  id="buttonProjects"
-                  width={'75px'}
-                  height={'30px'}
-                  type="submit"
-                  value="CONTINUE"
-                >
-                  {method === 'POST' ? 'CREATE' : 'EDIT'}
-                </Button>
-              </div>
-              <div>
-                <Button
-                  onClick={() => setShowModal(false)}
-                  id="addModalEmployeeCancel"
-                  width={'75px'}
-                  height={'30px'}
-                  type="submit"
-                  value="cancelEmoployee"
-                >
-                  CANCEL
-                </Button>
-              </div>
-            </form>
-          </Modal>
-        )}
+        <Modal
+          showModal={showModal}
+          handleClose={() => setShowModal(false)}
+          modalTitle={method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}
+        >
+          <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
+            <div>
+              <label htmlFor="name">Name</label>
+              <input
+                id="nameProject"
+                type="text"
+                placeholder="Name"
+                {...register('name')}
+                error={appendErrors.name?.message}
+              />
+              {errors.name && <p className={styles.errorInput}>{errors.name?.message}</p>}
+            </div>
+            <div>
+              <label htmlFor="description">Description</label>
+              <input
+                id="descriptionProject"
+                type="text"
+                placeholder="Description"
+                {...register('description')}
+                error={appendErrors.description?.message}
+              />
+              {errors.description && (
+                <p className={styles.errorInput}>{errors.description?.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="client">Client</label>
+              <input
+                id="clientProject"
+                type="text"
+                placeholder="Client"
+                {...register('clientName')}
+                error={appendErrors.clientName?.message}
+              />
+              {errors.clientName && (
+                <p className={styles.errorInput}>{errors.clientName?.message}</p>
+              )}
+            </div>
+            <div>
+              <label htmlFor="start date">Start Date</label>
+              <input id="startdateProject" type="date" {...register('startDate')} />
+            </div>
+            <div>
+              <label htmlFor="end date">End Date</label>
+              <input id="endDateProject" type="date" {...register('endDate')} />
+            </div>
+            <div className={styles.buttonsContainer}>
+              <Button
+                id="buttonProjects"
+                width={'75px'}
+                height={'30px'}
+                type="submit"
+                value="CONTINUE"
+              >
+                {method === 'POST' ? 'CREATE' : 'EDIT'}
+              </Button>
+            </div>
+            <div>
+              <Button
+                onClick={() => setShowModal(false)}
+                id="addModalEmployeeCancel"
+                width={'75px'}
+                height={'30px'}
+                type="submit"
+                value="cancelEmoployee"
+              >
+                CANCEL
+              </Button>
+            </div>
+          </form>
+        </Modal>
         <Tablehome
           openModal={handleModal}
           switcher={switcher}
@@ -471,7 +393,7 @@ function Home() {
           headers={headers}
           keys={keys}
           activeChanger={activeChanger}
-          data={role === 'SUPERADMIN' ? adminsList : dataProjects(role)}
+          data={dataProjects(role)}
           setId={setId}
           onDelete={() => {
             setShowModalDelete(true);

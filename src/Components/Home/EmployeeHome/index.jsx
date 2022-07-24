@@ -1,7 +1,7 @@
 import React from 'react';
 
-const employeeHome = () => {
+const EmployeeHome = () => {
   return <div>employeeHome</div>;
 };
 
-export default employeeHome;
+export default EmployeeHome;
