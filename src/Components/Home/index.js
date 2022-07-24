@@ -20,7 +20,6 @@ import {
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
 // VER
-// PQ LA FECHA SETEA SE ME SETEA UN DIA DESPUES ? ZONA HORARIA ?
 // cambiar modal de task created
 // hay q traer el current user con el role (ESTA HARDCODEADO)
 
@@ -49,9 +48,8 @@ function Home() {
   let adminsList = useSelector((state) => state.admins.list);
   let userCurrent = useSelector((state) => state.currentUser.currentUser);
   let message = useSelector((state) => state.projects.message);
-  const role = 'ADMIN';
-  // let role = useSelector((state) => state.auth.authenticated.role);
-  console.log('role', role);
+  // const role = 'EMPLOYEE';
+  let role = useSelector((state) => state.auth.authenticated.role);
   const title = 'PROJECTS';
   // const currentUser = useSelector((state) => state.currentUser.currentUser);
   // const authRole = () => {

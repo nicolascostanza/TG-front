@@ -235,8 +235,8 @@ function EmployeeTimesheetTable({
   };
   // const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
 
-  const totalHours = show.reduce((prev, curr) => prev + curr.hours, 0);
-  const totalRate = show.reduce((prev, curr) => prev + curr.hours * curr.rate, 0);
+  const totalHours = show.reduce((prev, curr) => prev + curr?.hours, 0);
+  const totalRate = show.reduce((prev, curr) => prev + curr?.hours * curr?.rate, 0);
 
   const arrowDown = <i onClick={() => toggleOrder(true)} className={`fa-solid fa-arrow-up`}></i>;
   const arrowUp = <i onClick={() => toggleOrder(false)} className={`fa-solid fa-arrow-down`}></i>;

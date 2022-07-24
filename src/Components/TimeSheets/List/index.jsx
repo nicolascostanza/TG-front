@@ -41,7 +41,6 @@ function TimeSheet() {
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  console.log('currentUser: ', currentUser);
   let role = useSelector((state) => state.auth.authenticated.role);
   const rateList = currentUser.associatedProjects.map((item) => {
     return { id: item.projectId?._id, rate: item.rate };
@@ -55,7 +54,7 @@ function TimeSheet() {
   useEffect(() => {
     dispatch(timesheetsThunks.getEmployeeTimesheets(currentUser._id));
     dispatch(tasksThunks.getTasks());
-  }, []);
+  }, [timeSheets.length]);
 
   const allTasks = useSelector((state) => state.tasks.list);
 
@@ -115,7 +114,10 @@ function TimeSheet() {
         status: timeSheet.approved ? 'Approved' : 'Disapproved',
         isDeleted: false,
         approveSlider: timeSheet.approved ? true : false,
-        rate: rateList.find((item) => item.id === timeSheet.projectId._id).rate ?? 0
+        rate:
+          rateList?.find(
+            (item) => item.id === timeSheet.projectId?._id || item.id === timeSheet.projectId
+          ).rate ?? 0
       };
     });
   }
