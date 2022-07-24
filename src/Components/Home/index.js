@@ -58,6 +58,21 @@ function Home() {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
 
+  // COSITA NUEVA PARA ORGANIZAR
+
+  // if (!role) {
+  //   return <Landing />;
+  // }
+  // if (role === 'SUPERADMIN') {
+  //   return <SuperAdminHome />;
+  // } else if (role === 'ADMIN') {
+  //   return <AdminHome />;
+  // } else {
+  //   return <EmployeeHome />;
+  // }
+
+  // COSITA NUEVA PARA ORGANIZAR
+
   useEffect(() => {
     if (id === '') {
       if (role === 'SUPERADMIN') {
