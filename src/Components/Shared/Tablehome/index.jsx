@@ -18,7 +18,7 @@ function Tablehome({
   activeChanger
 }) {
   const [indexPage, setIndexPage] = useState(1);
-  const show = data.slice(10 * (indexPage - 1), 10 * indexPage);
+  const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
     if (indexPage < 1) {

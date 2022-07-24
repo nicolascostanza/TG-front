@@ -32,12 +32,7 @@ function Layout() {
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
-            <PrivateRoute
-              exact
-              path="/admins/profile/:id"
-              role={'ADMIN'}
-              component={AdminsProfile}
-            />
+            <PrivateRoute exact path="/admins/profile" role={'ADMIN'} component={AdminsProfile} />
             <PrivateRoute
               exact
               path="/super-admins"
@@ -58,7 +53,7 @@ function Layout() {
             />
             <PrivateRoute
               exact
-              path="/employees/profile/:id"
+              path="/employees/profile"
               role={['EMPLOYEE', 'ADMIN', 'PM']}
               component={EmployeesProfile}
             />

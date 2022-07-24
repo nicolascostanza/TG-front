@@ -157,8 +157,6 @@ function Admins() {
   };
 
   const onSubmit = (data) => {
-    console.log('data: ', data);
-    console.log('id: ', idEdit);
     if (method === 'POST') {
       addAdmin(data);
     } else if (method === 'PUT') {

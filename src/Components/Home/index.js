@@ -49,11 +49,9 @@ function Home() {
   let userCurrent = useSelector((state) => state.currentUser.currentUser);
   let message = useSelector((state) => state.projects.message);
   const role = 'ADMIN';
-  role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
-  console.log('usuariecioto', userCurrent);
   // let role = useSelector((state) => state.auth.authenticated.role);
+  role === 'SUPERADMIN' ? (title = 'ADMINS') : (title = 'PROJECTS');
   // const currentUser = useSelector((state) => state.currentUser.currentUser);
-  // const [tableHeaders, setTableHeaders] = useState([]);
   // const authRole = () => {
   //   role = useSelector((state) => state.auth.authenticated.role);
   // }
@@ -166,6 +164,19 @@ function Home() {
         },
         id
       )
+      // if (role === 'EMPLOYEE') {
+      //   return (
+      //     <section className={styles.container}>
+      //       <Sidebar></Sidebar>
+      //       <Button
+      //         width={'175px'}
+      //         height={'40px'}
+      //         onClick={() => history.push('/employees/profile')}
+      //         value="employee profile"
+      //       >
+      //         Employee profile
+      //       </Button>
+      //     </section>
     );
   };
   // DELETE FUNCTION
@@ -197,6 +208,13 @@ function Home() {
       }
     } else {
       if (method === 'POST') {
+        // const dataFormatted = {
+        //   name: data.name,
+        //   description: data.description,
+        //   clientName: data.clientName,
+        //   startDate: data.startDate
+        //   // endDate: data.endDate.length > 1 ? data.endDate : ''
+        // };
         dispatch(thunksProjects.addNewProject(data));
         setShowModal(false);
         setShowModalResponse(true);
@@ -232,6 +250,15 @@ function Home() {
           dataTasks={dataTasks}
         />
       </>
+      //   <Button
+      //     width={'130px'}
+      //     height={'40px'}
+      //     onClick={() => history.push('/admins/profile')}
+      //     value="admin profile"
+      //   >
+      //     Admin profile
+      //   </Button>
+      // </section>
     );
   } else {
     return (

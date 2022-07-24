@@ -28,7 +28,7 @@ export const validationsFormProjectCreate = Joi.object({
     'date.base': 'Date is not valid',
     'date.empty': 'This field is required'
   }),
-  endDate: Joi.date().min('01-01-2000').optional()
+  endDate: Joi.date().min('01-01-2000').optional().allow('')
 });
 export const validationsFormProjectEdit = Joi.object({
   name: Joi.string()
