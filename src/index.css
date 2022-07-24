@@ -1,8 +1,77 @@
+:root {
+  /* MATERIAL COLORS */
+  --primary-color: #373867;
+  --primary-color-light: #656195;
+  --primary-color-dark: #0b123c;
+  --secondary-color: #ea3354;
+  --secondary-color-light: #e74563;
+  --secondary-color-dark: #b1002c;
+  --background: #ffffff;
+  --surface: #ffffff;
+  --action: #20b000;
+  --error: #b02000;
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-background: #000000;
+  --text-on-surface: #000000;
+  --text-on-error: #ffffff;
+  
+  /* APP COLORS */
+  --primary-text-color: #000000;
+  --row-text-primary: #000000;
+  --row-text-hover: #ffffff;
+  --text-secondary: #444444;
+  --routes-hover: #9997e7;
+  --nav-background: #ededed;
+  --footer-background: #d4d4d4;
+  --row-even-background: #e0e4e9;
+  --row-odd-background: #f0f4f9;
+  --row-hover-background: #7e8795;
+}
+
+[data-theme='dark'] {
+  /* MATERIAL COLORS */
+  --primary-color: #bb86fc;
+  --primary-color-light: #9d46ff;
+  --primary-color-dark: #0a00b6;
+  --secondary-color: #03dac6;
+  --secondary-color-light: #6746c3;
+  --secondary-color-dark: #000063;
+  --background: #121212;
+  --surface: #ffffff;
+  --action: #20b000;
+  --error: #b02000;
+  --text-on-primary: #ffffff;
+  --text-on-secondary: #ffffff;
+  --text-on-background: #000000;
+  --text-on-surface: #000000;
+  --text-on-error: #ffffff;
+  
+  /* APP COLORS */
+  --primary-text-color: #000000;
+  --row-text-primary: #000000;
+  --row-text-hover: #ffffff;
+  --text-secondary: #444444;
+  --routes-hover: #9997e7;
+  --nav-background: #ededed;
+  --footer-background: #d4d4d4;
+  --row-even-background: #e0e4e9;
+  --row-odd-background: #f0f4f9;
+  --row-hover-background: #7e8795;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 body {
   margin: 0;
-  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  font-family: 'Roboto', sans-serif;
+  /* font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #373867;

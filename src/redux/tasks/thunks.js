@@ -1,5 +1,6 @@
 import { getTasksApi, addTaskApi, deleteTaskApi, editTaskApi } from '../../Components/Tasks/api';
 import * as actions from './actions';
+import * as projectThunks from 'redux/projects/thunks';
 
 export const getTasks = () => {
   return (dispatch) => {
@@ -20,6 +21,14 @@ export const addTask = (newTask) => {
     addTaskApi(newTask)
       .then((response) => {
         dispatch(actions.addTaskFullfilled(response.data));
+        dispatch(
+          projectThunks.addTaskToProject(
+            {
+              task: response.data._id
+            },
+            newTask.parentProject
+          )
+        );
       })
       .catch((error) => {
         dispatch(actions.addTaskFailed(error));

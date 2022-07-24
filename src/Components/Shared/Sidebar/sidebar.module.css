@@ -1,117 +1,130 @@
 .Sidebar {
-    position: fixed;
-    display: flex;
-    flex-direction: column;
-    align-content:flex-end;
-    z-index: 200;
-    box-sizing: border-box;
-    padding: 5px 20px;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100vw;
-    background-color: rgba(175, 175, 194, 1);
-    color: rgba(55, 56, 103, 1);
-    font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  position: fixed;
+  display: flex;
+  flex-direction: column;
+  align-content: flex-end;
+  z-index: 200;
+  padding: 5px 20px;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100vw;
+  background-color: rgba(175, 175, 194, 1);
+  color: rgba(55, 56, 103, 1);
+  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 }
 
 .sidebarTitle {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .sidebarTitle i {
-    padding-right: 20px;
+  padding-right: 20px;
 }
 
-.container{
-    display: flex;
-    flex-direction: column;
-    padding: 20px 0;
-    width: 100%;
-    box-shadow: 0px 1px rgba(55, 56, 103, 1)
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  width: 100%;
+}
+
+.container:not(:last-child) {
+  box-shadow: 0px 1px rgba(55, 56, 103, 1)
 }
 
 .Sidebar a {
-    font-size: 16px;
-    width: 100%;
-    padding: 5px 0 5px 20px;
-    font-weight: lighter;
+  font-size: 16px;
+  width: 100%;
+  padding: 5px 0 5px 20px;
+  font-weight: lighter;
 }
 
 .Sidebar h2 {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: left;
-    margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+  margin-bottom: 12px;
 }
 
 .Sidebar a:hover {
-    cursor:pointer;
-    background-color: rgb(60, 60, 80);
-    color:white;
-    
+  cursor: pointer;
+  background-color: rgb(60, 60, 80);
+  color: white;
+
 }
 
 .Sidebar ul {
-    font-size: 16px;
-    padding: 5px 0 5px 20px;
-    font-weight: lighter;
-    border-radius: 2px;
+  font-size: 16px;
+  padding: 5px 0 5px 20px;
+  font-weight: lighter;
+  border-radius: 2px;
 }
 
 .Sidebar ul li {
-    padding-bottom: 10px;
-    list-style: none;
+  padding-bottom: 10px;
+  list-style: none;
 }
 
 .Sidebar li:hover {
-    cursor:pointer;
-    background-color: rgb(60, 60, 80);
-    color:white;   
+  cursor: pointer;
+  background-color: rgb(60, 60, 80);
+  color: white;
 }
 
-.sidebarTitle > i:hover {
-    cursor:pointer;
-    color:rgb(198, 46, 46);
+.sidebarTitle>i:hover {
+  cursor: pointer;
+  color: rgb(198, 46, 46);
+}
+
+.sidebarTitle>i:active {
+  cursor: pointer;
+  color: rgb(198, 46, 46);
+  transform: scale(.95);
+}
+
+.sidebarLink {
+  text-decoration: none;
 }
 
 .sideButton {
-    position:fixed;
-    left: 30px;
-    top: 30px;
-    border: none;
-    color: black;
-    z-index: 200;
+  position: fixed;
+  left: 30px;
+  top: 30px;
+  border: none;
+  color: black;
+  z-index: 200;
 }
 
-.sideButton i{
+.sideButton > i {
   color: black;
   transform: scale(1.6);
 }
 
-.sideButton i:hover {
+.sideButton > i:hover {
   cursor: pointer;
   color: rgb(198, 46, 46);
 }
 
 @media screen and (min-width: 768px) {
-    .Sidebar {
-        width: 45vw;
-    }
-    .sidebarTitle i {
-        padding-right: 5px;
-    }
-    
+  .Sidebar {
+    width: 45vw;
+  }
+
+  .sidebarTitle i {
+    padding-right: 5px;
+  }
+
 }
 
 @media screen and (min-width: 1024px) {
-    .Sidebar {
-        width: 20vw;
-    }
+  .Sidebar {
+    width: 20vw;
+  }
 }

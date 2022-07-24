@@ -1,14 +1,12 @@
-import styles from './header.module.css';
-import { Link, withRouter } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import AppBar from '@mui/material/AppBar';
-// import IconButton from '@mui/material/IconButton';
+import { Link, withRouter } from 'react-router-dom';
+import styles from './header.module.css';
 
 function Header() {
   const pathName = window.location.pathname;
   const onHome = pathName === '/';
-
   const role = useSelector((state) => state.auth.authenticated?.role);
+
   if (!role && onHome) {
     return null;
   }

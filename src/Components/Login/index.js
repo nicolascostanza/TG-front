@@ -24,7 +24,6 @@ const ContinueButton = styled(Button)({
 
 const Login = () => {
   const history = useHistory();
-  const role = useSelector((state) => state.auth.authenticated?.role);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
   const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
   const isFetchingAuth = useSelector((state) => state.auth.isFetching);
@@ -40,16 +39,10 @@ const Login = () => {
 
   // Should redirect after current user is auth and loaded
   useEffect(() => {
-    if (role === 'EMPLOYEE' && currentUser?._id) {
-      history.push(`/employees/profile/${currentUser._id}`);
+    if (currentUser?._id) {
+      history.push('/');
     }
-    if (role === 'ADMIN') {
-      history.push('/admins');
-    }
-    if (role === 'SUPERADMIN') {
-      history.push('/superadmins');
-    }
-  }, [role, currentUser?._id]);
+  }, [currentUser?._id]);
 
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));

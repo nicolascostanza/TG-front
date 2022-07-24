@@ -1,12 +1,19 @@
 import React from 'react';
 import styles from '../Sidebar/sidebar.module.css';
+import { Link, withRouter } from 'react-router-dom';
 import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import { List, ListItem, Drawer } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import * as authActions from 'redux/auth/actions';
+import * as currentUserActions from 'redux/currentUser/actions';
 
 const Sidebar = ({ children }) => {
-  const history = useHistory();
+  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const logOut = () => {
+    dispatch(authActions.setAuthentication(false));
+    dispatch(currentUserActions.setCurrentUserToInitialState());
+  };
+  const role = useSelector((state) => state.auth.authenticated?.role);
   const handleClose = () => {
     setIsOpen(false);
   };
@@ -16,58 +23,76 @@ const Sidebar = ({ children }) => {
         <i className="fa-solid fa-bars"></i>
       </button>
     );
+  } else if (!role)
+    return (
+      <div className={styles.Sidebar}>
+        <section className={styles.container}>
+          <div className={styles.sidebarTitle}>
+            <p>Menu</p>
+            <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+          </div>
+          <Link className={styles.sidebarLink} to="/">
+            Home
+          </Link>
+          <Link className={styles.sidebarLink} to="/signup">
+            Sign-up
+          </Link>
+          <Link className={styles.sidebarLink} to="/login">
+            Log-in
+          </Link>
+        </section>
+        <section className={styles.container}>{children}</section>
+      </div>
+    );
+  else if (role === 'EMPLOYEE') {
+    return (
+      <div className={styles.Sidebar}>
+        <section className={styles.container}>
+          <div className={styles.sidebarTitle}>
+            <p>Menu</p>
+            <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+          </div>
+          <Link className={styles.sidebarLink} to="/">
+            Home
+          </Link>
+          <Link className={styles.sidebarLink} to="/employees/profile">
+            Profile
+          </Link>
+          <Link className={styles.sidebarLink} onClick={logOut} to="/">
+            Log Out
+          </Link>
+        </section>
+        <section className={styles.container}>{children}</section>
+      </div>
+    );
+  } else if (role === 'ADMIN') {
+    return (
+      <div className={styles.Sidebar}>
+        <section className={styles.container}>
+          <div className={styles.sidebarTitle}>
+            <p>Menu</p>
+            <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+          </div>
+          <Link className={styles.sidebarLink} to="/">
+            Home
+          </Link>
+          <Link className={styles.sidebarLink} to="/signup">
+            Sign-up
+          </Link>
+          <Link className={styles.sidebarLink} to="/login">
+            Log-in
+          </Link>
+          <Link className={styles.sidebarLink} to="/admins/profile">
+            Profile
+          </Link>
+          <Link className={styles.sidebarLink} onClick={logOut} to="/">
+            Log Out
+          </Link>
+        </section>
+        <section className={styles.container}>{children}</section>
+      </div>
+    );
   }
-  return (
-    // <div className={styles.Sidebar}>
-    //   <section className={styles.container}>
-    //     <div className={styles.sidebarTitle}>
-    //       <p>Menu</p>
-    //       <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
-    //     </div>
-    //     <a>Home</a> {/*<Link to="/tasks">home</Link>*/}
-    //     <a onClick={() => history.push('/signup')}>Sign-up</a>
-    //     <a onClick={() => history.push('/login')}>Log-in</a>
-    //     <a>Contact</a>
-    //   </section>
-    //   <section className={styles.container}>{children}</section>
-    // </div>
-    <Drawer
-      variant="permanent"
-      // open={isOpen}
-      // onOpen={setIsOpen(true)}
-      // onClose={handleClose()}
-    >
-      {/* <section className={styles.container}> */}
-      <List>
-        <ListItem>
-          <p>Menu</p>
-        </ListItem>
-        <ListItem>
-          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
-        </ListItem>
-        <ListItem>
-          <a>Home</a>
-        </ListItem>
-        <ListItem>
-          <a onClick={() => history.push('/signup')}>Sign-up</a>
-        </ListItem>
-        <ListItem>
-          <a onClick={() => history.push('/login')}>Log-in</a>
-        </ListItem>
-        <ListItem>Contact</ListItem>
-      </List>
-      {/* <div className={styles.sidebarTitle}>
-          <p>Menu</p>
-          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
-        </div>
-        <a>Home</a> <Link to="/tasks">home</Link>
-        <a onClick={() => history.push('/signup')}>Sign-up</a>
-        <a onClick={() => history.push('/login')}>Log-in</a>
-        Contact */}
-      {/* </section> */}
-      <section className={styles.container}>{children}</section>
-    </Drawer>
-  );
 };
 
 //It must be implemented inside the components indexes
@@ -75,4 +100,4 @@ const Sidebar = ({ children }) => {
 //isOpen is a boolean to indicate if is open or not
 //handleClose should change isOpen to false
 
-export default Sidebar;
+export default withRouter(Sidebar);
