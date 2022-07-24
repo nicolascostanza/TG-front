@@ -10,19 +10,7 @@ import { useDispatch } from 'react-redux';
 import Sidebar from 'Components/Shared/Sidebar';
 // import styles from './signup.module.css';
 // import { useHistory } from 'react-router-dom';
-import {
-  Container,
-  Typography,
-  TextField,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
-  Modal,
-  Box,
-  Button,
-  Grid
-} from '@mui/material';
+import { Container, Typography, TextField, Modal, Box, Button, Grid } from '@mui/material';
 
 function SignUp() {
   // const history = useHistory();
@@ -33,7 +21,6 @@ function SignUp() {
     setShowModalMessage(false);
     setShowModalMessage('');
   };
-  const [gender, setGender] = useState('');
 
   const {
     handleSubmit,
@@ -47,9 +34,6 @@ function SignUp() {
   const onSubmit = (data) => {
     dispatch(thunksEmployee.addEmployee({ ...data, active: true }));
     setShowModalMessage(true);
-  };
-  const handleGender = (e) => {
-    setGender(e.target.value);
   };
   const modalStyle = {
     position: 'absolute',
@@ -165,22 +149,6 @@ function SignUp() {
               </select>
               {errors.gender && <p className={styles.errorInput}>{errors.gender?.message}</p>}
             </div> */}
-          <Container>
-            <FormControl>
-              <InputLabel id="genderInputLabel">Gender</InputLabel>
-              <Select
-                {...register('gender')}
-                labelId="genderInputLabel"
-                id="gender"
-                value={gender}
-                onChange={handleGender}
-              >
-                <MenuItem value={'Male'}>Male</MenuItem>
-                <MenuItem value={'Female'}>Female</MenuItem>
-                <MenuItem value={'Other'}>Other</MenuItem>
-              </Select>
-            </FormControl>
-          </Container>
           {/* <div className={styles.inputContainer}>
               <label htmlFor="Address" className={styles.labels}>
                 Address
@@ -192,20 +160,7 @@ function SignUp() {
               ></input>
               {errors.address && <p className={styles.errorInput}>{errors.address?.message}</p>}
             </div> */}
-          <Container>
-            <TextField
-              id="address"
-              label="Address"
-              variant="outlined"
-              {...register('address')}
-              margin="normal"
-              // fullWidth
-              error={errors.address && true}
-              helperText={errors.address?.message}
-            />
-          </Container>
           {/* </div> */}
-
           {/* <div className={styles.formFlex}> */}
           {/* <div className={styles.inputContainer}>
               <label htmlFor="Date of birth" className={styles.labels}>
@@ -214,17 +169,6 @@ function SignUp() {
               <input type="date" {...register('dob')} error={appendErrors.dob?.message}></input>
               {errors.dob && <p className={styles.errorInput}>{errors.dob?.message}</p>}
             </div> */}
-          <TextField
-            type="date"
-            id="dob"
-            label="Date of birth"
-            variant="outlined"
-            {...register('dob')}
-            margin="normal"
-            // fullWidth
-            error={errors.dob && true}
-            helperText={errors.dob?.message}
-          />
           {/* <div className={styles.inputContainer}>
               <label htmlFor="Phone" className={styles.labels}>
                 Phone
@@ -232,16 +176,6 @@ function SignUp() {
               <input type="text" {...register('phone')} error={appendErrors.phone?.message}></input>
               {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
             </div> */}
-          <TextField
-            id="phone"
-            label="Phone"
-            variant="outlined"
-            {...register('phone')}
-            margin="normal"
-            // fullWidth
-            error={errors.phone && true}
-            helperText={errors.phone?.message}
-          />
           {/* </div> */}
 
           {/* <div className={styles.formFlex}> */}
@@ -290,7 +224,7 @@ function SignUp() {
             <Button id="reset" onClick={() => reset()}>
               Reset
             </Button>
-            <Button type="submit" id="continue">
+            <Button type="submit" id="signup">
               Continue
             </Button>
           </Container>

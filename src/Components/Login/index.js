@@ -49,7 +49,6 @@ const Login = () => {
   };
 
   return (
-    // <section className={styles.container}>
     <Box>
       <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
@@ -106,14 +105,12 @@ const Login = () => {
             <Typography variant="subtitle1">Forgot password?</Typography>
             <div className={styles.buttonsContainer}>
               <ContinueButton
+                id="login"
                 variant="contained"
                 type="submit"
                 className={styles.continueButton}
                 fullWidth
                 onClick={handleSubmit}
-                // sx={{
-                //   backgroundColor: deepPurple['A700']
-                // }}
               >
                 LOGIN
               </ContinueButton>
@@ -130,14 +127,9 @@ const Login = () => {
             </Container>
           </Container>
         </form>
-        {/* </section> */}
       </Container>
     </Box>
   );
-  // eslint-disable-next-line no-unreachable
-  {
-    /* </section> */
-  }
 };
 
 export default Login;

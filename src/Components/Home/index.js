@@ -75,8 +75,8 @@ function Home() {
   }, [screen, message]);
   // headers and keys
   if (role === 'SUPERADMIN') {
-    headers = ['Email', 'Password', 'Is Active ?'];
-    keys = ['email', 'password', 'active'];
+    headers = ['Email', 'Is Active ?'];
+    keys = ['email', 'active'];
     if (method === 'POST') {
       validator = validationsFormSuperadminCreate;
     } else {
@@ -270,7 +270,6 @@ function Home() {
     return (
       <section className={styles.container}>
         <Sidebar></Sidebar>
-        <h2>Home</h2>
         {/* modal con mensaje de exito o error */}
         <Modal
           showModal={showModalDelete}

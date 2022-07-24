@@ -1,18 +1,17 @@
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import React, { Suspense, lazy } from 'react';
 import PrivateRoute from 'Components/Layout/PrivateRoute';
-import Admins from '../Admins/index';
+// import Admins from '../Admins/index';
 const AdminsProfile = lazy(() => import('Components/AdminFlow/Profile/Profile'));
 const Employees = lazy(() => import('Components/Employees'));
 const EmployeesHome = lazy(() => import('Components/EmployeesFlow/Home/Home'));
 const EmployeesProfile = lazy(() => import('Components/EmployeesFlow/Profile/Profile'));
 const SignUp = lazy(() => import('Components/EmployeesFlow/SignUp/SignUp'));
 const Login = lazy(() => import('Components/Login'));
-const SuperAdmins = lazy(() => import('Components/SuperAdmins'));
+const Admins = lazy(() => import('Components/Admins'));
 const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
-// const Landing = lazy(() => import('Components/Shared/Landing'));
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -30,17 +29,12 @@ function Layout() {
         <Suspense fallback={<Loader />}>
           <Switch>
             <Route exact path="/" component={Home} />
-            <PrivateRoute exact path="/" role="EMPLOYEE" component={EmployeesHome} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
+            <PrivateRoute exact path="/" role="EMPLOYEE" component={EmployeesHome} />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
             <PrivateRoute exact path="/admins/profile" role={'ADMIN'} component={AdminsProfile} />
-            <PrivateRoute
-              exact
-              path="/super-admins"
-              role={['SUPERADMIN']}
-              component={SuperAdmins}
-            />
+            <PrivateRoute exact path="/super-admins" role={['SUPERADMIN']} component={Admins} />
             <PrivateRoute
               exact
               path="/employees"

@@ -41,9 +41,10 @@ function TimeSheet() {
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
+  console.log('currentUser: ', currentUser);
   let role = useSelector((state) => state.auth.authenticated.role);
-  const rateList = currentUser.associatedProjects?.map((item) => {
-    return { id: item.projectId._id, rate: item.rate };
+  const rateList = currentUser.associatedProjects.map((item) => {
+    return { id: item.projectId?._id, rate: item.rate };
   });
   useEffect(() => {
     if (showAllTimesheets === true) {
