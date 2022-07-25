@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 // import { appendErrors, useForm } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -17,6 +17,7 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import { Link } from 'react-router-dom';
+import Modal from 'Components/Shared/Modal';
 
 const ContinueButton = styled(Button)({
   backgroundColor: deepPurple['A700']
@@ -27,6 +28,8 @@ const Login = () => {
   const currentUser = useSelector((state) => state.currentUser.currentUser);
   const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
   const isFetchingAuth = useSelector((state) => state.auth.isFetching);
+  const error = useSelector((state) => state.auth.error);
+  const [modalError, setModalError] = useState(false);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -46,6 +49,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));
+    error === '' ? setModalError(false) : setModalError(true);
   };
 
   return (
@@ -128,6 +132,9 @@ const Login = () => {
             </Link>
           </Box>
         </form>
+        <Modal showModal={modalError} handleClose={() => setModalError(false)} modalTitle={'ERROR'}>
+          Incorrect user or password
+        </Modal>
       </Container>
     </section>
   );
