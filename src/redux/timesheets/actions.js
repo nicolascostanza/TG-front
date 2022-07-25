@@ -15,7 +15,7 @@ export const getTimesheetFailed = (error) => ({
   payload: error
 });
 
-// // ADD
+// ADD
 export const addTimeSheetFulfilled = (timesheet) => ({
   type: types.ADD_TIMESHEET_FULFILLED,
   payload: {
@@ -34,14 +34,10 @@ export const addTimeSheetFailed = (error) => ({
   payload: error
 });
 
-// // UPDATE
+// UPDATE
 export const updateTimeSheetFulfilled = (timesheet) => ({
   type: types.UPDATE_TIMESHEET_FULFILLED,
-  payload: {
-    ...timesheet,
-    employeeId: { _id: timesheet.employeeId },
-    task: { _id: timesheet.task }
-  }
+  payload: timesheet
 });
 
 export const updateTimeSheetPending = () => ({
@@ -77,4 +73,18 @@ export const showEditModal = () => ({
 
 export const closeModals = () => ({
   type: types.CLOSE_MODALS
+});
+// GET EMPLOYEE TIMESHEET
+export const getEmployeeTimesheetFulfilled = (timesheet) => ({
+  type: types.GET_EMPLOYEE_TIMSHEET_FULFILLED,
+  payload: timesheet
+});
+
+export const getEmployeTimesheetPending = () => ({
+  type: types.GET_EMPLOYEE_TIMSHEET_PENDING
+});
+
+export const getEmployeTimesheetFailed = (error) => ({
+  type: types.GET_EMPLOYEE_TIMSHEET_FAILED,
+  payload: error
 });

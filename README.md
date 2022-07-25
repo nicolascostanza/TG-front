@@ -87,7 +87,7 @@ You will also see any lint errors in the console.
 <img src="https://avatars.githubusercontent.com/u/101283904?v=4" height="50" width="50">| Luciano Claros | claros.luciano1996@gmail.com | [@Clarosluciano](https://github.com/Clarosluciano) | QA
 <img src="https://avatars.githubusercontent.com/u/65975219?v=4" height="50" width="50">| Martín Albornoz | martinalbor96@gmail.com | [@martinalbrnz](https://github.com/martinalbrnz) | Dev
 <img src="https://avatars.githubusercontent.com/u/97314443?v=4" height="50" width="50">| Nicolas Costanza | nicolasantoniocostanza@gmail.com | [@nicolascostanza](https://github.com/nicolascostanza) | Dev
-<img src="https://avatars.githubusercontent.com/u/55041575?v=4" height="50" width="50">| Romina Pogliani | romina_pogliani14@hotmail.com | [@RominaRIP](https://github.com/RominaRIP) | Dev
+<img src="https://avatars.githubusercontent.com/u/55041575?v=4" height="50" width="50">| Romina Pogliani | romina_pogliani14@hotmail.com | [@RominaRIP](https://github.com/RominaRIP) | QA
 
 
 

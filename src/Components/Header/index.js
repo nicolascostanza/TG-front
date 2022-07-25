@@ -3,6 +3,8 @@ import logo from './logo.svg';
 
 function Header() {
   return (
+    // <AppBar>
+    //   <IconButton edge="start" color="inherit" aria-label="menu"></IconButton>
     <header>
       <nav className={styles.navbar}>
         {/* <ul className={styles.rutes}>
@@ -33,6 +35,7 @@ function Header() {
         </div>
       </nav>
     </header>
+    // </AppBar>
   );
 }
 
