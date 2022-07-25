@@ -6,6 +6,7 @@ import Joi from 'joi';
 import Form from 'Components/Shared/Form';
 import styles from './projectForm.module.css';
 import * as thunks from 'redux/projects/thunks';
+import { TextField } from '@mui/material';
 
 const CreateProject = (props) => {
   const { showCreateModal, handleClose } = props;
@@ -59,20 +60,20 @@ const CreateProject = (props) => {
       })
       .required(),
     startDate: Joi.date()
-      .min('01-01-2000')
+      .min('01/01/2000')
       .messages({
-        'date.min': 'Start date must be after 01-01-2000',
+        'date.min': 'Start date must be after 01/01/2000',
         'date.base': 'Date is not valid',
         'date.empty': 'This field is required'
       })
       .required(),
     endDate: Joi.date()
       .greater(Joi.ref('startDate'))
-      .less('12-31-2099')
+      .less('12/31/2099')
       .allow('')
       .messages({
         'date.base': 'Date is not valid',
-        'date.less': 'End date must be before 12-31-2099',
+        'date.less': 'End date must be before 12/31/2099',
         'date.greater': 'End date must be after the start date',
         'any.ref': 'Start date is required'
       })
@@ -160,7 +161,7 @@ const CreateProject = (props) => {
       handleSubmit={handleSubmit(submitNewProject)}
       handleClose={handleClose}
     >
-      <label htmlFor="name">Name</label>
+      {/* <label htmlFor="name">Name</label>
       <input
         {...register('name', { required: true })}
         name="name"
@@ -170,9 +171,20 @@ const CreateProject = (props) => {
       />
       <div className={styles.errorContainer}>
         {errors.name?.type ? <p className={styles.error}>{errors.name.message}</p> : null}
-      </div>
-
-      <label htmlFor="description">Description</label>
+      </div> */}
+      <TextField
+        type="text"
+        id="newProjectName"
+        label="Name"
+        variant="outlined"
+        {...register('name')}
+        margin="dense"
+        size="small"
+        fullWidth
+        error={errors.name && true}
+        helperText={errors.name?.message}
+      />
+      {/* <label htmlFor="description">Description</label>
       <input
         {...register('description')}
         name="description"
@@ -184,9 +196,20 @@ const CreateProject = (props) => {
         {errors.description?.type ? (
           <p className={styles.error}>{errors.description.message}</p>
         ) : null}
-      </div>
-
-      <label htmlFor="clientName">Client Name</label>
+      </div> */}
+      <TextField
+        type="text"
+        id="newProjectDescription"
+        label="Description"
+        variant="outlined"
+        {...register('description')}
+        margin="dense"
+        size="small"
+        fullWidth
+        error={errors.description && true}
+        helperText={errors.description?.message}
+      />
+      {/* <label htmlFor="clientName">Client Name</label>
       <input
         {...register('clientName')}
         name="clientName"
@@ -198,9 +221,20 @@ const CreateProject = (props) => {
         {errors.clientName?.type ? (
           <p className={styles.error}>{errors.clientName.message}</p>
         ) : null}
-      </div>
-
-      <label htmlFor="startDate">Start Date</label>
+      </div> */}
+      <TextField
+        type="text"
+        id="newProjectClientName"
+        label="Client Name"
+        variant="outlined"
+        {...register('clientName')}
+        margin="dense"
+        size="small"
+        fullWidth
+        error={errors.clientName && true}
+        helperText={errors.clientName?.message}
+      />
+      {/* <label htmlFor="startDate">Start Date</label>
       <input
         {...register('startDate')}
         name="startDate"
@@ -209,9 +243,20 @@ const CreateProject = (props) => {
       />
       <div className={styles.errorContainer}>
         {errors.startDate?.type ? <p className={styles.error}>{errors.startDate.message}</p> : null}
-      </div>
-
-      <label htmlFor="endDate">End Date</label>
+      </div> */}
+      {/* START  DATE */}
+      <TextField
+        type="date"
+        id="newProjectStartDate"
+        label="Start Date"
+        variant="outlined"
+        {...register('startDate')}
+        margin="normal"
+        fullWidth
+        error={errors.startDate && true}
+        helperText={errors.startDate?.message}
+      />
+      {/* <label htmlFor="endDate">End Date</label>
       <input
         {...register('endDate')}
         name="endDate"
@@ -220,8 +265,18 @@ const CreateProject = (props) => {
       />
       <div className={styles.errorContainer}>
         {errors.endDate?.type ? <p className={styles.error}>{errors.endDate.message}</p> : null}
-      </div>
-
+      </div> */}
+      <TextField
+        type="date"
+        id="newProjectEndDate"
+        label="End Date"
+        variant="outlined"
+        {...register('endDate')}
+        margin="normal"
+        fullWidth
+        error={errors.endDate && true}
+        helperText={errors.endDate?.message}
+      />
       {/* <label htmlFor="projectManager">Project Manager</label>
       <input
         {...register('projectManager')}
@@ -236,7 +291,7 @@ const CreateProject = (props) => {
         ) : null}
       </div> */}
 
-      <label htmlFor="team">Team</label>
+      {/* <label htmlFor="team">Team</label>
       <input
         value={project.team}
         onChange={handleInputChanges}
@@ -244,6 +299,18 @@ const CreateProject = (props) => {
         type="text"
         placeholder="Search an employee"
         className={styles.input}
+      /> */}
+      <TextField
+        type="text"
+        id="newProjectTeam"
+        label="Team"
+        name="team"
+        variant="outlined"
+        margin="dense"
+        size="small"
+        value={project.team}
+        onChange={handleInputChanges}
+        fullWidth
       />
       <div className={styles.optionContainer}>
         {project.team.length > 0
@@ -285,7 +352,7 @@ const CreateProject = (props) => {
               );
             })}
       </div>
-      <label htmlFor="tasks">Tasks</label>
+      {/* <label htmlFor="tasks">Tasks</label>
       <input
         value={project.tasks}
         onChange={handleInputChanges}
@@ -293,6 +360,18 @@ const CreateProject = (props) => {
         type="text"
         placeholder="Search a task"
         className={styles.input}
+      /> */}
+      <TextField
+        type="text"
+        id="newProjectTask"
+        label="Tasks"
+        name="tasks"
+        variant="outlined"
+        margin="dense"
+        size="small"
+        value={project.tasks}
+        onChange={handleInputChanges}
+        fullWidth
       />
       <div className={styles.optionContainer}>
         {project.tasks.length > 0

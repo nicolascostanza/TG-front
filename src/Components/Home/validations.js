@@ -23,12 +23,12 @@ export const validationsFormProjectCreate = Joi.object({
     'string.max': 'Client name must contain 30 or less characters',
     'string.empty': 'This field is required'
   }),
-  startDate: Joi.date().min('01-01-2000').required('This field is required').messages({
-    'date.min': 'Start date must be after 01-01-2000',
+  startDate: Joi.date().min('01/01/2000').required('This field is required').messages({
+    'date.min': 'Start date must be after 01/01/2000',
     'date.base': 'Date is not valid',
     'date.empty': 'This field is required'
   }),
-  endDate: Joi.date().min('01-01-2000').optional().allow('')
+  endDate: Joi.date().min('01/01/2000').optional().allow('')
 });
 export const validationsFormProjectEdit = Joi.object({
   name: Joi.string()
@@ -50,12 +50,12 @@ export const validationsFormProjectEdit = Joi.object({
     'string.max': 'Client name must contain 30 or less characters',
     'string.empty': 'This field is required'
   }),
-  startDate: Joi.date().min('01-01-2000').messages({
-    'date.min': 'Start date must be after 01-01-2000',
+  startDate: Joi.date().min('01/01/2000').messages({
+    'date.min': 'Start date must be after 01/01/2000',
     'date.base': 'Date is not valid',
     'date.empty': 'This field is required'
   }),
-  endDate: Joi.date().min('01-01-2000').optional()
+  endDate: Joi.date().min('01/01/2000').optional()
 });
 export const validationsFormSuperadminCreate = Joi.object({
   email: Joi.string()

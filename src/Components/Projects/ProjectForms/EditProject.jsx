@@ -76,20 +76,20 @@ const EditProject = (props) => {
       })
       .required(),
     startDate: Joi.date()
-      .min('01-01-2000')
+      .min('01/01/2000')
       .messages({
-        'date.min': 'Start date must be after 01-01-2000',
+        'date.min': 'Start date must be after 01/01/2000',
         'date.base': 'Date is not valid',
         'date.empty': 'This field is required'
       })
       .required(),
     endDate: Joi.date()
       .greater(Joi.ref('startDate'))
-      .less('12-31-2099')
+      .less('12/31/2099')
       .allow('')
       .messages({
         'date.base': 'Date is not valid',
-        'date.less': 'End date must be before 12-31-2099',
+        'date.less': 'End date must be before 12/31/2099',
         'date.greater': 'End date must be after the start date',
         'any.ref': 'Start date is required'
       })
