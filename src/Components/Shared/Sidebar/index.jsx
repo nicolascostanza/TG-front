@@ -5,8 +5,9 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from 'redux/auth/actions';
 import * as currentUserActions from 'redux/currentUser/actions';
+import ThemeToggle from '../ThemeToggle';
 
-const Sidebar = ({ children }) => {
+const Sidebar = () => {
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const logOut = () => {
@@ -31,17 +32,35 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <Link className={styles.sidebarLink} to="/" id="sidebarHome">
-            Home
-          </Link>
-          <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
-            Sign-up
-          </Link>
-          <Link className={styles.sidebarLink} to="/login" id="sidebarLogin">
-            Log-in
-          </Link>
+          <div className={styles.anchors}>
+            <a href="#trackgenix" className={styles.sidebarLink}>
+              What is Trackgenix?
+            </a>
+            <a href="#functionalities" className={styles.sidebarLink}>
+              Functionalities
+            </a>
+            <a href="#reasons" className={styles.sidebarLink}>
+              Working with us
+            </a>
+            <a href="#contact" className={styles.sidebarLink}>
+              Contact us
+            </a>
+          </div>
+          <div className={styles.sidebarTitle}>
+            <p>Trackgenix</p>
+          </div>
+          <div className={styles.links}>
+            <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
+              Sign-up
+            </Link>
+            <Link className={styles.sidebarLink} to="/login" id="sidebarLogin">
+              Log-in
+            </Link>
+          </div>
         </section>
-        <section className={styles.container}>{children}</section>
+        <div className={styles.togglerContainer}>
+          <ThemeToggle />
+        </div>
       </div>
     );
   else if (role === 'EMPLOYEE') {
@@ -52,22 +71,16 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <Link className={styles.sidebarLink} to="/" id="sidebarHome">
-            Home
-          </Link>
-          <Link className={styles.sidebarLink} to="/employees/profile">
-            Profile
-          </Link>
-          <Link className={styles.sidebarLink} onClick={logOut} to="/">
-            Log Out
-          </Link>
+          <div className={styles.links}>
+            <Link className={styles.sidebarLink} to="/employees/profile">
+              Profile
+            </Link>
+            <Link className={styles.sidebarLink} onClick={logOut} to="/">
+              Log Out
+            </Link>
+          </div>
         </section>
         <section className={styles.container}>
-          {/* ESTO NO FUNCA BIEN DEL TODO ME PARECE, si inicio sesion, la cierro y quiero
-          logearme de nuevo ya aparece logeado */}
-          {/* <Link className={styles.sidebarLink} onClick={logOut} to="/">
-            Log Out
-          </Link> */}
           <Link className={styles.sidebarLink} to="/time-sheets">
             Timesheets
           </Link>
@@ -75,7 +88,9 @@ const Sidebar = ({ children }) => {
             Tasks
           </Link>
         </section>
-        <section className={styles.container}>{children}</section>
+        <div className={styles.togglerContainer}>
+          <ThemeToggle />
+        </div>
       </div>
     );
   } else if (role === 'ADMIN') {
@@ -86,36 +101,26 @@ const Sidebar = ({ children }) => {
             <p>Menu</p>
             <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
           </div>
-          <Link className={styles.sidebarLink} to="/" id="sidebarHome">
-            Home
-          </Link>
-          {/* <Link className={styles.sidebarLink} to="/signup">
-            Sign-up
-          </Link> */}
-          {/* <Link className={styles.sidebarLink} to="/login">
-            Log-in
-          </Link> */}
-          <Link className={styles.sidebarLink} to="/admins/profile">
-            Profile
-          </Link>
-          <Link className={styles.sidebarLink} onClick={logOut} to="/">
-            Log Out
-          </Link>
+          <div className={styles.links}>
+            <Link className={styles.sidebarLink} to="/admins/profile">
+              Profile
+            </Link>
+            <Link className={styles.sidebarLink} onClick={logOut} to="/">
+              Log Out
+            </Link>
+          </div>
         </section>
         <section className={styles.container}>
           <Link className={styles.sidebarLink} to="/projects">
             Projects
           </Link>
         </section>
-        <section className={styles.container}>{children}</section>
+        <div className={styles.togglerContainer}>
+          <ThemeToggle />
+        </div>
       </div>
     );
   }
 };
-
-//It must be implemented inside the components indexes
-// You must provide children
-//isOpen is a boolean to indicate if is open or not
-//handleClose should change isOpen to false
 
 export default withRouter(Sidebar);

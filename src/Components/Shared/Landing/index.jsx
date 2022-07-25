@@ -15,7 +15,9 @@ function Landing() {
         <main className={styles.mainSection}>
           <section className={styles.firstSection}>
             <div className={styles.resizeTablet}>
-              <h1 className={styles.tittle}>Hi, we are Trackgenix SA</h1>
+              <h1 id="trackgenix" className={styles.tittle}>
+                Hi, we are Trackgenix SA
+              </h1>
               <div className={styles.imgTablet}>
                 <img className={styles.imgTabletSize} src={img5} alt="Reloj" />
               </div>
@@ -40,7 +42,9 @@ function Landing() {
               <img className={styles.imgMainSection} src={img5} alt="Reloj" />
             </div>
           </section>
-          <h2 className={styles.landingH2}>Functionalities</h2>
+          <h2 id="functionalities" className={styles.landingH2}>
+            Functionalities
+          </h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
@@ -97,7 +101,9 @@ function Landing() {
             </div>
           </section>
           <div className={styles.separator}></div>
-          <h2 className={styles.landingH2}>Reasons why you need us</h2>
+          <h2 id="reasons" className={styles.landingH2}>
+            Reasons why you need us
+          </h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
@@ -157,7 +163,9 @@ function Landing() {
           </section>
           <div className={styles.separator}></div>
           <div>
-            <h2 id={styles['centeredText']}>Request information</h2>
+            <h2 id="contact" className={styles['centeredText']}>
+              Request information
+            </h2>
             <form className={styles.contactForm}>
               <div className={styles.nameEmailForm}>
                 <input type="text" placeholder="Name" />
