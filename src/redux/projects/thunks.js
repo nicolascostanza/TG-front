@@ -70,7 +70,6 @@ export const addEmployeeToProject = (body, id) => {
     api
       .addEmployeeToProjectaApi(body, id)
       .then((response) => {
-        console.log('response.datA del employee:', response.data);
         dispatch(actions.addEmployeeToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
@@ -154,7 +153,6 @@ export const deleteTaskToProject = (idProject, idTask) => {
 };
 // dispatch(thunksProjects.updateEmployeeToProject(idProject, sendData));
 export const updateEmployeeToProject = (idProject, body) => {
-  console.log('body a la Request', body);
   return (dispatch) => {
     dispatch(actions.updateEmployeeToProjectPending());
     api
@@ -166,7 +164,6 @@ export const updateEmployeeToProject = (idProject, body) => {
         api
           .getProjectByIdApi(idProject)
           .then((response) => {
-            console.log('ACTUALIZADOOOO DE LA API CON GET BY ID:', response.data);
             if (response.error) {
               throw response.error;
             }
@@ -175,11 +172,11 @@ export const updateEmployeeToProject = (idProject, body) => {
             );
           })
           .catch((error) => {
-            dispatch(actions.updateEmployeeToProjectFailed(error));
+            console.log(error);
           });
       })
       .catch((error) => {
-        console.log(error);
+        dispatch(actions.updateEmployeeToProjectFailed(error));
       });
   };
 };

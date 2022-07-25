@@ -43,7 +43,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
-  console.log('datatask:', dataTasks);
   // KEYS AND VALUES
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
@@ -134,7 +133,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       setShowModalEmployee(true);
     } else {
       const valuesForm = dataTasks.filter((task) => task._id === id);
-      console.log('tareita assigned:', valuesForm[0].assignedEmployee[0]);
       reset({
         taskName: valuesForm[0].taskName,
         taskDescription: valuesForm[0].taskDescription,
@@ -447,7 +445,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           Asignar PM
         </Button>
       ) : null}
-      {roleUser === `ADMIN` || roleUser === `PM` ? (
+      {roleUser === 'ADMIN' || roleUser === 'PM' ? (
         <>
           {filterProject ? (
             <Button
@@ -503,18 +501,14 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 {headers.map((header, index) => {
                   if (header === 'Rate') {
                     if (roleUser === 'ADMIN' || roleUser === 'PM') {
-                      return <th key={index}>{header}</th>;
+                      return <th key={`${index}${header}`}>{header}</th>;
                     }
                   } else {
                     return <th key={index}>{header}</th>;
                   }
                 })}
-                {roleUser === `ADMIN` || roleUser === `PM` ? (
-                  <>
-                    <th>Edit</th>
-                    <th>Delete</th>
-                  </>
-                ) : null}
+                {roleUser === `ADMIN` || roleUser === `PM` ? <th>Edit</th> : null}
+                {roleUser === `ADMIN` || roleUser === `PM` ? <th>Delete</th> : null}
               </tr>
             </thead>
             <tbody className={styles.tbody}>

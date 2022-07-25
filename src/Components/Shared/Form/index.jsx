@@ -13,7 +13,13 @@ const Form = ({ children, title, handleSubmit, showModal, handleClose }) => {
             <h2> {title} </h2>
           </div>
           <div className={styles.inputs}> {children} </div>
-          <Button onClick={handleSubmit} width={'100px'} height={'25px'} fontSize={'15px'}>
+          <Button
+            id="saveTimesheet"
+            onClick={handleSubmit}
+            width={'100px'}
+            height={'25px'}
+            fontSize={'15px'}
+          >
             Submit
           </Button>
         </div>
