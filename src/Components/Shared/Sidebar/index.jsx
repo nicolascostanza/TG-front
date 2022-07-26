@@ -5,7 +5,6 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as authActions from 'redux/auth/actions';
 import * as currentUserActions from 'redux/currentUser/actions';
-import ThemeToggle from '../ThemeToggle';
 
 const Sidebar = () => {
   const dispatch = useDispatch();
