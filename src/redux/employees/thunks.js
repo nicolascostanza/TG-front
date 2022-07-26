@@ -4,7 +4,7 @@ import * as currentUserActions from 'redux/currentUser/actions';
 export const getEmployees = () => {
   return (dispatch) => {
     dispatch(actions.getEmployeesPending());
-    const token = localStorage.getItem('token');
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     return fetch(`${process.env.REACT_APP_API_URL}/employees`, { headers: { token } })
       .then((response) => response.json())
       .then((response) => {
@@ -24,8 +24,10 @@ export const deleteEmployee = (id) => {
   return async (dispatch) => {
     dispatch(actions.deleteEmployeePending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { token }
       });
       const res = await response.json();
       dispatch(actions.deleteEmployeeSucces(id, res));
@@ -39,10 +41,12 @@ export const addEmployee = (newEmployee) => {
   return async (dispatch) => {
     dispatch(actions.addEmployeePending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(`${process.env.REACT_APP_API_URL}/employees`, {
         method: 'POST',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
+          token
         },
         body: JSON.stringify({
           firstName: newEmployee.firstName,
@@ -89,12 +93,14 @@ export const editEmployee = (newEmployee) => {
   return async (dispatch) => {
     dispatch(actions.editEmployeePending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/employees/${newEmployee._id}`,
         {
           method: 'PUT',
           headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            token
           },
           body: JSON.stringify({
             firstName: newEmployee.firstName,
