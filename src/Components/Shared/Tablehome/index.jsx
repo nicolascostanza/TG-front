@@ -45,6 +45,15 @@ function Tablehome({
       switcher();
     }
   };
+  const messageWithOutInformation = (role) => {
+    if (role === 'SUPERADMIN') {
+      return `To start add a admin`;
+    } else if (role === `ADMIN`) {
+      return `To start add a project`;
+    } else {
+      return `No projects Assigned`;
+    }
+  };
 
   return (
     <div className={styles.container}>
@@ -78,7 +87,7 @@ function Tablehome({
       {show.length === 0 ? (
         <>
           <h1>No information to display</h1>
-          <h2>To start add an {role === 'SUPERADMIN' ? 'Admin' : 'Projects'}</h2>
+          <h2>{messageWithOutInformation(role)}</h2>
         </>
       ) : (
         <>
