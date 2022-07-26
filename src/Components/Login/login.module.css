@@ -1,8 +1,8 @@
 body {
-    font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  }
+  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
 
   .all{
     background-color: var(--background);
@@ -149,8 +149,3 @@ body {
   .container{
     background-color: var(--background);
   }
-
-#continueButton {
-  background-color: deepPurple[A700];
-  /* backgroundColor: deepPurple['A700'] */
-}

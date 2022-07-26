@@ -11,7 +11,6 @@ import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 import Button from 'Components/Shared/Button/Button';
 import Modal from 'Components/Shared/Modal';
 import styles from './list.module.css';
-// import { Button, Box, ButtonGroup, Modal, Typography } from '@mui/material';
 
 function TimeSheet() {
   // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)

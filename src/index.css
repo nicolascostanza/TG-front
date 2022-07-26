@@ -27,6 +27,7 @@
   --row-even-background: #e0e4e9;
   --row-odd-background: #f0f4f9;
   --row-hover-background: #7e8795;
+  --primary-button-color: #AACE9B;
 }
 
 [data-theme='dark'] {
@@ -47,6 +48,7 @@
   --text-on-surface: #000000;
   --text-on-error: #ffffff;
   
+  
   /* APP COLORS */
   --primary-text-color: #000000;
   --row-text-primary: #000000;
@@ -58,6 +60,7 @@
   --row-even-background: #e0e4e9;
   --row-odd-background: #f0f4f9;
   --row-hover-background: #7e8795;
+  --primary-button-color: #FBBC04;
 }
 
 * {
