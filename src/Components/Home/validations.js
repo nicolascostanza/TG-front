@@ -101,7 +101,7 @@ export const validationsFormSuperadminEdit = Joi.object({
 export const validationsFormAddEmployee = Joi.object({
   employeeId: Joi.string().required(),
   role: Joi.string(),
-  rate: Joi.number().required()
+  rate: Joi.number()
   // isPm: Joi.boolean().required()
 });
 

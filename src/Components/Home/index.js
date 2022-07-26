@@ -93,22 +93,6 @@ function Home() {
     mode: 'onBlur',
     resolver: joiResolver(validator)
   });
-  console.log('projects list', projectsList);
-  // console.log('ids of all projects', idsAllProjects);
-  // const filterProject = () => {
-  //   let arrayFilteredIF = [];
-  //   for (let i = 0; i < idsInAssociatedProjects.length; i++) {
-  //     if (idsAllProjects.indexOf(idsInAssociatedProjects) != -1) {
-  //       // setArrayFiltered(...arrayFiltered, idsInAssociatedProjects[i].projectId);
-  //       arrayFilteredIF.push(idsInAssociatedProjects[i]);
-  //     }
-  //   }
-
-  //   return arrayFilteredIF;
-  // };
-  // console.log('array filtereeeeed', filterProject());
-  // console.log('filtrradoooss', arrayFiltered);
-
   // MANDA SOLO LOS PROYECTOS RELACIONADOS A SU ROLE
   const dataProjects = (rol) => {
     if (rol === 'ADMIN') {
@@ -119,7 +103,7 @@ function Home() {
         (associated) => associated.projectId._id
       );
       const respppp = projectsList.filter((project) =>
-        idsInAssociatedProjects.includes(project._id)
+        idsInAssociatedProjects?.includes(project._id)
       );
       return respppp;
     }
