@@ -43,6 +43,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
+  // TESTS
+  console.log('all employees', allEmployees);
   // KEYS AND VALUES
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
@@ -148,12 +150,24 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setIdToDelete(id);
     setShowModalDelete(true);
   };
-  const onDelete = () => {
-    dispatch(
-      tab === 'tasks'
-        ? thunksProjects.deleteTaskToProject(idProject, idToDelete)
-        : thunksProjects.deleteEmployeeToProject(idProject, idToDelete)
-    );
+  const onDelete = async () => {
+    if (tab === 'tasks') {
+      dispatch(thunksProjects.deleteTaskToProject(idProject, idToDelete));
+    } else {
+      dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToDelete));
+      // here the other dispatch
+      // const token = await JSON.parse(sessionStorage.getItem('authenticated')).token;
+      // const response = await fetch(
+      //   `${process.env.REACT_APP_API_URL}/${idToDelete}/project/${idProject}`,
+      //   {
+      //     method: 'DELETE',
+      //     headers: { token }
+      //   }
+      // );
+      // const res = await response.json();
+      // console.log('Here show the response for delete associated project:', res);
+      // dispatch(thunksEmployees.deleteProjectAssociated(idToDelete, idProject));
+    }
     setShowModalDelete(false);
     setshowModalDeleteResponse(true);
   };
@@ -162,10 +176,21 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setShowModalPm(true);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    console.log('data', data);
     if (tab === 'employees') {
+      console.log('data', data);
       if (method === 'POST') {
+        const newEmployeeAssociated = {
+          projectId: idProject,
+          role: data.role,
+          rate: data.rate,
+          isPM: false
+        };
         dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+        dispatch(
+          thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
+        );
         setShowModalEmployee(false);
         setShowModalResponse(true);
       } else {
@@ -175,7 +200,19 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           rate: data.rate,
           isPM: data.role === 'PM' ? true : false
         };
+        const editEmployeeAssociated = {
+          projectId: idProject,
+          role: data.role,
+          rate: data.rate,
+          isPM: data.role === 'PM' ? true : false
+        };
         dispatch(thunksProjects.updateEmployeeToProject(idProject, sendData));
+        dispatch(
+          thunksEmployees.pushEditProjectAssociatedInEmployee(
+            editEmployeeAssociated,
+            data.employeeId
+          )
+        );
         setShowModalEmployee(false);
         setShowModalResponse(true);
         setIdToForm('');

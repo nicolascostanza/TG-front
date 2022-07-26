@@ -9,10 +9,11 @@ import { joiResolver } from '@hookform/resolvers/joi';
 import { validationsAssignPm } from 'Components/Home/validations';
 import * as thunksProjects from 'redux/projects/thunks';
 // import * as thunksTasks from 'redux/tasks/thunks';
-// import * as thunksEmployees from 'redux/employees/thunks';
+import * as thunksEmployees from 'redux/employees/thunks';
 // import { useSelector } from 'react-redux';
 
 function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) {
+  console.log('employees updated:', employeesInProject);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -23,25 +24,48 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
     resolver: joiResolver(validationsAssignPm)
   });
   let currentPm = employeesInProject.filter((employ) => employ.isPM === true);
+  console.log('q es esto:::::', currentPm[0]);
   const onSubmit = (data) => {
     if (currentPm.length != 0) {
-      // ACA EN ROLE DEBERIA IR EL GUION
       let current = {
         employeeId: currentPm[0].employeeId._id,
-        role: '-',
+        role: 'QA',
+        rate: currentPm[0].rate,
+        isPM: false
+      };
+      const updateCurrent = {
+        projectId: idProject,
+        role: 'QA',
         rate: currentPm[0].rate,
         isPM: false
       };
       dispatch(thunksProjects.updateEmployeeToProject(idProject, current));
+      dispatch(
+        thunksEmployees.pushEditProjectAssociatedInEmployee(
+          updateCurrent,
+          currentPm[0].employeeId._id
+        )
+      );
     }
-    // el nuevo pm lo cambia biennn
-    const newPm = {
+    const newEmployeePm = {
       employeeId: data.employeeId,
       role: 'PM',
       rate: data.rate,
       isPM: true
     };
-    dispatch(thunksProjects.updateEmployeeToProject(idProject, newPm));
+    const newEmployeePmProjectAssociated = {
+      projectId: idProject,
+      role: 'PM',
+      rate: data.rate,
+      isPM: true
+    };
+    dispatch(thunksProjects.updateEmployeeToProject(idProject, newEmployeePm));
+    dispatch(
+      thunksEmployees.pushEditProjectAssociatedInEmployee(
+        newEmployeePmProjectAssociated,
+        data.employeeId
+      )
+    );
   };
   if (!showModalPM) {
     return null;
