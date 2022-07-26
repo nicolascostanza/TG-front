@@ -152,6 +152,23 @@ const Sidebar = () => {
         </div>
       </div>
     );
+  } else if (role === 'SUPERADMIN') {
+    return (
+      <div className={styles.Sidebar}>
+        <div className={styles.sidebarTitle}>
+          <p id="menu-title">Menu</p>
+          <i id="close-button" className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+        </div>
+        <div className={styles.links}>
+          <Link id="adm-profile" className={styles.sidebarLink} to="/">
+            {role === 'SUPERADMIN' ? 'Admins' : 'Projects'}
+          </Link>
+          <Link id="adm-profile" className={styles.sidebarLink} onClick={logOut} to="/">
+            Log Out
+          </Link>
+        </div>
+      </div>
+    );
   }
 };
 
