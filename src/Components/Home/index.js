@@ -19,6 +19,8 @@ import {
 } from 'Components/Home/validations';
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
+// import Input from 'Components/Shared/Input';
+import Form from 'Components/Shared/Form';
 // VER
 // cambiar modal de task created
 // hay q traer el current user con el role (ESTA HARDCODEADO)
@@ -278,19 +280,30 @@ function Home() {
           modalTitle={'DELETE'}
         >
           {role === 'SUPERADMIN'
-            ? `are you sure you want to delete the ${adminSelected[0]?.firstName} ${adminSelected[0]?.lastName} admin?`
-            : `are you sure you want to delete the ${projectSelected[0]?.name} project?`}
-          <Button onClick={onDelete}>DELETE</Button>
-          <Button
-            onClick={() => setShowModalDelete(false)}
-            id="deleteCancel"
-            width={'75px'}
-            height={'30px'}
-            type="submit"
-            value="cancelDelete"
-          >
-            CANCEL
-          </Button>
+            ? `Are you sure you want to delete the ${adminSelected[0]?.firstName} ${adminSelected[0]?.lastName} admin?`
+            : `Are you sure you want to delete the ${projectSelected[0]?.name} project?`}
+          <div className={styles.buttonContainer}>
+            <Button
+              onClick={onDelete}
+              id="deleteButton"
+              width={'75px'}
+              height={'30px'}
+              type="submit"
+              value="delete"
+            >
+              DELETE
+            </Button>
+            <Button
+              onClick={() => setShowModalDelete(false)}
+              id="deleteCancel"
+              width={'75px'}
+              height={'30px'}
+              // type="submit"
+              value="cancelDelete"
+            >
+              CANCEL
+            </Button>
+          </div>
         </Modal>
         <Modal
           showModal={showModalResponse}
@@ -307,7 +320,7 @@ function Home() {
           <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
         </Modal>
         <Loader isLoading={isLoading} />
-        <Modal
+        {/* <Modal
           showModal={showModal}
           handleClose={() => setShowModal(false)}
           modalTitle={method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}
@@ -324,6 +337,13 @@ function Home() {
               />
               {errors.name && <p className={styles.errorInput}>{errors.name?.message}</p>}
             </div>
+            <Input
+              type={'text'}
+              htmlForPropAndLabel={'Name'}
+              register={register}
+              name={'name'}
+              error={appendErrors.name?.message}
+            />
             <div>
               <label htmlFor="description">Description</label>
               <input
@@ -382,7 +402,93 @@ function Home() {
               </Button>
             </div>
           </form>
-        </Modal>
+        </Modal> */}
+        <Form
+          title={method === 'POST' ? 'ADD PROJECT' : 'EDIT PROJECT'}
+          handleSubmit={handleSubmit(onSubmit)}
+          showModal={showModal}
+          handleClose={() => setShowModal(false)}
+          className={styles.form}
+        >
+          <div className={styles.inputContainer}>
+            <label htmlFor="name">Name</label>
+            <input
+              id="nameProject"
+              type="text"
+              // placeholder="Name"
+              {...register('name')}
+              error={appendErrors.name?.message}
+            />
+            {errors.name && <p className={styles.errorInput}>{errors.name?.message}</p>}
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="description">Description</label>
+            <input
+              id="descriptionProject"
+              type="text"
+              // placeholder="Description"
+              {...register('description')}
+              error={appendErrors.description?.message}
+            />
+            {errors.description && (
+              <p className={styles.errorInput}>{errors.description?.message}</p>
+            )}
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="client">Client</label>
+            <input
+              id="clientProject"
+              type="text"
+              // placeholder="Client"
+              {...register('clientName')}
+              error={appendErrors.clientName?.message}
+            />
+            {errors.clientName && <p className={styles.errorInput}>{errors.clientName?.message}</p>}
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="start date">Start Date</label>
+            <input
+              id="startdateProject"
+              type="date"
+              {...register('startDate')}
+              error={appendErrors.startDate?.message}
+            />
+            {errors.startDate && <p className={styles.errorInput}>{errors.startDate?.message}</p>}
+          </div>
+          <div className={styles.inputContainer}>
+            <label htmlFor="end date">End Date</label>
+            <input
+              id="endDateProject"
+              type="date"
+              {...register('endDate')}
+              error={appendErrors.startDate?.message}
+            />
+            {errors.endDate && <p className={styles.errorInput}>{errors.endDate?.message}</p>}
+          </div>
+          {/* <div className={styles.buttonsContainer}>
+            <Button
+              id="buttonProjects"
+              width={'75px'}
+              height={'30px'}
+              type="submit"
+              value="CONTINUE"
+            >
+              {method === 'POST' ? 'CREATE' : 'EDIT'}
+            </Button>
+          </div>
+          <div>
+            <Button
+              onClick={() => setShowModal(false)}
+              id="addModalEmployeeCancel"
+              width={'75px'}
+              height={'30px'}
+              type="submit"
+              value="cancelEmoployee"
+            >
+              CANCEL
+            </Button>
+          </div> */}
+        </Form>
         <Tablehome
           openModal={handleModal}
           switcher={switcher}

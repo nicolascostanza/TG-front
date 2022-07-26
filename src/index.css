@@ -1,8 +1,8 @@
 :root {
   /* MATERIAL COLORS */
-  --primary-color: #373867;
-  --primary-color-light: #656195;
-  --primary-color-dark: #0b123c;
+  --primary-color: #008AD6;
+  --primary-color-light: rgba(0, 138, 214, 0.7);
+  --primary-color-dark: #16242C;
   --secondary-color: #ea3354;
   --secondary-color-light: #e74563;
   --secondary-color-dark: #b1002c;
@@ -10,34 +10,39 @@
   --surface: #ffffff;
   --action: #20b000;
   --error: #b02000;
-  --text-on-primary: #ffffff;
+  --text-on-primary: #16242C;
   --text-on-secondary: #ffffff;
   --text-on-background: #000000;
-  --text-on-surface: #000000;
+  --text-on-surface: #fff;
   --text-on-error: #ffffff;
-  
+
   /* APP COLORS */
   --primary-text-color: #000000;
   --row-text-primary: #000000;
   --row-text-hover: #ffffff;
   --text-secondary: #444444;
   --routes-hover: #9997e7;
-  --nav-background: #ededed;
+  --burguer-background: rgba(0, 138, 214, 0.5);
   --footer-background: #d4d4d4;
   --row-even-background: #e0e4e9;
   --row-odd-background: #f0f4f9;
   --row-hover-background: #7e8795;
+  --primary-button-color: #AACE9B;
+  --slider-active-color: #2196F3;
+  --bottom-table-buttons-active: #CEE0F3;
+  --bottom-table-buttons-disabled: #EBECF0;
+  --form-background: #E8F4FB;
 }
 
 [data-theme='dark'] {
   /* MATERIAL COLORS */
-  --primary-color: #bb86fc;
-  --primary-color-light: #9d46ff;
+  --primary-color: #16242C;
+  --primary-color-light: #D9D9D9;
   --primary-color-dark: #0a00b6;
   --secondary-color: #03dac6;
   --secondary-color-light: #6746c3;
   --secondary-color-dark: #000063;
-  --background: #121212;
+  --background: #3A3F40;
   --surface: #ffffff;
   --action: #20b000;
   --error: #b02000;
@@ -46,18 +51,21 @@
   --text-on-background: #000000;
   --text-on-surface: #000000;
   --text-on-error: #ffffff;
-  
+
   /* APP COLORS */
   --primary-text-color: #000000;
   --row-text-primary: #000000;
   --row-text-hover: #ffffff;
   --text-secondary: #444444;
   --routes-hover: #9997e7;
-  --nav-background: #ededed;
+  --burguer-background: rgba(22, 36, 44, 0.5);
   --footer-background: #d4d4d4;
   --row-even-background: #e0e4e9;
   --row-odd-background: #f0f4f9;
   --row-hover-background: #7e8795;
+  --primary-button-color: #FBBC04;
+  --slider-active-color: #FBBC04;
+  --form-background: #16242C;
 }
 
 * {

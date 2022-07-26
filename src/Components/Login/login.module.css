@@ -1,17 +1,23 @@
 body {
-    font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  sans-serif;
+}
+
+  .all{
+    background-color: var(--background);
+    padding-top: 40px;
   }
   .form {
     display: flex;
     justify-content: center;
     width: 60%;
     margin: 25px auto;
-    background: #ebebf0;
+    background:  var(--form-background);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
     padding: 0 20px;
+    max-width: 700px;
   }
   .form form {
     display: flex;
@@ -25,7 +31,7 @@ body {
     font-weight: bold;
     font-size: 55px;
     line-height: 64px;
-    color: #373867;
+    color: var(--text-on-primary);
     text-align: center;
   }
   .form input:not(.checkbox),
@@ -33,7 +39,7 @@ body {
     display: block;
     padding: 6px;
     border: 1px solid #373867;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
     border-radius: 5px;
     resize: none;
     width: 100%;
@@ -61,8 +67,8 @@ body {
     width: 20%;
     margin: 15px 10%;
     height: 30px;
-    background-color: #aace9b;
-    color: white;
+    background-color: var(--primary-button-color);
+    color: var(--primary-text-color);
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -117,7 +123,7 @@ body {
     font-weight: 400;
     font-size: 18px;
     line-height: 23px;
-    color: #373867;
+    color: var(--text-on-primary);
   }
   .buttonContinue::after, .buttonReset::after, .buttonOk::after {
     content: '';
@@ -141,7 +147,23 @@ body {
     -webkit-transition: all 0.35s;
     transition: all 0.35s;
   };
-#continueButton {
-  background-color: deepPurple[A700];
-  /* backgroundColor: deepPurple['A700'] */
-}
+  .container{
+    background-color: var(--background);
+  }
+  .bottomLinkContainer{
+    display: flex;
+    align-self: center;
+    margin-bottom: 8px;
+  }
+  link:visited{
+    color: var();
+  }
+  .newHereText{
+    color: var(--text-on-primary);
+  }
+  .signupRedirect{
+    color: #0A66C2;
+  }
+  .signupRedirect:visited{
+    color: #0A66C2;
+  }

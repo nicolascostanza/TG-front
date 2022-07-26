@@ -14,11 +14,18 @@ const ThemeToggle = () => {
     }
   };
 
-  return (
-    <div onClick={() => toggleTheme(theme)}>
-      <i className={theme === 'dark' ? 'fa-solid fa-moon' : 'fa-solid fa-sun'}></i>
-    </div>
-  );
+  if (theme === 'light') {
+    return (
+      <div onClick={() => toggleTheme(theme)}>
+        <i className="fa-solid fa-moon fa-2x"></i>
+      </div>
+    );
+  } else if (theme === 'dark') {
+    return (
+      <div onClick={() => toggleTheme(theme)}>
+        <i className="fa-solid fa-sun fa-2x"></i>
+      </div>
+    );
+  }
 };
-
 export default ThemeToggle;
