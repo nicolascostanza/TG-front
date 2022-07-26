@@ -70,9 +70,11 @@ const Login = () => {
               CONTINUE
             </button>
           </div>
-          <Link to="/signup" style={{ textDecoration: 'none' }}>
-            Don&apos;t have an account? Sign up
-          </Link>
+          <div className={styles.bottomLinkContainer}>
+            <Link to="/signup" style={{ textDecoration: 'none' }}>
+              Don&apos;t have an account? Sign up
+            </Link>
+          </div>
         </form>
       </section>
     </section>

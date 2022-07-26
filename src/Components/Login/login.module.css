@@ -13,7 +13,7 @@ body {
     justify-content: center;
     width: 60%;
     margin: 25px auto;
-    background:  var(--surface);
+    background:  var(--backgroud);
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
     padding: 0 20px;
@@ -148,4 +148,9 @@ body {
   };
   .container{
     background-color: var(--background);
+  }
+  .bottomLinkContainer{
+    display: flex;
+    align-self: center;
+    margin-bottom: 8px;
   }

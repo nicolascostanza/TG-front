@@ -8,7 +8,7 @@ import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
-import Button from 'Components/Shared/Button/Button';
+// import Button from 'Components/Shared/Button/Button';
 import Modal from 'Components/Shared/Modal';
 import styles from './list.module.css';
 
@@ -111,7 +111,7 @@ function TimeSheet() {
       };
     });
   }
-
+  console.log('rate ', timeSheets.rate);
   formattedTimeSheets.reverse();
   const statusChanger = async (status, id) => {
     dispatch(
@@ -217,34 +217,34 @@ function TimeSheet() {
       {role === 'PM' && (
         <div>
           <div className={styles.pmNavTabs}>
-            <Button
+            <button
+              className={selectedButton === 1 ? styles.selectedTab : styles.unselectedTab}
               id="showMyTimesheetsButton"
-              variant={selectedButton === 1 ? 'contained' : 'outlined'}
               onClick={() => showMyTS()}
             >
               My timesheets
-            </Button>
-            <Button
+            </button>
+            <button
+              className={selectedButton === 2 ? styles.selectedTab : styles.unselectedTab}
               id="showTimesheetsToApproveButton"
-              variant={selectedButton === 2 ? 'contained' : 'outlined'}
               onClick={() => showTSToApprove()}
             >
               Timesheets to approve
-            </Button>
-            <Button
+            </button>
+            <button
               id="showAllTimesheetsButton"
-              variant={selectedButton === 3 ? 'contained' : 'outlined'}
+              className={selectedButton === 3 ? styles.selectedTab : styles.unselectedTab}
               onClick={() => showAllTS()}
             >
               All timesheets
-            </Button>
-            <Button
+            </button>
+            <button
               id="deleteSelectedTimesheetsButton"
               disabled={selectedTS.length ? false : true}
               onClick={() => deleteSelectedTSAction()}
             >
               Delete selected ts
-            </Button>
+            </button>
           </div>
         </div>
       )}

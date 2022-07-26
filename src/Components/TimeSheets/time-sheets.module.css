@@ -5,5 +5,5 @@
   align-items: center;
   padding: 1%;
   background-color: var(--background);
-  color: var(--text-on-primary);
+  color: var(--primary-text-color);
 }
