@@ -29,13 +29,13 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
     if (currentPm.length != 0) {
       let current = {
         employeeId: currentPm[0].employeeId._id,
-        role: 'QA',
+        role: '-',
         rate: currentPm[0].rate,
         isPM: false
       };
       const updateCurrent = {
         projectId: idProject,
-        role: 'QA',
+        role: '-',
         rate: currentPm[0].rate,
         isPM: false
       };

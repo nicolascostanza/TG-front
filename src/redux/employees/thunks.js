@@ -182,23 +182,23 @@ export const pushEditProjectAssociatedInEmployee = (editProjectAssociated, idEmp
   };
 };
 // delete associated project in employee
-// export const deleteProjectAssociated = (idEmployee, idProject) => {
-//   return async (dispatch) => {
-//     dispatch(actions.deleteAssociatedProjectPending());
-//     try {
-//       const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
-//       const response = await fetch(
-//         `${process.env.REACT_APP_API_URL}/${idEmployee}/project/${idProject}`,
-//         {
-//           method: 'DELETE',
-//           headers: { token }
-//         }
-//       );
-//       const res = await response.json();
-//       console.log('Here show the response for delete associated project:', res);
-//       dispatch(actions.deleteAssociatedProjectSuccess(idEmployee, res));
-//     } catch (error) {
-//       dispatch(actions.deleteAssociatedProjectError(error.toString()));
-//     }
-//   };
-// };
+export const deleteProjectAssociated = (idEmployee, idProject) => {
+  return async (dispatch) => {
+    dispatch(actions.pullProjectAssociatedInEmployeePending());
+    try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/employees/${idEmployee}/project/${idProject}`,
+        {
+          method: 'PUT',
+          headers: { token }
+        }
+      );
+      const res = await response.json();
+      console.log('Here show the response for delete associated project:', res);
+      dispatch(actions.pullProjectAssociatedInEmployeeSuccess(idEmployee, res));
+    } catch (error) {
+      dispatch(actions.pullProjectAssociatedInEmployeeError(error.toString()));
+    }
+  };
+};

@@ -166,7 +166,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       // );
       // const res = await response.json();
       // console.log('Here show the response for delete associated project:', res);
-      // dispatch(thunksEmployees.deleteProjectAssociated(idToDelete, idProject));
+      dispatch(thunksEmployees.deleteProjectAssociated(idToDelete, idProject));
     }
     setShowModalDelete(false);
     setshowModalDeleteResponse(true);
