@@ -14,6 +14,7 @@ import * as thunksTasks from 'redux/tasks/thunks';
 import * as thunksEmployees from 'redux/employees/thunks';
 import { useSelector } from 'react-redux';
 import AssignPm from '../assingPm';
+import { getCurrentUserByEmail } from 'redux/currentUser/thunks';
 
 function Tableproject({ title, roleUser, switcher, idProject }) {
   const [tab, setTab] = useState('employees');
@@ -31,6 +32,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   const [listEmployeesTask, setListEmployeesTask] = useState([]);
   const [currentEmployee, setCurrentEmployee] = useState({});
   const [showModalResponse, setShowModalResponse] = useState(false);
+  const [pm, setPm] = useState(false);
   const dispatch = useDispatch();
   const message = useSelector((state) => state.projects.message);
   const errorEmployeeOrTask = useSelector((state) => state.projects.error);
@@ -40,6 +42,19 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let projectoElegido = allProjects.filter((project) => project?._id === idProject);
   let dataTeam = projectoElegido[0].team;
   let dataTasks = projectoElegido[0].tasks;
+  let currentUser = useSelector((state) => state.currentUser.currentUser);
+  // GIVE FUNCIONALITIES TO PM
+  const verifiedPM = () => {
+    const employeeOnProject = dataTeam.find(
+      (employee) => employee.employeeId._id === currentUser._id
+    );
+    if (!employeeOnProject) {
+      return null;
+    } else {
+      employeeOnProject?.isPM ? setPm(true) : setPm(false);
+    }
+  };
+
   let headers;
   let keys;
   let data;
@@ -81,8 +96,17 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     if (indexPage > maxIndexPage) {
       setIndexPage(maxIndexPage);
     }
+    verifiedPM();
   }, [data, allProjects]);
-
+  //  see this useEffect for update tableList in employee's home
+  useEffect(() => {
+    if (roleUser === 'EMPLOYEE') {
+      const email = JSON.parse(sessionStorage.getItem('currentUser')).email;
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+      const role = JSON.parse(sessionStorage.getItem('authenticated')).role;
+      dispatch(getCurrentUserByEmail(email, token, role));
+    }
+  }, []);
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
 
   const nextPage = () => {
@@ -155,17 +179,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       dispatch(thunksProjects.deleteTaskToProject(idProject, idToDelete));
     } else {
       dispatch(thunksProjects.deleteEmployeeToProject(idProject, idToDelete));
-      // here the other dispatch
-      // const token = await JSON.parse(sessionStorage.getItem('authenticated')).token;
-      // const response = await fetch(
-      //   `${process.env.REACT_APP_API_URL}/${idToDelete}/project/${idProject}`,
-      //   {
-      //     method: 'DELETE',
-      //     headers: { token }
-      //   }
-      // );
-      // const res = await response.json();
-      // console.log('Here show the response for delete associated project:', res);
       dispatch(thunksEmployees.deleteProjectAssociated(idToDelete, idProject));
     }
     setShowModalDelete(false);
@@ -181,16 +194,34 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     if (tab === 'employees') {
       console.log('data', data);
       if (method === 'POST') {
-        const newEmployeeAssociated = {
-          projectId: idProject,
-          role: data.role,
-          rate: data.rate,
-          isPM: false
-        };
-        dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-        dispatch(
-          thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
-        );
+        if (pm) {
+          const newEmployeeAssociated = {
+            projectId: idProject,
+            role: data.role,
+            // rate: 0,
+            rate: data.rate,
+            isPM: false
+          };
+          // dispatch(
+          //   thunksProjects.addEmployeeToProject({ ...data, rate: 0, isPM: false }, idProject)
+          // );
+          dispatch(thunksProjects.addEmployeeToProject({ ...data, isPM: false }, idProject));
+          dispatch(
+            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
+          );
+          console.log('the new employee', newEmployeeAssociated);
+        } else {
+          const newEmployeeAssociated = {
+            projectId: idProject,
+            role: data.role,
+            rate: data.rate,
+            isPM: false
+          };
+          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
+          dispatch(
+            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
+          );
+        }
         setShowModalEmployee(false);
         setShowModalResponse(true);
       } else {
@@ -405,6 +436,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 )}
               </div>
             }
+            {/* {pm ? null : ( */}
             <div>
               <label htmlFor="Rate">Rate</label>
               <input
@@ -416,6 +448,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               />
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
+            {/* )} */}
             <div className={styles.buttonsContainer}>
               <Button
                 id="addModalEmployees"
@@ -468,7 +501,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       >
         {message}
       </Modal>
-      <h2>{title}</h2>
+      <h2>{`${title} ${projectoElegido[0].name}`}</h2>
       {roleUser === `ADMIN` && tab === 'employees' ? (
         <Button
           disabled={dataTeam.length > 0 ? false : true}
@@ -479,10 +512,10 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             openModalPm();
           }}
         >
-          Asignar PM
+          Assign PM
         </Button>
       ) : null}
-      {roleUser === 'ADMIN' || roleUser === 'PM' ? (
+      {roleUser === 'ADMIN' || pm ? (
         <>
           {filterProject ? (
             <Button
@@ -502,6 +535,44 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           )}
         </>
       ) : null}
+      {/* {roleUser === `ADMIN` && tab === 'employees' ? (
+        <Button
+          disabled={dataTeam.length > 0 ? false : true}
+          id="buttonAssignPm"
+          width={'80px'}
+          height={'40px'}
+          onClick={() => {
+            openModalPm();
+          }}
+        >
+          Assing PM
+        </Button>
+      ) : null}
+      {roleUser === 'ADMIN' || pm ? (
+        <>
+          {filterProject ? (
+            <Button
+              id="buttonAddEmployee"
+              width={'80px'}
+              height={'40px'}
+              fontSize={'15px'}
+              onClick={() => onAddEmployee()}
+            >
+              <i className="fa-solid fa-plus"></i>
+              ADD EMPLOYEE
+            </Button>
+          ) : (
+            <Button id="buttonAddTask" onClick={() => onAddTask()}>
+              ADD TASK
+            </Button>
+          )}
+        </>
+      ) : null}
+      {roleUser === 'EMPLOYEE' && !pm && !filterProject ? (
+        <Button id="buttonAddTask" onClick={() => onAddTask()}>
+          ADD TASK
+        </Button>
+      ) : null} */}
       <Button id="buttonBack" onClick={() => switcher()}>
         BACK
       </Button>
@@ -537,15 +608,15 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               <tr>
                 {headers.map((header, index) => {
                   if (header === 'Rate') {
-                    if (roleUser === 'ADMIN' || roleUser === 'PM') {
+                    if (roleUser === 'ADMIN' || pm) {
                       return <th key={`${index}${header}`}>{header}</th>;
                     }
                   } else {
                     return <th key={index}>{header}</th>;
                   }
                 })}
-                {roleUser === `ADMIN` || roleUser === `PM` ? <th>Edit</th> : null}
-                {roleUser === `ADMIN` || roleUser === `PM` ? <th>Delete</th> : null}
+                {roleUser === `ADMIN` || pm ? <th>Edit</th> : null}
+                {roleUser === `ADMIN` || pm ? <th>Delete</th> : null}
               </tr>
             </thead>
             <tbody className={styles.tbody}>
@@ -565,7 +636,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                           </>
                         );
                       } else if (key === 'rate') {
-                        if (roleUser === `ADMIN` || roleUser === `PM`) {
+                        if (roleUser === `ADMIN` || pm) {
                           return <td key={index}>{row[key]}</td>;
                         } else {
                           return null;
@@ -626,7 +697,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                         return <td key={index}>{row[key]}</td>;
                       }
                     })}
-                    {roleUser === `ADMIN` || roleUser === `PM` ? (
+                    {roleUser === `ADMIN` || pm ? (
                       <>
                         {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                         <td>
