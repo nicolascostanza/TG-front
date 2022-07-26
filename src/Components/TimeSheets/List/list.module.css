@@ -6,8 +6,8 @@
     align-items: center;
     padding: 3%;
     width: auto;
-  }
-.Btn{
+}
+.Btn {
     margin-bottom: 10px;
 }
 .row {
@@ -17,4 +17,7 @@
     border-width: 3px;
     border-radius: 10px;
     padding: 10px;
+}
+.pmNavTabs {
+    display: flex;
 }

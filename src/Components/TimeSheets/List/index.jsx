@@ -8,23 +8,14 @@ import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
-import { Button, Box, ButtonGroup, Modal, Typography } from '@mui/material';
+import Button from 'Components/Shared/Button/Button';
+import Modal from 'Components/Shared/Modal';
+import styles from './list.module.css';
+// import { Button, Box, ButtonGroup, Modal, Typography } from '@mui/material';
 
 function TimeSheet() {
-  const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4
-  };
-
   // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
-  // const [role, setRole] = useState('PM');
+  const [role, setRole] = useState('PM');
   // DELETE AFTER MERGING TO PROD, PLEASE...
 
   const dispatch = useDispatch();
@@ -41,7 +32,7 @@ function TimeSheet() {
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  let role = useSelector((state) => state.auth.authenticated.role);
+  // let role = useSelector((state) => state.auth.authenticated.role);
   const rateList = currentUser.associatedProjects.map((item) => {
     return { id: item.projectId?._id, rate: item.rate };
   });
@@ -182,12 +173,12 @@ function TimeSheet() {
   return (
     <>
       {/* --------------- JUST FOR DEBUG START --------------- */}
-      {/* <button onClick={() => setRole('EMPLOYEE')}>SET ROLE TO EMPLOYEE</button>
-      <button onClick={() => setRole('PM')}>SET ROLE TO PM</button> */}
+      <button onClick={() => setRole('EMPLOYEE')}>SET ROLE TO EMPLOYEE</button>
+      <button onClick={() => setRole('PM')}>SET ROLE TO PM</button>
       {/* --------------- JUST FOR DEBUG FINISH --------------- */}
       <Loader isLoading={isFetching} />
       <Sidebar />
-      <Modal
+      {/* <Modal
         open={showDeletedModal}
         onClose={handleCloseMessage}
         aria-labelledby="modal-modal-title"
@@ -201,6 +192,9 @@ function TimeSheet() {
             {showDeletedModalMessage}
           </Typography>
         </Box>
+      </Modal> */}
+      <Modal showModal={showDeletedModal} handleClose={handleCloseMessage} modalTitle={'Success!'}>
+        {showDeletedModalMessage}
       </Modal>
       {showEditModal ? (
         <EditTimeSheets
@@ -222,40 +216,38 @@ function TimeSheet() {
         />
       ) : null}
       {role === 'PM' && (
-        <Box>
-          <ButtonGroup>
-            <Box>
-              <Button
-                id="showMyTimesheetsButton"
-                variant={selectedButton === 1 ? 'contained' : 'outlined'}
-                onClick={() => showMyTS()}
-              >
-                My timesheets
-              </Button>
-              <Button
-                id="showTimesheetsToApproveButton"
-                variant={selectedButton === 2 ? 'contained' : 'outlined'}
-                onClick={() => showTSToApprove()}
-              >
-                Timesheets to approve
-              </Button>
-              <Button
-                id="showAllTimesheetsButton"
-                variant={selectedButton === 3 ? 'contained' : 'outlined'}
-                onClick={() => showAllTS()}
-              >
-                All timesheets
-              </Button>
-              <Button
-                id="deleteSelectedTimesheetsButton"
-                disabled={selectedTS.length ? false : true}
-                onClick={() => deleteSelectedTSAction()}
-              >
-                Delete selected ts
-              </Button>
-            </Box>
-          </ButtonGroup>
-        </Box>
+        <div>
+          <div className={styles.pmNavTabs}>
+            <Button
+              id="showMyTimesheetsButton"
+              variant={selectedButton === 1 ? 'contained' : 'outlined'}
+              onClick={() => showMyTS()}
+            >
+              My timesheets
+            </Button>
+            <Button
+              id="showTimesheetsToApproveButton"
+              variant={selectedButton === 2 ? 'contained' : 'outlined'}
+              onClick={() => showTSToApprove()}
+            >
+              Timesheets to approve
+            </Button>
+            <Button
+              id="showAllTimesheetsButton"
+              variant={selectedButton === 3 ? 'contained' : 'outlined'}
+              onClick={() => showAllTS()}
+            >
+              All timesheets
+            </Button>
+            <Button
+              id="deleteSelectedTimesheetsButton"
+              disabled={selectedTS.length ? false : true}
+              onClick={() => deleteSelectedTSAction()}
+            >
+              Delete selected ts
+            </Button>
+          </div>
+        </div>
       )}
       <EmployeeTimesheetTable
         title={role}
