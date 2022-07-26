@@ -4,7 +4,7 @@ import * as currentUserActions from 'redux/currentUser/actions';
 export const getEmployees = () => {
   return (dispatch) => {
     dispatch(actions.getEmployeesPending());
-    const token = localStorage.getItem('token');
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     return fetch(`${process.env.REACT_APP_API_URL}/employees`, { headers: { token } })
       .then((response) => response.json())
       .then((response) => {
@@ -24,8 +24,10 @@ export const deleteEmployee = (id) => {
   return async (dispatch) => {
     dispatch(actions.deleteEmployeePending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(`${process.env.REACT_APP_API_URL}/employees/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { token }
       });
       const res = await response.json();
       dispatch(actions.deleteEmployeeSucces(id, res));
@@ -39,10 +41,12 @@ export const addEmployee = (newEmployee) => {
   return async (dispatch) => {
     dispatch(actions.addEmployeePending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(`${process.env.REACT_APP_API_URL}/employees`, {
         method: 'POST',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
+          token
         },
         body: JSON.stringify({
           firstName: newEmployee.firstName,
@@ -89,12 +93,14 @@ export const editEmployee = (newEmployee) => {
   return async (dispatch) => {
     dispatch(actions.editEmployeePending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/employees/${newEmployee._id}`,
         {
           method: 'PUT',
           headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            token
           },
           body: JSON.stringify({
             firstName: newEmployee.firstName,
@@ -114,6 +120,85 @@ export const editEmployee = (newEmployee) => {
       dispatch(currentUserActions.updateCurrentUser(res.data));
     } catch (error) {
       dispatch(actions.editEmployeeError(error));
+    }
+  };
+};
+// add project associated in employee
+export const pushProjectAssociatedInEmployee = (newProjectAssociated, idEmployee) => {
+  return async (dispatch) => {
+    dispatch(actions.pushProjectAssociatedInEmployeePending());
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/employees/${idEmployee}/project`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(newProjectAssociated)
+        }
+      );
+
+      const res = await response.json();
+      console.log('response', res);
+
+      if (res.error) {
+        throw res.message;
+      }
+      dispatch(actions.pushProjectAssociatedInEmployeeSuccess(res.data, res.message));
+      dispatch(currentUserActions.updateCurrentUser(res.data));
+    } catch (error) {
+      dispatch(actions.pushProjectAssociatedInEmployeeError(error));
+    }
+  };
+};
+// edit project associated in employee
+export const pushEditProjectAssociatedInEmployee = (editProjectAssociated, idEmployee) => {
+  return async (dispatch) => {
+    dispatch(actions.pushEditProjectAssociatedInEmployeePending());
+    try {
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/employees/${idEmployee}/edit/project`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-type': 'application/json'
+          },
+          body: JSON.stringify(editProjectAssociated)
+        }
+      );
+
+      const res = await response.json();
+      console.log('response', res);
+
+      if (res.error) {
+        throw res.message;
+      }
+      dispatch(actions.pushEditProjectAssociatedInEmployeeSuccess(res.data, res.message));
+      dispatch(currentUserActions.updateCurrentUser(res.data));
+    } catch (error) {
+      dispatch(actions.pushEditProjectAssociatedInEmployeeError(error));
+    }
+  };
+};
+// delete associated project in employee
+export const deleteProjectAssociated = (idEmployee, idProject) => {
+  return async (dispatch) => {
+    dispatch(actions.pullProjectAssociatedInEmployeePending());
+    try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/employees/${idEmployee}/project/${idProject}`,
+        {
+          method: 'PUT',
+          headers: { token }
+        }
+      );
+      const res = await response.json();
+      console.log('Here show the response for delete associated project:', res);
+      dispatch(actions.pullProjectAssociatedInEmployeeSuccess(idEmployee, res));
+    } catch (error) {
+      dispatch(actions.pullProjectAssociatedInEmployeeError(error.toString()));
     }
   };
 };
