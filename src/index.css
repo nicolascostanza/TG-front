@@ -15,7 +15,7 @@
   --text-on-background: #000000;
   --text-on-surface: #fff;
   --text-on-error: #ffffff;
-  
+
   /* APP COLORS */
   --primary-text-color: #000000;
   --row-text-primary: #000000;
@@ -27,6 +27,11 @@
   --row-even-background: #e0e4e9;
   --row-odd-background: #f0f4f9;
   --row-hover-background: #7e8795;
+  --primary-button-color: #AACE9B;
+  --slider-active-color: #2196F3;
+  --bottom-table-buttons-active: #CEE0F3;
+  --bottom-table-buttons-disabled: #EBECF0;
+  --form-background: #E8F4FB;
 }
 
 [data-theme='dark'] {
@@ -46,7 +51,7 @@
   --text-on-background: #000000;
   --text-on-surface: #000000;
   --text-on-error: #ffffff;
-  
+
   /* APP COLORS */
   --primary-text-color: #000000;
   --row-text-primary: #000000;
@@ -58,6 +63,9 @@
   --row-even-background: #e0e4e9;
   --row-odd-background: #f0f4f9;
   --row-hover-background: #7e8795;
+  --primary-button-color: #FBBC04;
+  --slider-active-color: #FBBC04;
+  --form-background: #16242C;
 }
 
 * {

@@ -165,19 +165,17 @@ function Tasks() {
         handleClose={handleClose}
         handleSubmit={handleSubmit(onSubmit)}
         allEmployees={allEmployees}
+        title={'Edit Task'}
       >
-        <div>
-          <h2>Edit Task</h2>
-        </div>
         <div className={styles.form}>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="parentProject">Parent Project:</label>
             <input type="text" placeholder="Parent Project ID" {...register('parentProject')} />
             {errors.parentProject?.type === 'string.empty' && (
               <p className={styles.error}>{errors.parentProject.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="taskName">Task Name:</label>
             <input type="text" placeholder="Task Name" {...register('taskName')} />
             {errors.taskName?.type === 'string.empty' && (
@@ -190,7 +188,7 @@ function Tasks() {
               <p className={styles.error}>{errors.taskName.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="taskDescription">Task Description:</label>
             <input type="text" placeholder="Task description" {...register('taskDescription')} />
             {errors.taskDescription?.type === 'string.min' && (
@@ -200,7 +198,7 @@ function Tasks() {
               <p className={styles.error}>{errors.taskDescription.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="assignedEmployee">Assigned Employee:</label>
             <input
               value={employees}
@@ -252,7 +250,7 @@ function Tasks() {
               <p className={styles.error}>{errors.assignedEmployee.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="startDate">Start Date:</label>
             <input type="text" placeholder="YYYY-MM-DD" {...register('startDate')} />
             {errors.startDate?.type === 'string.empty' && (
@@ -262,7 +260,7 @@ function Tasks() {
               <p className={styles.error}>{errors.startDate.message}</p>
             )}
           </div>
-          <div className={styles.containerTask}>
+          <div className={styles.inputContainer}>
             <label htmlFor="status" className={styles.dropdownTitleTask}>
               Status
             </label>

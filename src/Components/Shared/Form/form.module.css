@@ -1,10 +1,11 @@
 .form{
 	font-family: 'Roboto', sans-serif;
 	font-weight: bold;
-	color: #373867;
+	color: var(--text-on-primary);
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	background-color: var(--background);
 }
 .form div{
 	display: flex;
@@ -16,6 +17,7 @@
 }
 h2{
 	font-size: 24px;
+	text-align: center;
 }
 .inputs{
 	display:flex;

@@ -5,11 +5,11 @@
   height: 60px;
   padding: 10px;
   font-weight: bold;
-  color: white;
+  color: var(--primary-text-color);
   text-transform: uppercase;
   cursor: pointer;
   align-items: center;
-  background-color: #40417d;
+  background-color: var(--primary-button-color);
   border: none;
   border-radius: 5px;
   transition: 150ms;

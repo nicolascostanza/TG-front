@@ -59,7 +59,7 @@ const CreateProject = (props) => {
       })
       .required(),
     startDate: Joi.date()
-      .min('01-01-2000')
+      .min('01/01/2000')
       .messages({
         'date.min': 'Start date must be after 01-01-2000',
         'date.base': 'Date is not valid',
@@ -68,7 +68,7 @@ const CreateProject = (props) => {
       .required(),
     endDate: Joi.date()
       .greater(Joi.ref('startDate'))
-      .less('12-31-2099')
+      .less('12/31/2099')
       .allow('')
       .messages({
         'date.base': 'Date is not valid',
