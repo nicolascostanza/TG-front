@@ -24,7 +24,6 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
     resolver: joiResolver(validationsAssignPm)
   });
   let currentPm = employeesInProject.filter((employ) => employ.isPM === true);
-  console.log('q es esto:::::', currentPm[0]);
   const onSubmit = (data) => {
     if (currentPm.length != 0) {
       let current = {
