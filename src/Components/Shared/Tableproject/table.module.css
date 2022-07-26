@@ -83,3 +83,6 @@ thead{
 .tbody > tr:last-child > :last-child {
 	border-radius: 0 0 10px 0;
 }
+.tableTitle{
+    color: var(--text-on-primary);
+}

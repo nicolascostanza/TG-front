@@ -17,6 +17,7 @@
   background: transparent;
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.19);
   content:"\025be";
+  justify-self: center;
 }
 .select-selected {
   background-color: DodgerBlue;

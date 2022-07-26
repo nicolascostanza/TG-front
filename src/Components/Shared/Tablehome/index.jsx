@@ -50,8 +50,19 @@ function Tablehome({
     <div className={styles.container}>
       <h2>{title}</h2>
       {role === `ADMIN` || role === `SUPERADMIN` ? (
-        <Button
-          id="buttonAddHome"
+        // <Button
+        //   id={styles['buttonAddHome']}
+        //   width={'100px'}
+        //   height={'40px'}
+        //   fontSize={'15px'}
+        //   onClick={() => {
+        //     openModal('POST');
+        //   }}
+        // >
+        //   <i className="fa-solid fa-plus"></i>
+        // </Button>
+        <button
+          id={styles['buttonAddHome']}
           width={'100px'}
           height={'40px'}
           fontSize={'15px'}
@@ -60,8 +71,7 @@ function Tablehome({
           }}
         >
           <i className="fa-solid fa-plus"></i>
-          ADD
-        </Button>
+        </button>
       ) : (
         <></>
       )}
@@ -110,7 +120,11 @@ function Tablehome({
                           return <td>No tasks yet</td>;
                         } else {
                           return (
-                            <Dropdown width={'150px'} placeholder="Tasks">
+                            <Dropdown
+                              className={styles.dropdownTd}
+                              width={'150px'}
+                              placeholder="Tasks"
+                            >
                               {row[key]?.map((element) => {
                                 return <option key={Math.random()}>{element.taskName}</option>;
                               })}
@@ -125,7 +139,7 @@ function Tablehome({
                           return <td>No members yet</td>;
                         } else {
                           return (
-                            <td>
+                            <td className={styles.dropdownTd}>
                               <Dropdown width={'150px'} placeholder={'Team'}>
                                 {row[key]?.map((element) => {
                                   return (

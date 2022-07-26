@@ -468,7 +468,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       >
         {message}
       </Modal>
-      <h2>{title}</h2>
+      <h2 className={styles.tableTitle}>{title}</h2>
       {roleUser === `ADMIN` && tab === 'employees' ? (
         <Button
           disabled={dataTeam.length > 0 ? false : true}
