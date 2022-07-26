@@ -15,109 +15,110 @@ const Sidebar = () => {
     dispatch(currentUserActions.setCurrentUserToInitialState());
     sessionStorage.clear();
   };
+  const pathName = window.location.pathname;
+  const onHome = pathName === '/';
   const role = useSelector((state) => state.auth.authenticated?.role);
   const handleClose = () => {
     setIsOpen(false);
   };
   if (!isOpen) {
     return (
-      <button className={styles.sideButton} onClick={() => setIsOpen(true)}>
-        <i className="fa-solid fa-bars"></i>
-      </button>
+      <i id={styles.sideButton} className="fa-solid fa-bars" onClick={() => setIsOpen(true)}></i>
     );
-  } else if (!role)
+  } else if (!role & onHome)
     return (
       <div className={styles.Sidebar}>
-        <section className={styles.container}>
-          <div className={styles.sidebarTitle}>
-            <p>Menu</p>
-            <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
-          </div>
-          <div className={styles.anchors}>
-            <a href="#trackgenix" className={styles.sidebarLink}>
-              What is Trackgenix?
-            </a>
-            <a href="#functionalities" className={styles.sidebarLink}>
-              Functionalities
-            </a>
-            <a href="#reasons" className={styles.sidebarLink}>
-              Working with us
-            </a>
-            <a href="#contact" className={styles.sidebarLink}>
-              Contact us
-            </a>
-          </div>
-          <div className={styles.sidebarTitle}>
-            <p>Trackgenix</p>
-          </div>
-          <div className={styles.links}>
-            <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
-              Sign-up
-            </Link>
-            <Link className={styles.sidebarLink} to="/login" id="sidebarLogin">
-              Log-in
-            </Link>
-          </div>
-        </section>
-        <div className={styles.togglerContainer}>
-          <ThemeToggle />
+        <div className={styles.sidebarTitle}>
+          <p>Menu</p>
+          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+        </div>
+        <div className={styles.anchors}>
+          <a href="#trackgenix" className={styles.sidebarLink} onClick={() => handleClose()}>
+            What is Trackgenix?
+          </a>
+          <a href="#functionalities" className={styles.sidebarLink} onClick={() => handleClose()}>
+            Functionalities
+          </a>
+          <a href="#reasons" className={styles.sidebarLink} onClick={() => handleClose()}>
+            Working with us
+          </a>
+          <a href="#contact" className={styles.sidebarLink} onClick={() => handleClose()}>
+            Contact us
+          </a>
+        </div>
+        <div className={styles.sidebarTitle}>
+          <p>Trackgenix</p>
+        </div>
+        <div className={styles.links}>
+          <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
+            Sign-up
+          </Link>
+          <Link className={styles.sidebarLink} to="/login" id="sidebarLogin">
+            Log-in
+          </Link>
         </div>
       </div>
     );
-  else if (role === 'EMPLOYEE') {
+  else if (!role && !onHome) {
     return (
       <div className={styles.Sidebar}>
-        <section className={styles.container}>
-          <div className={styles.sidebarTitle}>
-            <p>Menu</p>
-            <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
-          </div>
-          <div className={styles.links}>
-            <Link className={styles.sidebarLink} to="/employees/profile">
-              Profile
-            </Link>
-            <Link className={styles.sidebarLink} onClick={logOut} to="/">
-              Log Out
-            </Link>
-          </div>
-        </section>
-        <section className={styles.container}>
+        <div className={styles.sidebarTitle}>
+          <p>Menu</p>
+          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+        </div>
+        <div className={styles.links}>
+          <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
+            Sign-up
+          </Link>
+          <Link className={styles.sidebarLink} to="/login" id="sidebarLogin">
+            Log-in
+          </Link>
+        </div>
+      </div>
+    );
+  } else if (role === 'EMPLOYEE') {
+    return (
+      <div className={styles.Sidebar}>
+        <div className={styles.sidebarTitle}>
+          <p>Menu</p>
+          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+        </div>
+        <div className={styles.links}>
+          <Link className={styles.sidebarLink} to="/employees/profile">
+            Profile
+          </Link>
+          <Link className={styles.sidebarLink} to="/">
+            Projects
+          </Link>
           <Link className={styles.sidebarLink} to="/time-sheets">
             Timesheets
           </Link>
           <Link className={styles.sidebarLink} to="/tasks">
             Tasks
           </Link>
-        </section>
-        <div className={styles.togglerContainer}>
-          <ThemeToggle />
+          <Link className={styles.sidebarLink} onClick={logOut} to="/">
+            Log Out
+          </Link>
         </div>
       </div>
     );
   } else if (role === 'ADMIN') {
     return (
       <div className={styles.Sidebar}>
-        <section className={styles.container}>
-          <div className={styles.sidebarTitle}>
-            <p>Menu</p>
-            <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
-          </div>
-          <div className={styles.links}>
-            <Link className={styles.sidebarLink} to="/admins/profile">
-              Profile
-            </Link>
-            <Link className={styles.sidebarLink} onClick={logOut} to="/">
-              Log Out
-            </Link>
-          </div>
-        </section>
-        <section className={styles.container}>
-          <Link className={styles.sidebarLink} to="/projects">
+        <div className={styles.sidebarTitle}>
+          <p>Menu</p>
+          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+        </div>
+        <div className={styles.links}>
+          <Link className={styles.sidebarLink} to="/admins/profile">
+            Profile
+          </Link>
+          <Link className={styles.sidebarLink} to="/">
             Projects
           </Link>
-        </section>
-        <div className={styles.togglerContainer}>
-          <ThemeToggle />
+          <Link className={styles.sidebarLink} onClick={logOut} to="/">
+            Log Out
+          </Link>
         </div>
       </div>
     );
