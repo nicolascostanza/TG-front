@@ -86,7 +86,7 @@
 	float: right;
 	position: relative;
 	right: 2px;
-	top: 21px;
+	top: 29px;
 }
 
 .closeMark:hover {
@@ -98,7 +98,6 @@ input{
   width: 189.63px;
   border-radius: 5px;
   border: 1px solid #373867;
-  background: transparent;
   box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.19);
   content:"\025be";
 	padding-left: 7px;

@@ -12,7 +12,7 @@ body {
   justify-content: center;
   width: 60%;
   margin: 25px auto;
-  background: var(--surface);
+  background: var(--form-background);
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
   border-radius: 20px;
   padding-left: 35px;
@@ -64,8 +64,8 @@ select {
   width: 20%;
   margin: 15px 10%;
   height: 30px;
-  background-color: #aace9b;
-  color: white;
+  background-color: var(--primary-button-color);
+  color: var(--primary-text-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -143,4 +143,21 @@ select {
   bottom: 0;
   -webkit-transition: all 0.35s;
   transition: all 0.35s;
-};
+}
+.bottomLinkContainer{
+  display: flex;
+  align-self: center;
+  margin-bottom: 8px;
+}
+link:visited{
+  color: var();
+}
+.newHereText{
+  color: var(--text-on-primary);
+}
+.loginRedirect{
+  color: #0A66C2;
+}
+.loginRedirect:visited{
+  color: #0A66C2;
+}

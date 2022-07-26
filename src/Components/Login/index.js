@@ -71,9 +71,12 @@ const Login = () => {
             </button>
           </div>
           <div className={styles.bottomLinkContainer}>
-            <Link to="/signup" style={{ textDecoration: 'none' }}>
-              Don&apos;t have an account? Sign up
-            </Link>
+            <span className={styles.newHereText}>
+              New here?{' '}
+              <Link to="/signup" className={styles.signupRedirect}>
+                Sign up
+              </Link>
+            </span>
           </div>
         </form>
       </section>

@@ -31,6 +31,7 @@
   --slider-active-color: #2196F3;
   --bottom-table-buttons-active: #CEE0F3;
   --bottom-table-buttons-disabled: #EBECF0;
+  --form-background: #E8F4FB;
 }
 
 [data-theme='dark'] {
@@ -64,6 +65,7 @@
   --row-hover-background: #7e8795;
   --primary-button-color: #FBBC04;
   --slider-active-color: #FBBC04;
+  --form-background: #16242C;
 }
 
 * {

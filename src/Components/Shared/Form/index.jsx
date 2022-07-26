@@ -10,7 +10,7 @@ const Form = ({ children, title, handleSubmit, showModal, handleClose }) => {
       <form className={styles.form}>
         <div>
           <div>
-            <h2> {title} </h2>
+            <h2>{title}</h2>
           </div>
           <div className={styles.inputs}> {children} </div>
           <Button

@@ -9,6 +9,7 @@ import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
 import styles from './signup.module.css';
 import { useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function SignUp() {
   const history = useHistory();
@@ -153,6 +154,14 @@ function SignUp() {
               <button className={styles.buttonContinue} type="submit" value="CONTINUE">
                 CONTINUE
               </button>
+            </div>
+            <div className={styles.bottomLinkContainer}>
+              <span className={styles.newHereText}>
+                Already have an account?{' '}
+                <Link to="/login" className={styles.loginRedirect}>
+                  Log in
+                </Link>
+              </span>
             </div>
           </form>
         </section>
