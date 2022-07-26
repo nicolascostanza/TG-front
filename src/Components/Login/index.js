@@ -49,25 +49,16 @@ const Login = () => {
   };
 
   return (
-    <section className={styles.container}>
+    <section className={styles.all}>
       <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
         <Sidebar />
       </section>
       {/* <section className={styles.form}> */}
       <Container maxWidth="sm">
-        {/* <Container fixed> */}
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* <h1 className={styles.tittle}>LOGIN</h1> */}
           <Typography variant="h3">Login</Typography>
           <div className={styles.formFlex}>
-            {/* <div className={styles.inputContainer}>
-              <label htmlFor="Email" className={styles.labels}>
-                Email
-              </label>
-              <input type="text" {...register('email')} error={appendErrors.email?.message}></input>
-              {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
-            </div> */}
             <TextField
               type="email"
               id="email"
@@ -78,18 +69,9 @@ const Login = () => {
               fullWidth
               error={errors.email && true}
               helperText={errors.email?.message}
+              className={styles.inputs}
+              styles={{ backgroundColor: '#fafafa' }}
             />
-            {/* <div className={styles.inputContainer}>
-              <label htmlFor="Password" className={styles.labels}>
-                Password
-              </label>
-              <input
-                type="password"
-                {...register('password')}
-                error={appendErrors.password?.message}
-              ></input>
-              {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
-            </div> */}
             <TextField
               type="password"
               id="password"
@@ -100,6 +82,7 @@ const Login = () => {
               fullWidth
               error={errors.password && true}
               helperText={errors.password?.message}
+              className={styles.inputs}
             />
           </div>
           <Typography variant="subtitle1" sx={{ marginTop: 2, marginBottom: 2 }}>
