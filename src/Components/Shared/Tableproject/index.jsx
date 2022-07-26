@@ -432,66 +432,68 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         {message}
       </Modal>
       <h2>{title}</h2>
-      {roleUser === `ADMIN` && tab === 'employees' ? (
-        <Button
-          disabled={dataTeam.length > 0 ? false : true}
-          id="buttonAssignPm"
-          width={'80px'}
-          height={'40px'}
+      <div className={styles.topButtons}>
+        <Button id="buttonBack" onClick={() => switcher()}>
+          <i className="fa-solid fa-arrow-left fa-2x"></i>
+        </Button>
+        {roleUser === `ADMIN` && tab === 'employees' ? (
+          <Button
+            disabled={dataTeam.length > 0 ? false : true}
+            id="buttonAssignPm"
+            onClick={() => {
+              openModalPm();
+            }}
+          >
+            <i className="fa-solid fa-plus"></i>
+            <p className={styles.textPm}>PM</p>
+          </Button>
+        ) : null}
+        {roleUser === 'ADMIN' || roleUser === 'PM' ? (
+          <>
+            {filterProject ? (
+              <Button id="buttonAddEmployee" onClick={() => onAddEmployee()}>
+                <i className="fa-solid fa-plus"></i>
+                <i className="fa-solid fa-user fa-2x"></i>
+              </Button>
+            ) : (
+              <Button id="buttonAddTask" onClick={() => onAddTask()}>
+                <i className="fa-solid fa-plus"></i>
+                <i className="fa-solid fa-list fa-1x"></i>
+              </Button>
+            )}
+          </>
+        ) : null}
+      </div>
+      <div className={styles.tabs}>
+        <button
+          id="buttonTabEmployees"
+          disabled={filterProject ? true : false}
           onClick={() => {
-            openModalPm();
+            setTab('employees');
+            changeFilter();
           }}
         >
-          Asignar PM
-        </Button>
-      ) : null}
-      {roleUser === 'ADMIN' || roleUser === 'PM' ? (
-        <>
-          {filterProject ? (
-            <Button
-              id="buttonAddEmployee"
-              width={'80px'}
-              height={'40px'}
-              fontSize={'15px'}
-              onClick={() => onAddEmployee()}
-            >
-              <i className="fa-solid fa-plus"></i>
-              ADD EMPLOYEE
-            </Button>
-          ) : (
-            <Button id="buttonAddTask" onClick={() => onAddTask()}>
-              ADD TASK
-            </Button>
-          )}
-        </>
-      ) : null}
-      <Button id="buttonBack" onClick={() => switcher()}>
-        BACK
-      </Button>
-      <button
-        id="buttonTabEmployees"
-        disabled={filterProject ? true : false}
-        onClick={() => {
-          setTab('employees');
-          changeFilter();
-        }}
-      >
-        Employees
-      </button>
-      <button
-        id="buttonTabTask"
-        disabled={!filterProject ? true : false}
-        onClick={() => {
-          setTab('tasks');
-          changeFilter();
-        }}
-      >
-        Tasks
-      </button>
+          <p>Employees</p>
+          <i className="fa-solid fa-user fa-1x"></i>
+        </button>
+        <button
+          id="buttonTabTask"
+          disabled={!filterProject ? true : false}
+          onClick={() => {
+            setTab('tasks');
+            changeFilter();
+          }}
+        >
+          <p>Tasks</p>
+          <i className="fa-solid fa-list fa-1x"></i>
+        </button>
+      </div>
       {show.length === 0 ? (
         <>
-          <h1>No information to display</h1>
-          <h2>To start add an {tab === 'employees' ? 'Employee' : 'Task'}</h2>
+          <div className={styles.noDataText}>
+            <h1>No information to display</h1>
+            <h2>To start add an {tab === 'employees' ? 'Employee' : 'Task'}</h2>
+          </div>
         </>
       ) : (
         <>
@@ -536,15 +538,17 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                       } else if (key === 'assignedEmployee') {
                         if (row[key].length >= 1) {
                           return (
-                            <Button
-                              id="buttonListEmploeesTask"
-                              width={'100px'}
-                              height={'30px'}
-                              fontSize={'12px'}
-                              onClick={() => listEmployeesTaskFunction(row._id)}
-                            >
-                              Employee List
-                            </Button>
+                            <div className="empList">
+                              <Button
+                                width={'100px'}
+                                height={'40px'}
+                                id="buttonListEmployeesTask"
+                                fontSize={'12px'}
+                                onClick={() => listEmployeesTaskFunction(row._id)}
+                              >
+                                Employee List
+                              </Button>
+                            </div>
                           );
                           // let dati = nuevoArray[index];
                           // return (
@@ -594,6 +598,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                         {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                         <td>
                           <Button
+                            className={styles.modifyButtons}
                             id="buttonEditInProject"
                             onClick={() => {
                               setIdToForm(tab === 'tasks' ? row._id : row.employeeId._id);
@@ -631,7 +636,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           </table>
           <div className={styles.buttons}>
             <div>
-              <p>Page {indexPage}</p>
+              <p className={styles.indexPage}>Page {indexPage}</p>
             </div>
             <div>
               <Button

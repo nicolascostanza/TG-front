@@ -23,7 +23,6 @@
   .navbar {
       width: 100%;
       z-index: 200;
-      position: fixed;
       justify-content: flex-end;
       align-items: center
   }

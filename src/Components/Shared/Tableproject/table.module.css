@@ -4,6 +4,11 @@
     font-size: 13px;
     width: 90%;
     overflow-x: auto;
+    color: var(--text-on-primary-alt);
+}
+
+.container h2{
+    color: var(--text-on-primary);
 }
 
 .addButton{
@@ -17,19 +22,8 @@
     width: 100%;
 }
 
-td{
-    border: none;
-    text-align: center;
-    align-items: center;
-}
-
 thead{
     background-color: var(--primary-color);
-    height: 50px;
-    border-radius: 10px;
-    max-width: 1200px;
-    color: white;
-    text-transform: uppercase;
 }
 
 .row{
@@ -66,7 +60,7 @@ thead{
 
 .buttons{
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
 }
 
 .buttons > div {
@@ -82,4 +76,68 @@ thead{
 }
 .tbody > tr:last-child > :last-child {
 	border-radius: 0 0 10px 0;
+}
+
+.topButtons {
+    display: flex;
+    padding-bottom: 25px;
+    justify-content: flex-end;
+}
+
+.topButtons button {
+    width: 55px;
+    height: 55px;
+    border-radius: 100px;
+    margin-right: 20px;
+    box-shadow: 4px 4px 13px -12px #000000;
+}
+
+.textPm{
+    font-size: 20px;
+}
+
+.tabs{
+    margin-left: 10px;
+    display: flex;
+}
+
+.tabs button{
+    display: flex;
+    justify-content: space-evenly;
+    width: 150px;
+    border-radius: 5px 5px 0 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    border-bottom: none;
+    background-color: var(--primary-button-color);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    padding: 3px;
+}
+
+.tabs i{
+    margin-top: 2px;
+}
+
+.noDataText{
+}
+
+.noDataText h1{
+    background-color: var(--primary-button-color);
+    border-radius: 5px 5px 0 0;
+    padding: 5px 0px 5px 10px;
+    font-size: 20px;
+}
+
+.noDataText h2{
+    background-color: var(--row-even-background);
+    color: var(--text-on-primary-var);
+    font-size: 16px;
+    padding: 5px;
+    font-weight: 400;
+}
+
+.indexPage{
+    color: var(--text-on-primary);
 }
