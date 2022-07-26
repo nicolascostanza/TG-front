@@ -11,6 +11,8 @@
 }
 
 .icon{
+  position: absolute;
+  right: 50px;
   color: #fff;
   transform: scale(0.7);
   margin-top: 5px;
@@ -20,7 +22,14 @@
 @media screen and (min-width: 1024px) {
   .navbar {
       width: 100%;
+      z-index: 200;
+      position: fixed;
       justify-content: flex-end;
       align-items: center
+  }
+  .icon{
+    position: relative;
+    margin-top: 5px;
+    margin-right: -80px;
   }
 }

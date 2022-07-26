@@ -14,6 +14,7 @@
   font-size: 0.7rem;
   font-style: italic;
   padding-bottom: 25px;
+  color: var(--text-on-primary);
 }
 .socials a i{
   transform: scale(1.2);

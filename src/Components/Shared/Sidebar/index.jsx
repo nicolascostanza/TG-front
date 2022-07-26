@@ -28,25 +28,45 @@ const Sidebar = () => {
     return (
       <div className={styles.Sidebar}>
         <div className={styles.sidebarTitle}>
-          <p>Menu</p>
-          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+          <p id="menu-title">Menu</p>
+          <i id="close-button" className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
         <div className={styles.anchors}>
-          <a href="#trackgenix" className={styles.sidebarLink} onClick={() => handleClose()}>
+          <a
+            id="whats-trackgenix"
+            href="#trackgenix"
+            className={styles.sidebarLink}
+            onClick={() => handleClose()}
+          >
             What is Trackgenix?
           </a>
-          <a href="#functionalities" className={styles.sidebarLink} onClick={() => handleClose()}>
+          <a
+            id="functionalities"
+            href="#functionalities"
+            className={styles.sidebarLink}
+            onClick={() => handleClose()}
+          >
             Functionalities
           </a>
-          <a href="#reasons" className={styles.sidebarLink} onClick={() => handleClose()}>
+          <a
+            id="reasons"
+            href="#reasons"
+            className={styles.sidebarLink}
+            onClick={() => handleClose()}
+          >
             Working with us
           </a>
-          <a href="#contact" className={styles.sidebarLink} onClick={() => handleClose()}>
+          <a
+            id="contact"
+            href="#contact"
+            className={styles.sidebarLink}
+            onClick={() => handleClose()}
+          >
             Contact us
           </a>
         </div>
         <div className={styles.sidebarTitle}>
-          <p>Trackgenix</p>
+          <p id="trackgenix-title">Trackgenix</p>
         </div>
         <div className={styles.links}>
           <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
@@ -62,8 +82,19 @@ const Sidebar = () => {
     return (
       <div className={styles.Sidebar}>
         <div className={styles.sidebarTitle}>
-          <p>Menu</p>
-          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+          <p id="menu-title">Menu</p>
+          <i id="close-button" className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+        </div>
+        <Link
+          id="home"
+          className={styles.sidebarTitle}
+          style={{ textDecoration: 'inherit' }}
+          to="/"
+        >
+          Home
+        </Link>
+        <div className={styles.sidebarTitle}>
+          <p id="trackgenix-title">Trackgenix</p>
         </div>
         <div className={styles.links}>
           <Link className={styles.sidebarLink} to="/signup" id="sidebarSignUp">
@@ -79,23 +110,23 @@ const Sidebar = () => {
     return (
       <div className={styles.Sidebar}>
         <div className={styles.sidebarTitle}>
-          <p>Menu</p>
-          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+          <p id="trackgenix-title">Trackgenix</p>
+          <i id="close-button" className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
         <div className={styles.links}>
-          <Link className={styles.sidebarLink} to="/employees/profile">
+          <Link id="emp-profile" className={styles.sidebarLink} to="/employees/profile">
             Profile
           </Link>
-          <Link className={styles.sidebarLink} to="/">
+          <Link id="emp-projects" className={styles.sidebarLink} to="/">
             Projects
           </Link>
-          <Link className={styles.sidebarLink} to="/time-sheets">
+          <Link id="emp-timesheets" className={styles.sidebarLink} to="/time-sheets">
             Timesheets
           </Link>
-          <Link className={styles.sidebarLink} to="/tasks">
+          <Link id="emp-tasks" className={styles.sidebarLink} to="/tasks">
             Tasks
           </Link>
-          <Link className={styles.sidebarLink} onClick={logOut} to="/">
+          <Link id="log-out" className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
           </Link>
         </div>
@@ -105,17 +136,17 @@ const Sidebar = () => {
     return (
       <div className={styles.Sidebar}>
         <div className={styles.sidebarTitle}>
-          <p>Menu</p>
-          <i className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
+          <p id="menu-title">Menu</p>
+          <i id="close-button" className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
         <div className={styles.links}>
-          <Link className={styles.sidebarLink} to="/admins/profile">
+          <Link id="adm-profile" className={styles.sidebarLink} to="/admins/profile">
             Profile
           </Link>
-          <Link className={styles.sidebarLink} to="/">
-            Projects
+          <Link id="adm-profile" className={styles.sidebarLink} to="/">
+            {role === 'SUPERADMIN' ? 'Admins' : 'Projects'}
           </Link>
-          <Link className={styles.sidebarLink} onClick={logOut} to="/">
+          <Link id="adm-profile" className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
           </Link>
         </div>
