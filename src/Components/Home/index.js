@@ -40,6 +40,7 @@ function Home() {
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
   const [method, setMethod] = useState('');
+  // const [arrayFiltered, setArrayFiltered] = useState([]);
   const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
   let projectsError = useSelector((state) => state.projects.error);
@@ -50,6 +51,7 @@ function Home() {
   let message = useSelector((state) => state.projects.message);
   // const role = 'EMPLOYEE';
   let role = useSelector((state) => state.auth.authenticated.role);
+  console.log('roleeeeeeeeee', role);
   const title = 'PROJECTS';
   // const currentUser = useSelector((state) => state.currentUser.currentUser);
   // const authRole = () => {
@@ -66,6 +68,7 @@ function Home() {
       }
       if (role === 'PM' || role === 'EMPLOYEE') {
         dispatch(thunksProjects.getProjects());
+        // console.log('PPPROJECTSSSSSS FILTERED', filterProject());
       }
     } else {
       dispatch(thunksProjects.getProjects());
@@ -90,12 +93,35 @@ function Home() {
     mode: 'onBlur',
     resolver: joiResolver(validator)
   });
+  console.log('projects list', projectsList);
+  // console.log('ids of all projects', idsAllProjects);
+  // const filterProject = () => {
+  //   let arrayFilteredIF = [];
+  //   for (let i = 0; i < idsInAssociatedProjects.length; i++) {
+  //     if (idsAllProjects.indexOf(idsInAssociatedProjects) != -1) {
+  //       // setArrayFiltered(...arrayFiltered, idsInAssociatedProjects[i].projectId);
+  //       arrayFilteredIF.push(idsInAssociatedProjects[i]);
+  //     }
+  //   }
+
+  //   return arrayFilteredIF;
+  // };
+  // console.log('array filtereeeeed', filterProject());
+  // console.log('filtrradoooss', arrayFiltered);
+
   // MANDA SOLO LOS PROYECTOS RELACIONADOS A SU ROLE
   const dataProjects = (rol) => {
     if (rol === 'ADMIN') {
       return projectsList;
     } else {
-      return userCurrent.associatedProjects;
+      // console.log('projects associated', userCurrent.associatedProjects);
+      const idsInAssociatedProjects = userCurrent?.associatedProjects?.map(
+        (associated) => associated.projectId._id
+      );
+      const respppp = projectsList.filter((project) =>
+        idsInAssociatedProjects.includes(project._id)
+      );
+      return respppp;
     }
   };
   // CAMBIA LA PANTALLA
@@ -170,6 +196,7 @@ function Home() {
       //     </section>
     );
   };
+
   // DELETE FUNCTION
   const onDelete = () => {
     if (role === 'SUPERADMIN') {
