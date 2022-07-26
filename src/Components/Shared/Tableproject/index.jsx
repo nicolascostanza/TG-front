@@ -14,7 +14,7 @@ import * as thunksTasks from 'redux/tasks/thunks';
 import * as thunksEmployees from 'redux/employees/thunks';
 import { useSelector } from 'react-redux';
 import AssignPm from '../assingPm';
-// import { getCurrentUserByEmail } from 'redux/currentUser/thunks';
+import { getCurrentUserByEmail } from 'redux/currentUser/thunks';
 
 function Tableproject({ title, roleUser, switcher, idProject }) {
   const [tab, setTab] = useState('employees');
@@ -99,14 +99,14 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     verifiedPM();
   }, [data, allProjects]);
   //  see this useEffect for update tableList in employee's home
-  // useEffect(() => {
-  //   if (roleUser === 'EMPLOYEE') {
-  //     const email = JSON.parse(sessionStorage.getItem('currentUser')).email;
-  //     const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
-  //     const role = JSON.parse(sessionStorage.getItem('authenticated')).role;
-  //     dispatch(getCurrentUserByEmail(email, token, role));
-  //   }
-  // }, []);
+  useEffect(() => {
+    if (roleUser === 'EMPLOYEE') {
+      const email = JSON.parse(sessionStorage.getItem('currentUser')).email;
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+      const role = JSON.parse(sessionStorage.getItem('authenticated')).role;
+      dispatch(getCurrentUserByEmail(email, token, role));
+    }
+  }, []);
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
 
   const nextPage = () => {
@@ -501,7 +501,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       >
         {message}
       </Modal>
-      <h2>{title} Name project</h2>
+      <h2>{`${title} ${projectoElegido[0].name}`}</h2>
       {roleUser === `ADMIN` && tab === 'employees' ? (
         <Button
           disabled={dataTeam.length > 0 ? false : true}
