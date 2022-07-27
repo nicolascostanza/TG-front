@@ -24,7 +24,6 @@ const Login = () => {
     mode: 'onBlur',
     resolver: joiResolver(employeeValidationLogIn)
   });
-
   // Should redirect after current user is auth and loaded
   useEffect(() => {
     if (currentUser?._id) {
