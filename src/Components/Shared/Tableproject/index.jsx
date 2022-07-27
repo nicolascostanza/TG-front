@@ -418,14 +418,23 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                   ))}
                 </select>
               ) : (
-                <p>{`${currentEmployee.employeeId.firstName} ${currentEmployee.employeeId.lastName}`}</p>
+                <p
+                  className={styles.empName}
+                >{`${currentEmployee.employeeId.firstName} ${currentEmployee.employeeId.lastName}`}</p>
               )}
             </div>
             {
               <div className={styles.select}>
-                <label htmlFor="role">Role</label>
+                <label id="role" htmlFor="role">
+                  Role
+                </label>
                 {method === 'POST' ? (
-                  <select id="roleEmployee" {...register('role')} name="role">
+                  <select
+                    className={styles.empRole}
+                    id="roleEmployee"
+                    {...register('role')}
+                    name="role"
+                  >
                     <option>-</option>
                     <option>DEV</option>
                     <option>QA</option>
