@@ -462,25 +462,25 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           </form>
         </Modal>
       ) : null}
-      <Modal
-        showModal={showModalDelete}
-        handleClose={() => setShowModalDelete(false)}
-        modalTitle={'DELETE'}
-      >
-        {tab === 'employees'
-          ? `are you sure you want to delete this employee?`
-          : `are you sure you want to delete this task??`}
-        <Button onClick={onDelete}>DELETE</Button>
-        <Button onClick={() => setShowModalDelete(false)}>CANCEL</Button>
-      </Modal>
-      <Modal
-        showModal={showModalDeleteResponse}
-        handleClose={() => setshowModalDeleteResponse(false)}
-        modalTitle={`DELETED`}
-      >
-        <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
-      </Modal>
-
+      <div className={styles.deleteModal}>
+        <Modal
+          showModal={showModalDelete}
+          handleClose={() => setShowModalDelete(false)}
+          modalTitle={'DELETE'}
+        >
+          {tab === 'employees'
+            ? `Are you sure you want to delete this employee?`
+            : `Are you sure you want to delete this task?`}
+          <Button id={styles.deleteButton} onClick={onDelete}>
+            <i className="fa-solid fa-check"></i>
+          </Button>
+        </Modal>
+        <Modal
+          showModal={showModalDeleteResponse}
+          handleClose={() => setshowModalDeleteResponse(false)}
+          modalTitle={`DELETED`}
+        ></Modal>
+      </div>
       <Modal
         showModal={showModalResponse}
         handleClose={() => setShowModalResponse(false)}
@@ -693,9 +693,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           </table>
           <div className={styles.buttons}>
             <div>
-              <p className={styles.indexPage}>Page {indexPage}</p>
-            </div>
-            <div>
               <Button
                 id="previouspage"
                 width={'40px'}
@@ -706,6 +703,9 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               >
                 <i className="fa-solid fa-angle-left"></i>
               </Button>
+            </div>
+            <div>
+              <p className={styles.indexPage}>Page {indexPage}</p>
             </div>
             <div>
               <Button
