@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import * as actions from './actions';
 import * as currentUserActions from 'redux/currentUser/actions';
 
@@ -128,6 +129,7 @@ export const pushProjectAssociatedInEmployee = (newProjectAssociated, idEmployee
   return async (dispatch) => {
     dispatch(actions.pushProjectAssociatedInEmployeePending());
     try {
+      const currentUser = useSelector((state) => state.currentUser.currentUser);
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/employees/${idEmployee}/project`,
         {
@@ -138,15 +140,14 @@ export const pushProjectAssociatedInEmployee = (newProjectAssociated, idEmployee
           body: JSON.stringify(newProjectAssociated)
         }
       );
-
       const res = await response.json();
-      console.log('response', res);
-
       if (res.error) {
         throw res.message;
       }
       dispatch(actions.pushProjectAssociatedInEmployeeSuccess(res.data, res.message));
-      dispatch(currentUserActions.updateCurrentUser(res.data));
+      if (idEmployee === currentUser._id) {
+        dispatch(currentUserActions.updateCurrentUser(res.data));
+      }
     } catch (error) {
       dispatch(actions.pushProjectAssociatedInEmployeeError(error));
     }

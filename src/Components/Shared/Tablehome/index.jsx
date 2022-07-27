@@ -149,7 +149,8 @@ function Tablehome({
                           );
                         }
                       } else if (key === 'endDate' || key === 'startDate') {
-                        if (row[key] === undefined) {
+                        console.log('fecha', row[key]);
+                        if (!row[key]) {
                           return <td> - </td>;
                         } else {
                           let dateFormatted = new Date(row[key]).toISOString().split('T')[0];
