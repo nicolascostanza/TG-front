@@ -4,11 +4,13 @@ body, .messageForm > textarea{
   color: var(--text-on-primary);
 }
 
+.firstSection {
+  margin: 50px;
+}
 .nameEmailForm {
   display: flex;
   justify-content: space-around;
   flex-wrap: nowrap;
-  padding-bottom: 20px;
 }
 .nameEmailForm > input {
   padding-left: 10px;
@@ -48,16 +50,16 @@ body, .messageForm > textarea{
 .buttonsForm {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
+  margin-top: 25px;
 }
 .buttonForm {
-  margin-top: 20px;
-  margin-right: 95px;
-  background-color: #F13312;
+  background-color:  hsla(102, 34%, 71%, 1);
   border: none;
-  color: white;
-  width: 128px;
-  height: 34px;
+  font-weight: 500;
+  color: black;
+  width: 30%;
+  height: 50px;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -96,7 +98,7 @@ body, .messageForm > textarea{
   justify-content: space-between;
 }
 .landingH2 {
-  font-size: 40px;
+  font-size: 90px;
   font-weight: 700;
   color: var(--text-on-primary);
   text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -193,6 +195,7 @@ body, .messageForm > textarea{
 }
 .mainSection {
   padding: 15px 30px;
+  margin: 0 50px;
   background-color: var(--background);
   color: var( --text-on-primary);
 }
@@ -205,10 +208,14 @@ body, .messageForm > textarea{
 .subGroup {
   display: block;
   padding-left: 15px;
+  width: 50%;
+  height: 50%;
 }
 .peerSeparator{
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  margin-top: 50px;
 }
 .listFooter {
   display: flex;
@@ -254,8 +261,25 @@ textarea {
   min-width: 150px;
   max-height: 150px;
 }
-.contactForm input {
-  width: 380px;
+
+h2 {
+  font-size: 70px;
+  margin-bottom: 15px;
+}
+
+.contactForm {
+  margin: 50px;
+  margin-left: 10%;
+  padding: 20px;
+  background-color: hsla(201, 100%, 42%, 0.09);
+  width: 747px;
+  Height: 600px;
+  border-radius: 15px
+}
+
+.nameEmailForm input, .selectLanding {
+  height: 56px;
+  margin-bottom: 4%;
 }
 
 .messageForm > textarea {
@@ -291,7 +315,6 @@ textarea {
   .imgTabletSize {
     width: 80%;
     height: 60%;
-    padding-top: 15px;
     object-fit: cover;
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.6));
     z-index: -1;
@@ -338,7 +361,6 @@ textarea {
   .nameEmailForm input{
     width: 90%;
     align-self: center;
-    margin-bottom: 20px;
   }
   .valuesContainer {
     max-width: 250px;
