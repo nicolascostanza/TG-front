@@ -49,13 +49,13 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
     const newEmployeePm = {
       employeeId: data.employeeId,
       role: 'PM',
-      rate: data.rate,
+      rate: data.rate === '' || !data.rate ? 0 : data.rate,
       isPM: true
     };
     const newEmployeePmProjectAssociated = {
       projectId: idProject,
       role: 'PM',
-      rate: data.rate,
+      rate: data.rate === '' || !data.rate ? 0 : data.rate,
       isPM: true
     };
     dispatch(thunksProjects.updateEmployeeToProject(idProject, newEmployeePm));
