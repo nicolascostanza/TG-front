@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import * as actions from './actions';
 import * as currentUserActions from 'redux/currentUser/actions';
+import * as thunksAuth from 'redux/auth/thunks';
 
 export const getEmployees = () => {
   return (dispatch) => {
@@ -42,31 +43,27 @@ export const addEmployee = (newEmployee) => {
   return async (dispatch) => {
     dispatch(actions.addEmployeePending());
     try {
-      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(`${process.env.REACT_APP_API_URL}/employees`, {
         method: 'POST',
         headers: {
-          'Content-type': 'application/json',
-          token
+          'Content-type': 'application/json'
         },
         body: JSON.stringify({
           firstName: newEmployee.firstName,
           lastName: newEmployee.lastName,
           email: newEmployee.email,
-          gender: newEmployee.gender,
-          address: newEmployee.address,
-          dob: newEmployee.dob,
           password: newEmployee.password,
-          phone: newEmployee.phone,
-          active: newEmployee.active
+          active: true,
+          associatedProjects: []
         })
       });
       const res = await response.json();
-      const { firstName, lastName, email, gender, address, dob, password, phone, active } =
-        newEmployee;
-      if (res.error) {
-        throw res.error;
-      }
+      const { firstName, lastName, email, password, active } = newEmployee;
+      const credentials = {
+        email,
+        password
+      };
+      console.log('response register:', res);
       dispatch(
         actions.addEmployeeSucces(
           {
@@ -74,16 +71,17 @@ export const addEmployee = (newEmployee) => {
             firstName,
             lastName,
             email,
-            gender,
-            address,
-            dob,
             password,
-            phone,
-            active: active ? 'true' : 'false'
+            active: active ? 'true' : 'false',
+            associatedProjects: []
           },
           res
         )
       );
+      if (res.error) {
+        throw res.error;
+      }
+      dispatch(thunksAuth.login(credentials));
     } catch (error) {
       dispatch(actions.addEmployeeError(error));
     }
