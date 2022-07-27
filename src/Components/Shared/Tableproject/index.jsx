@@ -406,7 +406,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           modalTitle={method === 'POST' ? 'ADD EMPLOYEE' : 'EDIT EMPLOYEE'}
         >
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <div className={styles.select}>
               <label htmlFor="employee id">Employee</label>
               {method === 'POST' ? (
                 <select id="employees" {...register('employeeId')} name="employeeId">
@@ -422,7 +422,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               )}
             </div>
             {
-              <div>
+              <div className={styles.select}>
                 <label htmlFor="role">Role</label>
                 {method === 'POST' ? (
                   <select id="roleEmployee" {...register('role')} name="role">
@@ -437,7 +437,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               </div>
             }
             {/* {pm ? null : ( */}
-            <div>
+            <div className={styles.rate}>
               <label htmlFor="Rate">Rate</label>
               <input
                 id="rateEmployee"
@@ -449,27 +449,13 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
             {/* )} */}
-            <div className={styles.buttonsContainer}>
-              <Button
-                id="addModalEmployees"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="GO"
-              >
-                {method === 'POST' ? 'ADD' : 'EDIT'}
-              </Button>
-            </div>
-            <div>
-              <Button
-                onClick={() => setShowModalEmployee(false)}
-                id="addModalEmployeeCancel"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="cancelEmoployee"
-              >
-                CANCEL
+            <div className={styles.formButtons}>
+              <Button id="addModalEmployees" type="submit" value="GO">
+                {method === 'POST' ? (
+                  <i className="fa-solid fa-plus"></i>
+                ) : (
+                  <i className="fa-solid fa-pencil"></i>
+                )}
               </Button>
             </div>
           </form>
@@ -675,8 +661,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                               onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
                               setMethod('PUT');
                             }}
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                           >
                             <i className="fa-solid fa-pencil"></i>
@@ -690,8 +676,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                                 tab === 'tasks' ? row._id : row.employeeId._id
                               )
                             }
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                           >
                             <i className="fa-solid fa-xmark"></i>
@@ -711,7 +697,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             <div>
               <Button
                 id="previouspage"
-                width={'50px'}
+                width={'40px'}
                 height={'40px'}
                 fontSize={'15px'}
                 disabled={indexPage <= 1}
@@ -723,7 +709,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             <div>
               <Button
                 id="nextpage"
-                width={'50px'}
+                width={'40px'}
                 height={'40px'}
                 fontSize={'15px'}
                 disabled={indexPage >= data?.length / 10}

@@ -120,9 +120,6 @@ thead{
     margin-top: 2px;
 }
 
-.noDataText{
-}
-
 .noDataText h1{
     background-color: var(--primary-button-color);
     border-radius: 5px 5px 0 0;
@@ -140,4 +137,38 @@ thead{
 
 .indexPage{
     color: var(--text-on-primary);
+    margin-top: 15px;
+}
+
+.formHome {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px 5px 15px;
+}
+
+.formButtons {
+    display: flex;
+    padding-top: 25px;
+    padding-bottom: 20px;
+    justify-content: space-evenly;
+}
+
+.formButtons button {
+    color: #fff;
+    width: 50px;
+    height: 50px;
+}
+
+.select select{
+    width: 100%;
+}
+
+.rate{
+    display: flex;
+    flex-direction: column;
+}
+
+.rate input{
+    width: 100%;
+    height: 30px;
 }
