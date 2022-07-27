@@ -32,6 +32,7 @@
   --bottom-table-buttons-active: #CEE0F3;
   --bottom-table-buttons-disabled: #EBECF0;
   --form-background: #E8F4FB;
+  --footer-hover: #008AD6;
 }
 
 [data-theme='dark'] {
@@ -66,6 +67,7 @@
   --primary-button-color: #FBBC04;
   --slider-active-color: #FBBC04;
   --form-background: #16242C;
+  --footer-hover: #FBBC04;
 }
 
 * {

@@ -85,7 +85,6 @@ thead{
 	border-radius: 0 0 10px 0;
 }
 #buttonAddHome{
-    position: fixed;
     justify-content: space-evenly;
     width: 50px;
     height: 50px;
@@ -100,8 +99,6 @@ thead{
     border: none;
     border-radius: 100px;
     transition: 150ms;
-    bottom: 100px;
-    right: 5%;
 }
 #buttonAddHome:hover{
     box-shadow: 0 3px 7px rgb(38, 38, 38);
@@ -111,4 +108,8 @@ thead{
 }
 #buttonAddHome:disabled{
     cursor: auto;
+}
+.dropdownTd{
+    align-self: center;
+    text-align: -webkit-center;
 }

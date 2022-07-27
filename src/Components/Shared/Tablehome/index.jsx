@@ -124,26 +124,26 @@ function Tablehome({
                         );
                       }
                       if (key === 'tasks') {
-                        // <div>ola</div>;
                         if (!row.tasks || row.tasks.length < 1) {
                           return <td>No tasks yet</td>;
                         } else {
                           return (
-                            <Dropdown
-                              className={styles.dropdownTd}
-                              width={'150px'}
-                              placeholder="Tasks"
-                            >
-                              {row[key]?.map((element) => {
-                                return <option key={Math.random()}>{element.taskName}</option>;
-                              })}
-                              ;
-                            </Dropdown>
+                            <div className={styles.dropdownTd}>
+                              <Dropdown
+                                className={styles.dropdownTd}
+                                width={'150px'}
+                                placeholder="Tasks"
+                              >
+                                {row[key]?.map((element) => {
+                                  return <option key={Math.random()}>{element.taskName}</option>;
+                                })}
+                                ;
+                              </Dropdown>
+                            </div>
                           );
                         }
                       }
                       if (key === 'team') {
-                        <div>ola</div>;
                         if (!row.team || row.team.length < 1) {
                           return <td>No members yet</td>;
                         } else {
