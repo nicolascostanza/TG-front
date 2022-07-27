@@ -43,6 +43,9 @@ function SignUp() {
       setShowModalMessage(false);
     }
   };
+  const loginText = () => {
+    return `  Log In`;
+  };
   return (
     <section className={styles.all}>
       {/* <Loader isLoading={isFetchingEmployees} /> */}
@@ -123,7 +126,7 @@ function SignUp() {
               <span className={styles.newHereText}>
                 Already have an account?
                 <Link to="/login" className={styles.loginRedirect}>
-                  Log in
+                  {loginText()}
                 </Link>
               </span>
             </div>
