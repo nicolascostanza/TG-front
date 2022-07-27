@@ -87,7 +87,7 @@ body {
     align-items: center;
   }
   .errorInput {
-    color: red;
+    color: var(--error);
     font-weight: 500;
     font-size: 13px;
     line-height: 21px;

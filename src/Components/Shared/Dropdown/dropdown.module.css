@@ -22,6 +22,6 @@
   background-color: DodgerBlue;
 }
 .error {
-	color: red;
+	color: var(--error);
 	font-size: 12px;
 }
