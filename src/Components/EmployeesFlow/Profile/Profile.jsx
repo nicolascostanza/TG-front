@@ -9,6 +9,7 @@ import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
 import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
+import Button from 'Components/Shared/Button/Button';
 
 function Profile() {
   const history = useHistory();
@@ -54,23 +55,19 @@ function Profile() {
   return (
     <>
       <Sidebar />
-      <h1>Welcome {firstName}</h1>
+      <h1 id={styles.h1}>Welcome {firstName}</h1>
       <div className={styles.divButton}>
-        <button
-          className={update ? styles.greenButton : styles.redButton}
+        <Button onClick={() => history.push('/')}>
+          <i className="fa-solid fa-arrow-left" />
+        </Button>
+        <Button
           onClick={(e) => {
             e.preventDefault();
             setUpdate(!update);
           }}
         >
-          {update ? 'EDIT' : 'CANCEL'}
-        </button>
-        <button
-          className={styles.goHome}
-          onClick={() => history.push('/employees/home/629d83d3d9d731ead71b218c')}
-        >
-          GO HOME
-        </button>
+          {update ? <i className="fa-solid fa-pencil" /> : <i className="fa-solid fa-x" />}
+        </Button>
       </div>
       <Modal
         modalTitle={response ? 'WARNING' : 'SUCCESS'}
@@ -175,9 +172,11 @@ function Profile() {
           </div>
         </div>
         {update ? null : (
-          <button className={styles.buttonSubmit} type="submit" value="submit">
-            UPDATE
-          </button>
+          <div className={styles.buttonSubmit}>
+            <Button type="submit" value="submit">
+              <i className="fa-solid fa-pencil" />
+            </Button>
+          </div>
         )}
       </form>
     </>

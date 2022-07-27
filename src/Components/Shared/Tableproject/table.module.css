@@ -156,6 +156,10 @@ thead{
     margin-bottom: 10px;
 }
 
+.formHome div>input{
+    height: 30px;
+}
+
 .assignedEmp select{
     width: 100%;
 }
