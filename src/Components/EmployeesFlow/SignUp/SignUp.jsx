@@ -148,10 +148,10 @@ function SignUp() {
               </div>
             </div>
             <div className={styles.buttonsContainer}>
-              <button className={styles.buttonReset} onClick={() => reset()}>
+              <button className={styles.resetRipple} onClick={() => reset()}>
                 RESET
               </button>
-              <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+              <button className={styles.ripple} type="submit" value="CONTINUE">
                 CONTINUE
               </button>
             </div>

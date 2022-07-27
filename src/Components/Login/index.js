@@ -66,7 +66,7 @@ const Login = () => {
             </div>
           </div>
           <div className={styles.buttonsContainer}>
-            <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+            <button className={styles.ripple} type="submit" value="CONTINUE">
               CONTINUE
             </button>
           </div>
