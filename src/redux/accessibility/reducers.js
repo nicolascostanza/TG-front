@@ -1,6 +1,13 @@
 import * as types from './constants';
 
-const initTheme = window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light';
+if (!sessionStorage.getItem('theme')) {
+  sessionStorage.setItem(
+    'theme',
+    window.matchMedia('(prefers-color-scheme: dark)') ? 'dark' : 'light'
+  );
+}
+
+const initTheme = sessionStorage.getItem('theme');
 
 const initialState = {
   theme: initTheme
