@@ -4,16 +4,74 @@
   font-size: 13px;
   width: 100%;
   overflow-x: auto;
+  padding: 10px;
+}
+
+.container h2{
+  color: var(--text-on-primary);
+  margin-bottom: 20px;
+}
+
+.addButton{
+  background-color: var(--primary-button-color);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.buttonBox{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.buttonBox p{
+  color: var(--text-on-primary);
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.buttonControllercontainerFilter{
+  display: flex;
+  justify-content: center;
+}
+
+.buttonControllercontainerFilter button {
+  background-color: var(--primary-button-color);
+  border: none;
+  width: 45px;
+  height: 45px;
+  padding: 5px;
+  margin: 0 10px;
+  border-radius: 22.5px;
+  color: var(--text-on-primary-alt);
+  text-transform: uppercase;
+  font-size: 10px;
 }
 
 .buttonControllercontainer {
   display: flex;
   justify-content: space-between;
+  margin-top: 20px;
+  padding: 0 10px;
 }
 
-.addButton{
+.buttonControllercontainer button {
+  background-color: var(--primary-button-color);
+  border: none;
   width: 100px;
-  height: 100px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px 5px 0 0;
+  color: var(--text-on-primary-alt);
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.buttonControllercontainer p{
+  color: var(--text-on-primary);
 }
 
 .table{
@@ -80,6 +138,8 @@ transition: .2s;
 
 .tbody > tr > td > Button {
   margin: 0 auto;
+  width: 40px;
+  height: 40px;
 }
 
 .tbody > tr:last-child > :first-child {
@@ -88,6 +148,44 @@ border-radius: 0 0 0 10px;
 
 .tbody > tr:last-child > :last-child {
 border-radius: 0 0 10px 0;
+}
+
+.container h1{
+  color: var(--text-on-primary);
+  margin: 20px auto;
+  text-align: center;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.buttons{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.navButtons{
+  display: flex;
+  color: var(--text-on-primary);
+}
+
+.navButtons p{
+  margin: 10px;
+}
+
+.buttons button{
+  width: 40px;
+  height: 40px;
+}
+
+.workedHours{
+  text-align: center;
+  color: var(--text-on-primary);
 }
 
 /* The switch - the box around the slider
@@ -99,11 +197,7 @@ border-radius: 0 0 10px 0;
 } */
 
 /* Hide default HTML checkbox */
-/* .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-} */
+
 
 /* The slider */
 /* .slider {
@@ -152,3 +246,13 @@ border-radius: 0 0 10px 0;
 /* .slider:before {
   border-radius: 50%;
 } */
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 1024px) {
+  .buttonControllercontainerFilter button {
+   transform: scale(1.2);
+  }
+}

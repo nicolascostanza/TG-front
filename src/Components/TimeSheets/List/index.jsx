@@ -171,24 +171,8 @@ function TimeSheet() {
 
   return (
     <>
-      {/* --------------- JUST FOR DEBUG FINISH --------------- */}
       <Loader isLoading={isFetching} />
       <Sidebar />
-      {/* <Modal
-        open={showDeletedModal}
-        onClose={handleCloseMessage}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={modalStyle}>
-          <Typography variant="h6" component="h2" id="modal-modal-title">
-            Success!
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {showDeletedModalMessage}
-          </Typography>
-        </Box>
-      </Modal> */}
       <Modal showModal={showDeletedModal} handleClose={handleCloseMessage} modalTitle={'Success!'}>
         {showDeletedModalMessage}
       </Modal>
@@ -237,7 +221,7 @@ function TimeSheet() {
             </button>
             <button
               id="deleteSelectedTimesheetsButton"
-              disabled={selectedTS.length ? false : true}
+              className={selectedTS.length ? styles.enabled : styles.disabled}
               onClick={() => deleteSelectedTSAction()}
             >
               Delete selected ts

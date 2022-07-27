@@ -15,7 +15,8 @@
   --text-on-background: #000000;
   --text-on-surface: #fff;
   --text-on-error: #ffffff;
-  --text-on-primary-alt: #000;
+  --text-on-primary-alt: #333;
+  --disabled: #3778ac;
 
   /* APP COLORS */
   --primary-text-color: #000000;
@@ -53,6 +54,7 @@
   --text-on-surface: #000000;
   --text-on-error: #ffffff;
   --text-on-primary-alt: #333;
+  --disabled:#b59d56;
 
   /* APP COLORS */
   --primary-text-color: #000000;

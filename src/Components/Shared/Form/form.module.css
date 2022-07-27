@@ -4,7 +4,7 @@
 	color: var(--text-on-primary);
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
+	align-content: center;
 	background-color: var(--background);
 }
 .form div{
@@ -20,11 +20,7 @@ h2{
 	text-align: center;
 }
 .inputs{
-	display:flex;
-	flex-direction: column;
-	justify-self: center;
-	width: 100%;
-	padding: 0 20%;
+	width: 80%;
 }
 .button{
 	font-family: 'Roboto', sans-serif;
