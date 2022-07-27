@@ -4,7 +4,7 @@
 
 .inputError{
 	border: 2px solid red;
-	color: red;
+	color: var(--error);
 }
 
 .inputError, .input {
@@ -14,7 +14,7 @@
 }
 
 .inputError::placeholder {
-	color: red;
+	color: var(--error);
 }
 
 .errorContainer, .optionContainer {
@@ -24,7 +24,7 @@
 }
 
 .error {
-	color: red;
+	color: var(--error);
 	font-size: 12px;
 	margin: 0;
 }

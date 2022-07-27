@@ -1,11 +1,9 @@
 .form{
-	font-family: 'Roboto', sans-serif;
-	font-weight: bold;
 	color: var(--text-on-primary);
 	display: flex;
 	flex-direction: column;
-	justify-content: center;
 	background-color: var(--background);
+	padding: 0 20px;
 }
 .form div{
 	display: flex;
@@ -19,22 +17,19 @@ h2{
 	font-size: 24px;
 	text-align: center;
 	color: var(--text-on-primary);
+	text-transform: uppercase;
+	margin-bottom: 20px;
 }
-.inputs{
-	display:flex;
-	flex-direction: column;
-	justify-self: center;
-	width: 100%;
-	padding: 0 20%;
-}
+
 .button{
-	font-family: 'Roboto', sans-serif;
-	font-weight: bold;
-	color: #373867;
-	background: #AACE9B;
-	border-color: #AACE9B;
-	border-radius:5px;
-	width: 100%;
-	height: 25px;
-	margin-top:25px;
+	width: 40px;
+	height: 40px;
+	background-color: var(--primary-button-color);
+	border: none;
+	border-radius: 20px;
+
+}
+
+.form input{
+	height: 30px;
 }

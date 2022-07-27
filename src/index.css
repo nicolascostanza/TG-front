@@ -15,6 +15,8 @@
   --text-on-background: #000000;
   --text-on-surface: #fff;
   --text-on-error: #ffffff;
+  --text-on-primary-alt: #333;
+  --disabled: #3778ac;
 
   /* APP COLORS */
   --primary-text-color: #000000;
@@ -27,7 +29,7 @@
   --row-even-background: #e0e4e9;
   --row-odd-background: #f0f4f9;
   --row-hover-background: #7e8795;
-  --primary-button-color: #AACE9B;
+  --primary-button-color: #57b1fa;
   --slider-active-color: #2196F3;
   --bottom-table-buttons-active: #CEE0F3;
   --bottom-table-buttons-disabled: #EBECF0;
@@ -48,12 +50,14 @@
   --background: #3A3F40;
   --surface: #ffffff;
   --action: #20b000;
-  --error: #b02000;
+  --error: #fd7373;
   --text-on-primary: #ffffff;
   --text-on-secondary: #ffffff;
   --text-on-background: #000000;
   --text-on-surface: #000000;
   --text-on-error: #ffffff;
+  --text-on-primary-alt: #333;
+  --disabled:#b59d56;
 
   /* APP COLORS */
   --primary-text-color: #000000;

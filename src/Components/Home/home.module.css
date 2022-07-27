@@ -5,50 +5,19 @@
   align-items: center;
   background-color: var(--background);
 }
-
-.formHome {
-  display: flex;
-  width: 80%;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 25px;
-  margin-top: 25px;
-  padding: 15px;
-}
-
-.formHome input {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
 .checkbox {
   display: flex;
   margin-bottom: 10px;
-}
-
-input{
-  height: 36px;
-  width: 189.63px;
-  border-radius: 5px;
-  border: 1px solid #373867;
-  box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.19);
-  content:"\025be";
 }
 .inputContainer {
   margin-top: 10px;
 }
 .errorInput {
-  color: red;
+  color: var(--error);
   font-weight: 500;
   font-size: 13px;
   line-height: 21px;
   margin: 5px 0 0 5px;
   padding: 0%;
   border: none;
-}
-.buttonContainer{
-  display: flex;
-  justify-content: space-around;
-  margin-top: 12px;
 }

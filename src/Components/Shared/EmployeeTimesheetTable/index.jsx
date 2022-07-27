@@ -261,17 +261,13 @@ function EmployeeTimesheetTable({
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      <Button width={'100px'} height={'40px'} fontSize={'15px'} onClick={() => onAdd()}>
-        <i className="fa-solid fa-plus"></i>
-        ADD
-      </Button>
       {data.length > 0 ? (
         <div className={styles.filterContainer}>
-          <div className={styles.buttonControllercontainer}>
-            <button onClick={() => setPeriodYear()}>Filter by year</button>
-            <button onClick={() => setPeriodMonth()}>Filter by month</button>
-            <button onClick={() => setPeriodWeek()}>Filter by week</button>
-            <button onClick={() => setPeriodDay()}>Filter by day</button>
+          <div className={styles.buttonControllercontainerFilter}>
+            <button onClick={() => setPeriodYear()}>year</button>
+            <button onClick={() => setPeriodMonth()}>month</button>
+            <button onClick={() => setPeriodWeek()}>week</button>
+            <button onClick={() => setPeriodDay()}>day</button>
           </div>
           <div className={styles.buttonControllercontainer}>
             {/* SORRY IN ADVANCE... */}
@@ -346,9 +342,6 @@ function EmployeeTimesheetTable({
                     <td>
                       {row.status !== 'Approved' && (
                         <Button
-                          className={styles.buttonsRows}
-                          width={'50px'}
-                          height={'25px'}
                           fontSize={'13px'}
                           disabled={row.status === 'Approved' && true}
                           onClick={() => onEdit(row._id)}
@@ -359,12 +352,7 @@ function EmployeeTimesheetTable({
                     </td>
                     <td>
                       {row.status !== 'Approved' && (
-                        <Button
-                          onClick={() => onDelete(row._id)}
-                          width={'50px'}
-                          height={'25px'}
-                          fontSize={'13px'}
-                        >
+                        <Button onClick={() => onDelete(row._id)} fontSize={'13px'}>
                           <i className="fa-solid fa-xmark"></i>
                         </Button>
                       )}
@@ -387,40 +375,38 @@ function EmployeeTimesheetTable({
           </tbody>
         </table>
       ) : (
-        <h3>No timesheets yet</h3>
+        <h1>No timesheets yet</h1>
       )}
       <div className={styles.buttons}>
-        <div>
-          <p>Page {indexPage}</p>
+        <div className={styles.navButtons}>
+          <div>
+            <Button id="prevPageButton" disabled={indexPage <= 1} onClick={() => previousPage()}>
+              <i className="fa-solid fa-angle-left"></i>
+            </Button>
+          </div>
+          <div>
+            <p>Page {indexPage}</p>
+          </div>
+          <div>
+            <Button
+              id="nextPageButton"
+              disabled={indexPage >= data.length / 10}
+              onClick={() => nextPage()}
+            >
+              <i className="fa-solid fa-angle-right"></i>
+            </Button>
+          </div>
         </div>
-        <div>
-          <Button
-            id="prevPageButton"
-            width={'50px'}
-            height={'40px'}
-            fontSize={'15px'}
-            disabled={indexPage <= 1}
-            onClick={() => previousPage()}
-          >
-            <i className="fa-solid fa-angle-left"></i>
-          </Button>
-        </div>
-        <div>
-          <Button
-            id="nextPageButton"
-            width={'50px'}
-            height={'40px'}
-            fontSize={'15px'}
-            disabled={indexPage >= data.length / 10}
-            onClick={() => nextPage()}
-          >
-            <i className="fa-solid fa-angle-right"></i>
-          </Button>
-        </div>
-        <div>
+        <div className={styles.workedHours}>
           <h3>{`Total hours: ${totalHours}`}</h3>
           <h3>{`Total rate: ${totalRate}`}</h3>
         </div>
+      </div>
+      <div className={styles.buttonBox}>
+        <p>add timesheet</p>
+        <button className={styles.addButton} id="add-button" onClick={() => onAdd()}>
+          <i className="fa-solid fa-plus"></i>
+        </button>
       </div>
     </div>
   );
