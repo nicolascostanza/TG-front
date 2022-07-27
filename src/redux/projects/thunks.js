@@ -1,6 +1,7 @@
 import * as api from '../../Components/Projects/api';
 import * as actions from './actions';
 import * as thunksTasks from 'redux/tasks/thunks';
+import { postMessageOnSlack } from 'slackIntegration';
 
 export const getProjects = () => {
   return (dispatch) => {
@@ -25,6 +26,7 @@ export const addNewProject = (body) => {
         dispatch(actions.addNewProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
+          postMessageOnSlack('New project Added!');
         }
       })
       .catch((error) => {
@@ -73,6 +75,11 @@ export const addEmployeeToProject = (body, id) => {
         dispatch(actions.addEmployeeToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
+          const employeeName = response.data.team.find(
+            (item) => item.employeeId._id === body.employeeId
+          ).employeeId.firstName;
+          console.log('data: ', response.data);
+          postMessageOnSlack(`Added ${employeeName} to ${response.data.name} as ${body.role}`);
         }
       })
       .catch((error) => {
