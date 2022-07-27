@@ -146,6 +146,31 @@ thead{
     padding: 20px 15px 5px 15px;
 }
 
+.formHome input{
+    width: 100%;
+    box-shadow: none;
+    margin: 5px 0;
+}
+
+.formHome label{
+    margin-bottom: 10px;
+}
+
+.assignedEmp select{
+    width: 100%;
+}
+
+.buttonsContainer{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.buttonsContainer button{
+    width: 50px;
+    height: 50px;
+}
+
 .formButtons {
     display: flex;
     padding-top: 25px;
@@ -189,8 +214,19 @@ thead{
 .rate input{
     width: 100%;
     height: 30px;
+    margin-top: 0;
 }
 
 .empRole option {
     color: red;
+}
+#pm{
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 8px;
+}
+.errorInput{
+    color: var(--error);
+    margin-bottom: 5px;
 }

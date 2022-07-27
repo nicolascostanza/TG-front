@@ -290,7 +290,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   // RETORNA DROPDOWN O ETIQUETA P , SI ES PM O NO
   const editOptions = (current) => {
     if (current.role === 'PM') {
-      return <p>PM</p>;
+      return <p id={styles.pm}>PM</p>;
     }
     return (
       <select id="roleEmployee" {...register('role')} name="role">
@@ -341,7 +341,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 <p className={styles.errorInput}>{errors.taskDescription?.message}</p>
               )}
             </div>
-            <div>
+            <div className={styles.assignedEmp}>
               <label htmlFor="Assigned Employee">Assigned Employee</label>
               <select
                 id="assignedEmployee"
@@ -379,20 +379,12 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               {errors.status && <p className={styles.errorInput}>{errors.status?.message}</p>}
             </div>
             <div className={styles.buttonsContainer}>
-              <Button id="addModalTasks" width={'75px'} height={'30px'} type="submit" value="task">
-                {method === 'POST' ? 'ADD' : 'EDIT'}
-              </Button>
-            </div>
-            <div className={styles.buttonsContainer}>
-              <Button
-                onClick={() => setShowModalTask(false)}
-                id="addModalTasksCancel"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="cancelTask"
-              >
-                CANCEL
+              <Button id="addModalTasks" type="submit" value="task">
+                {method === 'POST' ? (
+                  <i className="fa-solid fa-plus" />
+                ) : (
+                  <i className="fa-solid fa-pencil" />
+                )}
               </Button>
             </div>
           </form>

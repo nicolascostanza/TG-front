@@ -64,8 +64,6 @@ const Login = () => {
               ></input>
               {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
             </div>
-          </div>
-          <div className={styles.buttonsContainer}>
             <button className={styles.buttonContinue} type="submit" value="CONTINUE">
               CONTINUE
             </button>

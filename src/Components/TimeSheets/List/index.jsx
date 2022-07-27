@@ -14,7 +14,7 @@ import styles from './list.module.css';
 
 function TimeSheet() {
   // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
-  const [role, setRole] = useState('PM');
+  const [role] = useState('PM');
   // DELETE AFTER MERGING TO PROD, PLEASE...
 
   const dispatch = useDispatch();
@@ -171,9 +171,6 @@ function TimeSheet() {
 
   return (
     <>
-      {/* --------------- JUST FOR DEBUG START --------------- */}
-      <button onClick={() => setRole('EMPLOYEE')}>SET ROLE TO EMPLOYEE</button>
-      <button onClick={() => setRole('PM')}>SET ROLE TO PM</button>
       {/* --------------- JUST FOR DEBUG FINISH --------------- */}
       <Loader isLoading={isFetching} />
       <Sidebar />

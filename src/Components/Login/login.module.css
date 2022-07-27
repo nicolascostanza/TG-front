@@ -9,8 +9,6 @@ body {
     padding-top: 40px;
   }
   .form {
-    display: flex;
-    justify-content: center;
     width: 60%;
     margin: 25px auto;
     background:  var(--form-background);
@@ -19,27 +17,19 @@ body {
     padding: 0 20px;
     max-width: 700px;
   }
-  .form form {
-    display: flex;
-    flex-direction: column;
-    flex: wrap;
-    width: 90%;
-  }
   .form h1 {
     padding-top: 25px;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 55px;
+    font-size: 48px;
     line-height: 64px;
     color: var(--text-on-primary);
     text-align: center;
   }
-  .form input:not(.checkbox),
-  select {
+  .form input{
     display: block;
     padding: 6px;
     border: 1px solid #373867;
-    /* box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); */
     border-radius: 5px;
     resize: none;
     width: 100%;
@@ -64,7 +54,7 @@ body {
     justify-content: space-around;
   }
   .buttonContinue {
-    width: 20%;
+    width: 50%;
     margin: 15px 10%;
     height: 30px;
     background-color: var(--primary-button-color);
@@ -95,20 +85,6 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
-  .buttonReset {
-    width: 20%;
-    margin: 15px 10%;
-    height: 30px;
-    background-color: lightgray;
-    color: #8A8A8A;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-    display: inline-block;
   }
   .errorInput {
     color: red;
@@ -152,14 +128,15 @@ body {
   }
   .bottomLinkContainer{
     display: flex;
-    align-self: center;
-    margin-bottom: 8px;
+    justify-content: center;
+    margin: 10px 0 20px 0;
   }
   link:visited{
     color: var();
   }
   .newHereText{
     color: var(--text-on-primary);
+    margin-bottom: 20px;
   }
   .signupRedirect{
     color: #0A66C2;
