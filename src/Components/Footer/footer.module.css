@@ -5,7 +5,7 @@
   align-items: center;
   width: 100%;
   height: 100px;
-  background-color: white;
+  background-color: var(--background);
   padding-top: 10px;
   margin-bottom: 20px;
 }
@@ -14,14 +14,14 @@
   font-size: 0.7rem;
   font-style: italic;
   padding-bottom: 25px;
+  color: var(--text-on-primary);
 }
 .socials a i{
   transform: scale(1.2);
-  color: #373867;
-  margin-left: 10px;
-  padding-left: 10px;
+  color: var(--text-on-primary);
+  margin: 0 10px;
 }
 
 .socials a i:hover{
-  color:#E27712;
+  color: var(--footer-hover);
 }

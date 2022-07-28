@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-// import { appendErrors, useForm } from 'react-hook-form';
-import { useForm } from 'react-hook-form';
+import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationLogIn } from 'Components/EmployeesFlow/validations';
 import * as thunksAuth from 'redux/auth/thunks';
@@ -9,23 +8,12 @@ import Sidebar from 'Components/Shared/Sidebar';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
 import Loader from 'Components/Shared/Loader';
-import styled from '@emotion/styled';
-import { Button } from '@mui/material';
-import { deepPurple } from '@mui/material/colors';
-import Container from '@mui/material/Container';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import { Box } from '@mui/system';
 import { Link } from 'react-router-dom';
 import Modal from 'Components/Shared/Modal';
 
-const ContinueButton = styled(Button)({
-  backgroundColor: deepPurple['A700']
-});
-
 const Login = () => {
   const history = useHistory();
-  const currentUser = useSelector((state) => state.currentUser.currentUser);
+  const role = useSelector((state) => state.auth.authenticated.role);
   const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
   const isFetchingAuth = useSelector((state) => state.auth.isFetching);
   const error = useSelector((state) => state.auth.error);
@@ -42,10 +30,13 @@ const Login = () => {
 
   // Should redirect after current user is auth and loaded
   useEffect(() => {
-    if (currentUser?._id) {
+    // if (currentUser?._id) {
+    //   history.push('/');
+    // }
+    if (role) {
       history.push('/');
     }
-  }, [currentUser?._id]);
+  }, [role]);
 
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));
@@ -53,37 +44,23 @@ const Login = () => {
   };
 
   return (
-    <section className={styles.container}>
+    <section className={styles.all}>
       <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
         <Sidebar />
       </section>
-      {/* <section className={styles.form}> */}
-      <Container maxWidth="sm">
-        {/* <Container fixed> */}
+      <section className={styles.form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          {/* <h1 className={styles.tittle}>LOGIN</h1> */}
-          <Typography variant="h3">Login</Typography>
+          <h1 className={styles.tittle}>LOGIN</h1>
           <div className={styles.formFlex}>
-            {/* <div className={styles.inputContainer}>
+            <div className={styles.inputContainer}>
               <label htmlFor="Email" className={styles.labels}>
                 Email
               </label>
               <input type="text" {...register('email')} error={appendErrors.email?.message}></input>
               {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
-            </div> */}
-            <TextField
-              type="email"
-              id="email"
-              label="Email"
-              variant="outlined"
-              {...register('email')}
-              margin="normal"
-              fullWidth
-              error={errors.email && true}
-              helperText={errors.email?.message}
-            />
-            {/* <div className={styles.inputContainer}>
+            </div>
+            <div className={styles.inputContainer}>
               <label htmlFor="Password" className={styles.labels}>
                 Password
               </label>
@@ -93,49 +70,26 @@ const Login = () => {
                 error={appendErrors.password?.message}
               ></input>
               {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
-            </div> */}
-            <TextField
-              type="password"
-              id="password"
-              label="Password"
-              variant="outlined"
-              {...register('password')}
-              margin="normal"
-              fullWidth
-              error={errors.password && true}
-              helperText={errors.password?.message}
-            />
+            </div>
           </div>
-          <Typography variant="subtitle1" sx={{ marginTop: 2, marginBottom: 2 }}>
-            Forgot password?
-          </Typography>
           <div className={styles.buttonsContainer}>
-            <ContinueButton
-              id="login"
-              variant="contained"
-              type="submit"
-              className={styles.continueButton}
-              fullWidth
-              onClick={handleSubmit}
-            >
-              LOGIN
-            </ContinueButton>
-            {/* <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+            <button className={styles.ripple} type="submit" value="CONTINUE">
               CONTINUE
-            </button> */}
+            </button>
           </div>
-          <Box sx={{ marginTop: 3 }}>
-            <Link to="/signup" style={{ textDecoration: 'none' }}>
-              <Typography variant="subtitle2" gutterBottom component="div">
-                Don&apos;t have an account? Sign up
-              </Typography>
-            </Link>
-          </Box>
+          <div className={styles.bottomLinkContainer}>
+            <span className={styles.newHereText}>
+              New here?{' '}
+              <Link to="/signup" className={styles.signupRedirect}>
+                Sign up
+              </Link>
+            </span>
+          </div>
         </form>
         <Modal showModal={modalError} handleClose={() => setModalError(false)} modalTitle={'ERROR'}>
           Incorrect user or password
         </Modal>
-      </Container>
+      </section>
     </section>
   );
 };

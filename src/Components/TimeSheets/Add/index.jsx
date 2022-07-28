@@ -120,7 +120,7 @@ function AddTimeSheets(props) {
       >
         <div className={styles.container}>
           {props.role === 'PM' && (
-            <div>
+            <div className={styles.inputContainer}>
               <label htmlFor="employeeId">
                 Employee
                 {selectedEmployee.length < 24 ? null : (
@@ -137,7 +137,6 @@ function AddTimeSheets(props) {
                 placeholder="Search an employee"
                 readOnly={selectedEmployee?.length > 0}
               />
-
               {searchEmployee.length > 0 && selectedEmployee.length < 24
                 ? userProjects
                     .filter((item) => item.firstName?.match(new RegExp(searchEmployee, 'i')))
@@ -159,7 +158,7 @@ function AddTimeSheets(props) {
                 : null}
             </div>
           )}
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="projectId">
               Project
               {selectedProject.length < 24 ? null : (
@@ -198,7 +197,7 @@ function AddTimeSheets(props) {
                   })
               : null}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="date">Date</label>
             <input {...register('date', { required: true })} type="date" placeholder="YYYY-MM-DD" />
             {errors.date?.type === 'date.base' && (
@@ -208,7 +207,7 @@ function AddTimeSheets(props) {
               <p className={styles.error}>{errors.date.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="hours">Hours</label>
             <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
             {errors.hours?.type === 'number.base' && (
@@ -221,7 +220,7 @@ function AddTimeSheets(props) {
               <p className={styles.error}>{errors.hours.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="taskId">
               Task
               {selectedTask.length < 24 ? null : (
@@ -261,13 +260,13 @@ function AddTimeSheets(props) {
                   })
               : null}
           </div>
-          {props.role === 'PM' && (
-            <div>
-              <label htmlFor="approved">Approved</label>
-              <input {...register('approved', { required: true })} type="checkbox" />
-            </div>
-          )}
         </div>
+        {props.role === 'PM' && (
+          <div className={styles.inputCheckbox}>
+            <label htmlFor="approved">Approved</label>
+            <input {...register('approved', { required: true })} type="checkbox" />
+          </div>
+        )}
       </Form>
     </section>
   );

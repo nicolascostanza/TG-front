@@ -9,8 +9,7 @@ import * as actions from './actions';
 export const getAdmins = () => {
   return (dispatch) => {
     dispatch(actions.getAdminsPending());
-    const token = sessionStorage.getItem('token'); // review later
-    getAdminsApi(token)
+    getAdminsApi()
       .then((response) => {
         dispatch(actions.getAdminsFulfilled(response.data));
       })

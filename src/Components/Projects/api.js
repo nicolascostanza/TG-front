@@ -1,6 +1,9 @@
 export const getProjectsApi = async () => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects`);
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects`, {
+      headers: { token }
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -10,7 +13,10 @@ export const getProjectsApi = async () => {
 
 export const getProjectByIdApi = async (idProject) => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}`);
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${idProject}`, {
+      headers: { token }
+    });
     const data = await response.json();
     return data;
   } catch (error) {
@@ -20,10 +26,12 @@ export const getProjectByIdApi = async (idProject) => {
 
 export const addNewProjectApi = async (body) => {
   try {
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/projects`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token
       },
       body: JSON.stringify(body)
     });
@@ -36,10 +44,12 @@ export const addNewProjectApi = async (body) => {
 
 export const updateProjectApi = async (body, id) => {
   try {
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token
       },
       body: JSON.stringify(body)
     });
@@ -52,8 +62,12 @@ export const updateProjectApi = async (body, id) => {
 
 export const deleteProjectApi = async (id) => {
   try {
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/projects/${id}`, {
-      method: 'PATCH'
+      method: 'PATCH',
+      headers: {
+        token
+      }
     });
     const data = await response.json();
     return data;

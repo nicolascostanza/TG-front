@@ -3,25 +3,27 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: var(--background);
 }
-
-.formHome {
-  display: flex;
-  width: 80%;
-  flex-direction: column;
-  align-items: flex-start;
-  margin-left: 25px;
-  margin-top: 25px;
-  padding: 15px;
-}
-
-.formHome input {
-  display: block;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
 .checkbox {
   display: flex;
   margin-bottom: 10px;
+}
+.inputContainer {
+  margin-top: 10px;
+}
+.errorInput {
+  color: var(--error);
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 21px;
+  margin: 5px 0 0 5px;
+  padding: 0%;
+  border: none;
+}
+.buttonContainer{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  margin-top: 10px;
 }

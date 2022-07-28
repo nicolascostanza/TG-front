@@ -31,3 +31,8 @@ export const updateCurrentUser = (currentUser) => {
     payload: currentUser
   };
 };
+export const clearCurrentUserState = () => {
+  return {
+    type: types.CLEAR_CURRENT_USER_STATE
+  };
+};

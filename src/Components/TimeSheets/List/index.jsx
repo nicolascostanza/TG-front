@@ -8,26 +8,13 @@ import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
-import { Button, Box, ButtonGroup, Modal, Typography } from '@mui/material';
+import Modal from 'Components/Shared/Modal';
+import styles from './list.module.css';
+import Button from 'Components/Shared/Button';
 
 function TimeSheet() {
-  const modalStyle = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4
-  };
-
-  // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
-  // const [role, setRole] = useState('PM');
-  // DELETE AFTER MERGING TO PROD, PLEASE...
-
   const dispatch = useDispatch();
+  let initRole = useSelector((state) => state.auth.authenticated.role);
   const [showAllTimesheets, setShowAllTimesheets] = useState(false);
   const [showPendingTS, setShowPendingTS] = useState(false);
   const [editId, setEditId] = useState('');
@@ -35,38 +22,75 @@ function TimeSheet() {
   const [showDeletedModalMessage, setShowDeletedModalMessage] = useState('');
   const [selectedTS, setSelectedTS] = useState([]);
   const [selectedButton, setSelectedButton] = useState(1);
+  const [role, setRole] = useState(initRole);
+  const [isPmIn, setIsPmIn] = useState([]);
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
   const isError = useSelector((state) => state.timesheet.error);
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  let role = useSelector((state) => state.auth.authenticated.role);
+  const [rowToDelete, setRowToDelete] = useState({});
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showModalDeleteMoreThanOne, setShowModalDeleteMoreThanOne] = useState(false);
   const rateList = currentUser.associatedProjects.map((item) => {
     return { id: item.projectId?._id, rate: item.rate };
   });
   useEffect(() => {
+    const isPmList = currentUser.associatedProjects
+      .filter((item) => item.isPM)
+      .map((item) => item.projectId._id);
+    setIsPmIn(isPmList);
+    if (isPmList.length > 0) {
+      setRole('PM');
+    }
+  }, []);
+
+  useEffect(() => {
     if (showAllTimesheets === true) {
       dispatch(timesheetsThunks.getTimesheets());
     }
-  }, [timeSheets.length, showAllTimesheets]);
-
-  useEffect(() => {
     dispatch(timesheetsThunks.getEmployeeTimesheets(currentUser._id));
     dispatch(tasksThunks.getTasks());
+  }, [showAllTimesheets, showPendingTS]);
+
+  useEffect(() => {
+    if (!showAllTimesheets) {
+      dispatch(timesheetsThunks.getEmployeeTimesheets(currentUser._id));
+    }
   }, [timeSheets.length]);
 
   const allTasks = useSelector((state) => state.tasks.list);
 
-  const deleteTimeSheet = (id) => {
-    const resp = confirm('Are you sure you want to delete it?');
-    if (resp) {
-      dispatch(timesheetsThunks.deleteTimesheets(id));
-    }
+  const deleteTimeSheetModal = (row) => {
+    setRowToDelete(row);
+    setShowModalDelete(true);
   };
 
-  const deleteMoreThan1TS = (id) => {
-    dispatch(timesheetsThunks.deleteTimesheets(id));
+  const deleteTimeSheet = () => {
+    dispatch(timesheetsThunks.deleteTimesheets(rowToDelete._id));
+    setShowModalDelete(false);
+  };
+
+  const cancelDelete = () => {
+    setShowModalDelete(false);
+    setRowToDelete({});
+  };
+
+  const cancelDeleteMoreThan1 = () => {
+    setShowModalDeleteMoreThanOne(false);
+  };
+
+  const deleteMoreThan1TS = () => {
+    for (let i = 0; i < selectedTS.length; i++) {
+      dispatch(timesheetsThunks.deleteTimesheets(selectedTS[i]));
+    }
+    if (!isError) {
+      setShowDeletedModal(true);
+      setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
+      setSelectedTS([]);
+    }
+    setShowModalDeleteMoreThanOne(false);
   };
 
   const openAddTimeSheet = () => {
@@ -86,6 +110,9 @@ function TimeSheet() {
 
   if (showPendingTS) {
     formattedTimeSheets = timeSheets
+      .filter((item) => {
+        return isPmIn.includes(item.projectId?._id);
+      })
       .map((timeSheet) => {
         return {
           _id: timeSheet._id,
@@ -96,12 +123,28 @@ function TimeSheet() {
           hours: timeSheet.hours,
           status: timeSheet.approved ? 'Approved' : 'Disapproved',
           isDeleted: false,
-          approveSlider: timeSheet.approved ? true : false,
-          rate: rateList.find((item) => item.id === timeSheet.projectId._id).rate ?? 0
-          // approved: timeSheet.approved
+          approveSlider: timeSheet.approved ? true : false
         };
       })
       .filter((item) => !item.approveSlider);
+  } else if (showAllTimesheets) {
+    formattedTimeSheets = timeSheets
+      .filter((item) => {
+        return isPmIn.includes(item.projectId?._id);
+      })
+      .map((timeSheet) => {
+        return {
+          _id: timeSheet._id,
+          employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
+          projectId: timeSheet.projectId?.name,
+          date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
+          taskId: timeSheet.taskId?.taskName,
+          hours: timeSheet.hours,
+          status: timeSheet.approved ? 'Approved' : 'Disapproved',
+          isDeleted: false,
+          approveSlider: timeSheet.approved ? true : false
+        };
+      });
   } else {
     formattedTimeSheets = timeSheets.map((timeSheet) => {
       return {
@@ -117,11 +160,10 @@ function TimeSheet() {
         rate:
           rateList?.find(
             (item) => item.id === timeSheet.projectId?._id || item.id === timeSheet.projectId
-          ).rate ?? 0
+          )?.rate ?? 0
       };
     });
   }
-
   formattedTimeSheets.reverse();
   const statusChanger = async (status, id) => {
     dispatch(
@@ -160,18 +202,7 @@ function TimeSheet() {
   };
 
   const deleteSelectedTSAction = () => {
-    const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
-    if (resp) {
-      for (let i = 0; i < selectedTS.length; i++) {
-        deleteMoreThan1TS(selectedTS[i]);
-      }
-      if (!isError) {
-        setShowDeletedModal(true);
-        setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
-        setSelectedTS([]);
-      }
-    }
-    setSelectedTS([]);
+    setShowModalDeleteMoreThanOne(true);
   };
 
   const handleCloseMessage = () => {
@@ -181,26 +212,44 @@ function TimeSheet() {
 
   return (
     <>
-      {/* --------------- JUST FOR DEBUG START --------------- */}
-      {/* <button onClick={() => setRole('EMPLOYEE')}>SET ROLE TO EMPLOYEE</button>
-      <button onClick={() => setRole('PM')}>SET ROLE TO PM</button> */}
-      {/* --------------- JUST FOR DEBUG FINISH --------------- */}
       <Loader isLoading={isFetching} />
       <Sidebar />
+      <Modal showModal={showDeletedModal} handleClose={handleCloseMessage} modalTitle={'Success!'}>
+        {showDeletedModalMessage}
+      </Modal>
+      <Modal showModal={showModalDelete} handleClose={cancelDelete} modalTitle={'DELETE'}>
+        <p>{rowToDelete && `Are you sure you want to delete ${rowToDelete.taskId}?`}</p>
+        <div className={styles.buttonContainer}>
+          <Button
+            onClick={deleteTimeSheet}
+            id="deleteButton"
+            width={'40px'}
+            height={'40px'}
+            type="submit"
+            value="delete"
+          >
+            <i className="fa-solid fa-check" />
+          </Button>
+        </div>
+      </Modal>
       <Modal
-        open={showDeletedModal}
-        onClose={handleCloseMessage}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
+        showModal={showModalDeleteMoreThanOne}
+        handleClose={cancelDeleteMoreThan1}
+        modalTitle={'DELETE'}
       >
-        <Box sx={modalStyle}>
-          <Typography variant="h6" component="h2" id="modal-modal-title">
-            Success!
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            {showDeletedModalMessage}
-          </Typography>
-        </Box>
+        <p>{rowToDelete && `Are you sure you want to delete ${selectedTS.length} timesheets?`}</p>
+        <div className={styles.buttonContainer}>
+          <Button
+            onClick={deleteMoreThan1TS}
+            id="deleteButton"
+            width={'40px'}
+            height={'40px'}
+            type="submit"
+            value="delete"
+          >
+            <i className="fa-solid fa-check" />
+          </Button>
+        </div>
       </Modal>
       {showEditModal ? (
         <EditTimeSheets
@@ -222,40 +271,38 @@ function TimeSheet() {
         />
       ) : null}
       {role === 'PM' && (
-        <Box>
-          <ButtonGroup>
-            <Box>
-              <Button
-                id="showMyTimesheetsButton"
-                variant={selectedButton === 1 ? 'contained' : 'outlined'}
-                onClick={() => showMyTS()}
-              >
-                My timesheets
-              </Button>
-              <Button
-                id="showTimesheetsToApproveButton"
-                variant={selectedButton === 2 ? 'contained' : 'outlined'}
-                onClick={() => showTSToApprove()}
-              >
-                Timesheets to approve
-              </Button>
-              <Button
-                id="showAllTimesheetsButton"
-                variant={selectedButton === 3 ? 'contained' : 'outlined'}
-                onClick={() => showAllTS()}
-              >
-                All timesheets
-              </Button>
-              <Button
-                id="deleteSelectedTimesheetsButton"
-                disabled={selectedTS.length ? false : true}
-                onClick={() => deleteSelectedTSAction()}
-              >
-                Delete selected ts
-              </Button>
-            </Box>
-          </ButtonGroup>
-        </Box>
+        <div>
+          <div className={styles.pmNavTabs}>
+            <button
+              className={selectedButton === 1 ? styles.selectedTab : styles.unselectedTab}
+              id="showMyTimesheetsButton"
+              onClick={() => showMyTS()}
+            >
+              My timesheets
+            </button>
+            <button
+              className={selectedButton === 2 ? styles.selectedTab : styles.unselectedTab}
+              id="showTimesheetsToApproveButton"
+              onClick={() => showTSToApprove()}
+            >
+              Timesheets to approve
+            </button>
+            <button
+              id="showAllTimesheetsButton"
+              className={selectedButton === 3 ? styles.selectedTab : styles.unselectedTab}
+              onClick={() => showAllTS()}
+            >
+              All timesheets
+            </button>
+            <button
+              id="deleteSelectedTimesheetsButton"
+              className={selectedTS.length ? styles.enabled : styles.disabled}
+              onClick={() => deleteSelectedTSAction()}
+            >
+              Delete selected ts
+            </button>
+          </div>
+        </div>
       )}
       <EmployeeTimesheetTable
         title={role}
@@ -265,7 +312,7 @@ function TimeSheet() {
         role={role}
         onEdit={openEditTimeSheet}
         onAdd={openAddTimeSheet}
-        onDelete={deleteTimeSheet}
+        onDelete={deleteTimeSheetModal}
         onApprove={statusChanger}
         onSelect={selectTS}
       />

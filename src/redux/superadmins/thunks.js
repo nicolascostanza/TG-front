@@ -4,7 +4,10 @@ export const getSuperadmins = () => {
   return async (dispatch) => {
     dispatch(action.getSuperadminPending());
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`);
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/super-admins`, {
+        headers: { token }
+      });
       const data = await response.json();
       data.data.map((superadmin) => {
         superadmin.active = superadmin.active ? 'true' : 'false';
@@ -54,12 +57,14 @@ export const editSuperadmins = (superadminEdited, superadminId) => {
   return async (dispatch) => {
     dispatch(action.editSuperadminPending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const response = await fetch(
         `${process.env.REACT_APP_API_URL}/super-admins/${superadminId}`,
         {
           method: 'PUT',
           headers: {
-            'Content-type': 'application/json'
+            'Content-type': 'application/json',
+            token
           },
           body: JSON.stringify(superadminEdited)
         }
@@ -93,8 +98,10 @@ export const deleteSuperadmin = (id) => {
   return async (dispatch) => {
     dispatch(action.deleteSuperadminPending());
     try {
+      const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
       const res = await fetch(`${process.env.REACT_APP_API_URL}/super-admins/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: { token }
       });
       const data = await res.json();
       dispatch(action.deleteSuperadminSuccess(id, data.message));

@@ -119,7 +119,7 @@ function EditTimeSheets(props) {
       >
         <div className={styles.container}>
           {props.role === 'PM' && (
-            <div>
+            <div className={styles.inputContainer}>
               <label>Employee ID</label>
               <input
                 {...register('employeeId', { required: true })}
@@ -131,7 +131,7 @@ function EditTimeSheets(props) {
               )}
             </div>
           )}
-          <div>
+          <div className={styles.inputContainer}>
             <label>
               Project ID
               {selectedProject.length < 24 ? null : (
@@ -171,7 +171,7 @@ function EditTimeSheets(props) {
                   })
               : null}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label>Date</label>
             <input {...register('date', { required: true })} type="date" placeholder="Date" />
             {errors.date?.type === 'date.base' && (
@@ -181,7 +181,7 @@ function EditTimeSheets(props) {
               <p className={styles.error}>{errors.date.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label>Hours</label>
             <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
             {errors.hours?.type === 'number.base' && (
@@ -194,7 +194,7 @@ function EditTimeSheets(props) {
               <p className={styles.error}>{errors.hours.message}</p>
             )}
           </div>
-          <div>
+          <div className={styles.inputContainer}>
             <label htmlFor="taskId">
               Task
               {selectedTask.length < 24 ? null : (

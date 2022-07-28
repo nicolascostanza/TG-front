@@ -10,63 +10,14 @@ import img5 from './assets/img/img5.png';
 function Landing() {
   return (
     <>
-      <Sidebar>
-        <h2>Get in touch</h2>
-        <a>Worked hours</a>
-        <a>Reports</a>
-        <a>Management</a>
-        <a>Roles</a>
-      </Sidebar>
-      <nav>
-        <ul className={styles.iconsHeader}>
-          <li>
-            <a
-              href={'https://www.facebook.com/radiumrocket'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-facebook"></i>
-            </a>
-          </li>
-          <li>
-            <a href={'https://twitter.com/radiumrocket'} target="_blank" rel="noopener noreferrer">
-              <i className="fa-brands fa-twitter"></i>
-            </a>
-          </li>
-          <li>
-            <a
-              href={'https://www.linkedin.com/company/radium-rocket'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-linkedin"></i>
-            </a>
-          </li>
-          <li>
-            <a
-              href={'https://www.instagram.com/radium.rocket/'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-instagram"></i>
-            </a>
-          </li>
-          <li>
-            <a
-              href={'https://github.com/radiumrocketapps'}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              <i className="fa-brands fa-github"></i>
-            </a>
-          </li>
-        </ul>
-      </nav>
+      <Sidebar />
       <div className={styles.sidebarMain}>
         <main className={styles.mainSection}>
           <section className={styles.firstSection}>
             <div className={styles.resizeTablet}>
-              <h1 className={styles.tittle}>Hi, we are Trackgenix SA</h1>
+              <h1 id="trackgenix" className={styles.tittle}>
+                Hi, we are Trackgenix SA
+              </h1>
               <div className={styles.imgTablet}>
                 <img className={styles.imgTabletSize} src={img5} alt="Reloj" />
               </div>
@@ -86,13 +37,14 @@ function Landing() {
                 Interdum vel, pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo
                 nulla. Ac mauris ac ultrices egestas maecenas suspendisse leo, mi.
               </p>
-              <button className={styles.buttonMore}>LEARN MORE</button>
             </div>
             <div className={styles.wrapImage}>
               <img className={styles.imgMainSection} src={img5} alt="Reloj" />
             </div>
           </section>
-          <h2 className={styles.landingH2}>Functionalities</h2>
+          <h2 id="functionalities" className={styles.landingH2}>
+            Functionalities
+          </h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
@@ -149,7 +101,9 @@ function Landing() {
             </div>
           </section>
           <div className={styles.separator}></div>
-          <h2 className={styles.landingH2}>Reasons why you need us</h2>
+          <h2 id="reasons" className={styles.landingH2}>
+            Reasons why you need us
+          </h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
@@ -209,7 +163,9 @@ function Landing() {
           </section>
           <div className={styles.separator}></div>
           <div>
-            <h2 id={styles['centeredText']}>Request information</h2>
+            <h2 id="contact" className={styles['centeredText']}>
+              Request information
+            </h2>
             <form className={styles.contactForm}>
               <div className={styles.nameEmailForm}>
                 <input type="text" placeholder="Name" />
