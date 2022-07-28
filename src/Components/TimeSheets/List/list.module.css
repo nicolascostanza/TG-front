@@ -59,7 +59,7 @@
     text-transform: uppercase;
     cursor: pointer;
     align-items: center;
-    background-color: var(--row-hover-background);
+    background-color: var(--tabs-unselected);
     border: none;
     border-radius: 5px;
     transition: 150ms;
