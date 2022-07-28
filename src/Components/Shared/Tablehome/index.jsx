@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
-import Dropdown from '../Dropdown/Dropdown';
+//import Dropdown from '../Dropdown/Dropdown';
 import Slider from 'Components/Shared/Slider';
 import Modal from '../Modal';
 
@@ -21,6 +21,9 @@ function Tablehome({
   const [indexPage, setIndexPage] = useState(1);
   const [showListEmployeesProject, setShowListEmployeesProject] = useState(false);
   const [listEmployeesProject, setListEmployeesProject] = useState([]);
+  const [listTasksProjects, setListTasksProjects] = useState([]);
+  const [showListTasksProjects, setShowListTasksProjects] = useState(false);
+
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
@@ -58,13 +61,22 @@ function Tablehome({
     }
   };
   const listEmployeesProjectFunction = (team) => {
-    console.log(team);
     setListEmployeesProject(team);
     setShowListEmployeesProject(true);
   };
   const closeListEmployeesProject = () => {
     setListEmployeesProject([]);
     setShowListEmployeesProject(false);
+  };
+
+  const listTasksProjectFunction = (tasks) => {
+    console.log(tasks);
+    setListTasksProjects(tasks);
+    setShowListTasksProjects(true);
+  };
+  const closeListTasksProject = () => {
+    setListTasksProjects([]);
+    setShowListTasksProjects(false);
   };
 
   return (
@@ -114,7 +126,7 @@ function Tablehome({
                         } else {
                           return (
                             <div className={styles.dropdownTd}>
-                              <Dropdown
+                              {/* <Dropdown
                                 className={styles.dropdownTd}
                                 width={'150px'}
                                 placeholder="Tasks"
@@ -123,7 +135,15 @@ function Tablehome({
                                   return <option key={Math.random()}>{element.taskName}</option>;
                                 })}
                                 ;
-                              </Dropdown>
+                              </Dropdown> */}
+                              <button
+                                className={styles.empButton}
+                                id="buttonListEmployeesTask"
+                                fontSize={'12px'}
+                                onClick={() => listTasksProjectFunction(row.tasks)}
+                              >
+                                <i className="fa-solid fa-list"></i>
+                              </button>
                             </div>
                           );
                         }
@@ -264,6 +284,17 @@ function Tablehome({
             <li
               key={`${index}${employee.employeeId._id}`}
             >{`${employee.employeeId.firstName} ${employee.employeeId.lastName}`}</li>
+          ))}
+        </ol>
+      </Modal>
+      <Modal
+        showModal={showListTasksProjects}
+        handleClose={closeListTasksProject}
+        modalTitle={`Tasks:`}
+      >
+        <ol>
+          {listTasksProjects.map((task, index) => (
+            <li key={`${index}${task._id}`}>{`${task.taskName}`}</li>
           ))}
         </ol>
       </Modal>
