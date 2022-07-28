@@ -21,9 +21,11 @@ function Landing() {
                 </h1>
                 <p className={styles.subtittle}>THE MOST POPULAR TEAM TIME TRACKER</p>
                 <p className={styles.textMainSection}>
-                  Time tracking software used by millions. Clockify is a time tracker and schedule
-                  app that allows you to track work hours across projects. Unlimited users, free
-                  forever.
+                  TRACKGENIX is a time tracker and schedule app used by millions of user all around
+                  the world. Our time tracking software facilitates the recording of hours worked by
+                  each employee in each project and work team of this company which provides
+                  software development services to other ones. If you want to provide solutions to
+                  manage and organize the work performed by employees this is the perfect app.
                 </p>
               </div>
               {/* <img className={styles.imgTabletSize} src={mainImg} alt="Reloj" /> */}
@@ -87,7 +89,7 @@ function Landing() {
               {/* </div> */}
             </div>
           </section>
-          <div className={styles.separator}></div>
+          {/* <div className={styles.separator}></div> */}
           <h2 id="reasons" className={styles.landingH2}>
             REASONS WHY YOU NEED US
           </h2>
@@ -148,7 +150,7 @@ function Landing() {
               {/* </div> */}
             </div>
           </section>
-          <div className={styles.separator}></div>
+          {/* <div className={styles.separator}></div> */}
           <div>
             <form className={styles.contactForm}>
               <h2 id="contact" className={styles['centeredText']}>
@@ -175,7 +177,7 @@ function Landing() {
               </div>
             </form>
           </div>
-          <div className={styles.separator}></div>
+          {/* <div className={styles.separator}></div> */}
           <section className={styles.listFooter}>
             <div className={styles.valuesContainer}>
               <h4>Products</h4>
@@ -206,7 +208,7 @@ function Landing() {
             </div>
           </section>
           <div className={styles.buttonsFooterDiv}></div>
-          <div className={styles.separator}></div>
+          {/* <div className={styles.separator}></div> */}
         </main>
       </div>
     </>
