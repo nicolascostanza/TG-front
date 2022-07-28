@@ -1,3 +1,8 @@
+
+*{
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
 .container{
     margin: 5px auto;
     font-weight: 10px;
@@ -5,6 +10,7 @@
     width: 90%;
     overflow-x: auto;
     color: var(--text-on-primary-alt);
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 .container h2{
@@ -22,7 +28,7 @@
     width: 100%;
 }
 
-thead{
+#thead{
     background-color: var(--primary-color);
     height: 40px;
 }
@@ -56,7 +62,6 @@ thead{
 .tbody > :hover {
 	background-color: var(--row-hover-background);
     color: #E4EAF3;
-    cursor: pointer;
 }
 
 .buttons{
@@ -113,12 +118,11 @@ thead{
     display: flex;
     justify-content: space-evenly;
     width: 100px;
-    border-radius: 5px 5px 0 0;
+    border-radius: 10px 5px 0 0;
     border-top: 1px solid rgba(0, 0, 0, 0.5);
     border-bottom: none;
     background-color: var(--disabled);
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 400;
     text-transform: uppercase;
     padding: 3px;
@@ -176,6 +180,16 @@ thead{
 
 .assignedEmp select{
     width: 100%;
+}
+
+.empButton{
+    background-color: var(--primary-button-color);
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    margin: 10px 0 10px 10px;
+    border: none;
+    text-transform: uppercase;
 }
 
 .buttonsContainer{

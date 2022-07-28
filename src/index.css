@@ -34,6 +34,7 @@
   --bottom-table-buttons-active: #CEE0F3;
   --bottom-table-buttons-disabled: #EBECF0;
   --form-background: #E8F4FB;
+  --tabs-unselected: #0367b9;
   --footer-hover: #008AD6;
   --ripple-button-background: #008AD6;
   --ripple-button-wave: #E8F4FB;
@@ -73,6 +74,7 @@
   --primary-button-color: #FBBC04;
   --slider-active-color: #FBBC04;
   --form-background: #16242C;
+  --tabs-unselected: #c09103;
   --footer-hover: #FBBC04;
   --ripple-button-background: #FBBC04;
   --ripple-button-wave: #3A3F40;

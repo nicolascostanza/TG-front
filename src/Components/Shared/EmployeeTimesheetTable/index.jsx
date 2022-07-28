@@ -294,86 +294,88 @@ function EmployeeTimesheetTable({
         </div>
       ) : null}
       {data.length > 0 ? (
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              {role !== 'EMPLOYEE' ? <th /> : null}
-              {headers.map((header, index) => {
-                return header === 'Edit' || header === 'Delete' ? (
-                  <th key={index}>{header}</th>
-                ) : (
-                  <th key={index} onClick={() => handleOrderField(keys[index])}>
-                    {header}
-                    {showArrow(orderField === keys[index])}
-                  </th>
-                );
-              })}
-              {role === `PM` && (
-                <>
-                  <th>Approve</th>
-                </>
-              )}
-            </tr>
-          </thead>
-          <tbody className={styles.tbody}>
-            {filtershow.map((row) => {
-              return (
-                <tr className={styles.row} key={row._id}>
-                  {role === 'PM' && (
-                    <td>
-                      <input type="checkbox" onChange={() => onSelect(row._id)} />
-                    </td>
-                  )}
-                  {keys.map((key, index) => {
-                    if (key === 'active') {
-                      return (
-                        <td>
-                          <button>{row[key]}boolean</button>
-                        </td>
-                      );
-                    }
-                    return (
-                      <td key={index} onClick={() => openRow(role, row._id)}>
-                        {row[key]}
-                      </td>
-                    );
-                  })}
+        <div className={styles.tableAll}>
+          <table className={styles.table}>
+            <thead>
+              <tr>
+                {role !== 'EMPLOYEE' ? <th /> : null}
+                {headers.map((header, index) => {
+                  return header === 'Edit' || header === 'Delete' ? (
+                    <th key={index}>{header}</th>
+                  ) : (
+                    <th key={index} onClick={() => handleOrderField(keys[index])}>
+                      {header}
+                      {showArrow(orderField === keys[index])}
+                    </th>
+                  );
+                })}
+                {role === `PM` && (
                   <>
-                    <td>
-                      {row.status !== 'Approved' && (
-                        <Button
-                          fontSize={'13px'}
-                          disabled={row.status === 'Approved' && true}
-                          onClick={() => onEdit(row._id)}
-                        >
-                          <i className="fa-solid fa-pencil"></i>
-                        </Button>
-                      )}
-                    </td>
-                    <td>
-                      {row.status !== 'Approved' && (
-                        <Button onClick={() => onDelete(row)} fontSize={'13px'}>
-                          <i className="fa-solid fa-xmark"></i>
-                        </Button>
-                      )}
-                    </td>
+                    <th>Approve</th>
+                  </>
+                )}
+              </tr>
+            </thead>
+            <tbody className={styles.tbody}>
+              {filtershow.map((row) => {
+                return (
+                  <tr className={styles.row} key={row._id}>
                     {role === 'PM' && (
                       <td>
-                        <Slider
-                          idNameAndValue={'approved'}
-                          isChecked={row.approveSlider}
-                          onChangeFunction={onApprove}
-                          arg1={row}
-                          arg2={row._id}
-                        />
+                        <input type="checkbox" onChange={() => onSelect(row._id)} />
                       </td>
                     )}
-                  </>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+                    {keys.map((key, index) => {
+                      if (key === 'active') {
+                        return (
+                          <td>
+                            <button>{row[key]}boolean</button>
+                          </td>
+                        );
+                      }
+                      return (
+                        <td key={index} onClick={() => openRow(role, row._id)}>
+                          {row[key]}
+                        </td>
+                      );
+                    })}
+                    <>
+                      <td>
+                        {row.status !== 'Approved' && (
+                          <Button
+                            fontSize={'13px'}
+                            disabled={row.status === 'Approved' && true}
+                            onClick={() => onEdit(row._id)}
+                          >
+                            <i className="fa-solid fa-pencil"></i>
+                          </Button>
+                        )}
+                      </td>
+                      <td>
+                        {row.status !== 'Approved' && (
+                          <Button onClick={() => onDelete(row._id)} fontSize={'13px'}>
+                            <i className="fa-solid fa-xmark"></i>
+                          </Button>
+                        )}
+                      </td>
+                      {role === 'PM' && (
+                        <td>
+                          <Slider
+                            idNameAndValue={'approved'}
+                            isChecked={row.approveSlider}
+                            onChangeFunction={onApprove}
+                            arg1={row}
+                            arg2={row._id}
+                          />
+                        </td>
+                      )}
+                    </>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
       ) : (
         <h1>No timesheets yet</h1>
       )}

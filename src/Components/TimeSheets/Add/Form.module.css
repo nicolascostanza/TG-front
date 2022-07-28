@@ -86,10 +86,12 @@
 .closeMark {
 	float: right;
 	position: relative;
-	right: 2px;
+	right: 5px;
 	top: 29px;
+	color: var(--primary-button-color);
 }
 
 .closeMark:hover {
-	color: red;
+	color: var(--row-hover-background);
+	cursor: pointer;
 }

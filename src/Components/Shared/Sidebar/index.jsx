@@ -114,17 +114,29 @@ const Sidebar = () => {
           <i id="close-button" className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
         <div className={styles.links}>
-          <Link id="emp-profile" className={styles.sidebarLink} to="/employees/profile">
+          <Link
+            id="emp-profile"
+            onClick={() => handleClose()}
+            className={styles.sidebarLink}
+            to="/employees/profile"
+          >
             Profile
           </Link>
-          <Link id="emp-projects" className={styles.sidebarLink} to="/">
+          <Link
+            id="emp-projects"
+            onClick={() => handleClose()}
+            className={styles.sidebarLink}
+            to="/"
+          >
             Projects
           </Link>
-          <Link id="emp-timesheets" className={styles.sidebarLink} to="/time-sheets">
+          <Link
+            id="emp-timesheets"
+            onClick={() => handleClose()}
+            className={styles.sidebarLink}
+            to="/time-sheets"
+          >
             Timesheets
-          </Link>
-          <Link id="emp-tasks" className={styles.sidebarLink} to="/tasks">
-            Tasks
           </Link>
           <Link id="log-out" className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
@@ -140,10 +152,15 @@ const Sidebar = () => {
           <i id="close-button" className="fa-solid fa-xmark" onClick={() => handleClose()}></i>
         </div>
         <div className={styles.links}>
-          <Link id="adm-profile" className={styles.sidebarLink} to="/">
+          <Link
+            id="adm-profile"
+            className={styles.sidebarLink}
+            to="/"
+            onClick={() => handleClose()}
+          >
             {role === 'SUPERADMIN' ? 'Admins' : 'Projects'}
           </Link>
-          <Link id="adm-profile" className={styles.sidebarLink} onClick={logOut} to="/">
+          <Link id="log-out" className={styles.sidebarLink} onClick={logOut} to="/">
             Log Out
           </Link>
         </div>
