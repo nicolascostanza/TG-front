@@ -69,7 +69,6 @@ function Home() {
       }
       if (role === 'PM' || role === 'EMPLOYEE') {
         dispatch(thunksProjects.getProjects());
-        // console.log('PPPROJECTSSSSSS FILTERED', filterProject());
       }
     } else {
       dispatch(thunksProjects.getProjects());
@@ -99,7 +98,6 @@ function Home() {
     if (rol === 'ADMIN') {
       return projectsList;
     } else {
-      // console.log('projects associated', userCurrent.associatedProjects);
       const idsInAssociatedProjects = userCurrent?.associatedProjects?.map(
         (associated) => associated.projectId._id
       );

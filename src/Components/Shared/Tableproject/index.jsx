@@ -59,7 +59,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let keys;
   let data;
   // TESTS
-  console.log('all employees', allEmployees);
   // KEYS AND VALUES
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
@@ -190,9 +189,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   };
 
   const onSubmit = async (data) => {
-    console.log('data', data);
     if (tab === 'employees') {
-      console.log('data', data);
       if (method === 'POST') {
         if (pm) {
           const newEmployeeAssociated = {
@@ -209,7 +206,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           dispatch(
             thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
           );
-          console.log('the new employee', newEmployeeAssociated);
         } else {
           const newEmployeeAssociated = {
             projectId: idProject,

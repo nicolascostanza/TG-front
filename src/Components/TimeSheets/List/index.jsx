@@ -11,6 +11,7 @@ import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
 // import Button from 'Components/Shared/Button/Button';
 import Modal from 'Components/Shared/Modal';
 import styles from './list.module.css';
+import Button from 'Components/Shared/Button';
 
 function TimeSheet() {
   // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
@@ -31,6 +32,10 @@ function TimeSheet() {
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
+  const [rowToDelete, setRowToDelete] = useState({});
+  const [showModalDelete, setShowModalDelete] = useState(false);
+  const [showModalDeleteMoreThanOne, setShowModalDeleteMoreThanOne] = useState(false);
+  // const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
   // let role = useSelector((state) => state.auth.authenticated.role);
   const rateList = currentUser.associatedProjects.map((item) => {
     return { id: item.projectId?._id, rate: item.rate };
@@ -48,11 +53,18 @@ function TimeSheet() {
 
   const allTasks = useSelector((state) => state.tasks.list);
 
-  const deleteTimeSheet = (id) => {
-    const resp = confirm('Are you sure you want to delete it?');
-    if (resp) {
-      dispatch(timesheetsThunks.deleteTimesheets(id));
-    }
+  const deleteTimeSheetModal = (row) => {
+    setRowToDelete(row);
+    setShowModalDelete(true);
+  };
+
+  const deleteTimeSheet = () => {
+    dispatch(timesheetsThunks.deleteTimesheets(rowToDelete._id));
+  };
+
+  const cancelDelete = () => {
+    setShowModalDelete(false);
+    setRowToDelete({});
   };
 
   const deleteMoreThan1TS = (id) => {
@@ -111,7 +123,6 @@ function TimeSheet() {
       };
     });
   }
-  console.log('rate ', timeSheets.rate);
   formattedTimeSheets.reverse();
   const statusChanger = async (status, id) => {
     dispatch(
@@ -150,6 +161,7 @@ function TimeSheet() {
   };
 
   const deleteSelectedTSAction = () => {
+    setShowModalDeleteMoreThanOne(true);
     const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
     if (resp) {
       for (let i = 0; i < selectedTS.length; i++) {
@@ -175,6 +187,40 @@ function TimeSheet() {
       <Sidebar />
       <Modal showModal={showDeletedModal} handleClose={handleCloseMessage} modalTitle={'Success!'}>
         {showDeletedModalMessage}
+      </Modal>
+      <Modal showModal={showModalDelete} handleClose={cancelDelete} modalTitle={'DELETE'}>
+        <p>{rowToDelete && `Are you sure you want to delete ${rowToDelete.taskId}?`}</p>
+        <div className={styles.buttonContainer}>
+          <Button
+            onClick={deleteTimeSheet}
+            id="deleteButton"
+            width={'40px'}
+            height={'40px'}
+            type="submit"
+            value="delete"
+          >
+            <i className="fa-solid fa-check" />
+          </Button>
+        </div>
+      </Modal>
+      <Modal
+        showModal={showModalDeleteMoreThanOne}
+        handleClose={cancelDelete}
+        modalTitle={'DELETE'}
+      >
+        <p>{rowToDelete && `Are you sure you want to delete ${selectedTS.length} timesheets?`}</p>
+        <div className={styles.buttonContainer}>
+          <Button
+            onClick={deleteTimeSheet}
+            id="deleteButton"
+            width={'40px'}
+            height={'40px'}
+            type="submit"
+            value="delete"
+          >
+            <i className="fa-solid fa-check" />
+          </Button>
+        </div>
       </Modal>
       {showEditModal ? (
         <EditTimeSheets
@@ -237,7 +283,7 @@ function TimeSheet() {
         role={role}
         onEdit={openEditTimeSheet}
         onAdd={openAddTimeSheet}
-        onDelete={deleteTimeSheet}
+        onDelete={deleteTimeSheetModal}
         onApprove={statusChanger}
         onSelect={selectTS}
       />

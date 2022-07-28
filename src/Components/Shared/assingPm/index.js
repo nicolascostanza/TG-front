@@ -14,7 +14,6 @@ import * as thunksEmployees from 'redux/employees/thunks';
 // import { useSelector } from 'react-redux';
 
 function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) {
-  console.log('employees updated:', employeesInProject);
   const dispatch = useDispatch();
   const {
     handleSubmit,

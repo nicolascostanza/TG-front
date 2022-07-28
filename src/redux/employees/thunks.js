@@ -140,7 +140,6 @@ export const pushProjectAssociatedInEmployee = (newProjectAssociated, idEmployee
       );
 
       const res = await response.json();
-      console.log('response', res);
 
       if (res.error) {
         throw res.message;
@@ -169,7 +168,6 @@ export const pushEditProjectAssociatedInEmployee = (editProjectAssociated, idEmp
       );
 
       const res = await response.json();
-      console.log('response', res);
 
       if (res.error) {
         throw res.message;
@@ -195,7 +193,6 @@ export const deleteProjectAssociated = (idEmployee, idProject) => {
         }
       );
       const res = await response.json();
-      console.log('Here show the response for delete associated project:', res);
       dispatch(actions.pullProjectAssociatedInEmployeeSuccess(idEmployee, res));
     } catch (error) {
       dispatch(actions.pullProjectAssociatedInEmployeeError(error.toString()));
