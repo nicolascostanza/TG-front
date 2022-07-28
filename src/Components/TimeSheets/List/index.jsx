@@ -67,8 +67,23 @@ function TimeSheet() {
     setRowToDelete({});
   };
 
-  const deleteMoreThan1TS = (id) => {
-    dispatch(timesheetsThunks.deleteTimesheets(id));
+  const cancelDeleteMoreThan1 = () => {
+    setShowModalDeleteMoreThanOne(false);
+  };
+
+  const deleteMoreThan1TS = () => {
+    // ACAAAA
+    for (let i = 0; i < selectedTS.length; i++) {
+      dispatch(timesheetsThunks.deleteTimesheets(selectedTS[i]));
+    }
+    if (!isError) {
+      setShowDeletedModal(true);
+      setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
+      setSelectedTS([]);
+    }
+    setShowModalDeleteMoreThanOne(false);
+    // setSelectedTS([]);
+    // dispatch(timesheetsThunks.deleteTimesheets(selectedTS[i]));
   };
 
   const openAddTimeSheet = () => {
@@ -162,18 +177,18 @@ function TimeSheet() {
 
   const deleteSelectedTSAction = () => {
     setShowModalDeleteMoreThanOne(true);
-    const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
-    if (resp) {
-      for (let i = 0; i < selectedTS.length; i++) {
-        deleteMoreThan1TS(selectedTS[i]);
-      }
-      if (!isError) {
-        setShowDeletedModal(true);
-        setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
-        setSelectedTS([]);
-      }
-    }
-    setSelectedTS([]);
+    // const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
+    // if (resp) {
+    //   for (let i = 0; i < selectedTS.length; i++) {
+    //     deleteMoreThan1TS(selectedTS[i]);
+    //   }
+    //   if (!isError) {
+    //     setShowDeletedModal(true);
+    //     setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
+    //     setSelectedTS([]);
+    //   }
+    // }
+    // setSelectedTS([]);
   };
 
   const handleCloseMessage = () => {
@@ -188,6 +203,7 @@ function TimeSheet() {
       <Modal showModal={showDeletedModal} handleClose={handleCloseMessage} modalTitle={'Success!'}>
         {showDeletedModalMessage}
       </Modal>
+      {/* MODAL PARA BORAR UNA SOLA TIMESHEET */}
       <Modal showModal={showModalDelete} handleClose={cancelDelete} modalTitle={'DELETE'}>
         <p>{rowToDelete && `Are you sure you want to delete ${rowToDelete.taskId}?`}</p>
         <div className={styles.buttonContainer}>
@@ -203,15 +219,16 @@ function TimeSheet() {
           </Button>
         </div>
       </Modal>
+      {/* MODAL PARA BORRAR VARIAS TIMESHEETS A LA VEZ */}
       <Modal
         showModal={showModalDeleteMoreThanOne}
-        handleClose={cancelDelete}
+        handleClose={cancelDeleteMoreThan1}
         modalTitle={'DELETE'}
       >
         <p>{rowToDelete && `Are you sure you want to delete ${selectedTS.length} timesheets?`}</p>
         <div className={styles.buttonContainer}>
           <Button
-            onClick={deleteTimeSheet}
+            onClick={deleteMoreThan1TS}
             id="deleteButton"
             width={'40px'}
             height={'40px'}
