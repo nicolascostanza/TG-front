@@ -70,33 +70,8 @@ function Tablehome({
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      {/* {role === `ADMIN` || role === `SUPERADMIN` ? (
-        // <Button
-        //   id={styles['buttonAddHome']}
-        //   width={'100px'}
-        //   height={'40px'}
-        //   fontSize={'15px'}
-        //   onClick={() => {
-        //     openModal('POST');
-        //   }}
-        // >
-        //   <i className="fa-solid fa-plus"></i>
-        // </Button>
-        <button
-          id={styles['buttonAddHome']}
-          fontSize={'15px'}
-          onClick={() => {
-            openModal('POST');
-          }}
-        >
-          <i className="fa-solid fa-plus"></i>
-        </button>
-      ) : (
-        <></>
-      )} */}
       {show.length === 0 ? (
         <>
-          <h1>No information to display</h1>
           <h2>{messageWithOutInformation(role)}</h2>
         </>
       ) : (
@@ -263,7 +238,7 @@ function Tablehome({
           </div>
           {role === `ADMIN` || role === `SUPERADMIN` ? (
             <div className={styles.buttonBox}>
-              <p>Add project</p>
+              {role === 'SUPERADMIN' ? <p>Add admin</p> : <p>Add project</p>}
               <button
                 id={styles['buttonAddHome']}
                 fontSize={'15px'}
