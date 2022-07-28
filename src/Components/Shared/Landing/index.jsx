@@ -14,32 +14,18 @@ function Landing() {
       <div className={styles.sidebarMain}>
         <main className={styles.mainSection}>
           <section className={styles.firstSection}>
-            <div className={styles.resizeTablet}>
+            <div className={styles.imgTablet}>
               <h1 id="trackgenix" className={styles.tittle}>
                 Hi, we are Trackgenix SA
               </h1>
-              <div className={styles.imgTablet}>
-                <img className={styles.imgTabletSize} src={mainImg} alt="Reloj" />
-              </div>
               <p className={styles.subtittle}>A FULLY RESPONSIVE SITE</p>
               <p className={styles.textMainSection}>
-                Scelerisque augue scelerisque pharetra, platea rutrum. Orci est faucibus tempor
-                pellentesque vulputate. Arcu in cras iaculis scelerisque odio venenatis magna nisl.
-                Suspendisse maecenas ac sit urna neque eu amet, cras. Vel amet, id accumsan
-                fringilla. Eros, habitant tortor quam consequat hendrerit nunc, euismod dolor.
-                Tortor, quam velit sit tincidunt turpis viverra. Sapien rhoncus neque, varius
-                facilisi pretium, volutpat non. Molestie proin placerat ultrices rhoncus massa
-                scelerisque hac vel aliquam. Accumsan massa accumsan est a. Purus massa condimentum
-                nam non ultricies eleifend. Orci, augue mauris tincidunt ullamcorper elementum in
-                fringilla. Sed varius nibh scelerisque tortor sapien. Sit egestas ac imperdiet lorem
-                massa, tempor malesuada. Massa enim interdum morbi nunc eleifend viverra. Mauris
-                iaculis arcu platea ut massa ultrices. In est porta etiam a nisl quisque nullam.
-                Interdum vel, pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo
-                nulla. Ac mauris ac ultrices egestas maecenas suspendisse leo, mi.
+              Sed varius nibh scelerisque tortor sapien. Sit egestas ac imperdiet lorem
+               massa, tempor malesuada. Massa enim interdum morbi nunc eleifend viverra.
+              Mauris iaculis arcu platea ut massa ultrices. In est porta etiam a nisl quisque nullam. Interdum vel,
+              pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo nulla.
               </p>
-            </div>
-            <div className={styles.wrapImage}>
-              <img className={styles.imgMainSection} src={mainImg} alt="Reloj" />
+              <img className={styles.imgTabletSize} src={mainImg} alt="Reloj" />
             </div>
           </section>
           <h2 id="functionalities" className={styles.landingH2}>

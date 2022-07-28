@@ -4,6 +4,15 @@ body, .messageForm > textarea{
   color: var(--text-on-primary);
 }
 
+.tittle, .subtittle, .textMainSection {
+  position: absolute;
+}
+
+.textMainSection {
+  width: 20%;
+  margin-top: 1000px;
+}
+
 .firstSection {
   margin: 50px;
 }
@@ -72,9 +81,7 @@ body, .messageForm > textarea{
   width: 100%;
   display: flex;
 }
-.firstSection > div {
-  width: 50%;
-}
+
 .wrapImage {
   min-width: 300px;
 }
@@ -148,7 +155,7 @@ body, .messageForm > textarea{
 .textMainSection {
   font-style: normal;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 19px;
   line-height: 21px;
   color: var(--text-on-primary);
 }
@@ -182,16 +189,10 @@ body, .messageForm > textarea{
   color: var(--text-on-primary);
 }
 .imgMainSection {
-  padding-top: 170px;
   padding-left: 20px;
-  margin-left: 3%;
-  width: 90%;
-  min-width: 300px;
-  max-height: 650px;
-  height: 80%;
   object-fit: cover;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.6));
-  z-index: -1;
+  /* z-index: -1; */
 }
 .mainSection {
   padding: 15px 30px;
@@ -293,8 +294,25 @@ h2 {
   display: flex;
   flex-direction: column;
 }
+
 .imgTablet {
-  display: none;
+  position: relative;
+  display: inline-block;
+  padding: 15%;
+}
+
+.tittle, .subtittle, .textMainSection {
+  display: flex;
+  align-items: end;
+  position: absolute;
+  margin: 50px;
+}
+
+.valuesContainer {
+  width: 277px;
+  height: 289px;
+  border-radius: 15px;
+  background-color: hsla(201, 100%, 42%, 0.09);
 }
 
 @media only screen and (max-width: 780px) {
@@ -364,7 +382,7 @@ h2 {
   }
   .valuesContainer {
     max-width: 250px;
-    margin:auto
+    background-color:  hsla(102, 34%, 71%, 1);
   }
   .valuesContainer > ol {
     padding-left: 60px;
