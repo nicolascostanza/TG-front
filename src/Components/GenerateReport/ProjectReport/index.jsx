@@ -10,6 +10,8 @@ import BarChart from '../Charts/Bars';
 import LineChart from '../Charts/Line';
 import styles from '../report.module.css';
 import { projectDataFormatter } from '../auxFunctions';
+// for pdf generator import
+import jsPDF from 'jspdf';
 import { project, projectTimesheets } from '../mock'; // delete after database update
 
 const ProjectReport = () => {
@@ -44,6 +46,21 @@ const ProjectReport = () => {
         rate
       };
     });
+  // for pdf generator
+  let selectedTag = document.getElementById('selectedTag');
+  const pdfGenerator = () => {
+    let doc = new jsPDF('p', 'pt', 'letter');
+    let margin = 10;
+    let scale = (doc.internal.pageSize.width - margin * 2) / selectedTag.scrollWidth;
+    doc.html(selectedTag, {
+      x: margin,
+      y: margin,
+      html2canvas: { scale: scale },
+      callback: function (doc) {
+        doc.output('dataurlnewwindow'), { filename: 'fichero-pdf.pdf' };
+      }
+    });
+  };
 
   // Project contributions by employees (hours and rate)
   const projectContr = projectTimesheetsMap
@@ -98,100 +115,105 @@ const ProjectReport = () => {
           projectTimesheetsMap[projectTimesheetsMap.length - 1]?.date
         }`}
       </p>
-      <div className={styles.tablesContainer}>
-        <table className={styles.extendedTable}>
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Hours</th>
-              <th>Task</th>
-              <th>Employee</th>
-              <th>Rate</th>
-              <th>TS Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            {projectTimesheetsMap.map((timesheet) => {
-              return (
-                <tr key={timesheet._id}>
-                  <td>{timesheet.date}</td>
-                  <td>{timesheet.hours}</td>
-                  <td>{timesheet.taskId?.taskName}</td>
-                  <td>{timesheet.employeeId.firstName}</td>
-                  <td>{timesheet.rate}</td>
-                  <td>{timesheet.hours * timesheet.rate}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-          <tfoot>
-            <tr>
-              <td>Total:</td>
-              <td>{totalHours}</td>
-              <td></td>
-              <td></td>
-              <td>{totalRate}</td>
-            </tr>
-          </tfoot>
-        </table>
-        <div className={styles.graphContainer}>
-          <PieChart
-            title="Hours"
-            data={segmentedByEmployee ?? []}
-            label="firstName"
-            value="hours"
-          />
-        </div>
-        <div className={styles.graphContainer}>
-          <PieChart
-            title="Total Rate"
-            data={segmentedByEmployee ?? []}
-            label="firstName"
-            value="totalRate"
-          />
-        </div>
-        <table className={styles.condensedTable}>
-          <thead>
-            <tr>
-              <th>Employee</th>
-              <th>Total Hours</th>
-              <th>Hourly Rate</th>
-              <th>Total Rate</th>
-            </tr>
-          </thead>
-          <tbody>
-            {segmentedByEmployee?.map((employee) => {
-              return (
-                <tr key={`${employee._id}segemp`}>
-                  <td>{employee.firstName}</td>
-                  <td>{employee.hours}</td>
-                  <td>{employee.rate}</td>
-                  <td>{employee.rate * employee.hours}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        <div className={styles.barsContainer}>
-          <BarChart
-            title="Historic rate"
-            data={projectDataFormatter(projectContr, project, {})}
-            label="date"
-            colorScheme="niceScheme"
-          />
-        </div>
-        <div className={styles.barsContainer}>
-          <LineChart
-            title="Historic rate"
-            data={projectDataFormatter(projectContr, project, {
-              fillZero: true,
-              accumulate: true,
-              rated: false,
-              initialDate: '2022-04-08'
-            })}
-            label="date"
-            colorScheme="niceScheme"
-          />
+      <button id="btnpdf" onClick={pdfGenerator}>
+        Generate PDF
+      </button>
+      <div id="selectedTag">
+        <div className={styles.tablesContainer}>
+          <table className={styles.extendedTable}>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Hours</th>
+                <th>Task</th>
+                <th>Employee</th>
+                <th>Rate</th>
+                <th>TS Cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              {projectTimesheetsMap.map((timesheet) => {
+                return (
+                  <tr key={timesheet._id}>
+                    <td>{timesheet.date}</td>
+                    <td>{timesheet.hours}</td>
+                    <td>{timesheet.taskId?.taskName}</td>
+                    <td>{timesheet.employeeId.firstName}</td>
+                    <td>{timesheet.rate}</td>
+                    <td>{timesheet.hours * timesheet.rate}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot>
+              <tr>
+                <td>Total:</td>
+                <td>{totalHours}</td>
+                <td></td>
+                <td></td>
+                <td>{totalRate}</td>
+              </tr>
+            </tfoot>
+          </table>
+          <div className={styles.graphContainer}>
+            <PieChart
+              title="Hours"
+              data={segmentedByEmployee ?? []}
+              label="firstName"
+              value="hours"
+            />
+          </div>
+          <div className={styles.graphContainer}>
+            <PieChart
+              title="Total Rate"
+              data={segmentedByEmployee ?? []}
+              label="firstName"
+              value="totalRate"
+            />
+          </div>
+          <table className={styles.condensedTable}>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Total Hours</th>
+                <th>Hourly Rate</th>
+                <th>Total Rate</th>
+              </tr>
+            </thead>
+            <tbody>
+              {segmentedByEmployee?.map((employee) => {
+                return (
+                  <tr key={`${employee._id}segemp`}>
+                    <td>{employee.firstName}</td>
+                    <td>{employee.hours}</td>
+                    <td>{employee.rate}</td>
+                    <td>{employee.rate * employee.hours}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+          <div className={styles.barsContainer}>
+            <BarChart
+              title="Historic rate"
+              data={projectDataFormatter(projectContr, project, {})}
+              label="date"
+              colorScheme="niceScheme"
+            />
+          </div>
+          <div className={styles.barsContainer}>
+            <LineChart
+              title="Historic rate"
+              data={projectDataFormatter(projectContr, project, {
+                fillZero: true,
+                accumulate: true,
+                rated: false,
+                initialDate: '2022-04-08'
+              })}
+              label="date"
+              colorScheme="niceScheme"
+            />
+          </div>
         </div>
       </div>
     </div>
