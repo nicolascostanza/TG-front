@@ -239,14 +239,14 @@ function Home() {
             <Button
               onClick={onDelete}
               id="deleteButton"
-              width={'75px'}
-              height={'30px'}
+              width={'40px'}
+              height={'40px'}
               type="submit"
               value="delete"
             >
-              DELETE
+              <i className="fa-solid fa-check"></i>
             </Button>
-            <Button
+            {/* <Button
               onClick={() => setShowModalDelete(false)}
               id="deleteCancel"
               width={'75px'}
@@ -254,7 +254,7 @@ function Home() {
               value="cancelDelete"
             >
               CANCEL
-            </Button>
+            </Button> */}
           </div>
         </Modal>
         <Modal
@@ -268,9 +268,7 @@ function Home() {
           showModal={showModalDeleteResponse}
           handleClose={() => setshowModalDeleteResponse(false)}
           modalTitle={`DELETED`}
-        >
-          <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
-        </Modal>
+        ></Modal>
         <Loader isLoading={isLoading} />
         {/* <Modal
           showModal={showModal}
