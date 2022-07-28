@@ -14,7 +14,7 @@ import styles from './list.module.css';
 
 function TimeSheet() {
   // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
-  const [role] = useState('PM');
+  // const [role] = useState();
   // DELETE AFTER MERGING TO PROD, PLEASE...
 
   const dispatch = useDispatch();
@@ -31,7 +31,7 @@ function TimeSheet() {
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  // let role = useSelector((state) => state.auth.authenticated.role);
+  let role = useSelector((state) => state.auth.authenticated.role);
   const rateList = currentUser.associatedProjects.map((item) => {
     return { id: item.projectId?._id, rate: item.rate };
   });

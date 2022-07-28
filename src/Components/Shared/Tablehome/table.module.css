@@ -24,7 +24,7 @@ td{
 }
 
 thead{
-    background-color: #ea3354;
+    background-color: var(--primary-color);
     height: 50px;
     border-radius: 10px;
     max-width: 1200px;

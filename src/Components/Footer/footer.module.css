@@ -19,10 +19,9 @@
 .socials a i{
   transform: scale(1.2);
   color: var(--text-on-primary);
-  margin-left: 10px;
-  padding-left: 10px;
+  margin: 0 10px;
 }
 
 .socials a i:hover{
-  color:#E27712;
+  color: var(--primary-button-color);
 }

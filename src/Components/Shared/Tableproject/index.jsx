@@ -1,10 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import styles from './table.module.css';
+import styles from './tableProject.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
-// import Dropdown from '../Dropdown/Dropdown';
-// import AssignPm from 'Components/Shared/assingPm';
 import { useDispatch } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -43,7 +41,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let dataTeam = projectoElegido[0].team;
   let dataTasks = projectoElegido[0].tasks;
   let currentUser = useSelector((state) => state.currentUser.currentUser);
-  // GIVE FUNCIONALITIES TO PM
+
   const verifiedPM = () => {
     const employeeOnProject = dataTeam.find(
       (employee) => employee.employeeId._id === currentUser._id
@@ -58,9 +56,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
-  // TESTS
-  console.log('all employees', allEmployees);
-  // KEYS AND VALUES
+
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
@@ -98,7 +94,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     }
     verifiedPM();
   }, [data, allProjects]);
-  //  see this useEffect for update tableList in employee's home
+
   useEffect(() => {
     if (roleUser === 'EMPLOYEE') {
       const email = JSON.parse(sessionStorage.getItem('currentUser')).email;
@@ -120,7 +116,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       setIndexPage(indexPage - 1);
     }
   };
-  // REACT HOOK FORMS
+
   const {
     handleSubmit,
     register,
@@ -130,11 +126,11 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     mode: 'onBlur',
     resolver: joiResolver(tab === 'employees' ? validationsFormAddEmployee : validationsFormAddTask)
   });
-  // CAMBIA LA TAB DEL FITLRADO
+
   const changeFilter = () => {
     setFilterProject(!filterProject);
   };
-  // OPEN MODALS EN FUNCIONES ADD
+
   const onAddEmployee = () => {
     reset({});
     setMethod('POST');
@@ -145,7 +141,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setMethod('POST');
     setShowModalTask(true);
   };
-  // SETEO DE VALORES EN EDIT
+
   const onEdit = (id) => {
     setIdToForm(id);
     if (tab === 'employees') {
@@ -169,7 +165,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       setShowModalTask(true);
     }
   };
-  // DELETE MODAL AND FUNCTIONS
+
   const onDeletePreviousFunction = (id) => {
     setIdToDelete(id);
     setShowModalDelete(true);
@@ -184,7 +180,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setShowModalDelete(false);
     setshowModalDeleteResponse(true);
   };
-  // OPEN MODAL ASSIGN PM
+
   const openModalPm = () => {
     setShowModalPm(true);
   };
@@ -198,13 +194,9 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           const newEmployeeAssociated = {
             projectId: idProject,
             role: data.role,
-            // rate: 0,
             rate: data.rate,
             isPM: false
           };
-          // dispatch(
-          //   thunksProjects.addEmployeeToProject({ ...data, rate: 0, isPM: false }, idProject)
-          // );
           dispatch(thunksProjects.addEmployeeToProject({ ...data, isPM: false }, idProject));
           dispatch(
             thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
@@ -249,13 +241,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         setIdToForm('');
       }
     } else {
-      // const date = new Date();
-      // let output =
-      //   String(date.getFullYear()) +
-      //   '/' +
-      //   String(date.getMonth() + 1).padStart(2, '0') +
-      //   '/' +
-      //   String(date.getDate()).padStart(2, '0');
       let taskToAdd = {
         parentProject: idProject,
         taskName: data.taskName,
@@ -263,7 +248,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         assignedEmployee: [data.assignedEmployee],
         startDate: data.startDate,
         status: data.status
-        // createdAt: method === 'POST' ? output : null
       };
       if (method === 'POST') {
         dispatch(thunksTasks.addTask(taskToAdd));
@@ -287,7 +271,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setListEmployeesTask([]);
     setShowListEmployeesTask(false);
   };
-  // RETORNA DROPDOWN O ETIQUETA P , SI ES PM O NO
+
   const editOptions = (current) => {
     if (current.role === 'PM') {
       return <p id={styles.pm}>PM</p>;
@@ -390,7 +374,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           </form>
         </Modal>
       ) : null}
-      {/* modal add employee */}
       {showModalEmployee ? (
         <Modal
           showModal={showModalEmployee}
@@ -437,7 +420,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 )}
               </div>
             }
-            {/* {pm ? null : ( */}
             <div className={styles.rate}>
               <label htmlFor="Rate">Rate</label>
               <input
@@ -449,7 +431,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               />
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
-            {/* )} */}
             <div className={styles.formButtons}>
               <Button id="addModalEmployees" type="submit" value="GO">
                 {method === 'POST' ? (
@@ -549,13 +530,13 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         <>
           <div className={styles.noDataText}>
             <h1>No information to display</h1>
-            <h2>To start add an {tab === 'employees' ? 'Employee' : 'Task'}</h2>
+            <h2>To start add {tab === 'employees' ? ' an employee' : 'a task'}</h2>
           </div>
         </>
       ) : (
         <>
           <table className={styles.table}>
-            <thead>
+            <thead id={styles.thead}>
               <tr>
                 {headers.map((header, index) => {
                   if (header === 'Rate') {
@@ -596,32 +577,16 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                         if (row[key].length >= 1) {
                           return (
                             <div className="empList">
-                              <Button
-                                width={'100px'}
-                                height={'40px'}
+                              <button
+                                className={styles.empButton}
                                 id="buttonListEmployeesTask"
                                 fontSize={'12px'}
                                 onClick={() => listEmployeesTaskFunction(row._id)}
                               >
-                                Employee List
-                              </Button>
+                                <i className="fa-solid fa-users"></i>
+                              </button>
                             </div>
                           );
-                          // let dati = nuevoArray[index];
-                          // return (
-                          //   <Dropdown width={'150px'} placeholder="Tasks">
-                          //     {dati.map((element) => {
-                          //       return (
-                          //         <option key={Math.random()}>
-                          //           {element.employeeId.firstName}
-                          //         </option>
-                          //       );
-                          //     })}
-                          //     ;
-                          //   </Dropdown>
-                          // } else if (row[key].length === 1) {
-                          //   return <td>{nuevoArray[index]?.employeeId.firstName}</td>;
-                          // return <td>{nuevoArray}</td>;
                         } else {
                           return <td> - </td>;
                         }
@@ -652,7 +617,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                     })}
                     {roleUser === `ADMIN` || pm ? (
                       <>
-                        {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                         <td>
                           <Button
                             className={styles.modifyButtons}
