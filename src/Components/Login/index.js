@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { employeeValidationLogIn } from 'Components/EmployeesFlow/validations';
@@ -9,12 +9,15 @@ import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
 import Loader from 'Components/Shared/Loader';
 import { Link } from 'react-router-dom';
+import Modal from 'Components/Shared/Modal';
 
 const Login = () => {
   const history = useHistory();
   const role = useSelector((state) => state.auth.authenticated.role);
   const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
   const isFetchingAuth = useSelector((state) => state.auth.isFetching);
+  const error = useSelector((state) => state.auth.error);
+  const [modalError, setModalError] = useState(false);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -37,6 +40,7 @@ const Login = () => {
 
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));
+    error === '' ? setModalError(false) : setModalError(true);
   };
 
   return (
@@ -82,6 +86,9 @@ const Login = () => {
             </span>
           </div>
         </form>
+        <Modal showModal={modalError} handleClose={() => setModalError(false)} modalTitle={'ERROR'}>
+          Incorrect user or password
+        </Modal>
       </section>
     </section>
   );
