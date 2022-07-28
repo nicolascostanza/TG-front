@@ -14,10 +14,6 @@ import styles from './list.module.css';
 import Button from 'Components/Shared/Button';
 
 function TimeSheet() {
-  // JUST TO MAKE IT FASTER TO TRY THINGS (AND LESS SURPRISES)
-  // const [role] = useState();
-  // DELETE AFTER MERGING TO PROD, PLEASE...
-
   const dispatch = useDispatch();
   const [showAllTimesheets, setShowAllTimesheets] = useState(false);
   const [showPendingTS, setShowPendingTS] = useState(false);
@@ -116,7 +112,6 @@ function TimeSheet() {
           isDeleted: false,
           approveSlider: timeSheet.approved ? true : false,
           rate: rateList.find((item) => item.id === timeSheet.projectId._id).rate ?? 0
-          // approved: timeSheet.approved
         };
       })
       .filter((item) => !item.approveSlider);
@@ -178,18 +173,6 @@ function TimeSheet() {
 
   const deleteSelectedTSAction = () => {
     setShowModalDeleteMoreThanOne(true);
-    // const resp = confirm(`Are you sure you want to delete ${selectedTS.length} timsheets?`);
-    // if (resp) {
-    //   for (let i = 0; i < selectedTS.length; i++) {
-    //     deleteMoreThan1TS(selectedTS[i]);
-    //   }
-    //   if (!isError) {
-    //     setShowDeletedModal(true);
-    //     setShowDeletedModalMessage(`${selectedTS.length} timesheets has been deleted!`);
-    //     setSelectedTS([]);
-    //   }
-    // }
-    // setSelectedTS([]);
   };
 
   const handleCloseMessage = () => {
@@ -204,7 +187,6 @@ function TimeSheet() {
       <Modal showModal={showDeletedModal} handleClose={handleCloseMessage} modalTitle={'Success!'}>
         {showDeletedModalMessage}
       </Modal>
-      {/* MODAL PARA BORAR UNA SOLA TIMESHEET */}
       <Modal showModal={showModalDelete} handleClose={cancelDelete} modalTitle={'DELETE'}>
         <p>{rowToDelete && `Are you sure you want to delete ${rowToDelete.taskId}?`}</p>
         <div className={styles.buttonContainer}>
@@ -220,7 +202,6 @@ function TimeSheet() {
           </Button>
         </div>
       </Modal>
-      {/* MODAL PARA BORRAR VARIAS TIMESHEETS A LA VEZ */}
       <Modal
         showModal={showModalDeleteMoreThanOne}
         handleClose={cancelDeleteMoreThan1}

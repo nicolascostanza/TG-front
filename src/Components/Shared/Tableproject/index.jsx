@@ -56,12 +56,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
-<<<<<<< HEAD
 
-=======
-  // TESTS
-  // KEYS AND VALUES
->>>>>>> origin/master
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
