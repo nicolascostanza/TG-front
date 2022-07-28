@@ -58,7 +58,7 @@ function Tablehome({
   return (
     <div className={styles.container}>
       <h2>{title}</h2>
-      {role === `ADMIN` || role === `SUPERADMIN` ? (
+      {/* {role === `ADMIN` || role === `SUPERADMIN` ? (
         // <Button
         //   id={styles['buttonAddHome']}
         //   width={'100px'}
@@ -72,8 +72,6 @@ function Tablehome({
         // </Button>
         <button
           id={styles['buttonAddHome']}
-          width={'100px'}
-          height={'40px'}
           fontSize={'15px'}
           onClick={() => {
             openModal('POST');
@@ -83,7 +81,7 @@ function Tablehome({
         </button>
       ) : (
         <></>
-      )}
+      )} */}
       {show.length === 0 ? (
         <>
           <h1>No information to display</h1>
@@ -187,8 +185,8 @@ function Tablehome({
                           <Button
                             id="buttonEditHome"
                             className={styles.buttonsRows}
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                             onClick={() => {
                               setId(row._id);
@@ -205,8 +203,8 @@ function Tablehome({
                               onDelete(row._id);
                               setId(row._id);
                             }}
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                           >
                             <i className="fa-solid fa-xmark"></i>
@@ -220,34 +218,52 @@ function Tablehome({
             </tbody>
           </table>
           <div className={styles.buttons}>
-            <div>
-              <p>Page {indexPage}</p>
-            </div>
-            <div>
-              <Button
-                id="buttonPreviosPageHome"
-                width={'50px'}
-                height={'40px'}
-                fontSize={'15px'}
-                disabled={indexPage <= 1}
-                onClick={() => previousPage()}
-              >
-                <i className="fa-solid fa-angle-left"></i>
-              </Button>
-            </div>
-            <div>
-              <Button
-                id="buttonNextPageHome"
-                width={'50px'}
-                height={'40px'}
-                fontSize={'15px'}
-                disabled={indexPage >= data.length / 10}
-                onClick={() => nextPage()}
-              >
-                <i className="fa-solid fa-angle-right"></i>
-              </Button>
+            <div className={styles.navButtons}>
+              <div>
+                <Button
+                  id="buttonPreviosPageHome"
+                  width={'40px'}
+                  height={'40px'}
+                  fontSize={'15px'}
+                  disabled={indexPage <= 1}
+                  onClick={() => previousPage()}
+                >
+                  <i className="fa-solid fa-angle-left"></i>
+                </Button>
+              </div>
+              <div>
+                <p>Page {indexPage}</p>
+              </div>
+              <div>
+                <Button
+                  id="buttonNextPageHome"
+                  width={'40px'}
+                  height={'40px'}
+                  fontSize={'15px'}
+                  disabled={indexPage >= data.length / 10}
+                  onClick={() => nextPage()}
+                >
+                  <i className="fa-solid fa-angle-right"></i>
+                </Button>
+              </div>
             </div>
           </div>
+          {role === `ADMIN` || role === `SUPERADMIN` ? (
+            <div className={styles.buttonBox}>
+              <p>Add project</p>
+              <button
+                id={styles['buttonAddHome']}
+                fontSize={'15px'}
+                onClick={() => {
+                  openModal('POST');
+                }}
+              >
+                <i className="fa-solid fa-plus"></i>
+              </button>
+            </div>
+          ) : (
+            <></>
+          )}
         </>
       )}
     </div>

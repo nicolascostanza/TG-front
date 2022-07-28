@@ -1,4 +1,4 @@
-.container{
+.container {
     margin: 5px auto;
     font-weight: 10px;
     font-size: 13px;
@@ -6,24 +6,24 @@
     overflow-x: auto;
 }
 
-.addButton{
+.addButton {
     width: 100px;
     height: 100px;
 }
 
-.table{
+.table {
     border-collapse: collapse;
     border: none;
     width: 100%;
 }
 
-td{
+td {
     border: none;
     text-align: center;
     align-items: center;
 }
 
-thead{
+thead {
     background-color: var(--primary-color);
     height: 50px;
     border-radius: 10px;
@@ -32,7 +32,7 @@ thead{
     text-transform: uppercase;
 }
 
-.row{
+.row {
     height: 50px;
 }
 
@@ -41,53 +41,71 @@ thead{
 }
 
 .table th:first-child {
-	border-radius: 10px 0 0 0;
+    border-radius: 10px 0 0 0;
 }
 
 .table th:last-child {
-	border-radius: 0 10px 0 0;
+    border-radius: 0 10px 0 0;
 }
 
-.tbody > :nth-child(even) {
-	background-color: var(--row-even-background);
-	transition: .2s;
+.tbody> :nth-child(even) {
+    background-color: var(--row-even-background);
+    transition: .2s;
 }
 
-.tbody > :nth-child(odd) {
-	background-color: var(--row-odd-background);
-	transition: .2s;
+.tbody> :nth-child(odd) {
+    background-color: var(--row-odd-background);
+    transition: .2s;
 }
 
-.tbody > :hover {
-	background-color:var(--row-hover-background);
+.tbody> :hover {
+    background-color: var(--row-hover-background);
     color: #E4EAF3;
     cursor: pointer;
 }
 
-.buttons{
+.buttons {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
 }
 
-.buttons > div {
+.buttons>div {
     margin: 5px;
 }
 
-.tbody > tr > td > Button {
+.navButtons {
+    display: flex;
+    color: var(--text-on-primary);
+}
+
+.navButtons p {
+    margin: 10px;
+}
+
+.buttons button {
+    width: 40px;
+    height: 40px;
+}
+
+.tbody>tr>td>Button {
     margin: 0 auto;
 }
 
-.tbody > tr:last-child > :first-child {
-	border-radius: 0 0 0 10px;
+.tbody>tr:last-child> :first-child {
+    border-radius: 0 0 0 10px;
 }
 
-.tbody > tr:last-child > :last-child {
-	border-radius: 0 0 10px 0;
+.tbody>tr:last-child> :last-child {
+    border-radius: 0 0 10px 0;
 }
-#buttonAddHome{
+
+#buttonAddHome {
     justify-content: space-evenly;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     padding: 10px;
     font-size: 15px;
     font-weight: bold;
@@ -100,16 +118,33 @@ thead{
     border-radius: 100px;
     transition: 150ms;
 }
-#buttonAddHome:hover{
+
+#buttonAddHome:hover {
     box-shadow: 0 3px 7px rgb(38, 38, 38);
 }
-#buttonAddHome:active{
+
+#buttonAddHome:active {
     background: #6a6bad;
 }
-#buttonAddHome:disabled{
+
+#buttonAddHome:disabled {
     cursor: auto;
 }
-.dropdownTd{
+
+.dropdownTd {
     align-self: center;
     text-align: -webkit-center;
+}
+
+.buttonBox {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-right: 10px;
+}
+
+.buttonBox p {
+    color: var(--text-on-primary);
+    text-transform: uppercase;
+    margin-right: 10px;
 }

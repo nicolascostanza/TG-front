@@ -53,7 +53,6 @@ function Home() {
   let message = useSelector((state) => state.projects.message);
   // const role = 'EMPLOYEE';
   let role = useSelector((state) => state.auth.authenticated.role);
-  console.log('roleeeeeeeeee', role);
   const title = 'PROJECTS';
   // const currentUser = useSelector((state) => state.currentUser.currentUser);
   // const authRole = () => {
