@@ -353,7 +353,7 @@ function EmployeeTimesheetTable({
                       </td>
                       <td>
                         {row.status !== 'Approved' && (
-                          <Button onClick={() => onDelete(row._id)} fontSize={'13px'}>
+                          <Button onClick={() => onDelete(row)} fontSize={'13px'}>
                             <i className="fa-solid fa-xmark"></i>
                           </Button>
                         )}

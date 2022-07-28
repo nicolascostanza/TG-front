@@ -58,7 +58,6 @@ function Tablehome({
     }
   };
   const listEmployeesProjectFunction = (team) => {
-    console.log(team);
     setListEmployeesProject(team);
     setShowListEmployeesProject(true);
   };
@@ -173,7 +172,6 @@ function Tablehome({
                           );
                         }
                       } else if (key === 'endDate' || key === 'startDate') {
-                        console.log('fecha', row[key]);
                         if (!row[key]) {
                           return <td> - </td>;
                         } else {

@@ -8,13 +8,13 @@ import * as actions from 'redux/timesheets/actions';
 import * as tasksThunks from 'redux/tasks/thunks';
 import { useDispatch, useSelector } from 'react-redux';
 import EmployeeTimesheetTable from 'Components/Shared/EmployeeTimesheetTable';
-// import Button from 'Components/Shared/Button/Button';
 import Modal from 'Components/Shared/Modal';
 import styles from './list.module.css';
 import Button from 'Components/Shared/Button';
 
 function TimeSheet() {
   const dispatch = useDispatch();
+  let initRole = useSelector((state) => state.auth.authenticated.role);
   const [showAllTimesheets, setShowAllTimesheets] = useState(false);
   const [showPendingTS, setShowPendingTS] = useState(false);
   const [editId, setEditId] = useState('');
@@ -22,30 +22,38 @@ function TimeSheet() {
   const [showDeletedModalMessage, setShowDeletedModalMessage] = useState('');
   const [selectedTS, setSelectedTS] = useState([]);
   const [selectedButton, setSelectedButton] = useState(1);
+  const [role, setRole] = useState(initRole);
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
   const isError = useSelector((state) => state.timesheet.error);
   const showCreateModal = useSelector((state) => state.timesheet.showCreateModal);
   const showEditModal = useSelector((state) => state.timesheet.showEditModal);
   const currentUser = useSelector((state) => state.currentUser.currentUser);
-  let role = useSelector((state) => state.auth.authenticated.role);
   const [rowToDelete, setRowToDelete] = useState({});
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showModalDeleteMoreThanOne, setShowModalDeleteMoreThanOne] = useState(false);
-  // const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
-  // let role = useSelector((state) => state.auth.authenticated.role);
   const rateList = currentUser.associatedProjects.map((item) => {
     return { id: item.projectId?._id, rate: item.rate };
   });
   useEffect(() => {
+    const ispm = currentUser.associatedProjects.map((item) => item.isPM);
+    if (ispm) {
+      setRole('PM');
+    }
+  }, []);
+
+  useEffect(() => {
     if (showAllTimesheets === true) {
       dispatch(timesheetsThunks.getTimesheets());
     }
-  }, [timeSheets.length, showAllTimesheets]);
-
-  useEffect(() => {
     dispatch(timesheetsThunks.getEmployeeTimesheets(currentUser._id));
     dispatch(tasksThunks.getTasks());
+  }, [showAllTimesheets, showPendingTS]);
+
+  useEffect(() => {
+    if (!showAllTimesheets) {
+      dispatch(timesheetsThunks.getEmployeeTimesheets(currentUser._id));
+    }
   }, [timeSheets.length]);
 
   const allTasks = useSelector((state) => state.tasks.list);
@@ -57,6 +65,7 @@ function TimeSheet() {
 
   const deleteTimeSheet = () => {
     dispatch(timesheetsThunks.deleteTimesheets(rowToDelete._id));
+    setShowModalDelete(false);
   };
 
   const cancelDelete = () => {
@@ -69,7 +78,6 @@ function TimeSheet() {
   };
 
   const deleteMoreThan1TS = () => {
-    // ACAAAA
     for (let i = 0; i < selectedTS.length; i++) {
       dispatch(timesheetsThunks.deleteTimesheets(selectedTS[i]));
     }
@@ -79,8 +87,6 @@ function TimeSheet() {
       setSelectedTS([]);
     }
     setShowModalDeleteMoreThanOne(false);
-    // setSelectedTS([]);
-    // dispatch(timesheetsThunks.deleteTimesheets(selectedTS[i]));
   };
 
   const openAddTimeSheet = () => {
@@ -110,11 +116,24 @@ function TimeSheet() {
           hours: timeSheet.hours,
           status: timeSheet.approved ? 'Approved' : 'Disapproved',
           isDeleted: false,
-          approveSlider: timeSheet.approved ? true : false,
-          rate: rateList.find((item) => item.id === timeSheet.projectId._id).rate ?? 0
+          approveSlider: timeSheet.approved ? true : false
         };
       })
       .filter((item) => !item.approveSlider);
+  } else if (showAllTimesheets) {
+    formattedTimeSheets = timeSheets.map((timeSheet) => {
+      return {
+        _id: timeSheet._id,
+        employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
+        projectId: timeSheet.projectId?.name,
+        date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
+        taskId: timeSheet.taskId?.taskName,
+        hours: timeSheet.hours,
+        status: timeSheet.approved ? 'Approved' : 'Disapproved',
+        isDeleted: false,
+        approveSlider: timeSheet.approved ? true : false
+      };
+    });
   } else {
     formattedTimeSheets = timeSheets.map((timeSheet) => {
       return {
@@ -130,7 +149,7 @@ function TimeSheet() {
         rate:
           rateList?.find(
             (item) => item.id === timeSheet.projectId?._id || item.id === timeSheet.projectId
-          ).rate ?? 0
+          )?.rate ?? 0
       };
     });
   }
