@@ -401,7 +401,7 @@ function EmployeeTimesheetTable({
         </div>
         <div className={styles.workedHours}>
           <h3>{`Total hours: ${totalHours}`}</h3>
-          <h3>{`Total rate: ${totalRate}`}</h3>
+          {isNaN(totalRate) ? null : <h3>{`Total rate: ${totalRate}`}</h3>}
         </div>
       </div>
       <div className={styles.buttonBox}>

@@ -23,6 +23,7 @@ function TimeSheet() {
   const [selectedTS, setSelectedTS] = useState([]);
   const [selectedButton, setSelectedButton] = useState(1);
   const [role, setRole] = useState(initRole);
+  const [isPmIn, setIsPmIn] = useState([]);
   const timeSheets = useSelector((state) => state.timesheet.list);
   const isFetching = useSelector((state) => state.timesheet.isFetching);
   const isError = useSelector((state) => state.timesheet.error);
@@ -36,8 +37,11 @@ function TimeSheet() {
     return { id: item.projectId?._id, rate: item.rate };
   });
   useEffect(() => {
-    const ispm = currentUser.associatedProjects.map((item) => item.isPM);
-    if (ispm) {
+    const isPmList = currentUser.associatedProjects
+      .filter((item) => item.isPM)
+      .map((item) => item.projectId._id);
+    setIsPmIn(isPmList);
+    if (isPmList.length > 0) {
       setRole('PM');
     }
   }, []);
@@ -106,6 +110,9 @@ function TimeSheet() {
 
   if (showPendingTS) {
     formattedTimeSheets = timeSheets
+      .filter((item) => {
+        return isPmIn.includes(item.projectId?._id);
+      })
       .map((timeSheet) => {
         return {
           _id: timeSheet._id,
@@ -121,19 +128,23 @@ function TimeSheet() {
       })
       .filter((item) => !item.approveSlider);
   } else if (showAllTimesheets) {
-    formattedTimeSheets = timeSheets.map((timeSheet) => {
-      return {
-        _id: timeSheet._id,
-        employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
-        projectId: timeSheet.projectId?.name,
-        date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
-        taskId: timeSheet.taskId?.taskName,
-        hours: timeSheet.hours,
-        status: timeSheet.approved ? 'Approved' : 'Disapproved',
-        isDeleted: false,
-        approveSlider: timeSheet.approved ? true : false
-      };
-    });
+    formattedTimeSheets = timeSheets
+      .filter((item) => {
+        return isPmIn.includes(item.projectId?._id);
+      })
+      .map((timeSheet) => {
+        return {
+          _id: timeSheet._id,
+          employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
+          projectId: timeSheet.projectId?.name,
+          date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
+          taskId: timeSheet.taskId?.taskName,
+          hours: timeSheet.hours,
+          status: timeSheet.approved ? 'Approved' : 'Disapproved',
+          isDeleted: false,
+          approveSlider: timeSheet.approved ? true : false
+        };
+      });
   } else {
     formattedTimeSheets = timeSheets.map((timeSheet) => {
       return {
