@@ -21,3 +21,9 @@
   padding: 0%;
   border: none;
 }
+.buttonContainer{
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-around;
+  margin-top: 10px;
+}

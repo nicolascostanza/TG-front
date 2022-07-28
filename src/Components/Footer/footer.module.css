@@ -23,5 +23,5 @@
 }
 
 .socials a i:hover{
-  color: var(--primary-button-color);
+  color: var(--footer-hover);
 }

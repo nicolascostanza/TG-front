@@ -9,8 +9,10 @@ const ThemeToggle = () => {
   const toggleTheme = (theme) => {
     if (theme === 'dark') {
       dispatch(actions.lightTheme());
+      sessionStorage.setItem('theme', 'light');
     } else {
       dispatch(actions.darkTheme());
+      sessionStorage.setItem('theme', 'dark');
     }
   };
 

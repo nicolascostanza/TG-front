@@ -56,7 +56,12 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
+<<<<<<< HEAD
 
+=======
+  // TESTS
+  // KEYS AND VALUES
+>>>>>>> origin/master
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
@@ -186,34 +191,25 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   };
 
   const onSubmit = async (data) => {
-    console.log('data', data);
     if (tab === 'employees') {
-      console.log('data', data);
       if (method === 'POST') {
-        if (pm) {
-          const newEmployeeAssociated = {
-            projectId: idProject,
-            role: data.role,
-            rate: data.rate,
-            isPM: false
-          };
-          dispatch(thunksProjects.addEmployeeToProject({ ...data, isPM: false }, idProject));
-          dispatch(
-            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
-          );
-          console.log('the new employee', newEmployeeAssociated);
-        } else {
-          const newEmployeeAssociated = {
-            projectId: idProject,
-            role: data.role,
-            rate: data.rate,
-            isPM: false
-          };
-          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-          dispatch(
-            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
-          );
-        }
+        const dataFormatted = {
+          employeeId: data.employeeId,
+          rate: data.rate === '' || !data.rate ? 0 : data.rate,
+          role: data.role,
+          isPM: false
+        };
+        const newEmployeeAssociated = {
+          projectId: idProject,
+          role: data.role,
+          rate: data.rate === '' || !data.rate ? 0 : data.rate,
+          isPM: false
+        };
+        dispatch(thunksProjects.addEmployeeToProject(dataFormatted, idProject));
+        dispatch(
+          thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
+        );
+        console.log('the new employee', newEmployeeAssociated);
         setShowModalEmployee(false);
         setShowModalResponse(true);
       } else {
@@ -486,7 +482,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             <p className={styles.textPm}>PM</p>
           </Button>
         ) : null}
-        {roleUser === 'ADMIN' || roleUser === 'PM' ? (
+        {roleUser === 'ADMIN' || pm ? (
           <>
             {filterProject ? (
               <Button id="buttonAddEmployee" onClick={() => onAddEmployee()}>

@@ -15,6 +15,7 @@ export const login = (credentials) => {
         } = await response.user.getIdTokenResult();
         sessionStorage.setItem('authenticated', JSON.stringify({ role, token }));
         dispatch(actions.loginSuccess({ role, token }));
+        console.log('respuesta login credentials,', credentials);
         return dispatch(getCurrentUserByEmail(credentials.email, token, role));
       })
       .catch((error) => {
