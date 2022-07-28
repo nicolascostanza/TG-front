@@ -1,6 +1,7 @@
 export const getAdminsApi = async () => {
   try {
-    const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`);
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, { headers: { token } });
     const data = await response.json();
     return data;
   } catch (err) {
@@ -10,20 +11,17 @@ export const getAdminsApi = async () => {
 
 export const addAdminApi = async (admin) => {
   try {
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/admins`, {
       method: 'POST',
       headers: {
-        'Content-type': 'application/json'
+        'Content-type': 'application/json',
+        token
       },
       body: JSON.stringify(admin)
     });
     const data = await response.json();
-    if (response.status === 201) {
-      alert(data.message);
-      return data;
-    } else if (response.status === 400 || response.status === 500) {
-      alert(data.message);
-    }
+    return data;
   } catch (err) {
     return err;
   }
@@ -31,15 +29,16 @@ export const addAdminApi = async (admin) => {
 
 export const updateAdminApi = async (body, id) => {
   try {
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        token
       },
       body: JSON.stringify(body)
     });
     const data = await response.json();
-    alert(data.message);
     return data;
   } catch (error) {
     return error;
@@ -48,13 +47,15 @@ export const updateAdminApi = async (body, id) => {
 
 export const deleteAdminApi = async (id) => {
   try {
+    const token = JSON.parse(sessionStorage.getItem('authenticated')).token;
     const response = await fetch(`${process.env.REACT_APP_API_URL}/admins/${id}`, {
-      method: 'DELETE'
+      method: 'PATCH',
+      headers: { token }
     });
-    const data = await response.json();
-    if (!data.error) {
-      alert(data.message);
+    if (data.error) {
+      throw data.error;
     }
+    const data = await response.json();
     return data;
   } catch (err) {
     return err;

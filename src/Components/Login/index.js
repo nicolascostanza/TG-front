@@ -8,11 +8,11 @@ import Sidebar from 'Components/Shared/Sidebar';
 import styles from './login.module.css';
 import { useHistory } from 'react-router-dom';
 import Loader from 'Components/Shared/Loader';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const history = useHistory();
-  const role = useSelector((state) => state.auth.authenticated?.role);
-  const currentUser = useSelector((state) => state.currentUser.currentUser);
+  const role = useSelector((state) => state.auth.authenticated.role);
   const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
   const isFetchingAuth = useSelector((state) => state.auth.isFetching);
   const dispatch = useDispatch();
@@ -27,23 +27,20 @@ const Login = () => {
 
   // Should redirect after current user is auth and loaded
   useEffect(() => {
-    if (role === 'EMPLOYEE' && currentUser?._id) {
-      history.push(`/employees/profile/${currentUser._id}`);
+    // if (currentUser?._id) {
+    //   history.push('/');
+    // }
+    if (role) {
+      history.push('/');
     }
-    if (role === 'ADMIN') {
-      history.push('/admins');
-    }
-    if (role === 'SUPERADMIN') {
-      history.push('/superadmins');
-    }
-  }, [role, currentUser?._id]);
+  }, [role]);
 
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));
   };
 
   return (
-    <section className={styles.container}>
+    <section className={styles.all}>
       <Loader isLoading={isFetchingUser || isFetchingAuth} />
       <section>
         <Sidebar />
@@ -72,9 +69,17 @@ const Login = () => {
             </div>
           </div>
           <div className={styles.buttonsContainer}>
-            <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+            <button className={styles.ripple} type="submit" value="CONTINUE">
               CONTINUE
             </button>
+          </div>
+          <div className={styles.bottomLinkContainer}>
+            <span className={styles.newHereText}>
+              New here?{' '}
+              <Link to="/signup" className={styles.signupRedirect}>
+                Sign up
+              </Link>
+            </span>
           </div>
         </form>
       </section>

@@ -8,7 +8,7 @@ import {
 
 const initialState = {
   isFetching: false,
-  authenticated: false,
+  authenticated: JSON.parse(sessionStorage.getItem('authenticated')) || false,
   error: ''
 };
 

@@ -9,6 +9,7 @@ import { employeeValidationUpdate } from 'Components/EmployeesFlow/validations';
 import styles from './profile.module.css';
 import Modal from 'Components/Shared/Modal';
 import Sidebar from 'Components/Shared/Sidebar';
+import Button from 'Components/Shared/Button/Button';
 
 function Profile() {
   const history = useHistory();
@@ -18,21 +19,16 @@ function Profile() {
   const currentUser = useSelector((state) => state.currentUser.currentUser);
   const message = useSelector((state) => state.employees.message);
   const response = useSelector((state) => state.employees.error);
-  const { _id, firstName, lastName, email, password, gender, address, phone, dob, active } =
-    currentUser;
+  const { _id, firstName, lastName, email, password } = currentUser;
   useEffect(() => {
     reset({
       firstName,
       lastName,
       email,
-      password,
-      gender,
-      address,
-      phone,
-      dob: new Date(dob).toISOString().split('T')[0],
-      active
+      password
     });
   }, []);
+
   const {
     handleSubmit,
     register,
@@ -40,12 +36,13 @@ function Profile() {
     reset
   } = useForm({
     mode: 'onBlur',
-    defaultValues: { firstName, lastName, email, password, gender, address, phone, dob, active },
+    defaultValues: { firstName, lastName, email, password },
     resolver: joiResolver(employeeValidationUpdate)
   });
   const UpdateEmployee = (data) => {
     const employee = { ...data, _id };
     dispatch(thunksEmployee.editEmployee(employee));
+
     if (!response) {
       setUpdate(!update);
     }
@@ -58,23 +55,19 @@ function Profile() {
   return (
     <>
       <Sidebar />
-      <h1>Welcome {firstName}</h1>
+      <h1 id={styles.h1}>Welcome {firstName}</h1>
       <div className={styles.divButton}>
-        <button
-          className={update ? styles.greenButton : styles.redButton}
+        <Button onClick={() => history.push('/')}>
+          <i className="fa-solid fa-arrow-left" />
+        </Button>
+        <Button
           onClick={(e) => {
             e.preventDefault();
             setUpdate(!update);
           }}
         >
-          {update ? 'EDIT' : 'CANCEL'}
-        </button>
-        <button
-          className={styles.goHome}
-          onClick={() => history.push('/employees/home/629d83d3d9d731ead71b218c')}
-        >
-          GO HOME
-        </button>
+          {update ? <i className="fa-solid fa-pencil" /> : <i className="fa-solid fa-x" />}
+        </Button>
       </div>
       <Modal
         modalTitle={response ? 'WARNING' : 'SUCCESS'}
@@ -133,100 +126,6 @@ function Profile() {
           </div>
         </div>
         <div className={styles.row}>
-          <label htmlFor="Gender" className={styles.label}>
-            Gender
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{gender}</p>
-            ) : (
-              <>
-                <select className={styles.inputsProfile} {...register('gender')}>
-                  <option className={styles.optionsInput} value="Male">
-                    Male
-                  </option>
-                  <option className={styles.optionsInput} value="Female">
-                    Female
-                  </option>
-                  <option className={styles.optionsInput} value="Other">
-                    Other
-                  </option>
-                </select>
-                {errors.gender && <p className={styles.errorInput}>{errors.gender?.message}</p>}
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.row}>
-          <label htmlFor="Address" className={styles.label}>
-            Address
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{address}</p>
-            ) : (
-              <>
-                <input
-                  className={styles.inputsProfile}
-                  type="text"
-                  name="address"
-                  {...register('address')}
-                  disabled={update}
-                  placeholder={address}
-                  error={appendErrors.address?.message}
-                ></input>
-                {errors.address && <p className={styles.errorInput}>{errors.address?.message}</p>}
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.row}>
-          <label htmlFor="Phone" className={styles.label}>
-            Phone
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{phone}</p>
-            ) : (
-              <>
-                <input
-                  className={styles.inputsProfile}
-                  type="number"
-                  name="phone"
-                  {...register('phone')}
-                  disabled={update}
-                  placeholder={phone}
-                  error={appendErrors.phone?.message}
-                ></input>
-                {errors.phone && <p className={styles.errorInput}>{errors.phone?.message}</p>}
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.row}>
-          <label htmlFor="Date of Birth" className={styles.label}>
-            Date of Birth
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{new Date(dob).toISOString().split('T')[0]}</p>
-            ) : (
-              <>
-                <input
-                  className={styles.inputsProfile}
-                  type="date"
-                  name="dob"
-                  {...register('dob')}
-                  disabled={update}
-                  placeholder={dob}
-                  error={appendErrors.dob?.message}
-                ></input>
-                {errors.dob && <p className={styles.errorInput}>{errors.dob?.message}</p>}
-              </>
-            )}
-          </div>
-        </div>
-        <div className={styles.row}>
           <label htmlFor="Email" className={styles.label}>
             Email
           </label>
@@ -272,33 +171,12 @@ function Profile() {
             )}
           </div>
         </div>
-        <div className={styles.row}>
-          <label htmlFor="Active" className={styles.label}>
-            Status
-          </label>
-          <div className={styles.secondColumn}>
-            {update ? (
-              <p className={styles.text}>{active ? 'Active' : 'Inactive'}</p>
-            ) : (
-              <>
-                <input
-                  className={styles.inputsProfile}
-                  type="checkbox"
-                  name="active"
-                  {...register('active')}
-                  disabled={update}
-                  placeholder={active}
-                  error={appendErrors.active?.message}
-                ></input>
-                {errors.active && <p className={styles.errorInput}>{errors.dob?.message}</p>}
-              </>
-            )}
-          </div>
-        </div>
         {update ? null : (
-          <button className={styles.buttonSubmit} type="submit" value="submit">
-            UPDATE
-          </button>
+          <div className={styles.buttonSubmit}>
+            <Button type="submit" value="submit">
+              <i className="fa-solid fa-pencil" />
+            </Button>
+          </div>
         )}
       </form>
     </>

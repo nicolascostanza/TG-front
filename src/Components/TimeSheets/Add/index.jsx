@@ -1,27 +1,28 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './Form.module.css';
 import Form from 'Components/Shared/Form';
 import * as thunks from 'redux/timesheets/thunks';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Joi from 'joi';
 
 function AddTimeSheets(props) {
-  const [tasks, setTasks] = useState('');
-  const { showCreateModal, handleClose, allTasks } = props;
-  const [selectedTasks, setSelectedTasks] = useState([]);
+  const { showCreateModal, handleClose } = props;
+  const [searchEmployee, setSearchEmployee] = useState(props.currentUser.firstName);
+  const [selectedEmployee, setSelectedEmployee] = useState(props.currentUser._id);
+  const [searchProject, setSearchProject] = useState('');
+  const [selectedProject, setSelectedProject] = useState('');
+  const [selectedTask, setSelectedTask] = useState('');
+  const [searchTask, setSearchTask] = useState('');
   const dispatch = useDispatch();
+  const userProjects = useSelector((state) => state.currentUser.currentUser.associatedProjects);
+  const allTasks = useSelector((state) => state.tasks.list);
   const schema = Joi.object({
-    employeeId: Joi.string().required().messages({ 'string.empty': 'This field must be complete' }),
-    description: Joi.string().min(3).max(80).messages({
+    employeeId: Joi.string().alphanum().length(24).required().messages({
       'string.empty': 'This field must be complete',
-      'string.min': 'This field must have at least 3 characters',
-      'string.max': 'This field can not contain more than 80 characters'
-    }),
-    project: Joi.string().min(3).required().messages({
-      'string.empty': 'This field must be complete',
-      'string.min': 'This field must have at least 3 characters'
+      'string.length': 'Employee ID must be 24 characters long',
+      'string.alphanum': 'Employee ID must only contain alpha-numeric characters'
     }),
     date: Joi.date().less('now').required().messages({
       'date.base': 'This field must be complete',
@@ -32,39 +33,83 @@ function AddTimeSheets(props) {
       'number.min': 'This field must have at least 1 hour',
       'number.max': 'This field can not have more than 24 hours'
     }),
-    approved: Joi.bool().required(),
-    role: Joi.string().valid('DEV', 'QA', 'PM', 'TL').required().messages({
-      'any.only': 'This field must contain one of the following roles: DEV, QA, PM or TL'
-    })
+    approved: Joi.bool().optional(),
+    taskId: Joi.string()
   });
+
+  const handleEmployeeChange = (e) => {
+    setSearchEmployee(e.target.value);
+  };
+
+  const selectEmployee = (id, name) => {
+    setSelectedEmployee(id);
+    setSearchEmployee(name);
+  };
+
+  const clearEmployeeSelection = () => {
+    setSelectedEmployee('');
+    setSearchEmployee('');
+  };
+
+  const handleProjectChange = (e) => {
+    setSearchProject(e.target.value);
+  };
+
+  const selectProject = (id, name) => {
+    setSelectedProject(id);
+    setSearchProject(name);
+  };
+
+  const clearProjectSelection = () => {
+    setSelectedProject('');
+    setSearchProject('');
+  };
+
+  const handleTaskChange = (e) => {
+    setSearchTask(e.target.value);
+  };
+
+  const selectTask = (id, name) => {
+    setSelectedTask(id);
+    setSearchTask(name);
+  };
+
+  const clearTaskSelection = () => {
+    setSelectedTask('');
+    setSearchTask('');
+  };
+
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors }
   } = useForm({
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
-  const appendToSelectedTasks = (id) => {
-    const previousState = selectedTasks;
-    setSelectedTasks([...previousState, id]);
-    setTasks('');
-  };
 
-  const deleteFromSelectedTasks = (id) => {
-    setSelectedTasks(selectedTasks.filter((task) => task !== id));
-  };
+  useEffect(() => {
+    reset({
+      employeeId: props.currentUser._id
+    });
+  }, []);
 
   const addTimeSheets = async (timeSheet) => {
     dispatch(thunks.addTimesheets(timeSheet));
   };
+
   const onSubmit = (data, e) => {
     e.preventDefault();
     addTimeSheets({
       ...data,
-      task: selectedTasks
+      projectId: selectedProject,
+      employeeId: selectedEmployee,
+      taskId: selectedTask,
+      approved: false
     });
   };
+
   return (
     <section>
       <Form
@@ -74,46 +119,86 @@ function AddTimeSheets(props) {
         title="Add Time Sheet"
       >
         <div className={styles.container}>
-          <div>
-            <label htmlFor="employeeId"> Employee ID </label>
+          {props.role === 'PM' && (
+            <div className={styles.inputContainer}>
+              <label htmlFor="employeeId">
+                Employee
+                {selectedEmployee.length < 24 ? null : (
+                  <i
+                    className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                    onClick={clearEmployeeSelection}
+                  />
+                )}
+              </label>
+              <input
+                name="employeeId"
+                value={searchEmployee}
+                onChange={handleEmployeeChange}
+                placeholder="Search an employee"
+                readOnly={selectedEmployee?.length > 0}
+              />
+              {searchEmployee.length > 0 && selectedEmployee.length < 24
+                ? userProjects
+                    .filter((item) => item.firstName?.match(new RegExp(searchEmployee, 'i')))
+                    .map((emp) => {
+                      return (
+                        <p
+                          key={emp.projectId._id}
+                          onClick={() => selectEmployee(emp._id, emp.firstName)}
+                          className={
+                            emp._id === searchEmployee
+                              ? styles.selectedItem
+                              : styles.notSelectedItem
+                          }
+                        >
+                          {emp.firstName}: {emp.email}
+                        </p>
+                      );
+                    })
+                : null}
+            </div>
+          )}
+          <div className={styles.inputContainer}>
+            <label htmlFor="projectId">
+              Project
+              {selectedProject.length < 24 ? null : (
+                <i
+                  className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                  onClick={clearProjectSelection}
+                />
+              )}
+            </label>
             <input
-              {...register('employeeId', { required: true })}
-              type="text"
-              placeholder="Employee ID"
+              name="projectId"
+              value={searchProject}
+              onChange={handleProjectChange}
+              placeholder="Search a project"
+              readOnly={selectedProject?.length > 0}
             />
-            {errors.employeeId?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.employeeId.message}</p>
-            )}
+            {searchProject.length > 0 && selectedProject.length < 24
+              ? userProjects
+                  .filter((item) => item.projectId.name.match(new RegExp(searchProject, 'i')))
+                  .map((userProject) => {
+                    return (
+                      <p
+                        key={userProject.projectId._id}
+                        onClick={() =>
+                          selectProject(userProject.projectId._id, userProject.projectId.name)
+                        }
+                        className={
+                          userProject.projectId._id === searchProject
+                            ? styles.selectedItem
+                            : styles.notSelectedItem
+                        }
+                      >
+                        {userProject.projectId.name}
+                      </p>
+                    );
+                  })
+              : null}
           </div>
-          <div>
-            <label htmlFor="description"> Description </label>
-            <input
-              {...register('description', { required: true })}
-              type="text"
-              placeholder="Description"
-            />
-            {errors.description?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.description.message}</p>
-            )}
-            {errors.description?.type === 'string.min' && (
-              <p className={styles.error}>{errors.description.message}</p>
-            )}
-            {errors.description?.type === 'string.max' && (
-              <p className={styles.error}>{errors.description.message}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="project"> Project </label>
-            <input {...register('project', { required: true })} type="text" placeholder="Project" />
-            {errors.project?.type === 'string.empty' && (
-              <p className={styles.error}>{errors.project.message}</p>
-            )}
-            {errors.project?.type === 'string.min' && (
-              <p className={styles.error}>{errors.project.message}</p>
-            )}
-          </div>
-          <div>
-            <label htmlFor="date"> Date </label>
+          <div className={styles.inputContainer}>
+            <label htmlFor="date">Date</label>
             <input {...register('date', { required: true })} type="date" placeholder="YYYY-MM-DD" />
             {errors.date?.type === 'date.base' && (
               <p className={styles.error}>{errors.date.message}</p>
@@ -122,8 +207,8 @@ function AddTimeSheets(props) {
               <p className={styles.error}>{errors.date.message}</p>
             )}
           </div>
-          <div>
-            <label htmlFor="hours"> Hours </label>
+          <div className={styles.inputContainer}>
+            <label htmlFor="hours">Hours</label>
             <input {...register('hours', { required: true })} type="number" placeholder="Hours" />
             {errors.hours?.type === 'number.base' && (
               <p className={styles.error}>{errors.hours.message}</p>
@@ -135,67 +220,53 @@ function AddTimeSheets(props) {
               <p className={styles.error}>{errors.hours.message}</p>
             )}
           </div>
-          <div>
-            <label htmlFor="task"> Task </label>
+          <div className={styles.inputContainer}>
+            <label htmlFor="taskId">
+              Task
+              {selectedTask.length < 24 ? null : (
+                <i
+                  className={`fa-solid fa-circle-xmark ${styles.closeMark}`}
+                  onClick={clearTaskSelection}
+                />
+              )}
+            </label>
             <input
-              type="text"
-              placeholder="Task"
-              value={tasks}
-              onChange={(e) => setTasks(e.target.value)}
+              name="taskId"
+              value={searchTask}
+              onChange={handleTaskChange}
+              placeholder="Search a task"
+              readOnly={selectedTask?.length > 0}
             />
-            <div>
-              {tasks.length > 0
-                ? allTasks
-                    .filter(
-                      (task) =>
-                        task.taskName.match(new RegExp(tasks, 'i')) ||
-                        task.taskDescription.match(new RegExp(tasks, 'i'))
-                    )
-                    .map((task) => {
-                      return (
-                        <p
-                          key={task._id}
-                          onClick={() =>
-                            selectedTasks.find((item) => item === task._id)
-                              ? deleteFromSelectedTasks(task._id)
-                              : appendToSelectedTasks(task._id)
-                          }
-                          className={
-                            selectedTasks.find((item) => item === task._id)
-                              ? styles.selectedItem
-                              : styles.notSelectedItem
-                          }
-                        >
-                          {task.taskName}: {task.taskDescription}
-                        </p>
-                      );
-                    })
-                : selectedTasks.map((task) => {
+
+            {searchTask.length > 0 && selectedTask.length < 24
+              ? allTasks
+                  .filter(
+                    (item) =>
+                      item.taskName.match(new RegExp(searchTask, 'i')) ||
+                      item.taskDescription.match(new RegExp(searchTask, 'i'))
+                  )
+                  .map((task) => {
                     return (
                       <p
-                        key={task}
-                        className={styles.chip}
-                        onClick={() => deleteFromSelectedTasks(task)}
+                        key={task._id}
+                        onClick={() => selectTask(task._id, task.taskName)}
+                        className={
+                          task._id === searchTask ? styles.selectedItem : styles.notSelectedItem
+                        }
                       >
-                        {allTasks.find((item) => item._id === task).taskName}:{' '}
-                        {allTasks.find((item) => item._id === task).taskDescription}
+                        {task.taskName}
                       </p>
                     );
-                  })}
-            </div>
-          </div>
-          <div>
-            <label htmlFor="approved"> Approved </label>
-            <input {...register('approved', { required: true })} type="checkbox" />
-          </div>
-          <div>
-            <label htmlFor="role"> Role </label>
-            <input {...register('role', { required: true })} type="text" placeholder="Role" />
-            {errors.role?.type === 'any.only' && (
-              <p className={styles.error}>{errors.role.message}</p>
-            )}
+                  })
+              : null}
           </div>
         </div>
+        {props.role === 'PM' && (
+          <div className={styles.inputCheckbox}>
+            <label htmlFor="approved">Approved</label>
+            <input {...register('approved', { required: true })} type="checkbox" />
+          </div>
+        )}
       </Form>
     </section>
   );

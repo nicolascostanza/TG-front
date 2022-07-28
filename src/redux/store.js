@@ -8,6 +8,7 @@ import { superAdminReducer } from './superadmins/reducers';
 import { tasksReducer } from './tasks/reducers';
 import { adminsReducer } from './admins/reducers';
 import { authReducer } from './auth/reducers';
+import { accessibilityReducer } from './accessibility/reducers';
 import { currentUserReducer } from './currentUser/reducers';
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   tasks: tasksReducer,
   admins: adminsReducer,
   auth: authReducer,
+  accessibility: accessibilityReducer,
   currentUser: currentUserReducer
 });
 

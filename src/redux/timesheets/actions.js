@@ -15,7 +15,7 @@ export const getTimesheetFailed = (error) => ({
   payload: error
 });
 
-// // ADD
+// ADD
 export const addTimeSheetFulfilled = (timesheet) => ({
   type: types.ADD_TIMESHEET_FULFILLED,
   payload: {
@@ -34,7 +34,7 @@ export const addTimeSheetFailed = (error) => ({
   payload: error
 });
 
-// // UPDATE
+// UPDATE
 export const updateTimeSheetFulfilled = (timesheet) => ({
   type: types.UPDATE_TIMESHEET_FULFILLED,
   payload: timesheet

@@ -8,7 +8,6 @@
     border-radius: 15px;
     margin: 0 auto;
     background-color: rgba(150 , 150, 150, 0.05);
-    box-sizing: border-box;
 }
 
 .container input:not(.button) {
@@ -54,12 +53,8 @@
 }
 
 .error {
-	color: red;
+	color: var(--error);
 	font-size: 12px;
-}
-
-* {
-	box-sizing: border-box;
 }
 
 .notSelectedItem, .selectedItem {
@@ -136,27 +131,29 @@
 .notSelectedItem:hover {
 	background-color: #e9e9e9;
 }
-
+.inputContainer {
+  margin-top: 10px;
+}
 .containerTask {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-  }
-  .dropdownTitleTask {
-	font-family: 'Roboto', sans-serif;
-	  font-weight: bold;
-	  color: #373867;
-  }
-  .selectTask {
-	height: 36px;
-	width: 189.63px;
-	border-radius: 5px;
-	border: 1px solid #373867;
-	background: transparent;
-	box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.19);
-	content:"\025be";
-  }
-  .select-selected {
-	background-color: DodgerBlue;
-  }
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.dropdownTitleTask {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  color: #373867;
+}
+.selectTask {
+  height: 36px;
+  width: 189.63px;
+  border-radius: 5px;
+  border: 1px solid #373867;
+  background: transparent;
+  box-shadow: 0px 5px 5px 0px rgba(0,0,0,0.19);
+  content:"\025be";
+}
+.select-selected {
+  background-color:  DodgerBlue;
+}

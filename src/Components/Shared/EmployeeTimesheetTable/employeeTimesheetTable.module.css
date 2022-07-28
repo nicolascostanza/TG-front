@@ -1,0 +1,209 @@
+.container{
+  margin: 5px auto;
+  font-weight: 10px;
+  font-size: 13px;
+  width: 100%;
+  padding: 10px;
+}
+
+.container h2{
+  color: var(--text-on-primary);
+  margin-bottom: 20px;
+}
+
+.tableAll{
+  overflow: auto;
+  max-width: 70%;
+  margin: 0 auto;
+}
+
+.addButton{
+  background-color: var(--primary-button-color);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+}
+
+.buttonBox{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 70%;
+  margin: 0 auto;
+}
+
+.buttonBox p{
+  color: var(--text-on-primary);
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.buttonControllercontainerFilter{
+  display: flex;
+  justify-content: center;
+}
+
+.buttonControllercontainerFilter button {
+  background-color: var(--primary-button-color);
+  border: none;
+  width: 45px;
+  height: 45px;
+  padding: 5px;
+  margin: 0 10px;
+  border-radius: 22.5px;
+  color: var(--text-on-primary-alt);
+  text-transform: uppercase;
+  font-size: 10px;
+}
+
+.buttonControllercontainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 50px auto 0;
+  padding: 0 10px;
+  width: 70%;
+}
+
+.buttonControllercontainer button {
+  background-color: var(--primary-button-color);
+  border: none;
+  width: 100px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px 5px 0 0;
+  color: var(--text-on-primary-alt);
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.buttonControllercontainer p{
+  color: var(--text-on-primary);
+}
+
+.table{
+  border-collapse: collapse;
+  border: none;
+  width: 100%;
+}
+
+.tbody td{
+  border: none;
+  text-align: center;
+  align-items: center;
+  min-width: 100px;
+  padding-left: 5px;
+}
+
+.tbody thead{
+  background-color: var(--primary-color);
+  height: 50px;
+  border-radius: 10px;
+  max-width: 1200px;
+  color: white;
+  text-transform: uppercase;
+}
+
+.row{
+  height: 50px;
+}
+
+.row:not(:last-child) {
+  border-bottom: solid black 1px;
+}
+
+.table th:first-child {
+border-radius: 10px 0 0 0;
+}
+
+.table th:last-child {
+  border-radius: 0 10px 0 0;
+}
+
+.tbody > :nth-child(even) {
+background-color: var(--row-even-background);
+transition: .2s;
+}
+
+.tbody > :nth-child(odd) {
+background-color: var(--row-odd-background);
+transition: .2s;
+}
+
+.tbody > :hover {
+  background-color: var(--row-hover-background);
+  color: #E4EAF3;
+  cursor: pointer;
+}
+
+.buttons{
+  display: flex;
+  justify-content: flex-end;
+}
+
+.buttons > div {
+  margin: 5px;
+}
+
+.tbody > tr > td > Button {
+  margin: 0 auto;
+  width: 40px;
+  height: 40px;
+}
+
+.tbody > tr:last-child > :first-child {
+border-radius: 0 0 0 10px;
+}
+
+.tbody > tr:last-child > :last-child {
+border-radius: 0 0 10px 0;
+}
+
+.container h1{
+  color: var(--text-on-primary);
+  margin: 20px auto;
+  text-align: center;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.buttons{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.navButtons{
+  display: flex;
+  color: var(--text-on-primary);
+}
+
+.navButtons p{
+  margin: 10px;
+}
+
+.buttons button{
+  width: 40px;
+  height: 40px;
+}
+
+.workedHours{
+  text-align: center;
+  color: var(--text-on-primary);
+}
+
+
+@media screen and (min-width: 768px) {
+
+}
+
+@media screen and (min-width: 1024px) {
+  .buttonControllercontainerFilter button {
+   transform: scale(1.2);
+  }
+}
