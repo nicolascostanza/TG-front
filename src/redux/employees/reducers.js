@@ -4,7 +4,8 @@ const initialState = {
   list: [],
   isFetching: false,
   error: false,
-  message: ''
+  message: '',
+  messageRegister: ''
 };
 let updatedEmployee = [];
 
@@ -54,18 +55,21 @@ export const employeesReducer = (state = initialState, action) => {
         list: [...state.list, action.payload.employee],
         isFetching: false,
         error: action.payload.res.error,
-        message: action.payload.res.message
+        message: action.payload.res.message,
+        messageRegister: 'Successful registration'
       };
     case types.ADD_EMPLOYEE_PENDING:
       return {
-        ...state
+        ...state,
+        messageRegister: ''
       };
     case types.ADD_EMPLOYEE_ERROR:
       return {
         ...state,
         isFetching: false,
         error: true,
-        message: action.payload
+        message: action.payload,
+        messageRegister: 'Error when registering'
       };
     case types.EDIT_EMPLOYEE_SUCCESS:
       updatedEmployee = state.list.map((item) => {

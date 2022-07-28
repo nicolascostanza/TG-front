@@ -3,8 +3,6 @@ import { useState, useEffect } from 'react';
 import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
-// import Dropdown from '../Dropdown/Dropdown';
-// import AssignPm from 'Components/Shared/assingPm';
 import { useDispatch } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
@@ -191,33 +189,23 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   const onSubmit = async (data) => {
     if (tab === 'employees') {
       if (method === 'POST') {
-        if (pm) {
-          const newEmployeeAssociated = {
-            projectId: idProject,
-            role: data.role,
-            // rate: 0,
-            rate: data.rate,
-            isPM: false
-          };
-          // dispatch(
-          //   thunksProjects.addEmployeeToProject({ ...data, rate: 0, isPM: false }, idProject)
-          // );
-          dispatch(thunksProjects.addEmployeeToProject({ ...data, isPM: false }, idProject));
-          dispatch(
-            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
-          );
-        } else {
-          const newEmployeeAssociated = {
-            projectId: idProject,
-            role: data.role,
-            rate: data.rate,
-            isPM: false
-          };
-          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-          dispatch(
-            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
-          );
-        }
+        const dataFormatted = {
+          employeeId: data.employeeId,
+          rate: data.rate === '' || !data.rate ? 0 : data.rate,
+          role: data.role,
+          isPM: false
+        };
+        const newEmployeeAssociated = {
+          projectId: idProject,
+          role: data.role,
+          rate: data.rate === '' || !data.rate ? 0 : data.rate,
+          isPM: false
+        };
+        dispatch(thunksProjects.addEmployeeToProject(dataFormatted, idProject));
+        dispatch(
+          thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
+        );
+        console.log('the new employee', newEmployeeAssociated);
         setShowModalEmployee(false);
         setShowModalResponse(true);
       } else {
@@ -245,13 +233,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         setIdToForm('');
       }
     } else {
-      // const date = new Date();
-      // let output =
-      //   String(date.getFullYear()) +
-      //   '/' +
-      //   String(date.getMonth() + 1).padStart(2, '0') +
-      //   '/' +
-      //   String(date.getDate()).padStart(2, '0');
       let taskToAdd = {
         parentProject: idProject,
         taskName: data.taskName,
@@ -501,7 +482,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             <p className={styles.textPm}>PM</p>
           </Button>
         ) : null}
-        {roleUser === 'ADMIN' || roleUser === 'PM' ? (
+        {roleUser === 'ADMIN' || pm ? (
           <>
             {filterProject ? (
               <Button id="buttonAddEmployee" onClick={() => onAddEmployee()}>
@@ -603,21 +584,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                               </Button>
                             </div>
                           );
-                          // let dati = nuevoArray[index];
-                          // return (
-                          //   <Dropdown width={'150px'} placeholder="Tasks">
-                          //     {dati.map((element) => {
-                          //       return (
-                          //         <option key={Math.random()}>
-                          //           {element.employeeId.firstName}
-                          //         </option>
-                          //       );
-                          //     })}
-                          //     ;
-                          //   </Dropdown>
-                          // } else if (row[key].length === 1) {
-                          //   return <td>{nuevoArray[index]?.employeeId.firstName}</td>;
-                          // return <td>{nuevoArray}</td>;
                         } else {
                           return <td> - </td>;
                         }
@@ -648,7 +614,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                     })}
                     {roleUser === `ADMIN` || pm ? (
                       <>
-                        {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                         <td>
                           <Button
                             className={styles.modifyButtons}
