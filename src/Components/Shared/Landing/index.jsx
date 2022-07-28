@@ -5,7 +5,6 @@ import img1 from './assets/img/img1.png';
 import img2 from './assets/img/img2.png';
 import img3 from './assets/img/img3.png';
 import img4 from './assets/img/img4.png';
-import mainImg from './assets/img/mainImg.png';
 
 function Landing() {
   return (
@@ -13,18 +12,22 @@ function Landing() {
       <Sidebar />
       <div className={styles.sidebarMain}>
         <main className={styles.mainSection}>
-          <section className={styles.firstSection}>
+        <section className={styles.firstSection}>
             <div className={styles.imgTablet}>
-              <div className={styles.texts}>
+              <div className={styles.divSeparator1}></div>
+              <div className={styles.divSeparator2}>
                 <h1 id="trackgenix" className={styles.tittle}>
                   Hi, we are Trackgenix SA
                 </h1>
                 <p className={styles.subtittle}>A FULLY RESPONSIVE SITE</p>
                 <p className={styles.textMainSection}>
-                Sed varius nibh scelerisque tortor sapien. Sit egestas ac imperdiet lorem massa, tempor malesuada. Massa enim interdum morbi nunc eleifend viverra. Mauris iaculis arcu platea ut massa ultrices. In est porta etiam a nisl quisque nullam. Interdum vel, pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo nulla.
+                  Sed varius nibh scelerisque tortor sapien. Sit egestas ac imperdiet lorem tempor
+                  malesuada. Massa enim interdum morbi nunc eleifend viverra. Mauris iaculis Mauris
+                  iaculis arcu platea ut massa ultrices. In est porta etiam a nisl quisque Interdum
+                  vel, pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo nulla.
                 </p>
               </div>
-              <img className={styles.imgTabletSize} src={mainImg} alt="Reloj" />
+              {/* <img className={styles.imgTabletSize} src={mainImg} alt="Reloj" /> */}
             </div>
           </section>
           <h2 id="functionalities" className={styles.landingH2}>
