@@ -15,16 +15,15 @@ function Landing() {
         <main className={styles.mainSection}>
           <section className={styles.firstSection}>
             <div className={styles.imgTablet}>
-              <h1 id="trackgenix" className={styles.tittle}>
-                Hi, we are Trackgenix SA
-              </h1>
-              <p className={styles.subtittle}>A FULLY RESPONSIVE SITE</p>
-              <p className={styles.textMainSection}>
-              Sed varius nibh scelerisque tortor sapien. Sit egestas ac imperdiet lorem
-               massa, tempor malesuada. Massa enim interdum morbi nunc eleifend viverra.
-              Mauris iaculis arcu platea ut massa ultrices. In est porta etiam a nisl quisque nullam. Interdum vel,
-              pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo nulla.
-              </p>
+              <div className={styles.texts}>
+                <h1 id="trackgenix" className={styles.tittle}>
+                  Hi, we are Trackgenix SA
+                </h1>
+                <p className={styles.subtittle}>A FULLY RESPONSIVE SITE</p>
+                <p className={styles.textMainSection}>
+                Sed varius nibh scelerisque tortor sapien. Sit egestas ac imperdiet lorem massa, tempor malesuada. Massa enim interdum morbi nunc eleifend viverra. Mauris iaculis arcu platea ut massa ultrices. In est porta etiam a nisl quisque nullam. Interdum vel, pellentesque imperdiet lacus fermentum. Consectetur amet, purus leo nulla.
+                </p>
+              </div>
               <img className={styles.imgTabletSize} src={mainImg} alt="Reloj" />
             </div>
           </section>
@@ -35,7 +34,7 @@ function Landing() {
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
-                  <img src={img1} alt="trangenix" id={styles['descriptionImage']} />
+                  <img src={img1} alt="trackgenix" id={styles['descriptionImage']} />
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>WORKED HOURS RECORD</h3>
                     <p className={styles.text}>
@@ -47,7 +46,7 @@ function Landing() {
               </div>
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
-                  <img src={img2} alt="trangenix" id={styles['descriptionImage']} />
+                  <img src={img2} alt="trackgenix" id={styles['descriptionImage']} />
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>REPORTS</h3>
                     <p className={styles.text}>
@@ -62,7 +61,7 @@ function Landing() {
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
-                  <img src={img3} alt="trangenix" id={styles['descriptionImage']} />
+                  <img src={img3} alt="trackgenix" id={styles['descriptionImage']} />
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>RESOURCES MANAGEMENT</h3>
                     <p className={styles.text}>
@@ -74,7 +73,7 @@ function Landing() {
               </div>
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
-                  <img src={img4} alt="trangenix" id={styles['descriptionImage']} />
+                  <img src={img4} alt="trackgenix" id={styles['descriptionImage']} />
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>MULTIPLE ROLES</h3>
                     <p className={styles.text}>
@@ -95,7 +94,7 @@ function Landing() {
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
                   <div className={styles.descriptionImage}>
-                    <img src={img1} alt="trangenix" id={styles['descriptionImage']} />
+                    <img src={img1} alt="trackgenix" id={styles['descriptionImage']} />
                   </div>
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>PRODUCTIVITY ENHANCER</h3>
@@ -108,7 +107,7 @@ function Landing() {
               </div>
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
-                  <img src={img2} alt="trangenix" id={styles['descriptionImage']} />
+                  <img src={img2} alt="trackgenix" id={styles['descriptionImage']} />
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>DECISION MAKING</h3>
                     <p className={styles.text}>
@@ -123,7 +122,7 @@ function Landing() {
             <div className={styles.peerSeparator}>
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
-                  <img src={img3} alt="trangenix" id={styles['descriptionImage']} />
+                  <img src={img3} alt="trackgenix" id={styles['descriptionImage']} />
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>WORK TRACEABILITY</h3>
                     <p className={styles.text}>
@@ -135,7 +134,7 @@ function Landing() {
               </div>
               <div className={styles.group}>
                 <div className={styles.imagenLeftBox}>
-                  <img src={img4} alt="trangenix" id={styles['descriptionImage']} />
+                  <img src={img4} alt="trackgenix" id={styles['descriptionImage']} />
                   <div className={styles.subGroup}>
                     <h3 className={styles.groupTitle}>LEADERSHIP AND TEAM MANAGEMENT</h3>
                     <p className={styles.text}>

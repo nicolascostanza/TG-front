@@ -270,12 +270,12 @@ h2 {
 
 .contactForm {
   margin: 50px;
-  margin-left: 10%;
+  margin-left: 22%;
   padding: 20px;
   background-color: hsla(201, 100%, 42%, 0.09);
   width: 747px;
   Height: 600px;
-  border-radius: 15px
+  border-radius: 15px;
 }
 
 .nameEmailForm input, .selectLanding {
@@ -301,6 +301,11 @@ h2 {
   padding: 15%;
 }
 
+.textsMain {
+  position: absolute;
+  margin-left: 200px;
+}
+
 .tittle, .subtittle, .textMainSection {
   display: flex;
   align-items: end;
@@ -310,9 +315,18 @@ h2 {
 
 .valuesContainer {
   width: 277px;
-  height: 289px;
+  height: 230px;
   border-radius: 15px;
   background-color: hsla(201, 100%, 42%, 0.09);
+}
+
+h4, li {
+  margin-top: 20px;
+  margin-left: 110px;
+}
+
+li {
+  margin-left: 140px;
 }
 
 @media only screen and (max-width: 780px) {
@@ -375,6 +389,7 @@ h2 {
   .nameEmailForm{
     flex-direction: column;
     padding-bottom: 0;
+    margin-left: 20px;
   }
   .nameEmailForm input{
     width: 90%;
