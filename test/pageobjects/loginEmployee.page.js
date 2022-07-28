@@ -7,7 +7,7 @@ class LoginPage {
     return $('[name="password"]');
   }
   get continueBtn() {
-    return $('.login_buttonsContainer__tswFM > button');
+    return $('.login_buttonContinue__EGjlD');
   }
   //-----------------------------------Setters--------------------------------------------
   async setMail(mail) {
