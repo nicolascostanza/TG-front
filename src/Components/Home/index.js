@@ -7,8 +7,6 @@ import Button from 'Components/Shared/Button';
 import Tableproject from 'Components/Shared/Tableproject';
 import Landing from 'Components/Shared/Landing';
 import SuperAdminHome from './SuperAdminHome';
-// import AdminHome from './AdminHome';
-// import EmployeeHome from './EmployeeHome';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -19,7 +17,6 @@ import {
 } from 'Components/Home/validations';
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
-// import Input from 'Components/Shared/Input';
 import Form from 'Components/Shared/Form';
 
 function Home() {
@@ -166,7 +163,6 @@ function Home() {
     }
   };
   const onSubmit = (data) => {
-    console.log('data', data);
     if (role === 'SUPERADMIN') {
       if (method === 'POST') {
         dispatch(thunksAdmins.addAdmin(data));

@@ -204,7 +204,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         dispatch(
           thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
         );
-        console.log('the new employee', newEmployeeAssociated);
         setShowModalEmployee(false);
         setShowModalResponse(true);
       } else {

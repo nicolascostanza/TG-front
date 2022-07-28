@@ -63,7 +63,6 @@ export const addEmployee = (newEmployee) => {
         email,
         password
       };
-      console.log('response register:', res);
       dispatch(
         actions.addEmployeeSucces(
           {
