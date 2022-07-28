@@ -57,7 +57,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let keys;
   let data;
   // TESTS
-  console.log('all employees', allEmployees);
   // KEYS AND VALUES
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
@@ -268,7 +267,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   // RETORNA DROPDOWN O ETIQUETA P , SI ES PM O NO
   const editOptions = (current) => {
     if (current.role === 'PM') {
-      return <p>PM</p>;
+      return <p id={styles.pm}>PM</p>;
     }
     return (
       <select id="roleEmployee" {...register('role')} name="role">
@@ -319,7 +318,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 <p className={styles.errorInput}>{errors.taskDescription?.message}</p>
               )}
             </div>
-            <div>
+            <div className={styles.assignedEmp}>
               <label htmlFor="Assigned Employee">Assigned Employee</label>
               <select
                 id="assignedEmployee"
@@ -357,20 +356,12 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               {errors.status && <p className={styles.errorInput}>{errors.status?.message}</p>}
             </div>
             <div className={styles.buttonsContainer}>
-              <Button id="addModalTasks" width={'75px'} height={'30px'} type="submit" value="task">
-                {method === 'POST' ? 'ADD' : 'EDIT'}
-              </Button>
-            </div>
-            <div className={styles.buttonsContainer}>
-              <Button
-                onClick={() => setShowModalTask(false)}
-                id="addModalTasksCancel"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="cancelTask"
-              >
-                CANCEL
+              <Button id="addModalTasks" type="submit" value="task">
+                {method === 'POST' ? (
+                  <i className="fa-solid fa-plus" />
+                ) : (
+                  <i className="fa-solid fa-pencil" />
+                )}
               </Button>
             </div>
           </form>
@@ -384,7 +375,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           modalTitle={method === 'POST' ? 'ADD EMPLOYEE' : 'EDIT EMPLOYEE'}
         >
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <div className={styles.select}>
               <label htmlFor="employee id">Employee</label>
               {method === 'POST' ? (
                 <select id="employees" {...register('employeeId')} name="employeeId">
@@ -396,14 +387,23 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                   ))}
                 </select>
               ) : (
-                <p>{`${currentEmployee.employeeId.firstName} ${currentEmployee.employeeId.lastName}`}</p>
+                <p
+                  className={styles.empName}
+                >{`${currentEmployee.employeeId.firstName} ${currentEmployee.employeeId.lastName}`}</p>
               )}
             </div>
             {
-              <div>
-                <label htmlFor="role">Role</label>
+              <div className={styles.select}>
+                <label id="role" htmlFor="role">
+                  Role
+                </label>
                 {method === 'POST' ? (
-                  <select id="roleEmployee" {...register('role')} name="role">
+                  <select
+                    className={styles.empRole}
+                    id="roleEmployee"
+                    {...register('role')}
+                    name="role"
+                  >
                     <option>-</option>
                     <option>DEV</option>
                     <option>QA</option>
@@ -414,64 +414,50 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 )}
               </div>
             }
-            {pm ? null : (
-              <div>
-                <label htmlFor="Rate">Rate</label>
-                <input
-                  id="rateEmployee"
-                  type="number"
-                  placeholder="500"
-                  {...register('rate')}
-                  error={appendErrors.rate?.message}
-                />
-                {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
-              </div>
-            )}
-            <div className={styles.buttonsContainer}>
-              <Button
-                id="addModalEmployees"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="GO"
-              >
-                {method === 'POST' ? 'ADD' : 'EDIT'}
-              </Button>
+            {/* {pm ? null : ( */}
+            <div className={styles.rate}>
+              <label htmlFor="Rate">Rate</label>
+              <input
+                id="rateEmployee"
+                type="number"
+                placeholder="500"
+                {...register('rate')}
+                error={appendErrors.rate?.message}
+              />
+              {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
-            <div>
-              <Button
-                onClick={() => setShowModalEmployee(false)}
-                id="addModalEmployeeCancel"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="cancelEmoployee"
-              >
-                CANCEL
+            {/* )} */}
+            <div className={styles.formButtons}>
+              <Button id="addModalEmployees" type="submit" value="GO">
+                {method === 'POST' ? (
+                  <i className="fa-solid fa-plus"></i>
+                ) : (
+                  <i className="fa-solid fa-pencil"></i>
+                )}
               </Button>
             </div>
           </form>
         </Modal>
       ) : null}
-      <Modal
-        showModal={showModalDelete}
-        handleClose={() => setShowModalDelete(false)}
-        modalTitle={'DELETE'}
-      >
-        {tab === 'employees'
-          ? `are you sure you want to delete this employee?`
-          : `are you sure you want to delete this task??`}
-        <Button onClick={onDelete}>DELETE</Button>
-        <Button onClick={() => setShowModalDelete(false)}>CANCEL</Button>
-      </Modal>
-      <Modal
-        showModal={showModalDeleteResponse}
-        handleClose={() => setshowModalDeleteResponse(false)}
-        modalTitle={`DELETED`}
-      >
-        <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
-      </Modal>
-
+      <div className={styles.deleteModal}>
+        <Modal
+          showModal={showModalDelete}
+          handleClose={() => setShowModalDelete(false)}
+          modalTitle={'DELETE'}
+        >
+          {tab === 'employees'
+            ? `Are you sure you want to delete this employee?`
+            : `Are you sure you want to delete this task?`}
+          <Button id={styles.deleteButton} onClick={onDelete}>
+            <i className="fa-solid fa-check"></i>
+          </Button>
+        </Modal>
+        <Modal
+          showModal={showModalDeleteResponse}
+          handleClose={() => setshowModalDeleteResponse(false)}
+          modalTitle={`DELETED`}
+        ></Modal>
+      </div>
       <Modal
         showModal={showModalResponse}
         handleClose={() => setShowModalResponse(false)}
@@ -637,8 +623,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                               onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
                               setMethod('PUT');
                             }}
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                           >
                             <i className="fa-solid fa-pencil"></i>
@@ -652,8 +638,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                                 tab === 'tasks' ? row._id : row.employeeId._id
                               )
                             }
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                           >
                             <i className="fa-solid fa-xmark"></i>
@@ -668,12 +654,9 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           </table>
           <div className={styles.buttons}>
             <div>
-              <p className={styles.indexPage}>Page {indexPage}</p>
-            </div>
-            <div>
               <Button
                 id="previouspage"
-                width={'50px'}
+                width={'40px'}
                 height={'40px'}
                 fontSize={'15px'}
                 disabled={indexPage <= 1}
@@ -683,9 +666,12 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               </Button>
             </div>
             <div>
+              <p className={styles.indexPage}>Page {indexPage}</p>
+            </div>
+            <div>
               <Button
                 id="nextpage"
-                width={'50px'}
+                width={'40px'}
                 height={'40px'}
                 fontSize={'15px'}
                 disabled={indexPage >= data?.length / 10}

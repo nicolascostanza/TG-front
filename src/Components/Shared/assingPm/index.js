@@ -1,6 +1,7 @@
 import React from 'react';
 // import { useState } from 'react';
 import styles from 'Components/Shared/Modal/modal.module.css';
+import styling from 'Components/Shared/assingPm/assignPm.module.css';
 import Button from '../Button/index.jsx';
 // import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -13,7 +14,6 @@ import * as thunksEmployees from 'redux/employees/thunks';
 // import { useSelector } from 'react-redux';
 
 function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) {
-  console.log('employees updated:', employeesInProject);
   const dispatch = useDispatch();
   const {
     handleSubmit,
@@ -77,13 +77,13 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
           <p>ASSIGN PM</p>
           <i className="fa-solid fa-xmark" onClick={() => closeModalPM()}></i>
         </div>
-        <h2>
+        <h2 className={styling.h2}>
           Current PM:
           {currentPm[0]
             ? ` ${currentPm[0].employeeId.firstName} ${currentPm[0].employeeId.lastName}`
             : ' Empty'}
         </h2>
-        <div className={styles.modalBody}>
+        <div className={(styles.modalBody, styling.all)}>
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
             <div>
               <label htmlFor="employee id">Employee</label>
@@ -107,9 +107,9 @@ function AssignPm({ showModalPM, closeModalPM, employeesInProject, idProject }) 
               />
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
-            <div className={styles.buttonsContainer}>
-              <Button id="assingPmModal" width={'75px'} height={'30px'} type="submit" value="GO">
-                ASSIGN PM
+            <div className={(styles.buttonsContainer, styling.button)}>
+              <Button id="assingPmModal" type="submit" value="GO">
+                <i className="fa-solid fa-plus"></i>
               </Button>
             </div>
           </form>

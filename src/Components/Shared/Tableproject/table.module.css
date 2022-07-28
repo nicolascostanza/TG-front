@@ -24,10 +24,11 @@
 
 thead{
     background-color: var(--primary-color);
+    height: 40px;
 }
 
 .row{
-    height: 50px;
+    height: 40px;
 }
 
 .row:not(:last-child) {
@@ -61,6 +62,7 @@ thead{
 .buttons{
     display: flex;
     justify-content: center;
+    padding-top: 10px;
 }
 
 .buttons > div {
@@ -69,6 +71,7 @@ thead{
 
 .tbody > tr > td > Button {
     margin: 0 auto;
+    transform: scale(0.8);
 }
 
 .tbody > tr:last-child > :first-child {
@@ -80,47 +83,55 @@ thead{
 
 .topButtons {
     display: flex;
-    padding-bottom: 25px;
-    justify-content: flex-end;
+    padding: 10px 0 25px 0;
+    justify-content: center;
 }
 
 .topButtons button {
-    width: 55px;
-    height: 55px;
+    width: 40px;
+    height: 40px;
     border-radius: 100px;
     margin-right: 20px;
     box-shadow: 4px 4px 13px -12px #000000;
 }
 
+.topButtons i{
+    transform: scale(0.7);
+}
+
 .textPm{
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .tabs{
     margin-left: 10px;
     display: flex;
+    justify-content: center;
 }
 
 .tabs button{
     display: flex;
     justify-content: space-evenly;
-    width: 150px;
+    width: 100px;
     border-radius: 5px 5px 0 0;
     border-top: 1px solid rgba(0, 0, 0, 0.5);
     border-bottom: none;
-    background-color: var(--primary-button-color);
+    background-color: var(--disabled);
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 13px;
+    font-weight: 400;
     text-transform: uppercase;
     padding: 3px;
+    cursor: pointer;
+}
+
+.tabs button:disabled{
+    background-color: var(--primary-button-color);
+    color: var(--text-on-primary-alt);
 }
 
 .tabs i{
     margin-top: 2px;
-}
-
-.noDataText{
 }
 
 .noDataText h1{
@@ -140,4 +151,135 @@ thead{
 
 .indexPage{
     color: var(--text-on-primary);
+    margin-top: 15px;
+}
+
+.formHome {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px 5px 15px;
+}
+
+.formHome input{
+    width: 100%;
+    box-shadow: none;
+    margin: 5px 0;
+}
+
+.formHome label{
+    margin-bottom: 10px;
+}
+
+.formHome div>input{
+    height: 30px;
+}
+
+.assignedEmp select{
+    width: 100%;
+}
+
+.buttonsContainer{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.buttonsContainer button{
+    width: 40px;
+    height: 40px;
+}
+
+.formButtons {
+    display: flex;
+    padding-top: 25px;
+    padding-bottom: 20px;
+    justify-content: space-evenly;
+}
+
+.formButtons button {
+    color: #fff;
+    width: 50px;
+    height: 50px;
+}
+
+.select select{
+    width: 100%;
+}
+
+.formHome label {
+    font-size: 16px;
+}
+
+.empName{
+    font-size: 16px;
+    text-transform: capitalize;
+    border: 1px solid black;
+    border-radius: 15px;
+    /* border-radius: 15px; */
+    padding: 8px;
+    margin: 5px 0;
+}
+
+.rate{
+    display: flex;
+    flex-direction: column;
+}
+
+.rate input{
+    width: 100%;
+    height: 30px;
+    margin-top: 0;
+}
+
+#pm{
+    font-size: 16px;
+    border: 1px solid black;
+    border-radius: 15px;
+    padding: 8px;
+}
+.errorInput{
+    color: var(--error);
+    margin-bottom: 5px;
+}
+
+.deleteModal button{
+    width: 40px;
+    height: 40px;
+    margin: 20px auto;
+}
+
+@media screen and (min-width: 768px) {
+    .topButtons button {
+        width: 50px;
+        height: 50px;
+    }
+    .tabs{
+        justify-content: flex-start;
+    }
+    .topButtons{
+        justify-content: flex-end;
+    }
+}
+
+@media screen and (min-width: 1024px) {
+    thead{
+        height: 50px;
+    }
+    .row{
+        height: 50px;
+    }
+    .tabs button{
+        width: 150px;
+        font-size: 16px;
+    }
+    .topButtons i{
+        transform: scale(1);
+    }
+    .textPm{
+        font-size: 20px;
+    }
+    .tbody > tr > td > Button {
+        margin: 0 auto;
+        transform: scale(1);
+    }
 }

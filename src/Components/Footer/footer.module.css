@@ -24,5 +24,5 @@
 }
 
 .socials a i:hover{
-  color:#E27712;
+  color: var(--footer-hover);
 }
