@@ -4,6 +4,7 @@ import styles from './table.module.css';
 import Button from '../Button/index.jsx';
 import Dropdown from '../Dropdown/Dropdown';
 import Slider from 'Components/Shared/Slider';
+import Modal from '../Modal';
 
 function Tablehome({
   title,
@@ -18,6 +19,8 @@ function Tablehome({
   activeChanger
 }) {
   const [indexPage, setIndexPage] = useState(1);
+  const [showListEmployeesProject, setShowListEmployeesProject] = useState(false);
+  const [listEmployeesProject, setListEmployeesProject] = useState([]);
   const show = data?.slice(10 * (indexPage - 1), 10 * indexPage);
   useEffect(() => {
     const maxIndexPage = data.length > 10 ? Math.floor((data.length - 0.01) / 10) + 1 : 1;
@@ -53,6 +56,15 @@ function Tablehome({
     } else {
       return `No projects Assigned`;
     }
+  };
+  const listEmployeesProjectFunction = (team) => {
+    console.log(team);
+    setListEmployeesProject(team);
+    setShowListEmployeesProject(true);
+  };
+  const closeListEmployeesProject = () => {
+    setListEmployeesProject([]);
+    setShowListEmployeesProject(false);
   };
 
   return (
@@ -129,22 +141,21 @@ function Tablehome({
                         }
                       }
                       if (key === 'team') {
-                        <div>ola</div>;
                         if (!row.team || row.team.length < 1) {
                           return <td>No members yet</td>;
                         } else {
                           return (
                             <td>
-                              <Dropdown width={'150px'} placeholder={'Team'}>
-                                {row[key]?.map((element) => {
-                                  return (
-                                    <option
-                                      key={Math.random()}
-                                    >{`${element.employeeId.firstName} ${element.employeeId.lastName}`}</option>
-                                  );
-                                })}
-                                ;
-                              </Dropdown>
+                              <div className="empList">
+                                <button
+                                  className={styles.empButton}
+                                  id="buttonListEmployeesTask"
+                                  fontSize={'12px'}
+                                  onClick={() => listEmployeesProjectFunction(row.team)}
+                                >
+                                  <i className="fa-solid fa-users"></i>
+                                </button>
+                              </div>
                             </td>
                           );
                         }
@@ -236,6 +247,19 @@ function Tablehome({
           </div>
         </>
       )}
+      <Modal
+        showModal={showListEmployeesProject}
+        handleClose={closeListEmployeesProject}
+        modalTitle={`Employees:`}
+      >
+        <ol>
+          {listEmployeesProject.map((employee, index) => (
+            <li
+              key={`${index}${employee.employeeId._id}`}
+            >{`${employee.employeeId.firstName} ${employee.employeeId.lastName}`}</li>
+          ))}
+        </ol>
+      </Modal>
     </div>
   );
 }

@@ -583,7 +583,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                                 fontSize={'12px'}
                                 onClick={() => listEmployeesTaskFunction(row._id)}
                               >
-                                <i className="fa-solid fa-users"></i>
+                                <i className="fa-solid fa-user"></i>
                               </button>
                             </div>
                           );
@@ -696,7 +696,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             <li key={Math.random()}>{`${employee.firstName} ${employee.lastName}`}</li>
           ))}
         </ol>
-        <Button onClick={closeListEmployeesTask}>OK</Button>
       </Modal>
     </div>
   );
