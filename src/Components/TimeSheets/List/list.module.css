@@ -24,7 +24,7 @@
 .pmNavTabs {
     display: flex;
     justify-content: flex-start;
-    margin: 150px auto 80px;
+    margin: 20px auto 0;
     width: 80%;
     padding-left: 20px;
     z-index: 100;
