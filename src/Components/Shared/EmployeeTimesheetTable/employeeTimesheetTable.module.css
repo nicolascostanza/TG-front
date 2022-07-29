@@ -24,6 +24,7 @@
   height: 40px;
   border-radius: 20px;
   z-index: 200;
+  cursor: pointer;
 }
 
 .buttonBox{
