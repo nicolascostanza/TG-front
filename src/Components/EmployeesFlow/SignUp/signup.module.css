@@ -13,10 +13,9 @@ body {
   width: 60%;
   margin: 25px auto;
   background:  var(--form-background);
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 20px;
   padding: 0 20px;
   max-width: 700px;
+  border-radius: 3px;
 }
 .form form {
   display: flex;
@@ -29,20 +28,23 @@ body {
   text-transform: uppercase;
   font-weight: bold;
   font-size: 55px;
-  line-height: 64px;
   color: var(--text-on-primary);
   text-align: center;
+  margin-bottom: 20px;
 }
 .form input:not(.checkbox),
 select {
   display: block;
   padding: 6px;
   border: 1px solid #373867;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-  border-radius: 5px;
   resize: none;
   width: 100%;
+  border-radius: 3px;
 }
+.form label {
+  font-size: 16px;
+}
+
 .inputContainer {
   margin: 10px 20px;
   width: 80%;
@@ -56,7 +58,7 @@ select {
   align-self: flex-start;
 }
 .buttonsContainer {
-  margin: 30px 0;
+  margin: 15px 0 30px;
   display: flex;
   justify-content: space-around;
 }
@@ -119,7 +121,6 @@ select {
   color: var(--text-on-primary);
 }
 
-
 .bottomLinkContainer{
   display: flex;
   align-self: center;
@@ -130,7 +131,15 @@ link:visited{
 }
 .newHereText{
   color: var(--text-on-primary);
+  margin-bottom: 20px;
+  display: flex;
+  font-size: 14px;
 }
+
+.newHereText p{
+  margin-left: 5px;
+}
+
 .loginRedirect{
   color: #0A66C2;
 }
@@ -151,11 +160,11 @@ link:visited{
   font-size: 15px;
   outline: 0;
   border: 0;
-  border-radius: 0.25rem;
   -webkit-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
   cursor: pointer;
   background-position: center;
+  border-radius: 1px;
 }
 .ripple:hover {
   background: var(--ripple-button-background) radial-gradient(circle, transparent 1%, var(--ripple-button-wave) 1%) center/15000%;
@@ -180,11 +189,11 @@ link:visited{
   font-size: 15px;
   outline: 0;
   border: 0;
-  border-radius: 0.25rem;
   -webkit-box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
   box-shadow: 0 0 0.5rem rgba(0, 0, 0, 0.3);
   cursor: pointer;
   background-position: center;
+  border-radius: 1px;
 }
 .resetRipple:hover {
   background: lightgray radial-gradient(circle, transparent 1%, var(--ripple-button-wave) 1%) center/15000%;
@@ -216,6 +225,7 @@ link:visited{
   }
   .form h1 {
     font-size: 40px;
+    margin-bottom: 20px;
   }
 }
 @media screen and (max-width: 480px) {
@@ -234,9 +244,7 @@ link:visited{
   .labels{
     font-size: 15px;
   }
-  .newHereText{
-    font-size: small;
-  }
+
   .buttonsContainer{
     flex-direction: column-reverse;
     align-items: center;

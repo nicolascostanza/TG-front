@@ -49,25 +49,25 @@
 
 .selectedItem, .chip {
 	display: inline-block;
-  position: relative;
+	position: relative;
 }
 
 .selectedItem:after, .chip:after {
 	content: '';
-  position: absolute;
-  width: calc(100% - 24px);
-  transform: scaleX(0);
-  height: 2px;
-  bottom: 15px;
-  left: 12px;
-  background-color: #373867;
-  transform-origin: bottom right;
-  transition: transform 0.3s ease-out;
+	position: absolute;
+	width: calc(100% - 24px);
+	transform: scaleX(0);
+	height: 2px;
+	bottom: 15px;
+	left: 12px;
+	background-color: #373867;
+	transform-origin: bottom right;
+	transition: transform 0.3s ease-out;
 }
 
 .selectedItem:hover:after, .chip:hover:after {
 	transform: scaleX(1);
-  transform-origin: bottom left;
+	transform-origin: bottom left;
 }
 
 .selectedItem:hover, .chip:hover {

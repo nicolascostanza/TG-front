@@ -434,14 +434,13 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         </Modal>
       ) : null}
       <div className={styles.deleteModal}>
-        <Modal
-          showModal={showModalDelete}
-          handleClose={() => setShowModalDelete(false)}
-          modalTitle={'DELETE'}
-        >
-          {tab === 'employees'
-            ? `Are you sure you want to delete this employee?`
-            : `Are you sure you want to delete this task?`}
+        <Modal showModal={showModalDelete} handleClose={() => setShowModalDelete(false)}>
+          <h3>DELETE</h3>
+          <p>
+            {tab === 'employees'
+              ? `Are you sure you want to delete this employee?`
+              : `Are you sure you want to delete this task?`}
+          </p>
           <Button id={styles.deleteButton} onClick={onDelete}>
             <i className="fa-solid fa-check"></i>
           </Button>
@@ -459,7 +458,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       >
         {message}
       </Modal>
-      <h2>{title}</h2>
+      <h3 className={styles.h2}>{title}</h3>
       <div className={styles.topButtons}>
         <Button id="buttonBack" onClick={() => switcher()}>
           <i className="fa-solid fa-arrow-left fa-2x"></i>
@@ -679,7 +678,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       <Modal
         showModal={showListEmployeesTask}
         handleClose={closeListEmployeesTask}
-        modalTitle={`Employees:`}
+        modalTitle={`EMPLOYEES`}
       >
         <ol>
           {listEmployeesTask.map((employee) => (

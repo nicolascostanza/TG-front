@@ -276,7 +276,7 @@ function Tablehome({
       <Modal
         showModal={showListEmployeesProject}
         handleClose={closeListEmployeesProject}
-        modalTitle={`Employees:`}
+        modalTitle={`EMPLOYEES`}
       >
         <ol>
           {listEmployeesProject.map((employee, index) => (
@@ -289,7 +289,7 @@ function Tablehome({
       <Modal
         showModal={showListTasksProjects}
         handleClose={closeListTasksProject}
-        modalTitle={`Tasks:`}
+        modalTitle={`TASKS`}
       >
         <ol>
           {listTasksProjects.map((task, index) => (

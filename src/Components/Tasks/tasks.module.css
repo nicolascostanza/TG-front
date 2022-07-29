@@ -5,6 +5,7 @@
   align-items: center;
   background-color: var(--background);
   color: var(--text-on-primary);
+  margin: 50px auto;
 }
 .error {
 	color: var(--error);
