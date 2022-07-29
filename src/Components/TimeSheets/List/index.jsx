@@ -146,10 +146,10 @@ function TimeSheet() {
         };
       });
   } else {
-    formattedTimeSheets = timeSheets.map((timeSheet) => {
+    formattedTimeSheets = timeSheets?.map((timeSheet) => {
       return {
         _id: timeSheet._id,
-        employeeId: `${timeSheet.employeeId.firstName} ${timeSheet.employeeId.lastName}`,
+        employeeId: `${timeSheet?.employeeId?.firstName} ${timeSheet?.employeeId?.lastName}`,
         projectId: timeSheet.projectId?.name,
         date: timeSheet.date ? new Date(timeSheet.date).toISOString().split('T')[0] : '',
         taskId: timeSheet.taskId?.taskName,
@@ -270,18 +270,6 @@ function TimeSheet() {
           currentUser={currentUser}
         />
       ) : null}
-      <EmployeeTimesheetTable
-        title={role}
-        headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
-        keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'status']}
-        data={formattedTimeSheets}
-        role={role}
-        onEdit={openEditTimeSheet}
-        onAdd={openAddTimeSheet}
-        onDelete={deleteTimeSheetModal}
-        onApprove={statusChanger}
-        onSelect={selectTS}
-      />
       {role === 'PM' && (
         <div className={styles.pmNavTabs}>
           <button
@@ -314,6 +302,18 @@ function TimeSheet() {
           </button>
         </div>
       )}
+      <EmployeeTimesheetTable
+        title={role}
+        headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
+        keys={['employeeId', 'projectId', 'date', 'taskId', 'hours', 'status']}
+        data={formattedTimeSheets}
+        role={role}
+        onEdit={openEditTimeSheet}
+        onAdd={openAddTimeSheet}
+        onDelete={deleteTimeSheetModal}
+        onApprove={statusChanger}
+        onSelect={selectTS}
+      />
     </>
   );
 }
