@@ -23,10 +23,11 @@ export const addNewProject = (body) => {
     api
       .addNewProjectApi(body)
       .then((response) => {
+        console.log('response project adddd', response);
         dispatch(actions.addNewProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
-          postMessageOnSlack('New project Added!');
+          postMessageOnSlack(`New project Added! The name is ${response.data.name}`);
         }
       })
       .catch((error) => {
