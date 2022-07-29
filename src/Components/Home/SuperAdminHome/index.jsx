@@ -16,7 +16,7 @@ import Tablehome from 'Components/Shared/Tablehome';
 
 const SuperAdminHome = () => {
   const dispatch = useDispatch();
-  let message = useSelector((state) => state.projects.message);
+  let message = useSelector((state) => state.admins.message);
   const [showModalResponse, setShowModalResponse] = useState(false);
   const [method, setMethod] = useState('');
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -85,14 +85,17 @@ const SuperAdminHome = () => {
   const onSubmit = (data) => {
     if (method === 'POST') {
       dispatch(thunksAdmins.addAdmin(data));
+      setShowModal(false);
       setShowModalResponse(true);
     } else if (method === 'PUT') {
       dispatch(thunksAdmins.updateAdmin(data, id));
+      setShowModal(false);
       setShowModalResponse(true);
       setMethod('');
     } else {
       dispatch(thunksAdmins.deleteAdmin(id));
-      setShowModalResponse(true);
+      setShowModalDelete(false);
+      setshowModalDeleteResponse(true);
     }
   };
 
@@ -144,7 +147,9 @@ const SuperAdminHome = () => {
         showModal={showModalDeleteResponse}
         handleClose={() => setshowModalDeleteResponse(false)}
         modalTitle={`DELETED`}
-      ></Modal>
+      >
+        <p>Admin successfully deleted</p>
+      </Modal>
       <Loader isLoading={isLoading} />
       <Modal
         showModal={showModal}
