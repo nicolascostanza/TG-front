@@ -16,6 +16,9 @@
   --text-on-surface: #fff;
   --text-on-error: #ffffff;
   --text-on-primary-alt: #000;
+  --card-background:  rgba(0, 138, 214, 0.2);
+  --image-filter: invert();
+  --card-h2: rgb(77, 158, 250);
 
   /* APP COLORS */
   --primary-text-color: #000000;
@@ -68,6 +71,9 @@
   --primary-button-color: #FBBC04;
   --slider-active-color: #FBBC04;
   --form-background: #16242C;
+  --card-background:  rgba(142, 142, 142, 0.282);
+  --image-filter: hue-rotate(0);
+  --card-h2: #fff;
 }
 
 * {

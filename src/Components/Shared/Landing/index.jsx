@@ -151,11 +151,11 @@ function Landing() {
             </div>
           </section>
           {/* <div className={styles.separator}></div> */}
-          <div>
+          <div className={styles.allCard}>
+            <h2 id="contact" className={(styles.landingH2, styles.h2Contact)}>
+              CONTACT US
+            </h2>
             <form className={styles.contactForm}>
-              <h2 id="contact" className={styles['centeredText']}>
-                CONTACT US
-              </h2>
               <div className={styles.nameEmailForm}>
                 <input type="text" placeholder="Name" />
                 <input type="text" placeholder="Email" />

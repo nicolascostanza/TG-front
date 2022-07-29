@@ -24,21 +24,22 @@ body, .messageForm > textarea{
 .nameEmailForm > input {
   padding-left: 10px;
   min-width: 40%;
-  border: 2px solid #373867;
-  border-radius: 5px;
-  height: 32px;
+  height: 40px;
+  border: 1px solid black;
+  margin-bottom: 20px;
 }
+
+
 .nameEmailForm > input::placeholder {
   color: #373867;
 }
+
 .selectLanding {
+  margin-left: 45px;
   width: 90%;
-  margin: 0 auto;
-  border: 2px solid #373867;
-  border-radius: 5px;
-  height: 32px;
-  color: #373867;
+  height: 40px;
   margin-bottom: 25px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .messageForm {
   width: 90%;
@@ -50,11 +51,10 @@ body, .messageForm > textarea{
   padding: 10px;
   width: 100%;
   height: 200px;
-  border: 2px solid #373867;
-  border-radius: 5px;
+  border: 1px solid black;
 }
 .messageForm > textarea::placeholder {
-  color: #373867;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 .buttonsForm {
   width: 100%;
@@ -63,14 +63,14 @@ body, .messageForm > textarea{
   margin-top: 25px;
 }
 .buttonForm {
-  background-color:  hsla(102, 34%, 71%, 1);
+  background-color: var(--primary-button-color);
   border: none;
   font-weight: 500;
-  color: black;
-  width: 30%;
+  color: var(--text-on-primary-alt);
+  width: 20%;
   height: 50px;
-  border-radius: 5px;
   cursor: pointer;
+  margin: 20px auto;
 }
 .buttonForm:hover {
   background-color: #AA4949;
@@ -101,13 +101,14 @@ body, .messageForm > textarea{
   display: flex;
   justify-content: space-between;
 }
-.landingH2 {
+.landingH2:not(.h2Contact) {
   font-size: 50px;
   font-weight: 700;
   color: var(--text-on-primary);
-  text-align: left;
-  padding: 20px 0 20px 50px;
+  text-align: center;
+  margin: 80px auto;
 }
+
 .groupTitle {
   width: auto;
   display: flex;
@@ -142,7 +143,7 @@ body, .messageForm > textarea{
   font-weight: 700;
   font-size: 60px;
   line-height: 70px;
-  color: var(--text-on-primary);
+  color: #fff;
   /* padding-bottom: 20px; */
 }
 .subtittle {
@@ -150,7 +151,7 @@ body, .messageForm > textarea{
   font-weight: 400;
   font-size: 24px;
   line-height: 28px;
-  color: var(--text-on-primary);
+  color: #fff;
   padding: 30px 0;
 }
 .textMainSection {
@@ -158,7 +159,7 @@ body, .messageForm > textarea{
   font-weight: 400;
   font-size: 19px;
   line-height: 21px;
-  color: var(--text-on-primary);
+  color: #fff;
 }
 .buttonMore {
   font-style: normal;
@@ -197,8 +198,6 @@ body, .messageForm > textarea{
 }
 
 .mainSection {
-  /* padding: 0 30px;
-  margin: 0 50px; */
   background-color: var(--background);
   color: var( --text-on-primary);
   display: flex;
@@ -229,86 +228,38 @@ body, .messageForm > textarea{
 }
 .listFooter {
   display: flex;
-  justify-content: space-around;
-  flex-wrap: nowrap;
-  padding: 0px 30px;
+  justify-content: space-evenly;
 }
-.listFooter div ol {
-  margin-left: -25px;
-}
-.buttonsFooterDiv {
-  display: flex;
-  font-size: 11px;
-}
-.buttonsFooterDiv :first-child {
-  background-color: white;
-  border: 2px solid #373867;
-  color: var(--text-on-primary);
-  font-size: 11px;
-}
-footer {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  background-color: var(--background);
-}
-.requestInformationForm {
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-}
-.requestInformationForm input,
-select,
-textarea {
-  display: block;
-  padding: 6px;
-  margin-top: 3px;
-  margin-bottom: 8px;
-  border-radius: 2px;
-  resize: none;
-}
+
 #descriptionImage{
   min-width: 150px;
   max-height: 150px;
+  filter: var(--image-filter);
 }
-
-/* h2 {
-  font-size: 70px;
-  margin-bottom: 15px;
-} */
 
 .contactForm {
-  margin: 50px;
-  margin-left: 22%;
-  padding: 20px;
-  background-color: hsla(201, 100%, 42%, 0.09);
-  width: 747px;
-  Height: 600px;
-  border-radius: 15px;
+  padding: 20px 30px 20px;
+  margin: auto;
 }
 
-.nameEmailForm input, .selectLanding {
-  height: 56px;
-  margin-bottom: 4%;
+.allCard{
+  background-color: var(--card-background);
+  width: 50%;
+  margin: 100px auto 50px;
 }
 
-.messageForm > textarea {
-  border-radius: 5px;
-  align-self: center;
-}
-.nameAndEmail {
-  display: flex;
-}
-.emailSection {
-  display: flex;
-  flex-direction: column;
+.h2Contact{
+  margin: 35px 0 25px 0;
+  font-size: 50px;
+  font-weight: 700;
+  color: var(--card-h2);
+  text-align: center;
 }
 
 .imgTablet {
   position: relative;
   display: flex;
   flex-direction: column;
-  /* padding: 15%; */
 }
 
 .divSeparator1{
@@ -327,27 +278,31 @@ textarea {
   justify-content: center;
   background: rgba(50,50,50,0.5);
 }
-/* .tittle, .subtittle, .textMainSection {
-  display: flex;
-  align-items: flex-end;
-  position: absolute;
-  margin: 50px;
-} */
 
 .valuesContainer {
-  width: 277px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 12%;
   height: 230px;
-  border-radius: 15px;
-  background-color: hsla(201, 100%, 42%, 0.09);
+  background-color: var(--card-background);
+  margin-top: 80px;
+  margin-bottom: 100px;
 }
 
-h4, li {
-  margin-top: 20px;
-  margin-left: 110px;
+.valuesContainer h4{
+  margin: 0 0 20px -35px;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
-li {
-  margin-left: 140px;
+.valuesContainer li{
+  padding-bottom: 5px;
+}
+
+.valuesContainer li:hover{
+  cursor: pointer;
 }
 
 @media only screen and (max-width: 780px) {
@@ -406,15 +361,6 @@ li {
   }
   .peerSeparator{
     display: block;
-  }
-  .nameEmailForm{
-    flex-direction: column;
-    padding-bottom: 0;
-    margin-left: 20px;
-  }
-  .nameEmailForm input{
-    width: 50%;
-    align-self: center;
   }
   .valuesContainer {
     max-width: 250px;
