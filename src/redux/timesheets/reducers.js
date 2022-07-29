@@ -118,6 +118,23 @@ export const timesheetReducer = (state = initialState, action) => {
         isFetching: false,
         error: action.payload
       };
+    case types.GET_TIMESHEETS_FROM_PROJECT_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.GET_TIMESHEETS_FROM_PROJECT_FULFILLED:
+      return {
+        ...state,
+        isFetching: false,
+        listFromProject: action.payload
+      };
+    case types.GET_TIMESHEETS_FROM_PROJECT_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
     default:
       return state;
   }

@@ -1,37 +1,35 @@
-// import { useEffect, useState } from 'react';
-// import { useState } from 'react';
-// import { useSelector, useDispatch } from 'react-redux';
-// import * as projectsThunks from 'redux/projects/thunks';
-// import * as timesheetsThunks from 'redux/timesheets/thunks';
-// import * as employeesThunks from 'redux/employees/thunks';
-// import Loader from 'Components/Shared/Loader';
+/* eslint-disable no-unused-vars */
+import { useEffect } from 'react';
+import Button from 'Components/Shared/Button';
+import { useSelector, useDispatch } from 'react-redux';
+import * as projectsThunks from 'redux/projects/thunks';
+import * as timesheetsThunks from 'redux/timesheets/thunks';
+import * as employeesThunks from 'redux/employees/thunks';
+import Loader from 'Components/Shared/Loader';
 import PieChart from '../Charts/Pie';
 import BarChart from '../Charts/Bars';
 import LineChart from '../Charts/Line';
 import styles from '../report.module.css';
 import { projectDataFormatter } from '../auxFunctions';
+import { useHistory, useParams } from 'react-router-dom';
 // for pdf generator import
 import jsPDF from 'jspdf';
-import { project, projectTimesheets } from '../mock'; // delete after database update
 
 const ProjectReport = () => {
-  // const dispatch = useDispatch();
-  // const projects = useSelector((state) => state.projects.list);
-  // const projectTimesheets = useSelector((state) => state.timesheet.listFromProject);
-  // const isProjectsFetching = useSelector((state) => state.projects.isFetching);
-  // const isTimesheetsFetching = useSelector((state) => state.timesheet.isFetching);
-  // const projectId = '62c377590aedc7c1fac7e897'; // DELETE THIS LATER
-  // useEffect(() => {
-  //   dispatch(projectsThunks.getProjects());
-  //   dispatch(timesheetsThunks.getTimesheetsFromProject(projectId, null));
-  //   dispatch(employeesThunks.getEmployees());
-  // }, []);
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const projects = useSelector((state) => state.projects.list);
+  const projectTimesheets = useSelector((state) => state.timesheet.listFromProject);
+  const isProjectsFetching = useSelector((state) => state.projects.isFetching);
+  const isTimesheetsFetching = useSelector((state) => state.timesheet.isFetching);
+  const projectId = useParams().id;
+  useEffect(() => {
+    dispatch(projectsThunks.getProjects());
+    dispatch(timesheetsThunks.getTimesheetsFromProject(projectId));
+    dispatch(employeesThunks.getEmployees());
+  }, []);
 
-  // const project = projects?.find((project) => project._id === projectId);
-
-  const initDate = '2022-01-01';
-  const period = ['Historic', 'Month', 'Week'];
-  console.log('data: ', initDate, period);
+  const project = projects?.find((project) => project._id === projectId);
 
   // Basic table formatter
   const projectTimesheetsMap = projectTimesheets
@@ -50,7 +48,7 @@ const ProjectReport = () => {
   let selectedTag = document.getElementById('selectedTag');
   const pdfGenerator = () => {
     let doc = new jsPDF('p', 'pt', 'letter');
-    let margin = 10;
+    let margin = 2;
     let scale = (doc.internal.pageSize.width - margin * 2) / selectedTag.scrollWidth;
     doc.html(selectedTag, {
       x: margin,
@@ -103,12 +101,15 @@ const ProjectReport = () => {
     return prev + curr.rate * curr.hours;
   }, 0);
 
-  // if (isProjectsFetching || isTimesheetsFetching) {
-  //   return <Loader isLoading={true} />;
-  // }
+  if (isProjectsFetching || isTimesheetsFetching) {
+    return <Loader isLoading={true} />;
+  }
   return (
     <div className={styles.reportContainer}>
       <h2>{`${project?.name}`}</h2>
+      <Button id="buttonBack" onClick={() => history.goBack()}>
+        <i className="fa-solid fa-arrow-left fa-2x"></i>
+      </Button>
       <p>
         From{' '}
         {`${projectTimesheetsMap[0]?.date} to ${
@@ -171,7 +172,7 @@ const ProjectReport = () => {
               value="totalRate"
             />
           </div>
-          <table className={styles.condensedTable}>
+          {/* <table className={styles.condensedTable}>
             <thead>
               <tr>
                 <th>Employee</th>
@@ -192,7 +193,7 @@ const ProjectReport = () => {
                 );
               })}
             </tbody>
-          </table>
+          </table> */}
           <div className={styles.barsContainer}>
             <BarChart
               title="Historic rate"
@@ -207,8 +208,7 @@ const ProjectReport = () => {
               data={projectDataFormatter(projectContr, project, {
                 fillZero: true,
                 accumulate: true,
-                rated: false,
-                initialDate: '2022-04-08'
+                rated: false
               })}
               label="date"
               colorScheme="niceScheme"
