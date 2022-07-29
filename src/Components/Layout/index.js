@@ -12,6 +12,7 @@ const Admins = lazy(() => import('Components/Admins'));
 const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
+const PageNotFound = lazy(() => import('Components/quattrocentoquattro'));
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -71,6 +72,7 @@ function Layout() {
               role={['EMPLOYEE', 'ADMIN', 'PM']}
               component={Tasks}
             />
+            <Route path="*" component={PageNotFound} />
             <Redirect to="/login" />
           </Switch>
         </Suspense>

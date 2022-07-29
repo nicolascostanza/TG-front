@@ -1,0 +1,30 @@
+.cuatroMainContainer{
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+  background-color: var(--background);
+}
+.alfonImg{
+  width: 521px;
+  height: 293px;
+  border-radius: 10px;
+}
+.textContainer h3 {
+  color: var(--text-on-primary);
+  font-size: 60px;
+  text-align: center;
+}
+.textContainer h5 {
+  color: var(--text-on-primary);
+  font-size: 40px;
+  text-align: center;
+}
+.textContainer p {
+  color: var(--text-on-primary);
+  font-size: 30px;
+  text-align: center;
+}
+.giveAwayText{
+  font-weight: 1000;
+}
