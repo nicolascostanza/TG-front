@@ -194,7 +194,7 @@
     width: 40px;
     height: 40px;
     border-radius: 20px;
-    margin: 10px 0 10px 10px;
+    margin: 10px 0 10px 40px;
     border: none;
     text-transform: uppercase;
 }
@@ -240,6 +240,9 @@
     margin: 5px 0;
 }
 
+.empList button{
+    margin-left: 50px;
+}
 .rate{
     display: flex;
     flex-direction: column;
