@@ -75,7 +75,7 @@ body {
   cursor: pointer;
 }
 .errorInput {
-  color: var(--error);
+  color: #b02000;
   font-weight: 500;
   font-size: 12px;
   line-height: 21px;
