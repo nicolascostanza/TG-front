@@ -63,10 +63,12 @@
   border: none;
   font-weight: 800;
   color: var(--text-on-primary-alt);
-  width: 100%;
+  width: 25%;
   height: 50px;
   cursor: pointer;
   border-radius: 3px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 .buttonForm:hover {
   background-color: #AA4949;
@@ -359,7 +361,7 @@
   .divSeparator2{
     align-self: flex-end;
     width: 50%;
-    padding: 30px 50px;
+    padding: 200px 100px 100px 50px;
   }
   .peerSeparator{
     width: 50%;
