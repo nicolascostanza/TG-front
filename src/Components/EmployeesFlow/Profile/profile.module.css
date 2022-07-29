@@ -3,15 +3,22 @@ body {
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
   sans-serif;
 }
+
+.all{
+  height: 600px;
+  display: flex;
+  flex-direction: column;
+}
+
 #h1 {
   text-align: center;
   text-transform: uppercase;
   color: var(--text-on-primary);
+  margin-top: 50px;
 }
 .form {
-  border: 1px solid #ceced3;
-  border-radius: 4px;
-  box-shadow: inherit black;
+  border: 1px solid black;
+  border-radius: 1px;
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -27,7 +34,7 @@ body {
   color: var(--text-on-primary-alt);
 }
 .row {
-  padding: 5px 0 10px 0;
+  padding: 10px 0 10px 5px;
   display: flex;
   flex-wrap: nowrap;
   align-items: center;
@@ -67,7 +74,7 @@ body {
   cursor: pointer;
 }
 .errorInput {
-  color: var(--error);
+  color: #b02000;
   font-weight: 500;
   font-size: 12px;
   line-height: 21px;
@@ -79,8 +86,9 @@ body {
   display: flex;
   justify-content: center;
   width: 50%;
-  margin: 0 auto;
+  margin: 0 auto 20px;
   padding-bottom: 20px;
+  height: 50px;
 }
 
 .divButton button{
@@ -112,6 +120,6 @@ body {
   .divButton{
     justify-content: flex-end;
     max-width: 800px;
-    margin: -200px auto;
+    margin: 50px auto;
   }
 }

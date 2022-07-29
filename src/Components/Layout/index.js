@@ -13,6 +13,8 @@ const Projects = lazy(() => import('Components/Projects'));
 const Tasks = lazy(() => import('Components/Tasks'));
 const TimeSheets = lazy(() => import('Components/TimeSheets'));
 const PageNotFound = lazy(() => import('Components/quattrocentoquattro'));
+const EmployeeReport = lazy(() => import('Components/GenerateReport/EmployeeReport'));
+const ProjectReport = lazy(() => import('Components/GenerateReport/ProjectReport'));
 import Footer from '../Footer/index';
 import Header from '../Header/index';
 import Home from '../Home/index';
@@ -32,6 +34,13 @@ function Layout() {
             <Route exact path="/" component={Home} />
             <Route exact path="/signup" component={SignUp} />
             <Route exact path="/login" component={Login} />
+            <PrivateRoute
+              exact
+              path="/reportEmployee/:id"
+              role="ADMIN"
+              component={EmployeeReport}
+            />
+            <PrivateRoute exact path="/reportProjects/:id" role="ADMIN" component={ProjectReport} />
             <PrivateRoute exact path="/" role="EMPLOYEE" component={EmployeesHome} />
             <PrivateRoute exact path="/admins" role="ADMIN" component={Admins} />
             <PrivateRoute exact path="/admins/profile" role={'ADMIN'} component={AdminsProfile} />

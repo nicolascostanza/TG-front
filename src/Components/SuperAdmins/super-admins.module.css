@@ -4,19 +4,13 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 50px auto;
 }
-h2{
-  font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
-  font-size: 2rem;
-  font-weight: bold;
-  text-align: center;
-}
+
 .tittle{
   margin-left: 35%;
 }
-div > .buttonsDeleteModal{
-  margin: 10px auto;
-}
+
 .inputsForm{
   margin: 5px 0;
 }
@@ -27,3 +21,7 @@ div > .buttonsDeleteModal{
 .error {
   color: var(--error);
   font-size: 12px; }
+
+.modal button{
+    color: var(--primary-button-color);
+  }

@@ -11,13 +11,12 @@ import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import Loader from 'Components/Shared/Loader';
 import Modal from 'Components/Shared/Modal';
-import Button from 'Components/Shared/Button';
 import styles from '../home.module.css';
 import Tablehome from 'Components/Shared/Tablehome';
 
 const SuperAdminHome = () => {
   const dispatch = useDispatch();
-  let message = useSelector((state) => state.projects.message);
+  let message = useSelector((state) => state.admins.message);
   const [showModalResponse, setShowModalResponse] = useState(false);
   const [method, setMethod] = useState('');
   const [showModalDelete, setShowModalDelete] = useState(false);
@@ -61,7 +60,7 @@ const SuperAdminHome = () => {
     setScreen(!screen);
   };
   // SELECCIONA EL PROYECTO PARA PASAR A LA OTRA TABLA
-  let adminSelected = adminsList.filter((admin) => admin._id === id);
+  // let adminSelected = adminsList.filter((admin) => admin._id === id);
 
   // SLIDER EN SUPERADMIN HOME
   const activeChanger = async (data, id) => {
@@ -86,14 +85,17 @@ const SuperAdminHome = () => {
   const onSubmit = (data) => {
     if (method === 'POST') {
       dispatch(thunksAdmins.addAdmin(data));
+      setShowModal(false);
       setShowModalResponse(true);
     } else if (method === 'PUT') {
       dispatch(thunksAdmins.updateAdmin(data, id));
+      setShowModal(false);
       setShowModalResponse(true);
       setMethod('');
     } else {
       dispatch(thunksAdmins.deleteAdmin(id));
-      setShowModalResponse(true);
+      setShowModalDelete(false);
+      setshowModalDeleteResponse(true);
     }
   };
 
@@ -122,24 +124,17 @@ const SuperAdminHome = () => {
   return (
     <section className={styles.container}>
       <Sidebar></Sidebar>
-      {/* modal con mensaje de exito o error */}
       <Modal
         showModal={showModalDelete}
         handleClose={() => setShowModalDelete(false)}
         modalTitle={'DELETE'}
       >
-        {`are you sure you want to delete the ${adminSelected[0]?.firstName} ${adminSelected[0]?.lastName} admin?`}
-        <Button onClick={onDelete}>DELETE</Button>
-        <Button
-          onClick={() => setShowModalDelete(false)}
-          id="deleteCancel"
-          width={'75px'}
-          height={'30px'}
-          type="submit"
-          value="cancelDelete"
-        >
-          CANCEL
-        </Button>
+        <div className={styles.modal}>
+          <p>Are you sure you want to delete the admin?</p>
+          <button onClick={onDelete}>
+            <i className="fa-solid fa-check"></i>
+          </button>
+        </div>
       </Modal>
       <Modal
         showModal={showModalResponse}
@@ -153,7 +148,7 @@ const SuperAdminHome = () => {
         handleClose={() => setshowModalDeleteResponse(false)}
         modalTitle={`DELETED`}
       >
-        <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
+        <p>Admin successfully deleted</p>
       </Modal>
       <Loader isLoading={isLoading} />
       <Modal
@@ -161,8 +156,8 @@ const SuperAdminHome = () => {
         handleClose={() => setShowModal(false)}
         modalTitle={method === 'POST' ? 'ADD ADMIN' : 'EDIT ADMIN'}
       >
-        <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-          <div>
+        <form className={styles.formEditAdmin} onSubmit={handleSubmit(onSubmit)}>
+          <div className={styles.labelInput}>
             <label htmlFor="email">Email</label>
             <input
               id="emailAdmin"
@@ -173,7 +168,7 @@ const SuperAdminHome = () => {
             />
             {errors.email && <p className={styles.errorInput}>{errors.email?.message}</p>}
           </div>
-          <div>
+          <div className={styles.labelInput}>
             <label htmlFor="password">Password</label>
             <input
               id="passwordAdmin"
@@ -184,7 +179,7 @@ const SuperAdminHome = () => {
             />
             {errors.password && <p className={styles.errorInput}>{errors.password?.message}</p>}
           </div>
-          <div className={styles.checkbox}>
+          <div className={styles.checkboxAdm}>
             <label htmlFor="active">Active</label>
             <input
               id="activeAdmin"
@@ -194,28 +189,19 @@ const SuperAdminHome = () => {
               {...register('active')}
             />
           </div>
-          <div className={styles.buttonsContainer}>
-            <Button
+          <div className={styles.modalAddEdit}>
+            <button
               id="buttonSuperadminCreate"
-              width={'75px'}
-              height={'30px'}
+              className={styles.buttonAddEdit}
               type="submit"
               value="CONTINUE"
             >
-              {method === 'POST' ? 'CREATE' : 'EDIT'}
-            </Button>
-          </div>
-          <div>
-            <Button
-              onClick={() => setShowModal(false)}
-              id="addModalEmployeeCancel"
-              width={'75px'}
-              height={'30px'}
-              type="submit"
-              value="cancelEmoployee"
-            >
-              CANCEL
-            </Button>
+              {method === 'POST' ? (
+                <i className="fa-solid fa-check" />
+              ) : (
+                <i className="fa-solid fa-pencil" />
+              )}
+            </button>
           </div>
         </form>
       </Modal>

@@ -43,9 +43,7 @@ function SignUp() {
       setShowModalMessage(false);
     }
   };
-  const loginText = () => {
-    return `  Log In`;
-  };
+
   return (
     <section className={styles.all}>
       {/* <Loader isLoading={isFetchingEmployees} /> */}
@@ -57,7 +55,7 @@ function SignUp() {
           <div className={styles.modal}>
             <p>{messageRegister}</p>
             <button className={styles.buttonOk} value="OK" onClick={redirectedAuth}>
-              OK
+              <i className="fa-solid fa-check" />
             </button>
           </div>
         </Modal>
@@ -126,7 +124,7 @@ function SignUp() {
               <span className={styles.newHereText}>
                 Already have an account?
                 <Link to="/login" className={styles.loginRedirect}>
-                  {loginText()}
+                  <p>Log In</p>
                 </Link>
               </span>
             </div>
