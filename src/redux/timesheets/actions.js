@@ -88,3 +88,17 @@ export const getEmployeTimesheetFailed = (error) => ({
   type: types.GET_EMPLOYEE_TIMSHEET_FAILED,
   payload: error
 });
+
+export const getTimesheetsFromProjectFulfilled = (timesheets) => ({
+  type: types.GET_TIMESHEETS_FROM_PROJECT_FULFILLED,
+  payload: timesheets
+});
+
+export const getTimesheetsFromProjectPending = () => ({
+  type: types.GET_TIMESHEETS_FROM_PROJECT_PENDING
+});
+
+export const getTimesheetsFromProjectFailed = (error) => ({
+  type: types.GET_TIMESHEETS_FROM_PROJECT_FAILED,
+  payload: error
+});

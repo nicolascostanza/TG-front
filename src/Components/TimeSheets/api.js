@@ -61,3 +61,13 @@ export const getEmployeeTimesheetApi = async (id) => {
     return err;
   }
 };
+
+export const getTimesheetFromProjectApi = async (id) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/project?id=${id}`);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
