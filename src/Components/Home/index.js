@@ -7,8 +7,6 @@ import Button from 'Components/Shared/Button';
 import Tableproject from 'Components/Shared/Tableproject';
 import Landing from 'Components/Shared/Landing';
 import SuperAdminHome from './SuperAdminHome';
-// import AdminHome from './AdminHome';
-// import EmployeeHome from './EmployeeHome';
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
@@ -19,18 +17,8 @@ import {
 } from 'Components/Home/validations';
 import * as thunksProjects from '../../redux/projects/thunks';
 import * as thunksAdmins from '../../redux/admins/thunks';
-// import Input from 'Components/Shared/Input';
 import Form from 'Components/Shared/Form';
-// VER
-// cambiar modal de task created
-// hay q traer el current user con el role (ESTA HARDCODEADO)
 
-// HACER
-// MENSAJES ESPECIFICOS EN ERRORES DEL MODAL
-// el update task deberia actualizar solo la fecha cada vez q edito
-// MOSTRAMOS EL DESCRIPTION PROYECT ? MAS CORTO O COMO HACEMOS ?
-// TOMAR EL ROLE DE REDUX (en table home, en tableHome y en tableProject)
-// VER COMO HACEMOS PARA Q AL CREAR UN PROYECTO Y ENTRAR NO ROMPA LA TABLA (NULL CHECKER VER)
 function Home() {
   let headers = [];
   let keys = [];
@@ -42,7 +30,6 @@ function Home() {
   const [showModalDelete, setShowModalDelete] = useState(false);
   const [showModalDeleteResponse, setshowModalDeleteResponse] = useState(false);
   const [method, setMethod] = useState('');
-  // const [arrayFiltered, setArrayFiltered] = useState([]);
   const dispatch = useDispatch();
   let isLoading = useSelector((state) => state.projects.isFetching);
   let projectsError = useSelector((state) => state.projects.error);
@@ -51,14 +38,8 @@ function Home() {
   let adminsList = useSelector((state) => state.admins.list);
   let userCurrent = useSelector((state) => state.currentUser.currentUser);
   let message = useSelector((state) => state.projects.message);
-  // const role = 'EMPLOYEE';
   let role = useSelector((state) => state.auth.authenticated.role);
-  console.log('roleeeeeeeeee', role);
   const title = 'PROJECTS';
-  // const currentUser = useSelector((state) => state.currentUser.currentUser);
-  // const authRole = () => {
-  //   role = useSelector((state) => state.auth.authenticated.role);
-  // }
 
   useEffect(() => {
     if (id === '') {
@@ -70,7 +51,6 @@ function Home() {
       }
       if (role === 'PM' || role === 'EMPLOYEE') {
         dispatch(thunksProjects.getProjects());
-        // console.log('PPPROJECTSSSSSS FILTERED', filterProject());
       }
     } else {
       dispatch(thunksProjects.getProjects());
@@ -84,7 +64,6 @@ function Home() {
   } else {
     validator = validationsFormProjectEdit;
   }
-
   // REACT HOOK FORMS
   const {
     handleSubmit,
@@ -95,26 +74,25 @@ function Home() {
     mode: 'onBlur',
     resolver: joiResolver(validator)
   });
-  // MANDA SOLO LOS PROYECTOS RELACIONADOS A SU ROLE
+  // SEND PROJECTS ASSOCIATED
   const dataProjects = (rol) => {
     if (rol === 'ADMIN') {
       return projectsList;
     } else {
-      // console.log('projects associated', userCurrent.associatedProjects);
       const idsInAssociatedProjects = userCurrent?.associatedProjects?.map(
         (associated) => associated.projectId._id
       );
-      const respppp = projectsList.filter((project) =>
+      const response = projectsList.filter((project) =>
         idsInAssociatedProjects?.includes(project._id)
       );
-      return respppp;
+      return response;
     }
   };
-  // CAMBIA LA PANTALLA
+  // SWITCH SCREEN
   const switcher = () => {
     setScreen(!screen);
   };
-  // SELECCIONA EL PROYECTO PARA PASAR A LA OTRA TABLA
+  // SELECT THE PROJECT TO CHANGE THE OTHER TABLE
   let projectSelected = projectsList.filter((project) => project._id === id);
   let adminSelected = adminsList.filter((admin) => admin._id === id);
   // RESETS EN EL EDIT CON REACT HOOK FORMS
@@ -158,7 +136,7 @@ function Home() {
     }
     setShowModal(true);
   };
-  // SLIDER EN SUPERADMIN HOME
+  // SLIDER IN SUPERADMIN HOME
   const activeChanger = async (data, id) => {
     dispatch(
       thunksAdmins.updateAdmin(
@@ -167,19 +145,6 @@ function Home() {
         },
         id
       )
-      // if (role === 'EMPLOYEE') {
-      //   return (
-      //     <section className={styles.container}>
-      //       <Sidebar></Sidebar>
-      //       <Button
-      //         width={'175px'}
-      //         height={'40px'}
-      //         onClick={() => history.push('/employees/profile')}
-      //         value="employee profile"
-      //       >
-      //         Employee profile
-      //       </Button>
-      //     </section>
     );
   };
 
@@ -211,14 +176,8 @@ function Home() {
         setShowModalResponse(true);
       }
     } else {
+      // data.endDate === '' ? (data.endDate = '-') : data.endDate;
       if (method === 'POST') {
-        // const dataFormatted = {
-        //   name: data.name,
-        //   description: data.description,
-        //   clientName: data.clientName,
-        //   startDate: data.startDate
-        //   // endDate: data.endDate.length > 1 ? data.endDate : ''
-        // };
         dispatch(thunksProjects.addNewProject(data));
         setShowModal(false);
         setShowModalResponse(true);
@@ -229,7 +188,6 @@ function Home() {
         setShowModalResponse(true);
         setMethod('');
       } else {
-        // cambio isdeleted a true
         dispatch(thunksProjects.deleteProject(id));
         setShowModal(false);
         setShowModalResponse(true);
@@ -238,20 +196,13 @@ function Home() {
     }
   };
   // <----- HERE START THE RETURNS ----->
-  // COSITA NUEVA PARA ORGANIZAR
 
   if (!role) {
     return <Landing />;
   }
   if (role === 'SUPERADMIN') {
     return <SuperAdminHome />;
-    // } else if (role === 'ADMIN') {
-    //   return <AdminHome />;
-    // } else {
-    //   return <EmployeeHome />;
   }
-
-  // COSITA NUEVA PARA ORGANIZAR
 
   if (screen) {
     const info = projectsList.filter((project) => project?._id === id);
@@ -270,15 +221,6 @@ function Home() {
           dataTasks={dataTasks}
         />
       </>
-      //   <Button
-      //     width={'130px'}
-      //     height={'40px'}
-      //     onClick={() => history.push('/admins/profile')}
-      //     value="admin profile"
-      //   >
-      //     Admin profile
-      //   </Button>
-      // </section>
     );
   } else {
     return (
@@ -297,23 +239,22 @@ function Home() {
             <Button
               onClick={onDelete}
               id="deleteButton"
-              width={'75px'}
-              height={'30px'}
+              width={'40px'}
+              height={'40px'}
               type="submit"
               value="delete"
             >
-              DELETE
+              <i className="fa-solid fa-check"></i>
             </Button>
-            <Button
+            {/* <Button
               onClick={() => setShowModalDelete(false)}
               id="deleteCancel"
               width={'75px'}
               height={'30px'}
-              // type="submit"
               value="cancelDelete"
             >
               CANCEL
-            </Button>
+            </Button> */}
           </div>
         </Modal>
         <Modal
@@ -327,9 +268,7 @@ function Home() {
           showModal={showModalDeleteResponse}
           handleClose={() => setshowModalDeleteResponse(false)}
           modalTitle={`DELETED`}
-        >
-          <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
-        </Modal>
+        ></Modal>
         <Loader isLoading={isLoading} />
         {/* <Modal
           showModal={showModal}

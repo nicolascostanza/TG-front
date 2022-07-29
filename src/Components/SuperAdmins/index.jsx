@@ -172,11 +172,6 @@ function SuperAdmins() {
               Accept
             </Button>
           </div>
-          <div className={styles.buttonsDeleteModal}>
-            <Button onClick={closeModals} width={'100%'} height={'25px'} fontSize={'15px'}>
-              Cancel
-            </Button>
-          </div>
         </Modal>
         <Form
           title={method === 'POST' ? 'Create Superadmin' : 'Edit Superadmin'}

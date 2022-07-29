@@ -46,7 +46,7 @@ function Profile() {
   return (
     <>
       <Sidebar />
-      <h1>Welcome {currentUser.firstName}</h1>
+      <h1 id={styles.h1}>Welcome {currentUser.firstName}</h1>
       <div className={styles.divButton}>
         <button
           className={update ? styles.greenButton : styles.redButton}
