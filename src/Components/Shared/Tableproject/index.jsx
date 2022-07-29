@@ -620,7 +620,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                             height={'40px'}
                             fontSize={'13px'}
                           >
-                            <i className="fa-solid fa-pencil"></i>
+                            <i id={`${Math.random()}`} className="fa-solid fa-pencil"></i>
                           </Button>
                         </td>
                         <td>
