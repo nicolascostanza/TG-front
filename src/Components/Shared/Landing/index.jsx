@@ -28,7 +28,6 @@ function Landing() {
                   manage and organize the work performed by employees this is the perfect app.
                 </p>
               </div>
-              {/* <img className={styles.imgTabletSize} src={mainImg} alt="Reloj" /> */}
             </div>
           </section>
           <h2 id="functionalities" className={styles.landingH2}>
@@ -36,7 +35,6 @@ function Landing() {
           </h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <img src={img1} alt="trackgenix" id={styles['descriptionImage']} />
                 <div className={styles.subGroup}>
@@ -47,8 +45,6 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <img src={img2} alt="trackgenix" id={styles['descriptionImage']} />
                 <div className={styles.subGroup}>
@@ -60,10 +56,8 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
             </div>
             <div className={styles.peerSeparator}>
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <img src={img3} alt="trackgenix" id={styles['descriptionImage']} />
                 <div className={styles.subGroup}>
@@ -74,8 +68,6 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <img src={img4} alt="trackgenix" id={styles['descriptionImage']} />
                 <div className={styles.subGroup}>
@@ -86,16 +78,13 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
             </div>
           </section>
-          {/* <div className={styles.separator}></div> */}
           <h2 id="reasons" className={styles.landingH2}>
             REASONS WHY YOU NEED US
           </h2>
           <section className={styles.secondSection}>
             <div className={styles.peerSeparator}>
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <div className={styles.descriptionImage}>
                   <img src={img1} alt="trackgenix" id={styles['descriptionImage']} />
@@ -108,8 +97,6 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <img src={img2} alt="trackgenix" id={styles['descriptionImage']} />
                 <div className={styles.subGroup}>
@@ -121,10 +108,8 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
             </div>
             <div className={styles.peerSeparator}>
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <img src={img3} alt="trackgenix" id={styles['descriptionImage']} />
                 <div className={styles.subGroup}>
@@ -135,8 +120,6 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
-              {/* <div className={styles.group}> */}
               <div className={styles.imagenLeftBox}>
                 <img src={img4} alt="trackgenix" id={styles['descriptionImage']} />
                 <div className={styles.subGroup}>
@@ -147,10 +130,8 @@ function Landing() {
                   </p>
                 </div>
               </div>
-              {/* </div> */}
             </div>
           </section>
-          {/* <div className={styles.separator}></div> */}
           <div className={styles.allCard}>
             <h2 id="contact" className={(styles.landingH2, styles.h2Contact)}>
               CONTACT US
@@ -177,7 +158,6 @@ function Landing() {
               </div>
             </form>
           </div>
-          {/* <div className={styles.separator}></div> */}
           <section className={styles.listFooter}>
             <div className={styles.valuesContainer}>
               <h4>Products</h4>
@@ -208,7 +188,6 @@ function Landing() {
             </div>
           </section>
           <div className={styles.buttonsFooterDiv}></div>
-          {/* <div className={styles.separator}></div> */}
         </main>
       </div>
     </>
