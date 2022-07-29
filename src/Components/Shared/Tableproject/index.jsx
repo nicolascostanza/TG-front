@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styles from './tableProject.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { validationsFormAddEmployee, validationsFormAddTask } from 'Components/Home/validations';
@@ -11,7 +11,6 @@ import * as thunksTasks from 'redux/tasks/thunks';
 import * as thunksProjects from 'redux/projects/thunks';
 import * as thunksEmployees from 'redux/employees/thunks';
 import * as timesheetsThunks from 'redux/timesheets/thunks';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import AssignPm from '../assingPm';
 import { getCurrentUserByEmail } from 'redux/currentUser/thunks';
@@ -36,6 +35,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   const dispatch = useDispatch();
   const message = useSelector((state) => state.projects.message);
   const errorEmployeeOrTask = useSelector((state) => state.projects.error);
+  const projectTimesheets = useSelector((state) => state.timesheet.listFromProject);
   const allTask = useSelector((state) => state.tasks.list);
   const allEmployees = useSelector((state) => state.employees.list);
   const allProjects = useSelector((state) => state.projects.list);
@@ -47,6 +47,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
 
   useEffect(() => {
     dispatch(timesheetsThunks.getTimesheetsFromProject(idProject));
+    console.log(idProject);
   }, []);
   const verifiedPM = () => {
     const employeeOnProject = dataTeam.find(
@@ -470,7 +471,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         <Button id="buttonBack" onClick={() => switcher()}>
           <i className="fa-solid fa-arrow-left fa-2x"></i>
         </Button>
-        {roleUser === 'ADMIN' ? (
+        {roleUser === 'ADMIN' && projectTimesheets?.length > 0 ? (
           <Button
             id="generateReport"
             onClick={() => history.push(`/reportProjects/${choosenProject?._id}`)}

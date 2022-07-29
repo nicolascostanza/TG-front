@@ -14,7 +14,7 @@ export const projectDataFormatter = (
   project,
   { fillZero = false, accumulate = false, rated = false, initialDate = '', finalDate = '' }
 ) => {
-  const initDate = new Date(initialDate) > new Date(data[0].date) ? initialDate : data[0].date;
+  const initDate = new Date(initialDate) > new Date(data[0]?.date) ? initialDate : data[0].date;
   const initDateNum = Number(new Date(initDate));
   const endDate = finalDate !== '' ? finalDate : data[data.length - 1].date;
   const dayDiff = (new Date(endDate) - new Date(initDate)) / constants.MILIS_PER_DAY;

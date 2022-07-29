@@ -33,14 +33,14 @@ const ProjectReport = () => {
 
   // Basic table formatter
   const projectTimesheetsMap = projectTimesheets
-    .sort((a, b) => new Date(a.date) - new Date(b.date))
+    .sort((a, b) => new Date(a?.date) - new Date(b?.date))
     .map((ts) => {
       const id = ts.employeeId._id;
-      const rate = ts.projectId.team.find((item) => item.employeeId === id).rate;
+      const rate = ts.projectId.team.find((item) => item?.employeeId === id).rate;
       // what a mess.. but it works yay! :D
       return {
         ...ts,
-        date: new Date(ts.date).toISOString().split('T')[0],
+        date: new Date(ts?.date).toISOString().split('T')[0],
         rate
       };
     });
@@ -136,7 +136,7 @@ const ProjectReport = () => {
               {projectTimesheetsMap.map((timesheet) => {
                 return (
                   <tr key={timesheet._id}>
-                    <td>{timesheet.date}</td>
+                    <td>{timesheet?.date}</td>
                     <td>{timesheet.hours}</td>
                     <td>{timesheet.taskId?.taskName}</td>
                     <td>{timesheet.employeeId.firstName}</td>
@@ -197,7 +197,11 @@ const ProjectReport = () => {
           <div className={styles.barsContainer}>
             <BarChart
               title="Historic rate"
-              data={projectDataFormatter(projectContr, project, {})}
+              data={projectDataFormatter(projectContr, project, {
+                fillZero: true,
+                accumulate: false,
+                rated: false
+              })}
               label="date"
               colorScheme="niceScheme"
             />
