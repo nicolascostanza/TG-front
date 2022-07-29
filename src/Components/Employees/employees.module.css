@@ -4,9 +4,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 50px auto;
 }
 .error {
-	color: red;
+	color: var(--error);
 	font-size: 12px;
 }
 .buttonsDeleteModal{

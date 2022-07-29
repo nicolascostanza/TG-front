@@ -260,12 +260,6 @@ function AddTimeSheets(props) {
                   })
               : null}
           </div>
-          {props.role === 'PM' && (
-            <div className={styles.inputContainer}>
-              <label htmlFor="approved">Approved</label>
-              <input {...register('approved', { required: true })} type="checkbox" />
-            </div>
-          )}
         </div>
       </Form>
     </section>

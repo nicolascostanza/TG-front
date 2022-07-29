@@ -157,6 +157,7 @@ function SuperAdmins() {
     mode: 'onBlur',
     resolver: joiResolver(schema)
   });
+  // closeModals
   return (
     <>
       <Loader isLoading={isFetching} />
@@ -170,11 +171,6 @@ function SuperAdmins() {
           <div className={styles.buttonsDeleteModal}>
             <Button onClick={deleteAdmin} width={'100%'} height={'25px'} fontSize={'15px'}>
               Accept
-            </Button>
-          </div>
-          <div className={styles.buttonsDeleteModal}>
-            <Button onClick={closeModals} width={'100%'} height={'25px'} fontSize={'15px'}>
-              Cancel
             </Button>
           </div>
         </Modal>

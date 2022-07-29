@@ -2,7 +2,6 @@ import React from 'react';
 
 function Row(props) {
   const { _id: id, employeeId, project, date, task, hours, approved, role } = props.timeSheet;
-  console.log(props.employeeId);
   return (
     <tr id={id} className={StyleSheet.row}>
       <td>{id}</td>

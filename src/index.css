@@ -16,6 +16,11 @@
   --text-on-surface: #fff;
   --text-on-error: #ffffff;
   --text-on-primary-alt: #000;
+  --card-background:  rgba(0, 138, 214, 0.2);
+  --image-filter: invert();
+  --card-h2: rgb(77, 158, 250);
+  --text-on-primary-alt: #333;
+  --disabled: #3778ac;
 
   /* APP COLORS */
   --primary-text-color: #000000;
@@ -33,6 +38,10 @@
   --bottom-table-buttons-active: #CEE0F3;
   --bottom-table-buttons-disabled: #EBECF0;
   --form-background: #E8F4FB;
+  --tabs-unselected: #0367b9;
+  --footer-hover: #008AD6;
+  --ripple-button-background: #008AD6;
+  --ripple-button-wave: #E8F4FB;
 }
 
 [data-theme='dark'] {
@@ -46,13 +55,14 @@
   --background: #3A3F40;
   --surface: #ffffff;
   --action: #20b000;
-  --error: #b02000;
+  --error: #fc5656;
   --text-on-primary: #ffffff;
   --text-on-secondary: #ffffff;
   --text-on-background: #000000;
   --text-on-surface: #000000;
   --text-on-error: #ffffff;
   --text-on-primary-alt: #333;
+  --disabled:#b59d56;
 
   /* APP COLORS */
   --primary-text-color: #000000;
@@ -68,6 +78,13 @@
   --primary-button-color: #FBBC04;
   --slider-active-color: #FBBC04;
   --form-background: #16242C;
+  --card-background:  rgba(142, 142, 142, 0.282);
+  --image-filter: hue-rotate(0);
+  --card-h2: #fff;
+  --tabs-unselected: #c09103;
+  --footer-hover: #FBBC04;
+  --ripple-button-background: #FBBC04;
+  --ripple-button-wave: #3A3F40;
 }
 
 * {
@@ -79,9 +96,6 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  /* font-family: 'Open Sans', BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #373867;

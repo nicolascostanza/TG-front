@@ -3,17 +3,86 @@
   font-weight: 10px;
   font-size: 13px;
   width: 100%;
-  overflow-x: auto;
+  padding: 5px;
+}
+
+.container h2{
+  color: var(--text-on-primary);
+  margin-bottom: 20px;
+}
+
+.tableAll{
+  overflow: auto;
+  max-width: 80%;
+  margin: 0 auto;
+}
+
+.addButton{
+  background-color: var(--primary-button-color);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  z-index: 200;
+}
+
+.buttonBox{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 70%;
+  margin: 0 auto 100px;
+
+}
+
+.buttonBox p{
+  color: var(--text-on-primary);
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.buttonControllercontainerFilter{
+  display: flex;
+  justify-content: center;
+}
+
+.buttonControllercontainerFilter button {
+  background-color: var(--primary-button-color);
+  border: none;
+  width: 45px;
+  height: 45px;
+  padding: 5px;
+  margin: 0 10px;
+  border-radius: 22.5px;
+  color: var(--text-on-primary-alt);
+  text-transform: uppercase;
+  font-size: 10px;
+  cursor: pointer;
 }
 
 .buttonControllercontainer {
   display: flex;
   justify-content: space-between;
+  margin: 50px auto 0;
+  padding: 0 10px;
+  width: 70%;
 }
 
-.addButton{
+.buttonControllercontainer button {
+  background-color: var(--primary-button-color);
+  border: none;
   width: 100px;
-  height: 100px;
+  height: 30px;
+  padding: 5px;
+  border-radius: 5px 5px 0 0;
+  color: var(--text-on-primary-alt);
+  text-transform: uppercase;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.buttonControllercontainer p{
+  color: var(--text-on-primary);
 }
 
 .table{
@@ -22,13 +91,15 @@
   width: 100%;
 }
 
-td{
+.tbody td{
   border: none;
   text-align: center;
   align-items: center;
+  min-width: 50px;
+  padding: 10px;
 }
 
-thead{
+.tbody thead{
   background-color: var(--primary-color);
   height: 50px;
   border-radius: 10px;
@@ -80,6 +151,8 @@ transition: .2s;
 
 .tbody > tr > td > Button {
   margin: 0 auto;
+  width: 40px;
+  height: 40px;
 }
 
 .tbody > tr:last-child > :first-child {
@@ -90,65 +163,52 @@ border-radius: 0 0 0 10px;
 border-radius: 0 0 10px 0;
 }
 
-/* The switch - the box around the slider
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-} */
+.container h1{
+  color: var(--text-on-primary);
+  margin: 20px auto;
+  text-align: center;
+}
 
-/* Hide default HTML checkbox */
-/* .switch input {
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
-} */
+}
+.buttons{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
 
-/* The slider */
-/* .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
-} */
+.navButtons{
+  display: flex;
+  color: var(--text-on-primary);
+}
 
-/* .slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
-} */
+.navButtons p{
+  margin: 10px;
+}
 
-/* input:checked + .slider {
-  background-color: #2196F3;
-} */
+.buttons button{
+  width: 40px;
+  height: 40px;
+}
 
-/* input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
-} */
+.workedHours{
+  text-align: center;
+  color: var(--text-on-primary);
+  text-transform: uppercase;
+}
 
-/* input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
-} */
 
-/* Rounded sliders */
-/* .slider {
-  border-radius: 34px;
-} */
+@media screen and (min-width: 768px) {
 
-/* .slider:before {
-  border-radius: 50%;
-} */
+}
+
+@media screen and (min-width: 1024px) {
+  .buttonControllercontainerFilter button {
+   transform: scale(1.2);
+  }
+}
