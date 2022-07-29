@@ -24,12 +24,18 @@ exports.config = {
   // will be called from there.
   //
   specs: [
+    //'./test/specs/signUp.spec.js',
+    //'./test/specs/profileEmployee.spec.js',
+    //'./test/specs/homeEmployee.spec.js',
+    //'./test/specs/simpleEmployeeE2E.spec.js',
     './test/specs/landing.spec.js',
-    './test/specs/signUp.spec.js',
+    './test/specs/sidebar.spec.js',
+    './test/specs/signup.spec.js',
     './test/specs/login.spec.js',
-    './test/specs/profileEmployee.spec.js',
+    './test/specs/admins.spec.js',
+    './test/specs/timesheet.spec.js',
     './test/specs/homeEmployee.spec.js',
-    './test/specs/simpleEmployeeE2E.spec.js'
+    './test/specs/diBestEntuEnInDaFakinGuorld.spec.js'
   ],
   // Patterns to exclude.
   exclude: [

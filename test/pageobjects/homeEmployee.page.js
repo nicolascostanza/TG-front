@@ -1,103 +1,217 @@
 class HomeEmployeePage {
   //-----------------------------------Getters--------------------------------------------
-  //Buttons
-  get logoutBtn() {
-    return $('#root > div > header > nav > ul > li:nth-child(8) > a');
+  //Main table elements
+  get homeTitle() {
+    return $('.table_container__8U2Nr > h2');
   }
-  get editProfileBtn() {
-    return $('#root > div > div.home_divEditProfile__kWNjg > button');
+  get buttonTabTask() {
+    return $('#buttonTabTask');
   }
-  get addBtn() {
-    return $('#root > div > div.home_table__NVPBu > section > div > button');
+  get tableName() {
+    return $('.table_container__8U2Nr > table > thead > tr > th:nth-child(1)');
   }
-  get putBtn() {
+  get tableDescription() {
+    return $('.table_container__8U2Nr > table > thead > tr > th:nth-child(2)');
+  }
+  get tableClientName() {
+    return $('.table_container__8U2Nr > table > thead > tr > th:nth-child(3)');
+  }
+  get tableStartDate() {
+    return $('.table_container__8U2Nr > table > thead > tr > th:nth-child(4)');
+  }
+  get tableEndDate() {
+    return $('.table_container__8U2Nr > table > thead > tr > th:nth-child(5)');
+  }
+  get tableTask() {
+    return $('.table_container__8U2Nr > table > thead > tr > th:nth-child(6)');
+  }
+  get tableTeam() {
+    return $('.table_container__8U2Nr > table > thead > tr > th:nth-child(7)');
+  }
+  get tableTeamBtn() {
+    return $('#buttonListEmployeesTask');
+  }
+  get homeLeftBtn() {
     return $(
-      '#root > div > div.home_table__NVPBu > section > div > table > tbody > tr:nth-child(6) > td:nth-child(10) > button'
+      '.table_navButtons__dqMN7 > div:nth-child(1) > .Button_Button__72Faw > .fa-angle-left'
     );
   }
-  get deleteBtn() {
+  get homeRightBtn() {
     return $(
-      '#root > div > div.home_table__NVPBu > section > div > table > tbody > tr:nth-child(6) > td:nth-child(11) > button'
+      '.table_navButtons__dqMN7 > div:nth-child(3) > .Button_Button__72Faw > .fa-angle-right'
     );
   }
-  get leftArrowBtn() {
+  get homeIndex() {
+    return $('.table_navButtons__dqMN7 > div:nth-child(2) > p');
+  }
+  get modalCloseBtn() {
+    return $('.modal_modalHeader__r9G49 > .fa-xmark');
+  }
+  get enterInProject() {
+    return $('.table_tbody__XIf2Y > tr:nth-child(4) > td:nth-child(2)');
+  }
+  get backToProject() {
+    return $('.tableProject_topButtons__O9KI5 > button:nth-child(1)');
+  }
+
+  //Project employee list
+  get tableEmployeeName() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(1)');
+  }
+  get tableLastName() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(2)');
+  }
+  get tableRole() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(3)');
+  }
+  get tableRate() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(4)');
+  }
+  get tableEdit() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(5)');
+  }
+  get tableDelete() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(6)');
+  }
+  get tableEditBtn() {
     return $(
-      '#root > div > div.home_table__NVPBu > section > div > div > div:nth-child(2) > button'
+      '.tableProject_tbody__S-Qo8 > tr:nth-child(2) > td:nth-child(5) > button > .fa-pencil'
     );
   }
-  get rightArrowBtn() {
-    return $(
-      '#root > div > div.home_table__NVPBu > section > div > div > div:nth-child(3) > button'
-    );
+  get tableDeleteBtn() {
+    return $('.tableProject_tbody__S-Qo8 > tr:nth-child(2) > td:nth-child(6) > button > .fa-xmark');
   }
-  get crossBtn() {
-    return $(
-      '#root > div > div.home_table__NVPBu > section > section:nth-child(3) > div > div > div.modal_modalHeader__r9G49 > i'
-    );
+  get addEmployeeBtn() {
+    return $('.Button_Button__72Faw > .fa-user');
+  }
+  //Modal elements
+  get labelEmployee() {
+    return $('.tableProject_select__U6vb5 > label[for*=employee]');
+  }
+  get labelRole() {
+    return $('.tableProject_select__U6vb5 > label[for=role]');
+  }
+  get labelRate() {
+    return $('.tableProject_rate__cif8f > label[for=Rate]');
+  }
+  get inputEmployee() {
+    return $('#employees > option:nth-child(2)');
+  }
+  get inputRole() {
+    return $('#roleEmployee > option:nth-child(3)');
+  }
+  get inputRate() {
+    return $('#rateEmployee');
   }
   get submitBtn() {
+    return $('.tableProject_formHome__Pzqti > div:nth-child(4) > button > .fa-plus');
+  }
+  get modalCrossBtn() {
+    return $('.modal_modalHeader__r9G49 > .fa-xmark');
+  }
+  get editEmpSubmitButton() {
+    return $('.tableProject_formHome__Pzqti > div:nth-child(4) > button > .fa-pencil');
+  }
+  get deleteEmpCheckButton() {
+    return $('.modal_modalContainer__Sdomi > div > button > .fa-check');
+  }
+
+  //Project tasks list
+  get addTaskBtn() {
+    return $('.tableProject_topButtons__O9KI5 > button:nth-child(2) > .fa-list');
+  }
+  get tableTaskName() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(1)');
+  }
+  get tableDescriptionTask() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(2)');
+  }
+  get tableAssigned() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(3)');
+  }
+  get tableStatus() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(4)');
+  }
+  get tableCreated() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(5)');
+  }
+  get tableStartDateTask() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(6)');
+  }
+  get tableUpdated() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(7)');
+  }
+  get tableEditTask() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(8)');
+  }
+  get tableDeleteTask() {
+    return $('#tableProject_thead__17Mof > tr > th:nth-child(9)');
+  }
+  get tableBtnEmpAssigned() {
     return $(
-      '#root > div > div.home_table__NVPBu > section > section:nth-child(2) > div > div > div.modal_modalBody__IaBTo > form > div > button'
+      '.tableProject_tbody__S-Qo8 > tr:nth-child(2) > div > #buttonListEmployeesTask > .fa-user'
     );
   }
-  //Timesheet inputs
-  get employeeInput() {
-    return $('[name="employeeId"]');
-  }
-  get descriptionInput() {
-    return $('[name="description"]');
-  }
-  get projectInput() {
-    return $('[name="project"]');
-  }
-  get dateInput() {
-    return $('[name="date"]');
-  }
-  get hoursInput() {
-    return $('[name="hours"]');
-  }
-  get tasksInput() {
+  get tableEditBtnTask() {
     return $(
-      '#root > div > div.home_table__NVPBu > section > section:nth-child(2) > div > div > div.modal_modalBody__IaBTo > form > div > div.form_inputs__IGiGt > div > div:nth-child(6) > input[type=text]'
+      '.tableProject_tbody__S-Qo8 > tr:nth-child(2) > td:nth-child(8) > button > .fa-pencil'
     );
   }
-  get approvedInput() {
-    return $('[name="approved"]');
+  get tableDeleteBtnTask() {
+    return $('.tableProject_tbody__S-Qo8 > tr:nth-child(2) > td:nth-child(9) > button > .fa-xmark');
   }
-  get roleInput() {
-    return $('[name="role"]');
+  get taskInputTaskName() {
+    return $('#taskname');
   }
-  //Table
-  get table() {
-    return $('#root > div > div.home_table__NVPBu > section > div > table');
+  get taskInputTaskDescription() {
+    return $('#taskDescription');
   }
+  get taskInputAssignedEmp() {
+    return $('#assignedEmployee > option:nth-child(3)');
+  }
+  get taskInputStartDate() {
+    return $('#startDateTask');
+  }
+  get taskInputStatus() {
+    return $('#status > option:nth-child(4)');
+  }
+
   //-----------------------------------Setters--------------------------------------------
-  async setEmployeeId(employeeId) {
-    await this.employeeInput.setValue(employeeId);
+  async setRate(rate) {
+    await this.inputRate.setValue(rate);
   }
-  async setDescription(description) {
-    await this.descriptionInput.setValue(description);
+  async setTaskName(taskName) {
+    await this.taskInputTaskName.setValue(taskName);
   }
-  async setProject(project) {
-    await this.projectInput.setValue(project);
+  async setTaskDescription(taskDescription) {
+    await this.taskInputTaskDescription.setValue(taskDescription);
   }
-  async setDate(date) {
-    await this.dateInput.setValue(date);
-  }
-  async setHours(hours) {
-    await this.hoursInput.setValue(hours);
-  }
-  async setRole(role) {
-    await this.roleInput.setValue(role);
+  async setStartDate(startDate) {
+    await this.taskInputStartDate.setValue(startDate);
   }
   //-----------------------------------Methods--------------------------------------------
-  async fillInputs(employeeId, description, project, date, hours, role) {
-    await this.setEmployeeId(employeeId);
-    await this.setDescription(description);
-    await this.setProject(project);
-    await this.setDate(date);
-    await this.setHours(hours);
-    await this.setRole(role);
+  async fillInputs(rate) {
+    await this.inputEmployee.click();
+    await browser.keys('Tab');
+    await this.inputRole.click();
+    await browser.keys('Tab');
+    await this.setRate(rate);
+  }
+  async fillInputsTaskTab(taskName, taskDescription, startDate) {
+    await this.setTaskName(taskName);
+    await browser.keys('Tab');
+    await this.setTaskDescription(taskDescription);
+    await browser.keys('Tab');
+    await this.taskInputAssignedEmp.click();
+    await browser.keys('Tab');
+    await this.setStartDate(startDate);
+    await browser.keys('Tab');
+    await this.taskInputStatus.click();
+    await browser.keys('Tab');
+    await browser.keys('Enter');
+    await browser.pause(2000);
+    await this.modalCloseBtn.click();
+    await browser.pause(2000);
   }
 }
 

@@ -1,10 +1,390 @@
 [ {
-  "uid" : "b6fe6bd0edcd2fde",
+  "uid" : "61bf5c7475dbee55",
+  "name" : "SignUp page elements test",
+  "time" : {
+    "start" : 1657337624569,
+    "stop" : 1657337625224,
+    "duration" : 655
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "8f365d9efdd57ffb",
+  "name" : "Reasons why you need us section",
+  "time" : {
+    "start" : 1657337621006,
+    "stop" : 1657337621389,
+    "duration" : 383
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "9a2706f888dcb406",
+  "name" : "Edit with correct data",
+  "time" : {
+    "start" : 1657337646839,
+    "stop" : 1657337663526,
+    "duration" : 16687
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "3386e757837e01ec",
+  "name" : "Complete inputs with invalid data",
+  "time" : {
+    "start" : 1657251734629,
+    "stop" : 1657251738864,
+    "duration" : 4235
+  },
+  "status" : "failed",
+  "severity" : "normal"
+}, {
+  "uid" : "bf49a7d54b0efb6c",
+  "name" : "With invalid data",
+  "time" : {
+    "start" : 1657337630721,
+    "stop" : 1657337631142,
+    "duration" : 421
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "6b1a99267648d34a",
+  "name" : "E2E",
+  "time" : {
+    "start" : 1657337678248,
+    "stop" : 1657337688662,
+    "duration" : 10414
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "2bdb26a8437d7d4f",
   "name" : "should login with valid credentials",
   "time" : {
-    "start" : 1656356306252,
-    "stop" : 1656356309315,
-    "duration" : 3063
+    "start" : 1656365531597,
+    "stop" : 1656365534696,
+    "duration" : 3099
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "abff668b70acee7e",
+  "name" : "Complete inputs with short data",
+  "time" : {
+    "start" : 1657251734022,
+    "stop" : 1657251734625,
+    "duration" : 603
+  },
+  "status" : "failed",
+  "severity" : "normal"
+}, {
+  "uid" : "8e9769bf9c687bae",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657337677420,
+    "stop" : 1657337678248,
+    "duration" : 828
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "80a33f6b9e1db11f",
+  "name" : "Without data",
+  "time" : {
+    "start" : 1657337630199,
+    "stop" : 1657337630253,
+    "duration" : 54
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "fd4b408fa9ebaef7",
+  "name" : "Complete inputs with short data",
+  "time" : {
+    "start" : 1657248314722,
+    "stop" : 1657248315267,
+    "duration" : 545
+  },
+  "status" : "failed",
+  "severity" : "normal"
+}, {
+  "uid" : "fb902f741a1c136b",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657337629175,
+    "stop" : 1657337629959,
+    "duration" : 784
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "d16f1dc42085c595",
+  "name" : "With short data",
+  "time" : {
+    "start" : 1657337630259,
+    "stop" : 1657337630721,
+    "duration" : 462
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "75fe96613a64e0d8",
+  "name" : "Login page elements test",
+  "time" : {
+    "start" : 1657337629960,
+    "stop" : 1657337630186,
+    "duration" : 226
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "d24f78686f95ed5d",
+  "name" : "Footer buttons",
+  "time" : {
+    "start" : 1657337617725,
+    "stop" : 1657337620144,
+    "duration" : 2419
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "bda76c50cea6b86",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657337665262,
+    "stop" : 1657337675330,
+    "duration" : 10068
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "abf6b0d3eb0e371e",
+  "name" : "Elements test",
+  "time" : {
+    "start" : 1657337675332,
+    "stop" : 1657337675644,
+    "duration" : 312
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "dd342e193b496c45",
+  "name" : "Misc section",
+  "time" : {
+    "start" : 1657337621772,
+    "stop" : 1657337622018,
+    "duration" : 246
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "cbe2fa21ed1688ef",
+  "name" : "Elements test",
+  "time" : {
+    "start" : 1657337645036,
+    "stop" : 1657337645689,
+    "duration" : 653
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "4b3561645b825ffa",
+  "name" : "Edit with invalid data",
+  "time" : {
+    "start" : 1657337645717,
+    "stop" : 1657337646831,
+    "duration" : 1114
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "a439665d3ea112b2",
+  "name" : "Edit with invalid info",
+  "time" : {
+    "start" : 1657232618182,
+    "stop" : 1657232619678,
+    "duration" : 1496
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "35b27208766e48f1",
+  "name" : "Request info process",
+  "time" : {
+    "start" : 1657337616201,
+    "stop" : 1657337617715,
+    "duration" : 1514
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "7704b6d931c5f2c2",
+  "name" : "Sidebar buttons",
+  "time" : {
+    "start" : 1657172405711,
+    "stop" : 1657172406805,
+    "duration" : 1094
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "1a4567bd5102e402",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657172404785,
+    "stop" : 1657172405710,
+    "duration" : 925
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "21b1e09413fcc88b",
+  "name" : "Functionalities section",
+  "time" : {
+    "start" : 1657337620620,
+    "stop" : 1657337621006,
+    "duration" : 386
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "7664b0f5bf1c1dd3",
+  "name" : "Hi, we are Trackgenix SA section",
+  "time" : {
+    "start" : 1657337620206,
+    "stop" : 1657337620612,
+    "duration" : 406
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "cc731d2ad8ee8946",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657337638084,
+    "stop" : 1657337645034,
+    "duration" : 6950
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "49f9b30050fda868",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1656476992971,
+    "stop" : 1656476993918,
+    "duration" : 947
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "ac05e4e9e840d983",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657337612470,
+    "stop" : 1657337613437,
+    "duration" : 967
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "2beff56c54ca94ea",
+  "name" : "Social Media buttons",
+  "time" : {
+    "start" : 1656476993919,
+    "stop" : 1656476995897,
+    "duration" : 1978
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "3dc01e17f6af4e44",
+  "name" : "Header buttons",
+  "time" : {
+    "start" : 1657172406806,
+    "stop" : 1657172408260,
+    "duration" : 1454
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "f490f84b18d40fcc",
+  "name" : "With correct data",
+  "time" : {
+    "start" : 1657337631142,
+    "stop" : 1657337636356,
+    "duration" : 5214
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "cbc489cf2882d4b9",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657337623848,
+    "stop" : 1657337624569,
+    "duration" : 721
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "781fdf681745b3a5",
+  "name" : "Request information section",
+  "time" : {
+    "start" : 1657337621390,
+    "stop" : 1657337621772,
+    "duration" : 382
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "f3e5782653a42e3a",
+  "name" : "Sidebar buttons",
+  "time" : {
+    "start" : 1657337613438,
+    "stop" : 1657337614587,
+    "duration" : 1149
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "ce5c7e57d08551d5",
+  "name" : "\"before all\" hook",
+  "time" : {
+    "start" : 1657176635434,
+    "stop" : 1657176635705,
+    "duration" : 271
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "bcfc06635763119b",
+  "name" : "Footer buttons",
+  "time" : {
+    "start" : 1657172408260,
+    "stop" : 1657172410293,
+    "duration" : 2033
+  },
+  "status" : "passed",
+  "severity" : "normal"
+}, {
+  "uid" : "20a58ead5c74b3a4",
+  "name" : "Complete inputs with valid data",
+  "time" : {
+    "start" : 1657251738864,
+    "stop" : 1657251743080,
+    "duration" : 4216
+  },
+  "status" : "failed",
+  "severity" : "normal"
+}, {
+  "uid" : "e086a04403e4f1f2",
+  "name" : "Header buttons",
+  "time" : {
+    "start" : 1657337614588,
+    "stop" : 1657337616200,
+    "duration" : 1612
   },
   "status" : "passed",
   "severity" : "normal"

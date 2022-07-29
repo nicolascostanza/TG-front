@@ -1,15 +1,114 @@
 {
-  "total" : 1,
+  "total" : 12,
   "items" : [ {
-    "uid" : "ff9b43c34a817b44fa9b6edf61b00141",
-    "name" : "My Login application",
+    "uid" : "d3c0d0ffbdca93ba6545d070184494a2",
+    "name" : "Add timesheet test",
+    "statistic" : {
+      "failed" : 3,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 0,
+      "unknown" : 0,
+      "total" : 3
+    }
+  }, {
+    "uid" : "d9c9cdec36865713bd91f9253f15fee6",
+    "name" : "Home page employee test",
+    "statistic" : {
+      "failed" : 1,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 3
+    }
+  }, {
+    "uid" : "b2e2491f399d8c709a7dfd83518079a7",
+    "name" : "Landing page test",
     "statistic" : {
       "failed" : 0,
       "broken" : 0,
       "skipped" : 0,
-      "passed" : 1,
+      "passed" : 6,
       "unknown" : 0,
-      "total" : 1
+      "total" : 6
+    }
+  }, {
+    "uid" : "c163338b7189a4db97b9fd9a95ccb3ae",
+    "name" : "Landing page sections content test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 6,
+      "unknown" : 0,
+      "total" : 6
+    }
+  }, {
+    "uid" : "b16394f51de77ecb2f61828bc7c7c546",
+    "name" : "Landing page buttons and inputs test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 5,
+      "unknown" : 0,
+      "total" : 5
+    }
+  }, {
+    "uid" : "68595abf4d23bc03d036fd47273759e2",
+    "name" : "Complete inputs with data",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 4,
+      "unknown" : 0,
+      "total" : 4
+    }
+  }, {
+    "uid" : "2467d49faaf92752d215e227832f73c6",
+    "name" : "Edit profile info",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 3,
+      "unknown" : 0,
+      "total" : 3
+    }
+  }, {
+    "uid" : "30bb32aad785d17e4499bbdc6887fbf9",
+    "name" : "SignUp page test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    }
+  }, {
+    "uid" : "363ca9bbceaa188c149124179ca6153a",
+    "name" : "Login page test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
+    }
+  }, {
+    "uid" : "f0fe1b2d5f37e0877f02e9793b1a3d81",
+    "name" : "Profile employee test",
+    "statistic" : {
+      "failed" : 0,
+      "broken" : 0,
+      "skipped" : 0,
+      "passed" : 2,
+      "unknown" : 0,
+      "total" : 2
     }
   } ]
 }

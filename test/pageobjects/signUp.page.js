@@ -1,97 +1,43 @@
-class SignUpPage {
-  //-----------------------------------Getters--------------------------------------------
-  //Form title
-  get formTitle() {
-    return $('.signup_form__e+PH4 > form > h1');
-  }
-  //Form inputs
-  get firstNameInput() {
-    return $('[name="firstName"]');
-  }
-  get lastNameInput() {
-    return $('[name="lastName"]');
-  }
-  get genderDropdown() {
-    return $('[name="gender"]');
-  }
-  get male() {
-    return $('[value="Male"');
-  }
-  get female() {
-    return $('[value="Female"');
-  }
-  get other() {
-    return $('[value="Other"');
-  }
-  get addressInput() {
-    return $('[name="address"]');
-  }
-  get dobInput() {
-    return $('[name="dob"]');
-  }
-  get phoneInput() {
-    return $('[name="phone"]');
-  }
-  get emailInput() {
-    return $('[name="email"]');
-  }
-  get passInput() {
-    return $('[name="password"]');
-  }
-  //Form buttons
-  get resetBtn() {
-    return $('.signup_buttonReset__zwjfO');
-  }
-  get continueBtn() {
-    return $('.signup_buttonContinue__hlqTE');
-  }
-  //-----------------------------------Setters--------------------------------------------
-  async setFirstName(name) {
-    await this.firstNameInput.setValue(name);
-  }
-  async setLastname(lastName) {
-    await this.lastNameInput.setValue(lastName);
-  }
-  async setAddress(address) {
-    await this.addressInput.setValue(address);
-  }
-  async setDob(dob) {
-    await this.dobInput.setValue(dob);
-  }
-  async setPhone(phone) {
-    await this.phoneInput.setValue(phone);
-  }
-  async setEmail(email) {
-    await this.emailInput.setValue(email);
-  }
-  async setPwd(pwd) {
-    await this.passInput.setValue(pwd);
-  }
-  //-----------------------------------Methods--------------------------------------------
-  //Open browser in SignUp page
-  openSignUp() {
-    return browser.url('https://alfonso-trackgenix-app.vercel.app/signup');
-  }
-  //Fill inputs
-  async fillInputs(name, lastName, address, dob, phone, email, pwd) {
-    await this.setFirstName(name);
-    await this.setLastname(lastName);
-    await this.setAddress(address);
-    await this.setDob(dob);
-    await this.setPhone(phone);
-    await this.setEmail(email);
-    await this.setPwd(pwd);
-  }
-  //Dropdown checker
-  async genderChecker() {
-    await expect(this.genderDropdown).toBeClickable();
-    await this.genderDropdown.click();
-    await this.other.click();
-    await this.genderDropdown.click();
-    await this.female.click();
-    await this.genderDropdown.click();
-    await this.male.click();
-  }
-}
+class SignupPage {
+    /* eslint-disable */
+    //Getters
+    get inputFirstName() { return $('[name="firstName"]') };
+    get inputLastName() { return $('[name="lastName"]') };
+    get inputEmail() { return $('[name="email"]') };
+    get inputPassword() { return $('[name="password"]') };
+    get errorMsgContainer() { return $('.signup_errorInput__5C7Py') };
+    get btnReset() { return $('.signup_resetRipple__zMXQY') };
+    get btnContinue() { return $('.signup_ripple__4xl2v') };
+    get loginRedirect() { return $('.signup_bottomLinkContainer__0bZG9 > span > a') };
+    get modalSuccess() { return $('.signup_modal__G7iuD') };
+    get closeModal() { return $('i.fa-solid:nth-child(2)') };
+    get projectsTable() { return $('.table_container__8U2Nr') }
 
-module.exports = new SignUpPage();
+    //Setters
+    async setFirstName(firstName) {
+        await this.inputFirstName.setValue(firstName)
+    };
+    async setLastName(lastName) {
+        await this.inputLastName.setValue(lastName)
+    };
+    async setEmail(email) {
+        await this.inputEmail.setValue(email)
+    };
+    async setPassword(password) {
+        await this.inputPassword.setValue(password)
+    };
+
+    //Methods
+    async signup(firstName, lastName, email, password) {
+        await this.setFirstName(firstName);
+        await this.setLastName(lastName);
+        await this.setEmail(email);
+        await this.setPassword(password);
+    };
+
+    open() {
+        return browser.url('https://alfonso-trackgenix-app.vercel.app/signup')
+    }
+};
+module.exports = new SignupPage();
+  /* eslint-enable */

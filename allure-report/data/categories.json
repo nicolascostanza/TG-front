@@ -1,5 +1,85 @@
 {
   "uid" : "4b4757e66a1912dae1a509f688f20b0f",
-  "name" : "categories",
-  "children" : [ ]
+  "children" : [ {
+    "name" : "Product defects",
+    "children" : [ {
+      "name" : "invalid element state: invalid element state\n                  (Session info: chrome=103.0.5060.114)",
+      "children" : [ {
+        "name" : "Complete inputs with short data",
+        "uid" : "fd4b408fa9ebaef7",
+        "parentUid" : "7a44c4e73494f9160bd3f19511a77a27",
+        "status" : "failed",
+        "time" : {
+          "start" : 1657248314722,
+          "stop" : 1657248315267,
+          "duration" : 545
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 1,
+        "retriesStatusChange" : false,
+        "parameters" : [ "chrome-103.0.5060.114" ]
+      }, {
+        "name" : "Complete inputs with short data",
+        "uid" : "abff668b70acee7e",
+        "parentUid" : "7a44c4e73494f9160bd3f19511a77a27",
+        "status" : "failed",
+        "time" : {
+          "start" : 1657251734022,
+          "stop" : 1657251734625,
+          "duration" : 603
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 4,
+        "retriesStatusChange" : false,
+        "parameters" : [ "chrome-103.0.5060.114" ]
+      } ],
+      "uid" : "7a44c4e73494f9160bd3f19511a77a27"
+    }, {
+      "name" : "element click intercepted: element click intercepted: Element <button class=\"Button_Button__72Faw\" style=\"width: 100px; height: 40px; font-size: 15px;\">...</button> is not clickable at point (109, 20). Other element would receive the click: <div class=\"modal_modalBackground__6FizA\">...</div>\n                  (Session info: chrome=103.0.5060.114)",
+      "children" : [ {
+        "name" : "Complete inputs with invalid data",
+        "uid" : "3386e757837e01ec",
+        "parentUid" : "83cde0f0eb8a5bb5aeaac284a364f8f1",
+        "status" : "failed",
+        "time" : {
+          "start" : 1657251734629,
+          "stop" : 1657251738864,
+          "duration" : 4235
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 8,
+        "retriesStatusChange" : false,
+        "parameters" : [ "chrome-103.0.5060.114" ]
+      }, {
+        "name" : "Complete inputs with valid data",
+        "uid" : "20a58ead5c74b3a4",
+        "parentUid" : "83cde0f0eb8a5bb5aeaac284a364f8f1",
+        "status" : "failed",
+        "time" : {
+          "start" : 1657251738864,
+          "stop" : 1657251743080,
+          "duration" : 4216
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "newPassed" : false,
+        "newBroken" : false,
+        "retriesCount" : 8,
+        "retriesStatusChange" : false,
+        "parameters" : [ "chrome-103.0.5060.114" ]
+      } ],
+      "uid" : "83cde0f0eb8a5bb5aeaac284a364f8f1"
+    } ],
+    "uid" : "8fb3a91ba5aaf9de24cc8a92edc82b5d"
+  } ],
+  "name" : "categories"
 }

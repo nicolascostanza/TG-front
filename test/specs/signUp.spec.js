@@ -1,70 +1,87 @@
-const SignUpPage = require('../pageobjects/signUp.page.js');
+const SignupPage = require('../pageobjects/signup.page.js');
 
-describe('SignUp page test', () => {
-  beforeAll('Open browser', async () => {
-    await SignUpPage.openSignUp();
+describe('Sign Up page testing', () => {
+  beforeAll('Open browser', () => {
+    browser.url('https://alfonso-trackgenix-app.vercel.app/signup');
   });
-  it('SignUp page elements test', async () => {
-    //await expect(SignUpPage.formTitle).toExist();
-    //await SignUpPage.formTitle.isDisplayed();
-    await expect(SignUpPage.firstNameInput).toExist();
-    await SignUpPage.firstNameInput.isDisplayed();
-    await expect(SignUpPage.lastNameInput).toExist();
-    await SignUpPage.lastNameInput.isDisplayed();
-    await expect(SignUpPage.genderDropdown).toExist();
-    await SignUpPage.genderDropdown.isDisplayed();
-    await expect(SignUpPage.addressInput).toExist();
-    await SignUpPage.addressInput.isDisplayed();
-    await expect(SignUpPage.dobInput).toExist();
-    await SignUpPage.dobInput.isDisplayed();
-    await expect(SignUpPage.phoneInput).toExist();
-    await SignUpPage.phoneInput.isDisplayed();
-    await expect(SignUpPage.emailInput).toExist();
-    await SignUpPage.emailInput.isDisplayed();
-    await expect(SignUpPage.passInput).toExist();
-    await SignUpPage.passInput.isDisplayed();
-    await expect(SignUpPage.resetBtn).toExist();
-    await SignUpPage.resetBtn.isDisplayed();
-    await expect(SignUpPage.resetBtn).toBeClickable();
-    await expect(SignUpPage.continueBtn).toExist();
-    await SignUpPage.continueBtn.isDisplayed();
-    await expect(SignUpPage.continueBtn).toBeClickable();
-  });
-});
 
-describe('Complete inputs with data', () => {
-  it('Without data', async () => {
-    await SignUpPage.continueBtn.click();
+  describe('Username input test - Employee credentials', () => {
+    it('Empty fields should display error messages', async () => {
+      await SignupPage.signup('', '', '', '');
+      await SignupPage.btnContinue.click();
+      await expect(SignupPage.errorMsgContainer).toHaveText('This field is required');
+    });
+    it('Invalid first name field should display an error message', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('J', 'Doe', 'employee@test.com', 'qwer1234');
+      await SignupPage.btnContinue.click();
+      await expect(SignupPage.errorMsgContainer).toHaveText(
+        'First name must contain at least 3 characters'
+      );
+    });
+    it('Invalid last name field should display an error message', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('Jane', 'D', 'employee@test.com', 'qwer1234');
+      await SignupPage.btnContinue.click();
+      await expect(SignupPage.errorMsgContainer).toHaveText(
+        'Last name must contain at least 3 characters'
+      );
+    });
+    it('Invalid email field should display an error message', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('Jane', 'Doe', 'employee@test.c', 'qwer1234');
+      await SignupPage.btnContinue.click();
+      await expect(SignupPage.errorMsgContainer).toHaveText('Invalid email format');
+    });
+    it('Short password field should display an error message', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('Jane', 'Doe', 'employee@test.com', 'qwer');
+      await SignupPage.btnContinue.click();
+      await expect(SignupPage.errorMsgContainer).toHaveText(
+        'Password must contain at least 8 characters'
+      );
+    });
+    it('Password field with only numbers should display an error message', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('Jane', 'Doe', 'employee@test.com', '12345678');
+      await SignupPage.btnContinue.click();
+      await expect(SignupPage.errorMsgContainer).toHaveText(
+        'Password must contain letters and numbers'
+      );
+    });
+    it('Password field with only letters should display an error message', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('Jane', 'Doe', 'employee@test.com', 'aaaaaaaa');
+      await SignupPage.btnContinue.click();
+      await expect(SignupPage.errorMsgContainer).toHaveText(
+        'Password must contain letters and numbers'
+      );
+    });
+    it('Test reset feature', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('Jane', 'Doe', 'employee@test.com', 'qwer1234');
+      await SignupPage.btnReset.click();
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/signup');
+    });
   });
-  it('With invalid data', async () => {
-    await SignUpPage.fillInputs(
-      'Luciano3213',
-      'Claros31231',
-      'sddadasdadad',
-      '1111111111',
-      'adsasdadasd',
-      'adasdasdads',
-      'dsasddadasdasd'
-    );
-    await SignUpPage.continueBtn.click();
-    await SignUpPage.resetBtn.click();
-  });
-  it('With short data', async () => {
-    await SignUpPage.fillInputs('L', 'C', 'Li', '18', '3', 'cl', 'c');
-    await SignUpPage.continueBtn.click();
-    await SignUpPage.resetBtn.click();
-  });
-  it('With correct data', async () => {
-    await SignUpPage.fillInputs(
-      'Luciano',
-      'Claros',
-      'Lindberg 5292',
-      '18051996',
-      '3416683395',
-      'claros.luciano1996@gmail.com',
-      'correctpwd1234'
-    );
-    await SignUpPage.genderChecker();
-    await SignUpPage.resetBtn.click();
+
+  describe('Employee signup with valid credentials and login redirection', () => {
+    /*it('Login redirection', async () => {
+      await SignupPage.open();
+      await SignupPage.loginRedirect.toExist();
+      await SignupPage.loginRedirect.toBeClickable();
+      await SignupPage.loginRedirect.click();
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/login');
+      await SignupPage.projectsTable.isDisplayed();
+    });*/
+    it('Sign up', async () => {
+      await SignupPage.open();
+      await SignupPage.signup('Jane', 'Doe', 'employee@test.com', 'qwer1234');
+      await SignupPage.btnContinue.click();
+      await SignupPage.modalSuccess.isDisplayed();
+      await SignupPage.closeModal.click();
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/signup');
+      await SignupPage.projectsTable.isDisplayed();
+    });
   });
 });

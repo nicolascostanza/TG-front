@@ -1,79 +1,61 @@
 const LandingPage = require('../pageobjects/landing.page.js');
 
-describe('Landing page buttons and inputs test', () => {
-  beforeAll('Open browser', async () => {
-    await LandingPage.openLanding();
+describe('Landing page testing', () => {
+  beforeAll('Open browser', () => {
+    browser.url('https://alfonso-trackgenix-app.vercel.app/');
   });
-  it('Sidebar buttons', async () => {
-    await LandingPage.sideChecker();
-  });
-  it('Header buttons', async () => {
-    await LandingPage.headerChecker();
-  });
-  it('Request info process', async () => {
-    await LandingPage.reqInfo('Test Name', 'test@testing.com', 'Example text for this test');
-  });
-  it('Footer buttons', async () => {
-    await LandingPage.footerChecker();
-  });
-});
 
-describe('Landing page sections content test', () => {
-  it('Hi, we are Trackgenix SA section', async () => {
-    await expect(LandingPage.hiImTgSection).toExist();
-    await expect(LandingPage.hiImTgSection).toHaveText('Hi, we are Trackgenix SA');
-    await expect(LandingPage.subtitle).toExist();
-    await expect(LandingPage.subtitle).toHaveText('A FREE AND FULLY RESPONSIVE SITE');
-    await expect(LandingPage.mainParagraph).toExist();
-    await LandingPage.mainParagraph.isDisplayed();
-    await expect(LandingPage.mainImg).toExist();
-    await LandingPage.mainImg.isDisplayed();
-    await expect(LandingPage.learnMoreBtn).toBeClickable();
+  describe('Elements display test in landing page', () => {
+    it('Titles, texts, images and icons display test', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.btnBurger).toExist();
+      await expect(LandingPage.btnBurger).toBeClickable();
+      await expect(LandingPage.h1Title).toExist();
+      await expect(LandingPage.pSubtitle).toExist();
+      await expect(LandingPage.pDescr).toExist();
+      await expect(LandingPage.firstImg).toExist();
+
+      await expect(LandingPage.h2Title).toExist();
+      await expect(LandingPage.h3Subtitle).toExist();
+      await expect(LandingPage.p2Descr).toExist();
+      await expect(LandingPage.imgDescr).toExist();
+      await expect(LandingPage.sectionFunct).toExist();
+      await expect(LandingPage.sectionReasons).toExist();
+
+      await expect(LandingPage.h2Form).toExist();
+
+      await expect(LandingPage.h4Title).toExist();
+      await expect(LandingPage.elementsList).toExist();
+      await expect(LandingPage.sectionLists).toExist();
+
+      await expect(LandingPage.footer).toExist();
+      await expect(LandingPage.footerCopyright).toExist();
+    });
   });
-  it('Functionalities section', async () => {
-    await expect(LandingPage.functionalitiesSection).toExist();
-    await expect(LandingPage.functionalitiesSection).toHaveText('Functionalities');
-    await expect(LandingPage.sectionTwoDivOne).toExist();
-    await LandingPage.sectionTwoDivOne.isDisplayed();
-    await expect(LandingPage.sectionTwoDivTwo).toExist();
-    await LandingPage.sectionTwoDivTwo.isDisplayed();
-    await expect(LandingPage.sectionTwoDivThree).toExist();
-    await LandingPage.sectionTwoDivThree.isDisplayed();
-    await expect(LandingPage.sectionTwoDivFour).toExist();
-    await LandingPage.sectionTwoDivFour.isDisplayed();
+
+  describe('Form input test', () => {
+    it('It should remain on the landing page once the form is sended', async () => {
+      await LandingPage.open();
+      await LandingPage.fillForm('Jane', 'jdoe@gmail.com', 'Description');
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/?');
+    });
   });
-  it('Reasons why you need us section', async () => {
-    await expect(LandingPage.reasonsWhySection).toExist();
-    await expect(LandingPage.reasonsWhySection).toHaveText('Reasons why you need us');
-    await expect(LandingPage.sectionThreeDivOne).toExist();
-    await LandingPage.sectionThreeDivOne.isDisplayed();
-    await expect(LandingPage.sectionThreeDivTwo).toExist();
-    await LandingPage.sectionThreeDivTwo.isDisplayed();
-    await expect(LandingPage.sectionThreeDivThree).toExist();
-    await LandingPage.sectionThreeDivThree.isDisplayed();
-    await expect(LandingPage.sectionThreeDivFour).toExist();
-    await LandingPage.sectionThreeDivFour.isDisplayed();
-  });
-  it('Request information section', async () => {
-    await expect(LandingPage.requestInfoSection).toExist();
-    await expect(LandingPage.requestInfoSection).toHaveText('Request information');
-    await expect(LandingPage.nameInput).toExist();
-    await LandingPage.nameInput.isDisplayed();
-    await expect(LandingPage.emailInput).toExist();
-    await LandingPage.emailInput.isDisplayed();
-    await expect(LandingPage.dropdownBtn).toExist();
-    await LandingPage.dropdownBtn.isDisplayed();
-    await expect(LandingPage.textArea).toExist();
-    await LandingPage.textArea.isDisplayed();
-    await expect(LandingPage.sendMsgBtn).toExist();
-    await LandingPage.sendMsgBtn.isDisplayed();
-  });
-  it('Misc section', async () => {
-    await expect(LandingPage.productTitle).toExist();
-    await expect(LandingPage.productTitle).toHaveText('Products');
-    await expect(LandingPage.companyTitle).toExist();
-    await expect(LandingPage.companyTitle).toHaveText('Company');
-    await expect(LandingPage.supportTitle).toExist();
-    await expect(LandingPage.supportTitle).toHaveText('Support');
+
+  describe('Redirection test in footer', () => {
+    it('Social media redirection', async () => {
+      await LandingPage.open();
+      await expect(LandingPage.iconFacebook).toBeClickable();
+      await expect(LandingPage.iconFacebook).toHaveLink('https://www.facebook.com/radiumrocket');
+      await expect(LandingPage.iconTwitter).toBeClickable();
+      await expect(LandingPage.iconTwitter).toHaveLink('https://twitter.com/radiumrocket');
+      await expect(LandingPage.iconLinkedin).toBeClickable();
+      // eslint-disable-next-line prettier/prettier
+      await expect(LandingPage.iconLinkedin).toHaveLink('https://www.linkedin.com/company/radium-rocket');
+      await expect(LandingPage.iconInstagram).toBeClickable();
+      // eslint-disable-next-line prettier/prettier
+      await expect(LandingPage.iconInstagram).toHaveLink('https://www.instagram.com/radium.rocket/');
+      await expect(LandingPage.iconGitHub).toBeClickable();
+      await expect(LandingPage.iconGitHub).toHaveLink('https://github.com/radiumrocketapps');
+    });
   });
 });

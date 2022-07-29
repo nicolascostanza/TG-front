@@ -1,37 +1,54 @@
 const LoginPage = require('../pageobjects/login.page.js');
+const SidebarPage = require('../pageobjects/sidebar.page.js');
 
-describe('Login page test', () => {
-  beforeAll('Open browser', async () => {
-    await LoginPage.openLogin();
+describe('Login page testing for admin entity', () => {
+  beforeAll('Open browser', () => {
+    browser.url('https://alfonso-trackgenix-app.vercel.app/login');
   });
-  it('Login page elements test', async () => {
-    await expect(LoginPage.mailInput).toExist();
-    await LoginPage.mailInput.isDisplayed();
-    await expect(LoginPage.pwdInput).toExist();
-    await LoginPage.pwdInput.isDisplayed();
-    await expect(LoginPage.continueBtn).toExist();
-    await LoginPage.continueBtn.isDisplayed();
-    await expect(LoginPage.continueBtn).toBeClickable();
-  });
-});
 
-describe('Complete inputs with data', () => {
-  it('Without data', async () => {
-    await LoginPage.continueBtn.click();
+  describe('Username input test', () => {
+    it('Empty email field should display an error message', async () => {
+      await LoginPage.login('', 'admin123');
+      await expect(LoginPage.errorMsgContainer).toHaveText('This field is required');
+    });
+    it('Invalid email field should display an error message', async () => {
+      await LoginPage.open();
+      await LoginPage.login('admin@admin.c', 'admin123');
+      await expect(LoginPage.errorMsgContainer).toHaveText('Invalid email format');
+    });
   });
-  it('With short data', async () => {
-    await LoginPage.fillInputs('a', 'b');
-    await LoginPage.continueBtn.click();
-    await browser.refresh();
+
+  describe('Password input test', () => {
+    it('Empty password field should display an error message', async () => {
+      await LoginPage.open();
+      await LoginPage.login('admin@admin.com', '');
+      await expect(LoginPage.errorMsgContainer).toHaveText('This field is required');
+    });
+    it('Password field with less than 8 characters should display an error message', async () => {
+      await LoginPage.open();
+      await LoginPage.login('admin@admin.com', 'admin12');
+      await expect(LoginPage.errorMsgContainer).toHaveText(
+        'Password must contain at least 8 characters'
+      );
+    });
   });
-  it('With invalid data', async () => {
-    await LoginPage.fillInputs('111111111111', 'aaaaaaaaaaaaa');
-    await LoginPage.continueBtn.click();
-    await browser.refresh();
-  });
-  it('With correct data', async () => {
-    await LoginPage.fillInputs('sarasa92@gmail.com', 'qwer1234');
-    await LoginPage.continueBtn.click();
-    await browser.pause(5000);
+
+  describe('Sign up redirection and log out of admin entity', () => {
+    it('Sign up redirection', async () => {
+      await LoginPage.open();
+      await expect(LoginPage.btnSignup).toExist();
+      await expect(LoginPage.btnSignup).toBeClickable();
+      await LoginPage.btnSignup.click();
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/signup');
+    });
+    it('Logout action should redirect to the landing page', async () => {
+      await LoginPage.open();
+      await LoginPage.login('admin@admin.com', 'admin123');
+      await expect(LoginPage.tableProjects).toBeDisplayed();
+      await SidebarPage.btnBurger.click();
+      await LoginPage.btnLogout.click();
+      await expect(browser).toHaveUrl('https://alfonso-trackgenix-app.vercel.app/');
+      await expect(LoginPage.landingDisplay).toBeDisplayed();
+    });
   });
 });
