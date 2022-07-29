@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
   const history = useHistory();
-  const currentUser = useSelector((state) => state.currentUser.currentUser);
+  const role = useSelector((state) => state.auth.authenticated.role);
   const isFetchingUser = useSelector((state) => state.currentUser.isFetching);
   const isFetchingAuth = useSelector((state) => state.auth.isFetching);
   const dispatch = useDispatch();
@@ -26,10 +26,13 @@ const Login = () => {
   });
   // Should redirect after current user is auth and loaded
   useEffect(() => {
-    if (currentUser?._id) {
+    // if (currentUser?._id) {
+    //   history.push('/');
+    // }
+    if (role) {
       history.push('/');
     }
-  }, [currentUser?._id]);
+  }, [role]);
 
   const onSubmit = (data) => {
     dispatch(thunksAuth.login(data));
@@ -65,7 +68,7 @@ const Login = () => {
             </div>
           </div>
           <div className={styles.buttonsContainer}>
-            <button className={styles.buttonContinue} type="submit" value="CONTINUE">
+            <button className={styles.ripple} type="submit" value="CONTINUE">
               CONTINUE
             </button>
           </div>

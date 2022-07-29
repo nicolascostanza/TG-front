@@ -1,13 +1,18 @@
 import React from 'react';
 import styles from './loading.module.css';
-import logo from '../Loader/assets/loader.gif';
+// import logo from '../Loader/assets/loader.gif';
 
 function Loader({ isLoading }) {
   if (isLoading) {
     return (
       <div className={styles.background}>
         <div className={styles.container}>
-          <img className={styles.photo} src={logo} alt="loading..." />
+          <div className={styles.ldsRing}>
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
         </div>
       </div>
     );

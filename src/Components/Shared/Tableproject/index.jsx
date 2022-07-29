@@ -1,18 +1,17 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import styles from './table.module.css';
+import styles from './tableProject.module.css';
 import Button from '../Button/index.jsx';
 import Modal from 'Components/Shared/Modal';
-// import Dropdown from '../Dropdown/Dropdown';
-// import AssignPm from 'Components/Shared/assingPm';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { appendErrors, useForm } from 'react-hook-form';
 import { joiResolver } from '@hookform/resolvers/joi';
 import { validationsFormAddEmployee, validationsFormAddTask } from 'Components/Home/validations';
-import * as thunksProjects from 'redux/projects/thunks';
 import * as thunksTasks from 'redux/tasks/thunks';
+import * as thunksProjects from 'redux/projects/thunks';
 import * as thunksEmployees from 'redux/employees/thunks';
-import { useSelector } from 'react-redux';
+import * as timesheetsThunks from 'redux/timesheets/thunks';
+import { useHistory } from 'react-router-dom';
 import AssignPm from '../assingPm';
 import { getCurrentUserByEmail } from 'redux/currentUser/thunks';
 
@@ -36,14 +35,20 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   const dispatch = useDispatch();
   const message = useSelector((state) => state.projects.message);
   const errorEmployeeOrTask = useSelector((state) => state.projects.error);
+  const projectTimesheets = useSelector((state) => state.timesheet.listFromProject);
   const allTask = useSelector((state) => state.tasks.list);
   const allEmployees = useSelector((state) => state.employees.list);
   const allProjects = useSelector((state) => state.projects.list);
-  let projectoElegido = allProjects.filter((project) => project?._id === idProject);
-  let dataTeam = projectoElegido[0].team;
-  let dataTasks = projectoElegido[0].tasks;
+  const history = useHistory();
+  let choosenProject = allProjects.find((project) => project?._id === idProject);
+  let dataTeam = choosenProject?.team;
+  let dataTasks = choosenProject?.tasks;
   let currentUser = useSelector((state) => state.currentUser.currentUser);
-  // GIVE FUNCIONALITIES TO PM
+
+  useEffect(() => {
+    dispatch(timesheetsThunks.getTimesheetsFromProject(idProject));
+    console.log(idProject);
+  }, []);
   const verifiedPM = () => {
     const employeeOnProject = dataTeam.find(
       (employee) => employee.employeeId._id === currentUser._id
@@ -58,9 +63,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
   let headers;
   let keys;
   let data;
-  // TESTS
-  console.log('all employees', allEmployees);
-  // KEYS AND VALUES
+
   if (filterProject) {
     headers = ['Name', 'Last Name', 'Role', 'Rate'];
     keys = ['employeeId', 'role', 'rate'];
@@ -98,7 +101,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     }
     verifiedPM();
   }, [data, allProjects]);
-  //  see this useEffect for update tableList in employee's home
+
   useEffect(() => {
     if (roleUser === 'EMPLOYEE') {
       const email = JSON.parse(sessionStorage.getItem('currentUser')).email;
@@ -120,7 +123,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       setIndexPage(indexPage - 1);
     }
   };
-  // REACT HOOK FORMS
+
   const {
     handleSubmit,
     register,
@@ -130,11 +133,11 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     mode: 'onBlur',
     resolver: joiResolver(tab === 'employees' ? validationsFormAddEmployee : validationsFormAddTask)
   });
-  // CAMBIA LA TAB DEL FITLRADO
+
   const changeFilter = () => {
     setFilterProject(!filterProject);
   };
-  // OPEN MODALS EN FUNCIONES ADD
+
   const onAddEmployee = () => {
     reset({});
     setMethod('POST');
@@ -145,7 +148,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setMethod('POST');
     setShowModalTask(true);
   };
-  // SETEO DE VALORES EN EDIT
+
   const onEdit = (id) => {
     setIdToForm(id);
     if (tab === 'employees') {
@@ -169,7 +172,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
       setShowModalTask(true);
     }
   };
-  // DELETE MODAL AND FUNCTIONS
+
   const onDeletePreviousFunction = (id) => {
     setIdToDelete(id);
     setShowModalDelete(true);
@@ -184,44 +187,30 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setShowModalDelete(false);
     setshowModalDeleteResponse(true);
   };
-  // OPEN MODAL ASSIGN PM
+
   const openModalPm = () => {
     setShowModalPm(true);
   };
 
   const onSubmit = async (data) => {
-    console.log('data', data);
     if (tab === 'employees') {
-      console.log('data', data);
       if (method === 'POST') {
-        if (pm) {
-          const newEmployeeAssociated = {
-            projectId: idProject,
-            role: data.role,
-            // rate: 0,
-            rate: data.rate,
-            isPM: false
-          };
-          // dispatch(
-          //   thunksProjects.addEmployeeToProject({ ...data, rate: 0, isPM: false }, idProject)
-          // );
-          dispatch(thunksProjects.addEmployeeToProject({ ...data, isPM: false }, idProject));
-          dispatch(
-            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
-          );
-          console.log('the new employee', newEmployeeAssociated);
-        } else {
-          const newEmployeeAssociated = {
-            projectId: idProject,
-            role: data.role,
-            rate: data.rate,
-            isPM: false
-          };
-          dispatch(thunksProjects.addEmployeeToProject(data, idProject));
-          dispatch(
-            thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
-          );
-        }
+        const dataFormatted = {
+          employeeId: data.employeeId,
+          rate: data.rate === '' || !data.rate ? 0 : data.rate,
+          role: data.role,
+          isPM: false
+        };
+        const newEmployeeAssociated = {
+          projectId: idProject,
+          role: data.role,
+          rate: data.rate === '' || !data.rate ? 0 : data.rate,
+          isPM: false
+        };
+        dispatch(thunksProjects.addEmployeeToProject(dataFormatted, idProject));
+        dispatch(
+          thunksEmployees.pushProjectAssociatedInEmployee(newEmployeeAssociated, data.employeeId)
+        );
         setShowModalEmployee(false);
         setShowModalResponse(true);
       } else {
@@ -249,13 +238,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         setIdToForm('');
       }
     } else {
-      // const date = new Date();
-      // let output =
-      //   String(date.getFullYear()) +
-      //   '/' +
-      //   String(date.getMonth() + 1).padStart(2, '0') +
-      //   '/' +
-      //   String(date.getDate()).padStart(2, '0');
       let taskToAdd = {
         parentProject: idProject,
         taskName: data.taskName,
@@ -263,7 +245,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         assignedEmployee: [data.assignedEmployee],
         startDate: data.startDate,
         status: data.status
-        // createdAt: method === 'POST' ? output : null
       };
       if (method === 'POST') {
         dispatch(thunksTasks.addTask(taskToAdd));
@@ -287,10 +268,10 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
     setListEmployeesTask([]);
     setShowListEmployeesTask(false);
   };
-  // RETORNA DROPDOWN O ETIQUETA P , SI ES PM O NO
+
   const editOptions = (current) => {
     if (current.role === 'PM') {
-      return <p>PM</p>;
+      return <p id={styles.pm}>PM</p>;
     }
     return (
       <select id="roleEmployee" {...register('role')} name="role">
@@ -341,7 +322,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 <p className={styles.errorInput}>{errors.taskDescription?.message}</p>
               )}
             </div>
-            <div>
+            <div className={styles.assignedEmp}>
               <label htmlFor="Assigned Employee">Assigned Employee</label>
               <select
                 id="assignedEmployee"
@@ -379,26 +360,17 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               {errors.status && <p className={styles.errorInput}>{errors.status?.message}</p>}
             </div>
             <div className={styles.buttonsContainer}>
-              <Button id="addModalTasks" width={'75px'} height={'30px'} type="submit" value="task">
-                {method === 'POST' ? 'ADD' : 'EDIT'}
-              </Button>
-            </div>
-            <div className={styles.buttonsContainer}>
-              <Button
-                onClick={() => setShowModalTask(false)}
-                id="addModalTasksCancel"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="cancelTask"
-              >
-                CANCEL
+              <Button id="addModalTasks" type="submit" value="task">
+                {method === 'POST' ? (
+                  <i className="fa-solid fa-plus" />
+                ) : (
+                  <i className="fa-solid fa-pencil" />
+                )}
               </Button>
             </div>
           </form>
         </Modal>
       ) : null}
-      {/* modal add employee */}
       {showModalEmployee ? (
         <Modal
           showModal={showModalEmployee}
@@ -406,7 +378,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           modalTitle={method === 'POST' ? 'ADD EMPLOYEE' : 'EDIT EMPLOYEE'}
         >
           <form className={styles.formHome} onSubmit={handleSubmit(onSubmit)}>
-            <div>
+            <div className={styles.select}>
               <label htmlFor="employee id">Employee</label>
               {method === 'POST' ? (
                 <select id="employees" {...register('employeeId')} name="employeeId">
@@ -418,14 +390,23 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                   ))}
                 </select>
               ) : (
-                <p>{`${currentEmployee.employeeId.firstName} ${currentEmployee.employeeId.lastName}`}</p>
+                <p
+                  className={styles.empName}
+                >{`${currentEmployee.employeeId.firstName} ${currentEmployee.employeeId.lastName}`}</p>
               )}
             </div>
             {
-              <div>
-                <label htmlFor="role">Role</label>
+              <div className={styles.select}>
+                <label id="role" htmlFor="role">
+                  Role
+                </label>
                 {method === 'POST' ? (
-                  <select id="roleEmployee" {...register('role')} name="role">
+                  <select
+                    className={styles.empRole}
+                    id="roleEmployee"
+                    {...register('role')}
+                    name="role"
+                  >
                     <option>-</option>
                     <option>DEV</option>
                     <option>QA</option>
@@ -436,8 +417,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                 )}
               </div>
             }
-            {/* {pm ? null : ( */}
-            <div>
+            <div className={styles.rate}>
               <label htmlFor="Rate">Rate</label>
               <input
                 id="rateEmployee"
@@ -448,52 +428,37 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               />
               {errors.rate && <p className={styles.errorInput}>{errors.rate?.message}</p>}
             </div>
-            {/* )} */}
-            <div className={styles.buttonsContainer}>
-              <Button
-                id="addModalEmployees"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="GO"
-              >
-                {method === 'POST' ? 'ADD' : 'EDIT'}
-              </Button>
-            </div>
-            <div>
-              <Button
-                onClick={() => setShowModalEmployee(false)}
-                id="addModalEmployeeCancel"
-                width={'75px'}
-                height={'30px'}
-                type="submit"
-                value="cancelEmoployee"
-              >
-                CANCEL
+            <div className={styles.formButtons}>
+              <Button id="addModalEmployees" type="submit" value="GO">
+                {method === 'POST' ? (
+                  <i className="fa-solid fa-plus"></i>
+                ) : (
+                  <i className="fa-solid fa-pencil"></i>
+                )}
               </Button>
             </div>
           </form>
         </Modal>
       ) : null}
-      <Modal
-        showModal={showModalDelete}
-        handleClose={() => setShowModalDelete(false)}
-        modalTitle={'DELETE'}
-      >
-        {tab === 'employees'
-          ? `are you sure you want to delete this employee?`
-          : `are you sure you want to delete this task??`}
-        <Button onClick={onDelete}>DELETE</Button>
-        <Button onClick={() => setShowModalDelete(false)}>CANCEL</Button>
-      </Modal>
-      <Modal
-        showModal={showModalDeleteResponse}
-        handleClose={() => setshowModalDeleteResponse(false)}
-        modalTitle={`DELETED`}
-      >
-        <Button onClick={() => setshowModalDeleteResponse(false)}>OK</Button>
-      </Modal>
-
+      <div className={styles.deleteModal}>
+        <Modal
+          showModal={showModalDelete}
+          handleClose={() => setShowModalDelete(false)}
+          modalTitle={'DELETE'}
+        >
+          {tab === 'employees'
+            ? `Are you sure you want to delete this employee?`
+            : `Are you sure you want to delete this task?`}
+          <Button id={styles.deleteButton} onClick={onDelete}>
+            <i className="fa-solid fa-check"></i>
+          </Button>
+        </Modal>
+        <Modal
+          showModal={showModalDeleteResponse}
+          handleClose={() => setshowModalDeleteResponse(false)}
+          modalTitle={`DELETED`}
+        ></Modal>
+      </div>
       <Modal
         showModal={showModalResponse}
         handleClose={() => setShowModalResponse(false)}
@@ -506,6 +471,14 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         <Button id="buttonBack" onClick={() => switcher()}>
           <i className="fa-solid fa-arrow-left fa-2x"></i>
         </Button>
+        {roleUser === 'ADMIN' && projectTimesheets?.length > 0 ? (
+          <Button
+            id="generateReport"
+            onClick={() => history.push(`/reportProjects/${choosenProject?._id}`)}
+          >
+            <i className="fa-solid fa-chart-column fa-2x" />
+          </Button>
+        ) : null}
         {roleUser === `ADMIN` && tab === 'employees' ? (
           <Button
             disabled={dataTeam.length > 0 ? false : true}
@@ -518,7 +491,7 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             <p className={styles.textPm}>PM</p>
           </Button>
         ) : null}
-        {roleUser === 'ADMIN' || roleUser === 'PM' ? (
+        {roleUser === 'ADMIN' || pm ? (
           <>
             {filterProject ? (
               <Button id="buttonAddEmployee" onClick={() => onAddEmployee()}>
@@ -562,13 +535,13 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
         <>
           <div className={styles.noDataText}>
             <h1>No information to display</h1>
-            <h2>To start add an {tab === 'employees' ? 'Employee' : 'Task'}</h2>
+            <h2>To start add {tab === 'employees' ? ' an employee' : 'a task'}</h2>
           </div>
         </>
       ) : (
         <>
           <table className={styles.table}>
-            <thead>
+            <thead id={styles.thead}>
               <tr>
                 {headers.map((header, index) => {
                   if (header === 'Rate') {
@@ -609,32 +582,16 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                         if (row[key].length >= 1) {
                           return (
                             <div className="empList">
-                              <Button
-                                width={'100px'}
-                                height={'40px'}
+                              <button
+                                className={styles.empButton}
                                 id="buttonListEmployeesTask"
                                 fontSize={'12px'}
                                 onClick={() => listEmployeesTaskFunction(row._id)}
                               >
-                                Employee List
-                              </Button>
+                                <i className="fa-solid fa-user"></i>
+                              </button>
                             </div>
                           );
-                          // let dati = nuevoArray[index];
-                          // return (
-                          //   <Dropdown width={'150px'} placeholder="Tasks">
-                          //     {dati.map((element) => {
-                          //       return (
-                          //         <option key={Math.random()}>
-                          //           {element.employeeId.firstName}
-                          //         </option>
-                          //       );
-                          //     })}
-                          //     ;
-                          //   </Dropdown>
-                          // } else if (row[key].length === 1) {
-                          //   return <td>{nuevoArray[index]?.employeeId.firstName}</td>;
-                          // return <td>{nuevoArray}</td>;
                         } else {
                           return <td> - </td>;
                         }
@@ -665,7 +622,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                     })}
                     {roleUser === `ADMIN` || pm ? (
                       <>
-                        {/* cambio icono de tick o x segun estado de aprovaciond e timesheet */}
                         <td>
                           <Button
                             className={styles.modifyButtons}
@@ -675,8 +631,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                               onEdit(tab === 'tasks' ? row._id : row.employeeId._id);
                               setMethod('PUT');
                             }}
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                           >
                             <i className="fa-solid fa-pencil"></i>
@@ -690,8 +646,8 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
                                 tab === 'tasks' ? row._id : row.employeeId._id
                               )
                             }
-                            width={'50px'}
-                            height={'25px'}
+                            width={'40px'}
+                            height={'40px'}
                             fontSize={'13px'}
                           >
                             <i className="fa-solid fa-xmark"></i>
@@ -706,12 +662,9 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
           </table>
           <div className={styles.buttons}>
             <div>
-              <p className={styles.indexPage}>Page {indexPage}</p>
-            </div>
-            <div>
               <Button
                 id="previouspage"
-                width={'50px'}
+                width={'40px'}
                 height={'40px'}
                 fontSize={'15px'}
                 disabled={indexPage <= 1}
@@ -721,9 +674,12 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
               </Button>
             </div>
             <div>
+              <p className={styles.indexPage}>Page {indexPage}</p>
+            </div>
+            <div>
               <Button
                 id="nextpage"
-                width={'50px'}
+                width={'40px'}
                 height={'40px'}
                 fontSize={'15px'}
                 disabled={indexPage >= data?.length / 10}
@@ -745,7 +701,6 @@ function Tableproject({ title, roleUser, switcher, idProject }) {
             <li key={Math.random()}>{`${employee.firstName} ${employee.lastName}`}</li>
           ))}
         </ol>
-        <Button onClick={closeListEmployeesTask}>OK</Button>
       </Modal>
     </div>
   );

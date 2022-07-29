@@ -2,6 +2,8 @@ import * as types from './constants';
 
 const initialState = {
   list: [],
+  listFromProject: [],
+  listFromEmployee: [],
   isFetching: false,
   error: '',
   showCreateModal: false,
@@ -111,6 +113,23 @@ export const timesheetReducer = (state = initialState, action) => {
         isFetching: false
       };
     case types.GET_EMPLOYEE_TIMSHEET_FAILED:
+      return {
+        ...state,
+        isFetching: false,
+        error: action.payload
+      };
+    case types.GET_TIMESHEETS_FROM_PROJECT_PENDING:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case types.GET_TIMESHEETS_FROM_PROJECT_FULFILLED:
+      return {
+        ...state,
+        isFetching: false,
+        listFromProject: action.payload
+      };
+    case types.GET_TIMESHEETS_FROM_PROJECT_FAILED:
       return {
         ...state,
         isFetching: false,

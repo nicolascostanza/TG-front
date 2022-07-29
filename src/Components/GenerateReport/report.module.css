@@ -1,0 +1,141 @@
+#selectedTag {
+  width: 21cm;
+  max-width: 21cm;
+}
+
+.reportContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.tablesContainer {
+  display: flex;
+  /* flex-wrap: wrap; */
+  gap: 20px 12px;
+  width: 100%;
+  min-width: fit-content;
+  justify-content: space-around;
+}
+
+.keyInfoContainer {
+  display: flex;
+  gap: 12px;
+}
+
+.keyInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 200px;
+  border: 1px solid #00000030;
+  box-shadow: 0 2px 3px 0 #00000030;
+  border-radius: 4px;
+}
+
+.extendedTable {
+  min-width: 600px;
+}
+
+.condensedTable {
+  min-width: 400px;
+}
+
+.selectedTag{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.graphContainer {
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  border: 1px solid #00000030;
+  box-shadow: 0 2px 3px 0 #00000030;
+  border-radius: 4px;
+  padding: 16px;
+  align-items: center;
+  background-color: aliceblue;
+
+}
+
+.barsContainer {
+  min-width: 300px;
+  width: 100%;
+  max-width: 800px;
+  border: 1px solid #00000030;
+  box-shadow: 0 2px 3px 0 #00000030;
+  border-radius: 4px;
+  padding: 16px;
+  background-color: aliceblue;
+  margin-bottom: 50px;
+}
+
+.fromToText{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+  color: var(--text-on-primary);
+}
+
+.tableBody{
+  font-style: normal;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 21px;
+}
+
+.pieGraphsContainer{
+  display: flex;
+  justify-content: space-around;
+  gap: 132px;
+  margin: 50px 0;
+}
+
+table{
+  border-collapse: collapse;
+  border: none;
+  width: 100%;
+}
+
+tbody td{
+  border: none;
+  align-items: center;
+  min-width: 100px;
+  padding-left: 5px;
+  color: black;
+}
+
+tbody thead{
+  background-color: var(--primary-color);
+  height: 50px;
+  border-radius: 10px 10px 0 0;
+  max-width: 1200px;
+  color: black;
+}
+
+table th:first-child {
+  border-radius: 10px 0px 0 0;
+}
+
+table th:last-child {
+  border-radius: 0 10px 0 0;
+}
+
+tbody > :nth-child(even) {
+background-color: var(--row-even-background);
+transition: .2s;
+}
+
+tbody > :nth-child(odd) {
+background-color: var(--row-odd-background);
+transition: .2s;
+}
+
+.extendedTable > .tableFoot {
+  border-radius: 0 0 10px 10px;
+  background-color: var(--primary-color);
+  color: white;
+}

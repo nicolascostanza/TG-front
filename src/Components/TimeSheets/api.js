@@ -14,9 +14,6 @@ export const deleteTimesheetApi = async (id) => {
       method: 'PATCH'
     });
     const data = await response.json();
-    // if (!data.error) {
-    //   alert(data.message);
-    // }
     return data;
   } catch (err) {
     return err;
@@ -33,10 +30,8 @@ export const addTimesheetApi = async (timeSheet) => {
       body: JSON.stringify(timeSheet)
     });
     const data = await response.json();
-    alert('Time-sheet successfully created');
     return data;
   } catch (err) {
-    alert('There has been an error creating time-sheet');
     return err;
   }
 };
@@ -51,10 +46,8 @@ export const editTimesheetApi = async (newBody, id) => {
       body: JSON.stringify(newBody)
     });
     const data = await res.json();
-    alert('Time-sheet successfully updated');
     return data;
   } catch (err) {
-    alert('There has been an error updating time-sheet');
     return err;
   }
 };
@@ -62,6 +55,16 @@ export const editTimesheetApi = async (newBody, id) => {
 export const getEmployeeTimesheetApi = async (id) => {
   try {
     const response = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/employee?id=${id}`);
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    return err;
+  }
+};
+
+export const getTimesheetFromProjectApi = async (id) => {
+  try {
+    const response = await fetch(`${process.env.REACT_APP_API_URL}/time-sheets/project?id=${id}`);
     const data = await response.json();
     return data;
   } catch (err) {

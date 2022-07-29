@@ -1,7 +1,5 @@
 import Joi from 'joi';
 
-// como valido el email con mensaje
-// ver si active es required
 export const validationsFormProjectCreate = Joi.object({
   name: Joi.string()
     .min(3)
@@ -28,7 +26,7 @@ export const validationsFormProjectCreate = Joi.object({
     'date.base': 'Date is not valid',
     'date.empty': 'This field is required'
   }),
-  endDate: Joi.date().min('01/01/2000').optional().allow('')
+  endDate: Joi.date().min('01/01/2000').allow('')
 });
 export const validationsFormProjectEdit = Joi.object({
   name: Joi.string()
@@ -101,7 +99,7 @@ export const validationsFormSuperadminEdit = Joi.object({
 export const validationsFormAddEmployee = Joi.object({
   employeeId: Joi.string().required(),
   role: Joi.string(),
-  rate: Joi.number().required()
+  rate: Joi.number().min(0).allow('')
   // isPm: Joi.boolean().required()
 });
 
@@ -116,5 +114,5 @@ export const validationsFormAddTask = Joi.object({
 
 export const validationsAssignPm = Joi.object({
   employeeId: Joi.string().required(),
-  rate: Joi.number().min(0).required()
+  rate: Joi.number().min(0).allow('')
 });
