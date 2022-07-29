@@ -4,6 +4,7 @@
   font-size: 13px;
   width: 100%;
   padding: 10px;
+  margin: 50px auto -40px;
 }
 
 .container h2{
@@ -23,6 +24,7 @@
   width: 40px;
   height: 40px;
   border-radius: 20px;
+  z-index: 200;
 }
 
 .buttonBox{
@@ -30,7 +32,7 @@
   justify-content: flex-end;
   align-items: center;
   width: 70%;
-  margin: 0 auto;
+  margin: 0 auto 100px;
 }
 
 .buttonBox p{
@@ -195,6 +197,7 @@ border-radius: 0 0 10px 0;
 .workedHours{
   text-align: center;
   color: var(--text-on-primary);
+  text-transform: uppercase;
 }
 
 

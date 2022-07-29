@@ -270,40 +270,6 @@ function TimeSheet() {
           currentUser={currentUser}
         />
       ) : null}
-      {role === 'PM' && (
-        <div>
-          <div className={styles.pmNavTabs}>
-            <button
-              className={selectedButton === 1 ? styles.selectedTab : styles.unselectedTab}
-              id="showMyTimesheetsButton"
-              onClick={() => showMyTS()}
-            >
-              My timesheets
-            </button>
-            <button
-              className={selectedButton === 2 ? styles.selectedTab : styles.unselectedTab}
-              id="showTimesheetsToApproveButton"
-              onClick={() => showTSToApprove()}
-            >
-              Timesheets to approve
-            </button>
-            <button
-              id="showAllTimesheetsButton"
-              className={selectedButton === 3 ? styles.selectedTab : styles.unselectedTab}
-              onClick={() => showAllTS()}
-            >
-              All timesheets
-            </button>
-            <button
-              id="deleteSelectedTimesheetsButton"
-              className={selectedTS.length ? styles.enabled : styles.disabled}
-              onClick={() => deleteSelectedTSAction()}
-            >
-              Delete selected ts
-            </button>
-          </div>
-        </div>
-      )}
       <EmployeeTimesheetTable
         title={role}
         headers={['EMPLOYEE', 'Project', 'Start date', 'Task', 'Hours', 'Status', 'Edit', 'Delete']}
@@ -316,6 +282,38 @@ function TimeSheet() {
         onApprove={statusChanger}
         onSelect={selectTS}
       />
+      {role === 'PM' && (
+        <div className={styles.pmNavTabs}>
+          <button
+            className={selectedButton === 1 ? styles.selectedTab : styles.unselectedTab}
+            id="showMyTimesheetsButton"
+            onClick={() => showMyTS()}
+          >
+            My timesheets
+          </button>
+          <button
+            className={selectedButton === 2 ? styles.selectedTab : styles.unselectedTab}
+            id="showTimesheetsToApproveButton"
+            onClick={() => showTSToApprove()}
+          >
+            to approve
+          </button>
+          <button
+            id="showAllTimesheetsButton"
+            className={selectedButton === 3 ? styles.selectedTab : styles.unselectedTab}
+            onClick={() => showAllTS()}
+          >
+            All timesheets
+          </button>
+          <button
+            id="deleteSelectedTimesheetsButton"
+            className={selectedTS.length ? styles.enabled : styles.disabled}
+            onClick={() => deleteSelectedTSAction()}
+          >
+            Delete selected ts
+          </button>
+        </div>
+      )}
     </>
   );
 }
