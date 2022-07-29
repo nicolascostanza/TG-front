@@ -45,11 +45,11 @@ const ProjectReport = () => {
       };
     });
   // for pdf generator
-  let selectedTag = document.getElementById('selectedTag');
   const pdfGenerator = () => {
+    let selectedTag = document.getElementById('selectedTag');
     let doc = new jsPDF('p', 'pt', 'letter');
     let margin = 2;
-    let scale = (doc.internal.pageSize.width - margin * 2) / selectedTag.scrollWidth;
+    let scale = (doc.internal.pageSize.width - margin * 2) / selectedTag?.scrollWidth;
     doc.html(selectedTag, {
       x: margin,
       y: margin,
@@ -107,19 +107,22 @@ const ProjectReport = () => {
   return (
     <div className={styles.reportContainer}>
       <h2>{`${project?.name}`}</h2>
-      <Button id="buttonBack" onClick={() => history.goBack()}>
+      <Button id="buttonBack" width={'40px'} height={'40px'} onClick={() => history.goBack()}>
         <i className="fa-solid fa-arrow-left fa-2x"></i>
       </Button>
-      <p>
+      <p className={styles.fromToText}>
         From{' '}
         {`${projectTimesheetsMap[0]?.date} to ${
           projectTimesheetsMap[projectTimesheetsMap.length - 1]?.date
         }`}
       </p>
-      <button id="btnpdf" onClick={pdfGenerator}>
+      {/* <button id="btnpdf" onClick={pdfGenerator}>
         Generate PDF
-      </button>
-      <div id="selectedTag">
+      </button> */}
+      <Button id="btnpdf" width={'90px'} onClick={pdfGenerator}>
+        Generate PDF
+      </Button>
+      <div id="selectedTag" className={styles.selectedTag}>
         <div className={styles.tablesContainer}>
           <table className={styles.extendedTable}>
             <thead>
@@ -132,7 +135,7 @@ const ProjectReport = () => {
                 <th>TS Cost</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className={styles.tableBody}>
               {projectTimesheetsMap.map((timesheet) => {
                 return (
                   <tr key={timesheet._id}>
@@ -146,16 +149,41 @@ const ProjectReport = () => {
                 );
               })}
             </tbody>
-            <tfoot>
+            <tfoot className={styles.tableFoot}>
               <tr>
                 <td>Total:</td>
                 <td>{totalHours}</td>
                 <td></td>
                 <td></td>
                 <td>{totalRate}</td>
+                <td></td>
               </tr>
             </tfoot>
           </table>
+          <table className={styles.condensedTable}>
+            <thead>
+              <tr>
+                <th>Employee</th>
+                <th>Total Hours</th>
+                <th>Hourly Rate</th>
+                <th>Total Rate</th>
+              </tr>
+            </thead>
+            <tbody className={styles.tableBody}>
+              {segmentedByEmployee?.map((employee) => {
+                return (
+                  <tr key={`${employee._id}segemp`}>
+                    <td>{employee.firstName}</td>
+                    <td>{employee.hours}</td>
+                    <td>{employee.rate}</td>
+                    <td>{employee.rate * employee.hours}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+        <div className={styles.pieGraphsContainer}>
           <div className={styles.graphContainer}>
             <PieChart
               title="Hours"
@@ -172,53 +200,32 @@ const ProjectReport = () => {
               value="totalRate"
             />
           </div>
-          {/* <table className={styles.condensedTable}>
-            <thead>
-              <tr>
-                <th>Employee</th>
-                <th>Total Hours</th>
-                <th>Hourly Rate</th>
-                <th>Total Rate</th>
-              </tr>
-            </thead>
-            <tbody>
-              {segmentedByEmployee?.map((employee) => {
-                return (
-                  <tr key={`${employee._id}segemp`}>
-                    <td>{employee.firstName}</td>
-                    <td>{employee.hours}</td>
-                    <td>{employee.rate}</td>
-                    <td>{employee.rate * employee.hours}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table> */}
-          <div className={styles.barsContainer}>
-            <BarChart
-              title="Historic rate"
-              data={projectDataFormatter(projectContr, project, {
-                fillZero: true,
-                accumulate: false,
-                rated: false
-              })}
-              label="date"
-              colorScheme="niceScheme"
-            />
-          </div>
-          <div className={styles.barsContainer}>
-            <LineChart
-              title="Historic rate"
-              data={projectDataFormatter(projectContr, project, {
-                fillZero: true,
-                accumulate: true,
-                rated: false
-              })}
-              label="date"
-              colorScheme="niceScheme"
-            />
-          </div>
         </div>
+        <div className={styles.barsContainer}>
+          <BarChart
+            title="Historic hours"
+            data={projectDataFormatter(projectContr, project, {
+              fillZero: true,
+              accumulate: false,
+              rated: false
+            })}
+            label="date"
+            colorScheme="niceScheme"
+          />
+        </div>
+        <div className={styles.barsContainer}>
+          <LineChart
+            title="Historic rate"
+            data={projectDataFormatter(projectContr, project, {
+              fillZero: true,
+              accumulate: true,
+              rated: false
+            })}
+            label="date"
+            colorScheme="niceScheme"
+          />
+        </div>
+        {/* </div> */}
       </div>
     </div>
   );
