@@ -57,7 +57,7 @@ function SignUp() {
           <div className={styles.modal}>
             <p>{messageRegister}</p>
             <button className={styles.buttonOk} value="OK" onClick={redirectedAuth}>
-              OK
+              <i className="fa-solid fa-check" />
             </button>
           </div>
         </Modal>
