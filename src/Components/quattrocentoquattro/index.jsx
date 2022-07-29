@@ -1,10 +1,14 @@
 import React from 'react';
 import Alfon from './alfon.png';
 import styles from './alfon.module.css';
+import Sidebar from 'Components/Shared/Sidebar';
 
 const PageNotFound = () => {
   return (
     <div className={styles.cuatroMainContainer}>
+      <section>
+        <Sidebar />
+      </section>
       <div>
         <img className={styles.alfonImg} src={Alfon} alt="Alfon" />
       </div>
