@@ -1,6 +1,7 @@
 import * as api from '../../Components/Projects/api';
 import * as actions from './actions';
 import * as thunksTasks from 'redux/tasks/thunks';
+import { postMessageOnSlack } from 'slackIntegration';
 
 export const getProjects = () => {
   return (dispatch) => {
@@ -25,6 +26,7 @@ export const addNewProject = (body) => {
         dispatch(actions.addNewProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
+          postMessageOnSlack(`✅ New project Added! The name is ${response.data.name} ✅`);
         }
       })
       .catch((error) => {
@@ -43,6 +45,9 @@ export const updateProject = (body, id) => {
           throw response.error;
         }
         dispatch(actions.updateProjectFulfilled(response.data, response.message));
+        postMessageOnSlack(
+          `🔄 The ${response.data.name} project was updated. Check the Trackgenix app for more details. 🔄`
+        );
       })
       .catch((error) => {
         dispatch(actions.updateProjectFailed(error));
@@ -57,6 +62,7 @@ export const deleteProject = (id) => {
       .deleteProjectApi(id)
       .then((response) => {
         dispatch(actions.deleteProjectFulfilled(response.data, response.message));
+        postMessageOnSlack(`❗ The ${response.data.name} project was Deleted. ❗`);
       })
       .catch((error) => {
         dispatch(actions.deleteProjectFailed(error));
@@ -73,6 +79,12 @@ export const addEmployeeToProject = (body, id) => {
         dispatch(actions.addEmployeeToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
+          const employeeName = response.data.team.find(
+            (item) => item.employeeId._id === body.employeeId
+          ).employeeId.firstName;
+          postMessageOnSlack(
+            `✅ Added ${employeeName} to ${response.data.name} as ${body.role} ✅`
+          );
         }
       })
       .catch((error) => {
@@ -90,6 +102,9 @@ export const deleteEmployeeToProject = (idProject, idEmployee) => {
         dispatch(actions.deleteEmployeeToProjectSuccess(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
+          postMessageOnSlack(
+            `❗ An employee of the ${response.data.name} project has been deleted. ❗ `
+          );
         }
       })
       .catch((error) => {
@@ -107,6 +122,9 @@ export const addTaskToProject = (id, parentProjectId) => {
         dispatch(actions.addTaskToProjectFulfilled(response.data, response.message));
         if (!response.error) {
           dispatch(actions.closeAllModals());
+          postMessageOnSlack(
+            `✅ A new task has been added to the ${response.data.name} project ✅`
+          );
         }
       })
       .catch((error) => {
@@ -143,6 +161,9 @@ export const deleteTaskToProject = (idProject, idTask) => {
       .then((response) => {
         dispatch(actions.deleteTaskToProjectSuccess(response.data, response.message));
         if (!response.error) {
+          postMessageOnSlack(
+            `❗ A task has been removed from the ${response.data.name} project, check Trackgenix for more information. ❗`
+          );
           dispatch(actions.closeAllModals());
         }
       })
@@ -151,7 +172,6 @@ export const deleteTaskToProject = (idProject, idTask) => {
       });
   };
 };
-// dispatch(thunksProjects.updateEmployeeToProject(idProject, sendData));
 export const updateEmployeeToProject = (idProject, body) => {
   return (dispatch) => {
     dispatch(actions.updateEmployeeToProjectPending());
@@ -164,6 +184,12 @@ export const updateEmployeeToProject = (idProject, body) => {
         api
           .getProjectByIdApi(idProject)
           .then((response) => {
+            const responses = response.data.team.filter(
+              (member) => member.employeeId._id === body.employeeId
+            );
+            postMessageOnSlack(
+              `🔄 Employee ${responses[0].employeeId.firstName} ${responses[0].employeeId.lastName} has been upgraded to the role of ${responses[0].role} in the ${response.data.name} project. 🔄`
+            );
             if (response.error) {
               throw response.error;
             }
