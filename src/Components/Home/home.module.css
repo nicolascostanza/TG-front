@@ -6,7 +6,6 @@
   background-color: var(--background);
 }
 
-<<<<<<< HEAD
 .formHome {
   display: flex;
   width: 80%;
@@ -28,8 +27,6 @@
   margin-bottom: 10px;
 }
 
-=======
->>>>>>> origin/master
 .inputContainer {
   margin-top: 10px;
 }
