@@ -252,7 +252,7 @@ body, .messageForm > textarea{
   margin: 35px 0 25px 0;
   font-size: 50px;
   font-weight: 700;
-  color: var(--card-h2);
+  color: var(--text-on-primary);
   text-align: center;
 }
 
@@ -303,84 +303,4 @@ body, .messageForm > textarea{
 
 .valuesContainer li:hover{
   cursor: pointer;
-}
-
-@media only screen and (max-width: 780px) {
-  .listFooter {
-    align-items: center;
-    flex-direction: column;
-  }
-  .listFooter > div {
-    width: 80%;
-  }
-  .listFooter > div > h4 {
-    padding-bottom: 5px;
-    border-bottom: 1px solid black;
-  }
-  .imgTablet {
-    display: flex;
-  }
-  .imgTabletSize {
-    width: 80%;
-    height: 60%;
-    object-fit: cover;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.6));
-    z-index: -1;
-  }
-  .wrapImage {
-    display: none;
-  }
-  .firstSection > div {
-    width: 95%;
-  }
-  .imgTablet {
-    justify-content: center;
-  }
-  .subGroup {
-    flex-direction: column;
-  }
-  .subtittle,
-  .textMainSection {
-    text-align: center;
-  }
-  .buttonMore {
-    width: 50%;
-    margin: 0 auto;
-  }
-  .tittle{
-    width: 100%;
-    font-size: 45px;
-    text-align: center;
-  }
-  .firstSection > div {
-    width: 90%;
-    margin-left: 5%;
-  }
-  .secondSection{
-    display: block;
-  }
-  .peerSeparator{
-    display: block;
-  }
-  .valuesContainer {
-    max-width: 250px;
-    background-color:  hsla(102, 34%, 71%, 1);
-  }
-  .valuesContainer > ol {
-    padding-left: 60px;
-  }
-}
-
-@media only screen and (max-width: 480px) {
-  .buttonMore {
-    width: 100%;
-  }
-  .buttonForm{
-    margin: 20px 5%;
-    width: 100%;
-  }
-  #descriptionImage{
-    min-width: 100px;
-    max-height: 100px;
-  }
 }
