@@ -93,8 +93,8 @@ function Home() {
     setScreen(!screen);
   };
   // SELECT THE PROJECT TO CHANGE THE OTHER TABLE
-  let projectSelected = projectsList.filter((project) => project._id === id);
-  let adminSelected = adminsList.filter((admin) => admin._id === id);
+  let projectSelected = projectsList?.filter((project) => project._id === id);
+  let adminSelected = adminsList?.filter((admin) => admin._id === id);
   // RESETS EN EL EDIT CON REACT HOOK FORMS
   const handleModal = (request, id) => {
     setId(id);
